@@ -1,0 +1,49 @@
+\documentclass[twoside]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{lipsum}
+\graphicspath{{images/}}
+
+\usepackage[a4paper,width=150mm,top=25mm,bottom=25mm,bindingoffset=6mm]{geometry}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead{}
+\fancyhead[RO,LE]{Thesis Title}
+\fancyfoot{}
+\fancyfoot[LE,RO]{\thepage}
+\fancyfoot[LO,CE]{Chapter \thechapter}
+\fancyfoot[CO,RE]{Author Name}
+\fancypagestyle{plain}{}
+
+\title{
+	{Thesis Title}\\
+	{\large Universidad Austral}\\
+	{\includegraphics[width=3in,height=3in]{university.jpg}}
+}
+\author{Franco Lianza}
+\date{Day Month Year}
+
+\begin{document}
+
+\maketitle
+
+\chapter*{Abstract}
+\lipsum[1]
+
+\chapter*{Dedication}
+\lipsum[1]
+
+\chapter*{Acknowledgments}
+\lipsum[1]
+
+\tableofcontents
+
+\chapter{Introduction}
+\input{chapters/introduction}
+
+\appendix
+\chapter{Appendix title}
+\input{chapters/appendix}
+
+\end{document}

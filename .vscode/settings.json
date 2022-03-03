@@ -1,0 +1,14 @@
+{
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "pdflatex",
+      "tools": [
+        "pdflatex"
+      ]
+    }
+  ],
+  "latex-workshop.latex.autoClean.run": "onBuilt",
+  "latex-workshop.view.pdf.hand": true,
+  "latex-workshop.message.error.show": false,
+  "latex-workshop.message.warning.show": false
+}
