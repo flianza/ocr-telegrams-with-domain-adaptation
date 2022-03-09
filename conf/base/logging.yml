@@ -42,25 +42,25 @@ handlers:
 
 loggers:
     anyconfig:
-        level: WARNING
+        level: DEBUG
         handlers: [console, info_file_handler, error_file_handler]
         propagate: no
 
     kedro.io:
-        level: INFO
+        level: DEBUG
         handlers: [console, info_file_handler, error_file_handler]
         propagate: no
 
     kedro.pipeline:
-        level: INFO
+        level: DEBUG
         handlers: [console, info_file_handler, error_file_handler]
         propagate: no
 
     kedro.journal:
-        level: INFO
+        level: DEBUG
         handlers: [journal_file_handler]
         propagate: no
 
 root:
-    level: INFO
+    level: DEBUG
     handlers: [console, info_file_handler, error_file_handler]
