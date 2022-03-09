@@ -6,5 +6,5 @@ telegramas:
 
 votos_segmentados:
   type: pickle.PickleDataSet
-  filepath: data/02_intermediate/votos_segmentados.xz
+  filepath: data/02_intermediate/votos_segmentados.pkl
   backend: pickle

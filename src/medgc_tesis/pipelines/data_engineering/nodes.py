@@ -28,10 +28,9 @@ def extraer_digitos(telegramas: Dict[str, Callable]) -> Iterable:
             ys = ys[1:11]
 
             votos = segmentation.extraer_votos(telegrama, cortes_horizontales=xs, cortes_verticales=ys)
+            dataset.append({"nombre": nombre, "votos": votos})
 
         except Exception:
             logger.error(f"Telegrama {nombre}\n{traceback.format_exc()}")
-
-        dataset.append({"nombre": nombre, "votos": votos})
 
     return dataset
