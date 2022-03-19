@@ -44,7 +44,7 @@ def segmentar_digitos(bloque_digitos: np.ndarray) -> Iterable[np.ndarray]:
     # Set lower bound and upper bound criteria for characters
     total_pixels = image.shape[0] * image.shape[1]
     lower = total_pixels // 70  # heuristic param, can be fine tuned if necessary
-    upper = total_pixels // 20  # heuristic param, can be fine tuned if necessary
+    upper = total_pixels // 5  # heuristic param, can be fine tuned if necessary
 
     # Loop over the unique components
     for label in np.unique(labels):
@@ -67,13 +67,9 @@ def segmentar_digitos(bloque_digitos: np.ndarray) -> Iterable[np.ndarray]:
     cnts, _ = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     boundingBoxes = [cv2.boundingRect(c) for c in cnts]
 
-    # Sort the bounding boxes from left to right, top to bottom
-    # sort by Y first, and then sort by X if Ys are similar
+    # Sort the bounding boxes from left to right
     def compare(rect1, rect2):
-        if abs(rect1[1] - rect2[1]) > 10:
-            return rect1[1] - rect2[1]
-        else:
-            return rect1[0] - rect2[0]
+        return rect1[0] - rect2[0]
 
     boundingBoxes = sorted(boundingBoxes, key=functools.cmp_to_key(compare))
 

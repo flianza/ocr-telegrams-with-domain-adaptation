@@ -4,7 +4,7 @@ telegramas:
   path: data/01_raw/telegramas
   filename_suffix: ".tiff"
 
-votos_segmentados:
+telegramas_segmentados:
   type: pickle.PickleDataSet
-  filepath: data/02_intermediate/votos_segmentados.pkl
+  filepath: data/02_intermediate/telegramas_segmentados.pkl
   backend: pickle

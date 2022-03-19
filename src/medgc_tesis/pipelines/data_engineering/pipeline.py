@@ -9,7 +9,7 @@ def create_pipeline(**kwargs) -> Pipeline:
             node(
                 extraer_digitos,
                 inputs=["telegramas"],
-                outputs="votos_segmentados",
+                outputs="telegramas_segmentados",
                 name="extraer_digitos",
             )
         ]
