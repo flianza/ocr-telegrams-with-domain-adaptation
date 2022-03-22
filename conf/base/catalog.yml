@@ -8,3 +8,7 @@ telegramas_segmentados:
   type: pickle.PickleDataSet
   filepath: data/02_intermediate/telegramas_segmentados.pkl
   backend: pickle
+
+dataset_telegramas:
+  type: pandas.ParquetDataSet
+  filepath: data/03_primary/dataset_telegramas.parquet
