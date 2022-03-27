@@ -1,7 +1,6 @@
 from pathlib import PurePosixPath
 from typing import Any, Dict
 
-import fsspec
 import cv2
 import numpy as np
 from kedro.io import AbstractDataSet
@@ -13,7 +12,6 @@ class ImagenDataSet(AbstractDataSet):
         protocol, path = get_protocol_and_path(filepath)
         self._protocol = protocol
         self._filepath = PurePosixPath(path)
-        self._fs = fsspec.filesystem(self._protocol)
 
     def _load(self) -> np.array:
         load_path = get_filepath_str(self._filepath, self._protocol)

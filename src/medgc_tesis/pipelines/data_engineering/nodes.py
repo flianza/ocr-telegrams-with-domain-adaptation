@@ -1,5 +1,6 @@
 import logging
 import traceback
+from pathlib import Path
 from typing import Any, Callable, Dict, Iterable
 
 import cv2
@@ -12,7 +13,19 @@ from .image_utils import angle, crop, lines, segmentation
 logger = logging.getLogger(__name__)
 
 
-def extraer_digitos(telegramas: Dict[str, Callable]) -> Iterable:
+def extraer_digitos(telegramas: Dict[str, Callable]) -> Iterable[Dict[str, Any]]:
+    """Extrae los digitos de los telegramas.
+
+    Parameters
+    ----------
+    telegramas : Dict[str, Callable]
+        Dataset de telegramas.
+
+    Returns
+    -------
+    Iterable[Dict[str, Any]]
+        Nombre de los telegramas y su contenido.
+    """
     telegramas_segmentados = []
     for nombre, telegrama_loader in tqdm(telegramas.items()):
         telegrama = telegrama_loader()
@@ -40,6 +53,18 @@ def extraer_digitos(telegramas: Dict[str, Callable]) -> Iterable:
 
 
 def armar_dataset(telegramas_segmentados: Iterable[Dict[str, Any]]) -> pd.DataFrame:
+    """Genera un dataset con los telegramas segmentados.
+
+    Parameters
+    ----------
+    telegramas_segmentados : Iterable[Dict[str, Any]]
+        Telegramas segmentados.
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataset que contiene un registro por voto de cada telegrama.
+    """
     id_telegrama = []
     tipo = []
     digitos = []
@@ -126,5 +151,31 @@ def armar_dataset(telegramas_segmentados: Iterable[Dict[str, Any]]) -> pd.DataFr
 
     df["digitos_escalados"] = df.digitos.apply(escalar_digitos)
     df = df.drop(["digitos"], axis=1)
+    df = df.rename(columns={"digitos_escalados": "digitos"})
 
     return df
+
+
+def guardar_digitos_separados(dataset: pd.DataFrame) -> None:
+    """Separa los digitos de los telegramas y los guarda separados.
+
+    Parameters
+    ----------
+    dataset : pd.DataFrame
+        Dataset de los telegramas y sus digitos.
+    """
+    todos_digitos = []
+    for digitos in dataset.digitos.values:
+        for digito in digitos:
+            todos_digitos.append(np.stack(digito, axis=0))
+
+    base_path = "./data/03_primary/TDS"
+    Path(f"{base_path}/image_list").mkdir(parents=True, exist_ok=True)
+    Path(f"{base_path}/tds_list").mkdir(parents=True, exist_ok=True)
+
+    for idx, digito in enumerate(tqdm(todos_digitos)):
+        path_digito = f"tds_list/{idx}.png"
+        cv2.imwrite(f"{base_path}/{path_digito}", digito)
+
+        with open(f"{base_path}/image_list/tds.txt", "a") as file:
+            file.write(f"{path_digito} 0\n")
