@@ -161,3 +161,7 @@ venv.bak/
 .mypy_cache/
 
 
+notebooks/dann
+notebooks/MNIST
+notebooks/USPS
+notebooks/TDS

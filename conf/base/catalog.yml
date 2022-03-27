@@ -12,3 +12,29 @@ telegramas_segmentados:
 dataset_telegramas:
   type: pandas.ParquetDataSet
   filepath: data/03_primary/dataset_telegramas.parquet
+
+digitos_mnist_train:
+  type: kedro_imagenes.extras.datasets.forever_iterator_dataset.MNISTDataSet
+  path: data/05_model_input/MNIST
+  split: train
+
+digitos_mnist_test:
+  type: kedro_imagenes.extras.datasets.forever_iterator_dataset.MNISTDataSet
+  path: data/05_model_input/MNIST
+  split: test
+
+digitos_tds:
+  type: kedro_imagenes.extras.datasets.forever_iterator_dataset.TDSDataSet
+  path: data/05_model_input/TDS
+
+modelo_dann:
+  type: kedro_imagenes.extras.datasets.pytorch_model_dataset.PytorchModelDataSet
+  filepath: data/06_models/modelo_dann.pth
+
+modelo_dann_features_mnist:
+  type: pandas.ParquetDataSet
+  filepath: data/06_models/modelo_dann_features_mnist.parquet
+
+modelo_dann_features_tds:
+  type: pandas.ParquetDataSet
+  filepath: data/06_models/modelo_dann_features_tds.parquet
