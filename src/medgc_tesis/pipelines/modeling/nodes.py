@@ -2,10 +2,12 @@ import logging
 from argparse import Namespace
 from typing import Any, Dict, Tuple
 
+import numpy as np
 import pandas as pd
 import torch
 import torch.backends.cudnn as cudnn
 import torch.nn as nn
+import umap
 from common.utils.analysis import a_distance, collect_feature
 from common.utils.data import ForeverDataIterator
 from dalib.adaptation.dann import DomainAdversarialLoss, ImageClassifier
@@ -93,7 +95,22 @@ def analizar_modelo(
     target_feature = collect_feature(digitos_tds.data_loader, feature_extractor, device)
 
     # calculate A-distance, which is a measure for distribution discrepancy
-    A_distance = a_distance.calculate(source_feature, target_feature, device, training_epochs=2)
+    A_distance = a_distance.calculate(source_feature, target_feature, device)
     logger.info("A-distance: %f" % A_distance)
 
     return pd.DataFrame(source_feature.numpy()), pd.DataFrame(target_feature.numpy())
+
+
+def aplicar_umap(modelo_dann_features_mnist, modelo_dann_features_tds):
+
+    source_feature = modelo_dann_features_mnist.values
+    target_feature = modelo_dann_features_tds.values
+    features = np.concatenate([source_feature, target_feature], axis=0)
+
+    X_tsne = umap.UMAP(random_state=33).fit_transform(features)
+    domains = np.concatenate((np.ones(len(source_feature)), np.zeros(len(target_feature))))
+
+    df = pd.DataFrame(X_tsne)
+    df["domain"] = domains
+
+    return df

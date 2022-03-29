@@ -29,12 +29,16 @@ digitos_tds:
 
 modelo_dann:
   type: kedro_imagenes.extras.datasets.pytorch_model_dataset.PytorchModelDataSet
-  filepath: data/06_models/modelo_dann.pth
+  filepath: data/06_models/dann/modelo.pth
 
 modelo_dann_features_mnist:
   type: pandas.ParquetDataSet
-  filepath: data/06_models/modelo_dann_features_mnist.parquet
+  filepath: data/06_models/dann/features_mnist.parquet
 
 modelo_dann_features_tds:
   type: pandas.ParquetDataSet
-  filepath: data/06_models/modelo_dann_features_tds.parquet
+  filepath: data/06_models/dann/features_tds.parquet
+
+modelo_dann_features_umap:
+  type: pandas.ParquetDataSet
+  filepath: data/06_models/dann/features_umap.parquet
