@@ -88,7 +88,7 @@ def entrenar_dann(
 
         history.append((loss, acc))
 
-    logger.info("best loss: %f" % best_acc)
+    logger.info("best acc: %f" % best_acc)
     logger.info("best epoch: %f" % best_epoch)
 
     classifier.load_state_dict(best_state)
