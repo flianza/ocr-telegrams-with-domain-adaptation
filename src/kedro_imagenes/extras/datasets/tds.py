@@ -19,7 +19,7 @@ class TDS(ImageList):
     ]
 
     def __init__(self, root, mode="L", split="", **kwargs):
-        data_list_file = os.path.join(root, "image_list/tds.txt")
+        data_list_file = os.path.join(root, f"image_list/tds_{split}.txt")
 
         assert mode in ["L", "RGB"]
         self.mode = mode

@@ -4,6 +4,12 @@ telegramas:
   path: data/01_raw/telegramas
   filename_suffix: ".tiff"
 
+mesas_escrutadas:
+  type: pandas.CSVDataSet
+  filepath: data/01_raw/MESAS_ESCRUTADAS_Cierre.zip
+  load_args:
+    compression: zip
+
 telegramas_segmentados:
   type: pickle.PickleDataSet
   filepath: data/02_intermediate/telegramas_segmentados.pkl
@@ -23,13 +29,28 @@ digitos_mnist_test:
   path: data/05_model_input/MNIST
   split: test
 
-digitos_tds:
+digitos_tds_train:
   type: kedro_imagenes.extras.datasets.forever_iterator_dataset.TDSDataSet
   path: data/05_model_input/TDS
+  split: train
+
+digitos_tds_test:
+  type: kedro_imagenes.extras.datasets.forever_iterator_dataset.TDSDataSet
+  path: data/05_model_input/TDS
+  split: test
+
+digitos_tds_val:
+  type: kedro_imagenes.extras.datasets.forever_iterator_dataset.TDSDataSet
+  path: data/05_model_input/TDS
+  split: val
 
 modelo_dann:
   type: kedro_imagenes.extras.datasets.pytorch_model_dataset.PytorchModelDataSet
   filepath: data/06_models/dann/modelo.pth
+
+modelo_dann_history:
+  type: pandas.CSVDataSet
+  filepath: data/06_models/dann/history.csv
 
 modelo_dann_features_mnist:
   type: pandas.ParquetDataSet
@@ -42,3 +63,7 @@ modelo_dann_features_tds:
 modelo_dann_features_umap:
   type: pandas.ParquetDataSet
   filepath: data/06_models/dann/features_umap.parquet
+
+predicciones:
+  type: pandas.CSVDataSet
+  filepath: data/07_model_output/dann/predicciones.csv

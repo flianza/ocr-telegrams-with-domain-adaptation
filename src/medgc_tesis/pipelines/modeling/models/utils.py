@@ -1,3 +1,4 @@
+import logging
 import time
 
 import torch
@@ -5,6 +6,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 from common.utils.meter import AverageMeter, ProgressMeter
 from common.utils.metric import ConfusionMatrix, accuracy
+
+logger = logging.getLogger(__name__)
 
 
 def validate(device: torch.device, val_loader, model, print_freq=100) -> float:
@@ -40,9 +43,9 @@ def validate(device: torch.device, val_loader, model, print_freq=100) -> float:
             if i % print_freq == 0:
                 progress.display(i)
 
-        print(f" * Acc@1 {top1.avg:.3f}")
+        logger.info(f" * Acc@1 {top1.avg:.3f}")
         if confusion_matrix:
-            print(confusion_matrix.format(range(10)))
+            logger.info(confusion_matrix.format(range(10)))
 
     return top1.avg
 

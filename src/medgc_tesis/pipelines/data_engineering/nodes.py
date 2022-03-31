@@ -6,6 +6,7 @@ from typing import Any, Callable, Dict, Iterable
 import cv2
 import numpy as np
 import pandas as pd
+from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 
 from .image_utils import angle, crop, lines, segmentation
@@ -52,7 +53,7 @@ def extraer_digitos(telegramas: Dict[str, Callable]) -> Iterable[Dict[str, Any]]
     return telegramas_segmentados
 
 
-def armar_dataset(telegramas_segmentados: Iterable[Dict[str, Any]]) -> pd.DataFrame:
+def armar_dataset(telegramas_segmentados: Iterable[Dict[str, Any]], mesas_escrutadas: pd.DataFrame) -> pd.DataFrame:
     """Genera un dataset con los telegramas segmentados.
 
     Parameters
@@ -70,29 +71,39 @@ def armar_dataset(telegramas_segmentados: Iterable[Dict[str, Any]]) -> pd.DataFr
     digitos = []
     partido = []
     partidos = {
-        0: "unite",
-        1: "frente amplio progresista",
-        2: "fit",
-        3: "juntos",
-        4: "primero santa fe",
-        5: "somos futuro",
-        6: "podemos",
-        7: "soberania popular",
-        8: "frente de todos",
+        0: "UNITE POR LA LIBERTAD Y LA DIGNIDAD",
+        1: "FRENTE AMPLIO PROGRESISTA",
+        2: "FRENTE DE IZQUIERDA Y DE TRABAJADORES - UNIDAD",
+        3: "JUNTOS POR EL CAMBIO",
+        4: "PRIMERO SANTA FE",
+        5: "SOMOS FUTURO",
+        6: "PODEMOS",
+        7: "SOBERANIA POPULAR",
+        8: "FRENTE DE TODOS",
     }
 
     for telegrama in telegramas_segmentados:
         for idx, votos in enumerate(telegrama["votos"]):
             id_telegrama.append(telegrama["nombre"])
-            tipo.append("senadores")
+            tipo.append("SENADORES NACIONALES")
             partido.append(partidos.get(idx, None))
             digitos.append(votos["senadores"])
 
             id_telegrama.append(telegrama["nombre"])
-            tipo.append("diputados")
+            tipo.append("DIPUTADOS NACIONALES")
             partido.append(partidos.get(idx, None))
             digitos.append(votos["diputados"])
     df = pd.DataFrame({"id_telegrama": id_telegrama, "partido": partido, "tipo": tipo, "digitos": digitos})
+
+    df["mesa"] = df.id_telegrama.str[-6:]
+    df_mesas_santafe = (
+        mesas_escrutadas.query("(Distrito == 'Santa Fe') & (tipoVoto == 'positivo')")
+        .rename(columns={"Mesa": "mesa", "Agrupacion": "partido", "Cargo": "tipo"})[
+            ["mesa", "tipo", "partido", "votos"]
+        ]
+        .copy()
+    )
+    df = pd.merge(df, df_mesas_santafe, on=["mesa", "tipo", "partido"])
 
     def proporcion_pixeles_blancos(digito: np.ndarray) -> float:
         return np.sum(digito) / (digito.shape[0] ** 2 * 255)
@@ -165,17 +176,31 @@ def guardar_digitos_separados(dataset: pd.DataFrame) -> None:
         Dataset de los telegramas y sus digitos.
     """
     todos_digitos = []
-    for digitos in dataset.digitos.values:
-        for digito in digitos:
-            todos_digitos.append(np.stack(digito, axis=0))
+    dataset["votos"] = dataset.votos.astype(str)
+    for row in dataset.itertuples():
+        if len(row.votos) <= len(row.digitos):
+            k = len(row.votos)
+            for digito, numero in zip(row.digitos[-k:], row.votos[-k:]):
+                todos_digitos.append((np.stack(digito, axis=0), numero))
 
-    base_path = "./data/03_primary/TDS"
+    base_path = "./data/05_model_input/TDS"
     Path(f"{base_path}/image_list").mkdir(parents=True, exist_ok=True)
-    Path(f"{base_path}/tds_list").mkdir(parents=True, exist_ok=True)
+    Path(f"{base_path}/tds_train_image").mkdir(parents=True, exist_ok=True)
+    Path(f"{base_path}/tds_val_image").mkdir(parents=True, exist_ok=True)
+    Path(f"{base_path}/tds_test_image").mkdir(parents=True, exist_ok=True)
 
-    for idx, digito in enumerate(tqdm(todos_digitos)):
-        path_digito = f"tds_list/{idx}.png"
+    train_digitos, test_digitos = train_test_split(todos_digitos, test_size=0.3, random_state=42)
+    val_digitos, test_digitos = train_test_split(test_digitos, test_size=0.5, random_state=42)
+
+    guardar_split_digitos(train_digitos, base_path, split="train")
+    guardar_split_digitos(val_digitos, base_path, split="val", offset=len(train_digitos))
+    guardar_split_digitos(test_digitos, base_path, split="test", offset=len(train_digitos) + len(val_digitos))
+
+
+def guardar_split_digitos(todos_digitos, base_path, split, offset=0):
+    for idx, (digito, numero) in enumerate(tqdm(todos_digitos)):
+        path_digito = f"tds_{split}_image/{idx + offset}.png"
         cv2.imwrite(f"{base_path}/{path_digito}", digito)
 
-        with open(f"{base_path}/image_list/tds.txt", "a") as file:
-            file.write(f"{path_digito} 0\n")
+        with open(f"{base_path}/image_list/tds_{split}.txt", "a") as file:
+            file.write(f"{path_digito} {numero}\n")
