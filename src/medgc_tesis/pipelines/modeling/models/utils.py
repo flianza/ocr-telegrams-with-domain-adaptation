@@ -14,9 +14,7 @@ def validate(device: torch.device, val_loader, model, print_freq=100) -> float:
     batch_time = AverageMeter("Time", ":6.3f")
     losses = AverageMeter("Loss", ":.4e")
     top1 = AverageMeter("Acc@1", ":6.2f")
-    progress = ProgressMeter(
-        len(val_loader), [batch_time, losses, top1], prefix="Test: "
-    )
+    progress = ProgressMeter(len(val_loader), [batch_time, losses, top1], prefix="Test: ")
 
     # switch to evaluate mode
     model.eval()

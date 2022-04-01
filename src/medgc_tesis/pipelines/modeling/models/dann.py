@@ -34,9 +34,7 @@ def train(
         pool_layer=nn.Identity(),
         finetune=True,
     ).to(device)
-    domain_discriminator = DomainDiscriminator(
-        in_feature=classifier.features_dim, hidden_size=1024
-    ).to(device)
+    domain_discriminator = DomainDiscriminator(in_feature=classifier.features_dim, hidden_size=1024).to(device)
 
     # define optimizer and lr scheduler
     optimizer = SGD(

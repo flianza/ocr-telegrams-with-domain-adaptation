@@ -37,20 +37,14 @@ def extraer_digitos(telegramas: Dict[str, Callable]) -> Iterable[Dict[str, Any]]
             xs = lines.buscar_lineas_rectas(telegrama, eje=lines.Eje.X)
             ys = lines.buscar_lineas_rectas(telegrama, eje=lines.Eje.Y)
 
-            assert (
-                len(xs) == 4
-            ), f"{nombre}: Debe haber 4 lineas horizontales y hay {len(xs)}"
-            assert (
-                len(ys) <= 15
-            ), f"{nombre}: Debe haber como maximo 15 lineas verticales y hay {len(ys)}"
+            assert len(xs) == 4, f"{nombre}: Debe haber 4 lineas horizontales y hay {len(xs)}"
+            assert len(ys) <= 15, f"{nombre}: Debe haber como maximo 15 lineas verticales y hay {len(ys)}"
 
             # Vamos a eliminar la primer row (la que tiene los titulos)
             # y las ultimas 4 (votos blanco, nulos, recurridos, identidad impugnada)
             ys = ys[1:11]
 
-            votos = segmentation.extraer_votos(
-                telegrama, cortes_horizontales=xs, cortes_verticales=ys
-            )
+            votos = segmentation.extraer_votos(telegrama, cortes_horizontales=xs, cortes_verticales=ys)
             telegramas_segmentados.append({"nombre": nombre, "votos": votos})
 
         except Exception:
@@ -59,9 +53,7 @@ def extraer_digitos(telegramas: Dict[str, Callable]) -> Iterable[Dict[str, Any]]
     return telegramas_segmentados
 
 
-def armar_dataset(
-    telegramas_segmentados: Iterable[Dict[str, Any]], mesas_escrutadas: pd.DataFrame
-) -> pd.DataFrame:
+def armar_dataset(telegramas_segmentados: Iterable[Dict[str, Any]], mesas_escrutadas: pd.DataFrame) -> pd.DataFrame:
     """Genera un dataset con los telegramas segmentados.
 
     Parameters
@@ -132,14 +124,10 @@ def armar_dataset(
             lambda digitos: np.max([digito.shape[0] for digito in digitos] + [-np.inf])
         )
         df["min_prop_blanco_digitos"] = df.digitos.apply(
-            lambda digitos: np.min(
-                [proporcion_pixeles_blancos(digito) for digito in digitos] + [np.inf]
-            )
+            lambda digitos: np.min([proporcion_pixeles_blancos(digito) for digito in digitos] + [np.inf])
         )
         df["max_prop_blanco_digitos"] = df.digitos.apply(
-            lambda digitos: np.max(
-                [proporcion_pixeles_blancos(digito) for digito in digitos] + [-np.inf]
-            )
+            lambda digitos: np.max([proporcion_pixeles_blancos(digito) for digito in digitos] + [-np.inf])
         )
 
         return df.replace([np.inf, -np.inf], np.nan)
@@ -150,11 +138,7 @@ def armar_dataset(
     # y por el size de los digitos
     UMBRAL_PROP_BLANCO_MAXIMO = 0.95
     df["digitos"] = df.digitos.apply(
-        lambda digitos: [
-            digito
-            for digito in digitos
-            if proporcion_pixeles_blancos(digito) < UMBRAL_PROP_BLANCO_MAXIMO
-        ]
+        lambda digitos: [digito for digito in digitos if proporcion_pixeles_blancos(digito) < UMBRAL_PROP_BLANCO_MAXIMO]
     )
     df = calcular_indicadores_digitos(df)
 
@@ -170,11 +154,7 @@ def armar_dataset(
 
     # Tenemos que filtrar aquellos telegramas que no hayan sido leidos enteros
     id_telegramas_completos = (
-        df.groupby(["id_telegrama"])
-        .partido.count()
-        .reset_index()
-        .query("partido == 18")
-        .id_telegrama
+        df.groupby(["id_telegrama"]).partido.count().reset_index().query("partido == 18").id_telegrama
     )
     df = df[df.id_telegrama.isin(id_telegramas_completos.values)]
 
@@ -216,17 +196,11 @@ def guardar_digitos_separados(dataset: pd.DataFrame) -> None:
     Path(f"{base_path}/tds_val_image").mkdir(parents=True, exist_ok=True)
     Path(f"{base_path}/tds_test_image").mkdir(parents=True, exist_ok=True)
 
-    train_digitos, test_digitos = train_test_split(
-        todos_digitos, test_size=0.3, random_state=42
-    )
-    val_digitos, test_digitos = train_test_split(
-        test_digitos, test_size=0.5, random_state=42
-    )
+    train_digitos, test_digitos = train_test_split(todos_digitos, test_size=0.3, random_state=42)
+    val_digitos, test_digitos = train_test_split(test_digitos, test_size=0.5, random_state=42)
 
     guardar_split_digitos(train_digitos, base_path, split="train")
-    guardar_split_digitos(
-        val_digitos, base_path, split="val", offset=len(train_digitos)
-    )
+    guardar_split_digitos(val_digitos, base_path, split="val", offset=len(train_digitos))
     guardar_split_digitos(
         test_digitos,
         base_path,

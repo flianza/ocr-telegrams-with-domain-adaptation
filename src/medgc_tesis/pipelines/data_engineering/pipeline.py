@@ -18,7 +18,7 @@ def create_pipeline(**kwargs) -> Pipeline:
             ),
             node(
                 armar_dataset,
-                inputs=["telegramas_segmentados"],
+                inputs=["telegramas_segmentados", "mesas_escrutadas"],
                 outputs="dataset_telegramas",
                 name="armar_dataset",
             ),

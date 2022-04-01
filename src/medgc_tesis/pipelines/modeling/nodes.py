@@ -34,9 +34,7 @@ def entrenar_dann(
     logger.info(args)
     backbone = get_model()
 
-    classifier, history = dann.train(
-        device, backbone, digitos_mnist_train, digitos_tds_train, digitos_tds_test, args
-    )
+    classifier, history = dann.train(device, backbone, digitos_mnist_train, digitos_tds_train, digitos_tds_test, args)
 
     acc1 = validate(device, digitos_tds_val.data_loader, classifier)
     logger.info("val acc: %f" % acc1)
@@ -49,19 +47,11 @@ def extraer_features(
     digitos_mnist_train: ForeverDataIterator,
     digitos_tds_train: ForeverDataIterator,
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
-    feature_extractor = nn.Sequential(
-        modelo.backbone, modelo.pool_layer, modelo.bottleneck
-    ).to(device)
-    source_feature = collect_feature(
-        digitos_mnist_train.data_loader, feature_extractor, device
-    )
-    target_feature = collect_feature(
-        digitos_tds_train.data_loader, feature_extractor, device
-    )
+    feature_extractor = nn.Sequential(modelo.backbone, modelo.pool_layer, modelo.bottleneck).to(device)
+    source_feature = collect_feature(digitos_mnist_train.data_loader, feature_extractor, device)
+    target_feature = collect_feature(digitos_tds_train.data_loader, feature_extractor, device)
 
-    A_distance = a_distance.calculate(
-        source_feature, target_feature, device, training_epochs=4
-    )
+    A_distance = a_distance.calculate(source_feature, target_feature, device, training_epochs=4)
     logger.info("A-distance: %f" % A_distance)
 
     return pd.DataFrame(source_feature.numpy()), pd.DataFrame(target_feature.numpy())
@@ -73,9 +63,7 @@ def aplicar_umap(features_modelo_mnist, features_modelo_tds):
     features = np.concatenate([source_feature, target_feature], axis=0)
 
     X_umap = umap.UMAP(random_state=33).fit_transform(features)
-    domains = np.concatenate(
-        (np.ones(len(source_feature)), np.zeros(len(target_feature)))
-    )
+    domains = np.concatenate((np.ones(len(source_feature)), np.zeros(len(target_feature))))
 
     df = pd.DataFrame(X_umap)
     df["domain"] = domains
@@ -99,12 +87,8 @@ def aplicar_modelo(modelo, dataset_telegramas):
         return voto_predicho
 
     with torch.no_grad():
-        dataset_telegramas["voto_predicho"] = dataset_telegramas.digitos.apply(
-            predecir_digitos
-        )
-        dataset_telegramas["voto_predicho"] = dataset_telegramas[
-            "voto_predicho"
-        ].astype(str)
+        dataset_telegramas["voto_predicho"] = dataset_telegramas.digitos.apply(predecir_digitos)
+        dataset_telegramas["voto_predicho"] = dataset_telegramas["voto_predicho"].astype(str)
 
     dataset_telegramas = dataset_telegramas.drop(columns=["digitos"])
 

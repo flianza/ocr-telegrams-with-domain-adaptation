@@ -34,9 +34,7 @@ def segmentar_digitos(bloque_digitos: np.ndarray) -> Iterable[np.ndarray]:
     # Apply Gaussian blurring and thresholding
     # to reveal the characters on the license plate
     blurred = cv2.GaussianBlur(gray, (5, 5), 0)
-    thresh = cv2.adaptiveThreshold(
-        blurred, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 45, 15
-    )
+    thresh = cv2.adaptiveThreshold(blurred, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 45, 15)
 
     # Perform connected components analysis on the thresholded images and
     # initialize the mask to hold only the components we are interested in
@@ -98,9 +96,7 @@ def extraer_votos(
 
             # eliminamos un par de pixeles para que no se vean los recuadros negros
             offset = 5
-            bloque_digitos = imagen[
-                y1 + offset : y2 - offset, x1 + offset : x2 - offset
-            ]
+            bloque_digitos = imagen[y1 + offset : y2 - offset, x1 + offset : x2 - offset]
 
             for digito in segmentar_digitos(bloque_digitos):
                 digito = encuadrar(digito)
