@@ -24,7 +24,9 @@ class TDS(ImageList):
         assert mode in ["L", "RGB"]
         self.mode = mode
 
-        super(TDS, self).__init__(root, TDS.CLASSES, data_list_file=data_list_file, **kwargs)
+        super(TDS, self).__init__(
+            root, TDS.CLASSES, data_list_file=data_list_file, **kwargs
+        )
 
     def __getitem__(self, index: int) -> Tuple[Any, int]:
         """

@@ -1,10 +1,10 @@
 from kedro.pipeline import Pipeline, node
 
 from medgc_tesis.pipelines.modeling.nodes import (
-    analizar_modelo,
     aplicar_modelo,
     aplicar_umap,
     entrenar_dann,
+    extraer_features,
 )
 
 
@@ -24,10 +24,10 @@ def create_pipeline(**kwargs) -> Pipeline:
                 name="train_dann",
             ),
             node(
-                analizar_modelo,
+                extraer_features,
                 inputs=["modelo_dann", "digitos_mnist_train", "digitos_tds_train"],
                 outputs=["modelo_dann_features_mnist", "modelo_dann_features_tds"],
-                name="analizar_modelo",
+                name="extraer_features",
             ),
             node(
                 aplicar_umap,

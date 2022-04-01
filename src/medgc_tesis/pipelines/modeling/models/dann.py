@@ -3,17 +3,95 @@ import logging
 import time
 
 import torch
+import torch.nn as nn
 import torch.nn.functional as F
 from common.utils.data import ForeverDataIterator
 from common.utils.meter import AverageMeter
 from common.utils.metric import accuracy
 from dalib.adaptation.dann import DomainAdversarialLoss, ImageClassifier
+from dalib.modules.domain_discriminator import DomainDiscriminator
 from torch.optim import SGD
 from torch.optim.lr_scheduler import LambdaLR
+from medgc_tesis.pipelines.modeling.models.utils import validate
 
 from medgc_tesis.pipelines.modeling.models.logging import StringProgressMeter
 
 logger = logging.getLogger(__name__)
+
+
+def train(
+    device: torch.device,
+    backbone,
+    digitos_mnist_train,
+    digitos_tds_train,
+    digitos_tds_test,
+    args,
+):
+    classifier = ImageClassifier(
+        backbone,
+        num_classes=10,
+        bottleneck_dim=args.bottleneck_dim,
+        pool_layer=nn.Identity(),
+        finetune=True,
+    ).to(device)
+    domain_discriminator = DomainDiscriminator(
+        in_feature=classifier.features_dim, hidden_size=1024
+    ).to(device)
+
+    # define optimizer and lr scheduler
+    optimizer = SGD(
+        classifier.get_parameters() + domain_discriminator.get_parameters(),
+        args.lr,
+        momentum=args.momentum,
+        weight_decay=args.weight_decay,
+        nesterov=True,
+    )
+    lr_scheduler = LambdaLR(
+        optimizer,
+        lambda x: args.lr * (1.0 + args.lr_gamma * float(x)) ** (-args.lr_decay),
+    )
+
+    # define loss function
+    domain_adv = DomainAdversarialLoss(domain_discriminator).to(device)
+
+    # start training
+    best_acc = 0.0
+    best_state = {}
+    best_epoch = -1
+    history = []
+    for epoch in range(args.epochs):
+        logger.info("lr: %f" % lr_scheduler.get_last_lr()[0])
+
+        # train for one epoch
+        loss = train_epoch(
+            device,
+            train_source_iter=digitos_mnist_train,
+            train_target_iter=digitos_tds_train,
+            model=classifier,
+            domain_adv=domain_adv,
+            optimizer=optimizer,
+            lr_scheduler=lr_scheduler,
+            epoch=epoch,
+            args=args,
+        )
+
+        # evaluate on validation set
+        acc = validate(device, digitos_tds_test.data_loader, classifier)
+
+        # remember best acc and save checkpoint
+        if acc > best_acc:
+            best_state = classifier.state_dict()
+            best_acc = acc
+            best_epoch = epoch
+
+        history.append((loss, acc))
+
+    logger.info("best acc: %f" % best_acc)
+    logger.info("best epoch: %f" % best_epoch)
+
+    classifier.load_state_dict(best_state)
+
+    return classifier, history
 
 
 def train_epoch(
@@ -34,7 +112,9 @@ def train_epoch(
     cls_accs = AverageMeter("Cls Acc", ":3.1f")
     domain_accs = AverageMeter("Domain Acc", ":3.1f")
     progress = StringProgressMeter(
-        args.iters_per_epoch, [batch_time, data_time, losses, cls_accs, domain_accs], prefix="Epoch: [{}]".format(epoch)
+        args.iters_per_epoch,
+        [batch_time, data_time, losses, cls_accs, domain_accs],
+        prefix="Epoch: [{}]".format(epoch),
     )
 
     # switch to train mode

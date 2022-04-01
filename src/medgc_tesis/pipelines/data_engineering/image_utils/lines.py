@@ -18,7 +18,9 @@ RANGOS_CLUSTER = {
 }
 
 
-def _cluster_projection(projection: np.ndarray, cluster_range: Iterable[int]) -> np.ndarray:
+def _cluster_projection(
+    projection: np.ndarray, cluster_range: Iterable[int]
+) -> np.ndarray:
     """
     Genera un agrupamiento optimo segun el silhouette_score de la proyeccion
     """
