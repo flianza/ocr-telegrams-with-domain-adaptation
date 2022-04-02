@@ -52,6 +52,10 @@ modelo_dann_history:
   type: pandas.CSVDataSet
   filepath: data/06_models/dann/history.csv
 
+modelo_dann_metrics:
+  type: kedro.extras.datasets.text.TextDataSet
+  filepath: data/06_models/dann/metrics.txt
+
 modelo_dann_features_mnist:
   type: pandas.ParquetDataSet
   filepath: data/06_models/dann/features_mnist.parquet

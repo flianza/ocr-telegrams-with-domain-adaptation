@@ -1,6 +1,7 @@
 import argparse
 import logging
 import time
+from typing import Any, Tuple
 
 import torch
 import torch.nn as nn
@@ -13,7 +14,7 @@ from dalib.modules.domain_discriminator import DomainDiscriminator
 from torch.optim import SGD
 from torch.optim.lr_scheduler import LambdaLR
 from medgc_tesis.pipelines.modeling.models.utils import validate
-
+import pandas as pd
 from medgc_tesis.pipelines.modeling.models.logging import StringProgressMeter
 
 logger = logging.getLogger(__name__)
@@ -26,7 +27,7 @@ def train(
     digitos_tds_train,
     digitos_tds_test,
     args,
-):
+) -> Tuple[Any, pd.DataFrame]:
     classifier = ImageClassifier(
         backbone,
         num_classes=10,
@@ -73,8 +74,10 @@ def train(
             args=args,
         )
 
-        # evaluate on validation set
-        acc = validate(device, digitos_tds_test.data_loader, classifier)
+        # evaluate on test set
+        acc, confusion_matrix = validate(device, digitos_tds_test.data_loader, classifier)
+        logger.info("test acc: %f" % acc)
+        logger.info(confusion_matrix)
 
         # remember best acc and save checkpoint
         if acc > best_acc:
@@ -89,7 +92,7 @@ def train(
 
     classifier.load_state_dict(best_state)
 
-    return classifier, history
+    return classifier, pd.DataFrame(history, columns=["loss", "acc"])
 
 
 def train_epoch(

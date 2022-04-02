@@ -1,5 +1,6 @@
 import logging
 import time
+from typing import Tuple
 
 import torch
 import torch.nn as nn
@@ -10,7 +11,7 @@ from common.utils.metric import ConfusionMatrix, accuracy
 logger = logging.getLogger(__name__)
 
 
-def validate(device: torch.device, val_loader, model, print_freq=100) -> float:
+def validate(device: torch.device, val_loader, model, print_freq=100) -> Tuple[float, str]:
     batch_time = AverageMeter("Time", ":6.3f")
     losses = AverageMeter("Loss", ":.4e")
     top1 = AverageMeter("Acc@1", ":6.2f")
@@ -43,11 +44,7 @@ def validate(device: torch.device, val_loader, model, print_freq=100) -> float:
             if i % print_freq == 0:
                 progress.display(i)
 
-        logger.info(f" * Acc@1 {top1.avg:.3f}")
-        if confusion_matrix:
-            logger.info(confusion_matrix.format(range(10)))
-
-    return top1.avg
+    return top1.avg, confusion_matrix.format(range(10))
 
 
 class LeNet(nn.Sequential):
@@ -72,5 +69,5 @@ class LeNet(nn.Sequential):
         return nn.Linear(500, self.num_classes)
 
 
-def get_model():
+def get_backbone_model():
     return LeNet()

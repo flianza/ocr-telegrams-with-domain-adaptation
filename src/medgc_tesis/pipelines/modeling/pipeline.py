@@ -20,7 +20,7 @@ def create_pipeline(**kwargs) -> Pipeline:
                     "digitos_tds_test",
                     "digitos_tds_val",
                 ],
-                outputs=["modelo_dann", "modelo_dann_history"],
+                outputs=["modelo_dann", "modelo_dann_history", "modelo_dann_metrics"],
                 name="train_dann",
             ),
             node(
