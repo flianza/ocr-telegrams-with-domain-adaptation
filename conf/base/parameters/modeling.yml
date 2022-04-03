@@ -8,3 +8,15 @@ dann:
   epochs: 20
   iters_per_epoch: 3000
   trade_off: 1.5
+
+afn:
+  bottleneck_dim: 256
+  lr: 0.05
+  weight_decay: 0.0005
+  epochs: 20
+  iters_per_epoch: 3000
+  trade_off_norm: 0.05
+  trade_off_entropy: 0.03
+  dropout_p: 0.5
+  delta: 0.3
+  num_blocks: 1

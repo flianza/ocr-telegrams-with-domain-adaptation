@@ -68,6 +68,42 @@ modelo_dann_features_umap:
   type: pandas.ParquetDataSet
   filepath: data/06_models/dann/features_umap.parquet
 
-predicciones:
+modelo_dann_plot_umap:
+  type: kedro.extras.datasets.matplotlib.MatplotlibWriter
+  filepath: data/06_models/dann/umap.png
+
+modelo_dann_predicciones:
   type: pandas.CSVDataSet
   filepath: data/07_model_output/dann/predicciones.csv
+
+modelo_afn:
+  type: kedro_imagenes.extras.datasets.pytorch_model_dataset.PytorchModelDataSet
+  filepath: data/06_models/afn/modelo.pth
+
+modelo_afn_history:
+  type: pandas.CSVDataSet
+  filepath: data/06_models/afn/history.csv
+
+modelo_afn_metrics:
+  type: kedro.extras.datasets.text.TextDataSet
+  filepath: data/06_models/afn/metrics.txt
+
+modelo_afn_features_mnist:
+  type: pandas.ParquetDataSet
+  filepath: data/06_models/afn/features_mnist.parquet
+
+modelo_afn_features_tds:
+  type: pandas.ParquetDataSet
+  filepath: data/06_models/afn/features_tds.parquet
+
+modelo_afn_features_umap:
+  type: pandas.ParquetDataSet
+  filepath: data/06_models/afn/features_umap.parquet
+
+modelo_afn_plot_umap:
+  type: kedro.extras.datasets.matplotlib.MatplotlibWriter
+  filepath: data/06_models/afn/umap.png
+
+modelo_afn_predicciones:
+  type: pandas.CSVDataSet
+  filepath: data/07_model_output/afn/predicciones.csv

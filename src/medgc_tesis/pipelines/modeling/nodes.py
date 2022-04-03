@@ -13,9 +13,10 @@ from common.utils.data import ForeverDataIterator
 from PIL import Image
 from torch.backends import cudnn
 
-from medgc_tesis.pipelines.modeling.models import dann
+from medgc_tesis.pipelines.modeling.models import dann, afn
 from medgc_tesis.pipelines.modeling.models.utils import get_backbone_model, validate
 from medgc_tesis.utils.transforms import get_data_transform
+from matplotlib import pyplot as plt
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 cudnn.benchmark = True
@@ -35,6 +36,30 @@ def entrenar_dann(
 
     backbone = get_backbone_model()
     classifier, history = dann.train(device, backbone, digitos_mnist_train, digitos_tds_train, digitos_tds_test, args)
+
+    _, confusion_matrix_train = validate(device, digitos_tds_train.data_loader, classifier)
+    _, confusion_matrix_test = validate(device, digitos_tds_test.data_loader, classifier)
+    acc, confusion_matrix_val = validate(device, digitos_tds_val.data_loader, classifier)
+    logger.info("val acc: %f" % acc)
+    logger.info(confusion_matrix_val)
+
+    metrics = f"TRAIN\n{confusion_matrix_train}\n\nTEST\n{confusion_matrix_test}\n\nVAL\n{confusion_matrix_val}"
+
+    return classifier, history, metrics
+
+
+def entrenar_afn(
+    params: Dict,
+    digitos_mnist_train: ForeverDataIterator,
+    digitos_tds_train: ForeverDataIterator,
+    digitos_tds_test: ForeverDataIterator,
+    digitos_tds_val: ForeverDataIterator,
+) -> Tuple[Any, pd.DataFrame, str]:
+    args = Namespace(**params)
+    logger.info(args)
+
+    backbone = get_backbone_model()
+    classifier, history = afn.train(device, backbone, digitos_mnist_train, digitos_tds_train, digitos_tds_test, args)
 
     _, confusion_matrix_train = validate(device, digitos_tds_train.data_loader, classifier)
     _, confusion_matrix_test = validate(device, digitos_tds_test.data_loader, classifier)
@@ -74,6 +99,17 @@ def aplicar_umap(features_modelo_mnist, features_modelo_tds):
     df["domain"] = domains
 
     return df
+
+
+def graficar_umap(df_umap: pd.DataFrame) -> plt.figure:
+    df_domain_1 = df_umap.query("domain == 1.0")
+    df_domain_0 = df_umap.query("domain == 0.0").sample(n=df_domain_1.shape[0])
+
+    fig, ax = plt.subplots(figsize=(7, 7))
+    ax.scatter(df_domain_0["0"], df_domain_0["1"], label="target", alpha=0.1)
+    ax.scatter(df_domain_1["0"], df_domain_1["1"], label="source", alpha=0.1)
+    plt.legend()
+    return fig
 
 
 def aplicar_modelo(modelo, dataset_telegramas):
