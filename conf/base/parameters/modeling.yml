@@ -20,3 +20,15 @@ afn:
   dropout_p: 0.5
   delta: 0.3
   num_blocks: 1
+
+adda:
+  bottleneck_dim: 256
+  lr: 0.05
+  lr_gamma: 0.001
+  lr_decay: 0.25
+  lr_d: 0.05
+  momentum: 0.9
+  weight_decay: 0.001
+  epochs: 20
+  iters_per_epoch: 3000
+  trade_off: 1.5

@@ -107,3 +107,35 @@ modelo_afn_plot_umap:
 modelo_afn_predicciones:
   type: pandas.CSVDataSet
   filepath: data/07_model_output/afn/predicciones.csv
+
+modelo_adda:
+  type: kedro_imagenes.extras.datasets.pytorch_model_dataset.PytorchModelDataSet
+  filepath: data/06_models/adda/modelo.pth
+
+modelo_adda_history:
+  type: pandas.CSVDataSet
+  filepath: data/06_models/adda/history.csv
+
+modelo_adda_metrics:
+  type: kedro.extras.datasets.text.TextDataSet
+  filepath: data/06_models/adda/metrics.txt
+
+modelo_adda_features_mnist:
+  type: pandas.ParquetDataSet
+  filepath: data/06_models/adda/features_mnist.parquet
+
+modelo_adda_features_tds:
+  type: pandas.ParquetDataSet
+  filepath: data/06_models/adda/features_tds.parquet
+
+modelo_adda_features_umap:
+  type: pandas.ParquetDataSet
+  filepath: data/06_models/adda/features_umap.parquet
+
+modelo_adda_plot_umap:
+  type: kedro.extras.datasets.matplotlib.MatplotlibWriter
+  filepath: data/06_models/adda/umap.png
+
+modelo_adda_predicciones:
+  type: pandas.CSVDataSet
+  filepath: data/07_model_output/adda/predicciones.csv

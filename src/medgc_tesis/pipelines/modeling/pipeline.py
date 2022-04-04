@@ -5,6 +5,7 @@ from medgc_tesis.pipelines.modeling.nodes import (
     aplicar_umap,
     entrenar_afn,
     entrenar_dann,
+    entrenar_adda,
     extraer_features,
     graficar_umap,
 )
@@ -84,6 +85,42 @@ def create_pipeline(**kwargs) -> Pipeline:
                 inputs=["modelo_afn", "dataset_telegramas"],
                 outputs="modelo_afn_predicciones",
                 name="modelo_afn_aplicar_modelo",
+            ),
+            node(
+                entrenar_adda,
+                inputs=[
+                    "params:adda",
+                    "digitos_mnist_train",
+                    "digitos_tds_train",
+                    "digitos_tds_test",
+                    "digitos_tds_val",
+                ],
+                outputs=["modelo_adda", "modelo_adda_history", "modelo_adda_metrics"],
+                name="train_adda",
+            ),
+            node(
+                extraer_features,
+                inputs=["modelo_adda", "digitos_mnist_train", "digitos_tds_train"],
+                outputs=["modelo_adda_features_mnist", "modelo_adda_features_tds"],
+                name="modelo_adda_extraer_features",
+            ),
+            node(
+                aplicar_umap,
+                inputs=["modelo_adda_features_mnist", "modelo_adda_features_tds"],
+                outputs="modelo_adda_features_umap",
+                name="modelo_adda_aplicar_umap",
+            ),
+            node(
+                graficar_umap,
+                inputs=["modelo_adda_features_umap"],
+                outputs="modelo_adda_plot_umap",
+                name="modelo_adda_graficar_umap",
+            ),
+            node(
+                aplicar_modelo,
+                inputs=["modelo_adda", "dataset_telegramas"],
+                outputs="modelo_adda_predicciones",
+                name="modelo_adda_aplicar_modelo",
             ),
         ]
     )

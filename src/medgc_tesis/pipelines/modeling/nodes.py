@@ -13,7 +13,7 @@ from common.utils.data import ForeverDataIterator
 from PIL import Image
 from torch.backends import cudnn
 
-from medgc_tesis.pipelines.modeling.models import dann, afn
+from medgc_tesis.pipelines.modeling.models import dann, afn, adda
 from medgc_tesis.pipelines.modeling.models.utils import get_backbone_model, validate
 from medgc_tesis.utils.transforms import get_data_transform
 from matplotlib import pyplot as plt
@@ -60,6 +60,30 @@ def entrenar_afn(
 
     backbone = get_backbone_model()
     classifier, history = afn.train(device, backbone, digitos_mnist_train, digitos_tds_train, digitos_tds_test, args)
+
+    _, confusion_matrix_train = validate(device, digitos_tds_train.data_loader, classifier)
+    _, confusion_matrix_test = validate(device, digitos_tds_test.data_loader, classifier)
+    acc, confusion_matrix_val = validate(device, digitos_tds_val.data_loader, classifier)
+    logger.info("val acc: %f" % acc)
+    logger.info(confusion_matrix_val)
+
+    metrics = f"TRAIN\n{confusion_matrix_train}\n\nTEST\n{confusion_matrix_test}\n\nVAL\n{confusion_matrix_val}"
+
+    return classifier, history, metrics
+
+
+def entrenar_adda(
+    params: Dict,
+    digitos_mnist_train: ForeverDataIterator,
+    digitos_tds_train: ForeverDataIterator,
+    digitos_tds_test: ForeverDataIterator,
+    digitos_tds_val: ForeverDataIterator,
+) -> Tuple[Any, pd.DataFrame, str]:
+    args = Namespace(**params)
+    logger.info(args)
+
+    backbone = get_backbone_model()
+    classifier, history = adda.train(device, backbone, digitos_mnist_train, digitos_tds_train, digitos_tds_test, args)
 
     _, confusion_matrix_train = validate(device, digitos_tds_train.data_loader, classifier)
     _, confusion_matrix_test = validate(device, digitos_tds_test.data_loader, classifier)
