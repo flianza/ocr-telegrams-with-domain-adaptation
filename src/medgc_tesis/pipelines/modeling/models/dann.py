@@ -3,6 +3,7 @@ import logging
 import time
 from typing import Any, Tuple
 
+import pandas as pd
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -13,9 +14,9 @@ from dalib.adaptation.dann import DomainAdversarialLoss, ImageClassifier
 from dalib.modules.domain_discriminator import DomainDiscriminator
 from torch.optim import SGD
 from torch.optim.lr_scheduler import LambdaLR
-from medgc_tesis.pipelines.modeling.models.utils import validate
-import pandas as pd
+
 from medgc_tesis.pipelines.modeling.models.logging import StringProgressMeter
+from medgc_tesis.pipelines.modeling.models.utils import validate
 
 logger = logging.getLogger(__name__)
 

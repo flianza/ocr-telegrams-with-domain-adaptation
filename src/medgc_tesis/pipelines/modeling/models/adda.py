@@ -3,21 +3,22 @@ import logging
 import time
 from typing import Any, Tuple
 
+import pandas as pd
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from common.utils.data import ForeverDataIterator
 from common.utils.meter import AverageMeter
 from common.utils.metric import accuracy, binary_accuracy
+from dalib.adaptation.adda import DomainAdversarialLoss, ImageClassifier
 from dalib.modules.domain_discriminator import DomainDiscriminator
 from dalib.modules.gl import WarmStartGradientLayer
+from dalib.translation.cyclegan.util import set_requires_grad
 from torch.optim import SGD
 from torch.optim.lr_scheduler import LambdaLR
-from medgc_tesis.pipelines.modeling.models.utils import validate
-import pandas as pd
+
 from medgc_tesis.pipelines.modeling.models.logging import StringProgressMeter
-from dalib.adaptation.adda import ImageClassifier, DomainAdversarialLoss
-from dalib.translation.cyclegan.util import set_requires_grad
+from medgc_tesis.pipelines.modeling.models.utils import validate
 
 logger = logging.getLogger(__name__)
 

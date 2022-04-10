@@ -10,13 +10,13 @@ import torch.nn as nn
 import umap
 from common.utils.analysis import a_distance, collect_feature
 from common.utils.data import ForeverDataIterator
+from matplotlib import pyplot as plt
 from PIL import Image
 from torch.backends import cudnn
 
-from medgc_tesis.pipelines.modeling.models import dann, afn, adda
+from medgc_tesis.pipelines.modeling.models import adda, afn, dann
 from medgc_tesis.pipelines.modeling.models.utils import get_backbone_model, validate
 from medgc_tesis.utils.transforms import get_data_transform
-from matplotlib import pyplot as plt
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 cudnn.benchmark = True

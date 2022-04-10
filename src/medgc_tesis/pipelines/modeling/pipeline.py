@@ -3,9 +3,9 @@ from kedro.pipeline import Pipeline, node
 from medgc_tesis.pipelines.modeling.nodes import (
     aplicar_modelo,
     aplicar_umap,
+    entrenar_adda,
     entrenar_afn,
     entrenar_dann,
-    entrenar_adda,
     extraer_features,
     graficar_umap,
 )

@@ -3,6 +3,7 @@ import logging
 import time
 from typing import Any, Tuple
 
+import pandas as pd
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -12,9 +13,9 @@ from common.utils.metric import accuracy
 from dalib.adaptation.afn import AdaptiveFeatureNorm, ImageClassifier
 from dalib.modules.entropy import entropy
 from torch.optim import SGD
-from medgc_tesis.pipelines.modeling.models.utils import validate
-import pandas as pd
+
 from medgc_tesis.pipelines.modeling.models.logging import StringProgressMeter
+from medgc_tesis.pipelines.modeling.models.utils import validate
 
 logger = logging.getLogger(__name__)
 
