@@ -11,9 +11,23 @@
   "latex-workshop.view.pdf.hand": true,
   "latex-workshop.message.error.show": false,
   "latex-workshop.message.warning.show": false,
+  "latex-workshop.latexindent.path": "D://Programs//Latex//latexindent.exe",
+  "latex-workshop.latexindent.args": [
+    "-c",
+    "%DIR%/",
+    "%TMPFILE%",
+    "-y=defaultIndent: '%INDENT%'",
+    "-m",
+    "-l",
+    "C:\\Users\\Lianz\\Documents\\medgc-tesis\\thesisSettings.yaml"
+  ],
+  "[latex]": {
+    "editor.formatOnSave": true,
+  },
   "editor.tabSize": 4,
   "editor.formatOnSave": true,
   "python.formatting.provider": "black",
+  "python.formatting.blackPath": "black",
   "python.formatting.blackArgs": [
     "--line-length=120"
   ],

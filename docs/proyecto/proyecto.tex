@@ -1,0 +1,110 @@
+\documentclass[twoside]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{lipsum}
+\graphicspath{{../images/}}
+
+\usepackage[a4paper,width=150mm,top=25mm,bottom=25mm,bindingoffset=6mm]{geometry}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead{}
+\fancyhead[RO,LE]{Thesis Title}
+\fancyfoot{}
+\fancyfoot[LE,RO]{\thepage}
+\fancyfoot[LO,CE]{Chapter \thechapter}
+\fancyfoot[CO,RE]{Author Name}
+\fancypagestyle{plain}{}
+
+\title{
+	{Thesis Title}\\
+	{\large Universidad Austral}\\
+	{\includegraphics[width=3in,height=3in]{university.jpg}}
+}
+\author{Franco Lianza}
+\date{Day Month Year}
+
+\begin{document}
+
+\maketitle
+
+\subsection*{Tema}
+{\it Título del trabajo}
+
+Manejo del sesgo en los datos: Detecci\'on de los digitos escritos en los
+telegramas de las elecciones legislativas en Santa Fe mediante t\'ecnicas de
+adaptaci\'on de dominio.
+
+\subsection*{Resumen}
+{\it Resumen del área sobre la que se realizará el trabajo.}
+
+La rama de {\it Computer Vision} se ha extendido exponencialmente a lo largo
+del tiempo. Se ha llegado a un punto en el cual se pueden detectar todo tipo de
+objetos con una precisi\'on m\'as que \'optima.
+
+Las t\'ecnicas desarrolladas en el \'area precisan de un gran volumen de datos
+para su entrenamiento. Esto implica que es de suma importancia de tener
+disponibles las etiquetas (o {\it lables}) de los datos que se van a utilizar
+para entrenar los modelos. El etiquetado de los datos es una tarea costosa,
+ineficiente y hasta a veces resulta inviable de realizar.
+
+A\'un teniendo el etiquetado de los datos, puede ocurrir que el conjunto de
+datos ({\it dataset} en ingl\'es) donde se va a utilizar el modelo resulte
+diferente al que se utilizó para entrenarlo. Por mencionar, un modelo de
+detecci\'on de rostros entrenado en una etnia demogr\'afica particular
+funcionar\'a de manera err\'onea si se lo aplica a otra. A esto se lo conoce
+como {\it sesgo en los datos} (tambien {\it dataset bias} o {\it dataset shift}
+en ingl\'es).
+
+El {\it sesgo en los datos} es un problema que ocurre en la mayor\'ia de los
+conjuntos de datos con los que se entrenan los modelos. De hecho, algunos
+autores afirman que el sesgo es un problema que no se puede evitar (ref? ) al
+crear un dataset.
+
+\subsection*{Director o Tutor}
+{\it El nombre del director o tutor de la tesis o trabajo, si éste ya
+	hubiese aceptado la tarea.}
+
+TODO:
+
+\subsection*{Motivación e importancia del campo}
+{\it Explicar la o las motivaciones que llevan a realizar el trabajo planteado y su importancia.}
+
+\lipsum[1]
+
+\subsection*{Problemas no resueltos}
+{\it Problemas no resueltos detectados en el área y que el trabajo a realizar pretende resolver.}
+
+\lipsum[1]
+
+\subsection*{Objetivo del trabajo}
+{\it Explicar claramente el objetivo del trabajo, especificando su alcance y limitaciones.}
+
+\lipsum[1]
+
+\subsection*{Requerimientos y desafíos}
+{\it Requerimientos y desafíos que plantea el trabajo a realizar.}
+
+\lipsum[1]
+
+\subsection*{Metodología}
+{\it Metodología a emplear para el desarrollo del trabajo.}
+
+\lipsum[1]
+
+\subsection*{Plan de Trabajo}
+{\it Especificar las distintas tareas a realizar con los tiempos que se
+	estime que deberían insumir.
+	Indicar las fechas estimadas de inicio y finalización del trabajo.
+}
+
+\lipsum[1]
+
+\subsection*{Bibliografía}
+{\it Listar las referencias bibliográficas del material utilizado para la definición del
+	trabajo a realizar, así como también las que se pueden llegar emplear en la
+	concreción del mismo}
+
+\lipsum[1]
+
+\end{document}
