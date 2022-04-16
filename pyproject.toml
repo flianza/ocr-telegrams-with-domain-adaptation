@@ -1,7 +1,7 @@
 [tool.kedro]
 package_name = "medgc_tesis"
 project_name = "MEDGC Tesis"
-project_version = "0.17.7"
+project_version = "0.18.0"
 
 [tool.isort]
 multi_line_output = 3
