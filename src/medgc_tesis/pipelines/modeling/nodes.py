@@ -14,7 +14,7 @@ from matplotlib import pyplot as plt
 from PIL import Image
 from torch.backends import cudnn
 
-from medgc_tesis.pipelines.modeling.models import adda, afn, dann
+from medgc_tesis.pipelines.modeling.models import adda, afn, dann, vanilla
 from medgc_tesis.pipelines.modeling.models.utils import get_backbone_model, validate
 from medgc_tesis.utils.transforms import get_data_transform
 
@@ -22,6 +22,29 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 cudnn.benchmark = True
 
 logger = logging.getLogger(__name__)
+
+
+def entrenar_vanilla(
+    params: Dict,
+    digitos_train: ForeverDataIterator,
+    digitos_test: ForeverDataIterator,
+    digitos_val: ForeverDataIterator,
+) -> Tuple[Any, pd.DataFrame, str]:
+    args = Namespace(**params)
+    logger.info(args)
+
+    backbone = get_backbone_model()
+    classifier, history = vanilla.train(device, backbone, digitos_train, digitos_test, args)
+
+    _, confusion_matrix_train = validate(device, digitos_train.data_loader, classifier)
+    _, confusion_matrix_test = validate(device, digitos_test.data_loader, classifier)
+    acc, confusion_matrix_val = validate(device, digitos_val.data_loader, classifier)
+    logger.info("val acc: %f" % acc)
+    logger.info(confusion_matrix_val)
+
+    metrics = f"TRAIN\n{confusion_matrix_train}\n\nTEST\n{confusion_matrix_test}\n\nVAL\n{confusion_matrix_val}"
+
+    return classifier, history, metrics
 
 
 def entrenar_dann(
@@ -108,7 +131,12 @@ def extraer_features(
     A_distance = a_distance.calculate(source_feature, target_feature, device, training_epochs=4)
     logger.info("A-distance: %f" % A_distance)
 
-    return pd.DataFrame(source_feature.numpy()), pd.DataFrame(target_feature.numpy())
+    df_source_feature = pd.DataFrame(source_feature.numpy())
+    df_source_feature.columns = df_source_feature.columns.astype(str)
+    df_target_feature = pd.DataFrame(target_feature.numpy())
+    df_target_feature.columns = df_target_feature.columns.astype(str)
+
+    return df_source_feature, df_target_feature
 
 
 def aplicar_umap(features_modelo_mnist, features_modelo_tds):
@@ -121,6 +149,7 @@ def aplicar_umap(features_modelo_mnist, features_modelo_tds):
 
     df = pd.DataFrame(X_umap)
     df["domain"] = domains
+    df.columns = df.columns.astype(str)
 
     return df
 

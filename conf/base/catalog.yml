@@ -44,6 +44,8 @@ digitos_tds_val:
   path: data/05_model_input/TDS
   split: val
 
+# ――――――――― DANN ―――――――――
+
 modelo_dann:
   type: kedro_imagenes.extras.datasets.pytorch_model_dataset.PytorchModelDataSet
   filepath: data/06_models/dann/modelo.pth
@@ -75,6 +77,8 @@ modelo_dann_plot_umap:
 modelo_dann_predicciones:
   type: pandas.CSVDataSet
   filepath: data/07_model_output/dann/predicciones.csv
+
+# ――――――――― AFN ―――――――――
 
 modelo_afn:
   type: kedro_imagenes.extras.datasets.pytorch_model_dataset.PytorchModelDataSet
@@ -108,6 +112,8 @@ modelo_afn_predicciones:
   type: pandas.CSVDataSet
   filepath: data/07_model_output/afn/predicciones.csv
 
+# ――――――――― ADDA ―――――――――
+
 modelo_adda:
   type: kedro_imagenes.extras.datasets.pytorch_model_dataset.PytorchModelDataSet
   filepath: data/06_models/adda/modelo.pth
@@ -139,3 +145,71 @@ modelo_adda_plot_umap:
 modelo_adda_predicciones:
   type: pandas.CSVDataSet
   filepath: data/07_model_output/adda/predicciones.csv
+
+# ――――――――― SOURCE_ONLY ―――――――――
+
+modelo_source_only:
+  type: kedro_imagenes.extras.datasets.pytorch_model_dataset.PytorchModelDataSet
+  filepath: data/06_models/source_only/modelo.pth
+
+modelo_source_only_history:
+  type: pandas.CSVDataSet
+  filepath: data/06_models/source_only/history.csv
+
+modelo_source_only_metrics:
+  type: kedro.extras.datasets.text.TextDataSet
+  filepath: data/06_models/source_only/metrics.txt
+
+modelo_source_only_features_mnist:
+  type: pandas.ParquetDataSet
+  filepath: data/06_models/source_only/features_mnist.parquet
+
+modelo_source_only_features_tds:
+  type: pandas.ParquetDataSet
+  filepath: data/06_models/source_only/features_tds.parquet
+
+modelo_source_only_features_umap:
+  type: pandas.ParquetDataSet
+  filepath: data/06_models/source_only/features_umap.parquet
+
+modelo_source_only_plot_umap:
+  type: kedro.extras.datasets.matplotlib.MatplotlibWriter
+  filepath: data/06_models/source_only/umap.png
+
+modelo_source_only_predicciones:
+  type: pandas.CSVDataSet
+  filepath: data/07_model_output/source_only/predicciones.csv
+
+# ――――――――― TARGET_ONLY ―――――――――
+
+modelo_target_only:
+  type: kedro_imagenes.extras.datasets.pytorch_model_dataset.PytorchModelDataSet
+  filepath: data/06_models/target_only/modelo.pth
+
+modelo_target_only_history:
+  type: pandas.CSVDataSet
+  filepath: data/06_models/target_only/history.csv
+
+modelo_target_only_metrics:
+  type: kedro.extras.datasets.text.TextDataSet
+  filepath: data/06_models/target_only/metrics.txt
+
+modelo_target_only_features_mnist:
+  type: pandas.ParquetDataSet
+  filepath: data/06_models/target_only/features_mnist.parquet
+
+modelo_target_only_features_tds:
+  type: pandas.ParquetDataSet
+  filepath: data/06_models/target_only/features_tds.parquet
+
+modelo_target_only_features_umap:
+  type: pandas.ParquetDataSet
+  filepath: data/06_models/target_only/features_umap.parquet
+
+modelo_target_only_plot_umap:
+  type: kedro.extras.datasets.matplotlib.MatplotlibWriter
+  filepath: data/06_models/target_only/umap.png
+
+modelo_target_only_predicciones:
+  type: pandas.CSVDataSet
+  filepath: data/07_model_output/target_only/predicciones.csv

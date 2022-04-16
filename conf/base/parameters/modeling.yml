@@ -32,3 +32,21 @@ adda:
   epochs: 20
   iters_per_epoch: 3000
   trade_off: 1.5
+
+source_only:
+  lr: 0.05
+  lr_gamma: 0.001
+  lr_decay: 0.25
+  momentum: 0.9
+  weight_decay: 0.001
+  epochs: 10
+  iters_per_epoch: 3000
+
+target_only:
+  lr: 0.05
+  lr_gamma: 0.001
+  lr_decay: 0.25
+  momentum: 0.9
+  weight_decay: 0.001
+  epochs: 10
+  iters_per_epoch: 3000
