@@ -65,19 +65,20 @@ d\'igitos escritos de forma similar a los que se encontraban en el {\it
 dominio distinto.
 
 En trabajos anteriores, se aplican distorsiones al conjunto de entrenamiento
-para intentar que el modelo pueda generalizar y aplicarse a los los telegramas
-de elecciones de la Ciudad de Buenos Aires \cite{Lamagna2016}. En el presente
+para intentar que el modelo pueda generalizar y aplicarse a los telegramas de
+elecciones de la Ciudad de Buenos Aires \cite{Lamagna2016}. En el presente
 trabajo se utilizar\'an t\'ecnicas referidas al {\it transfer learning},
 espec\'ificamente de {\it domain adaptation} para resolver el problema.
 
-El {\it transfer learning} (transferencia de aprendizaje) es un \'area que se
-encarga de almacenar el conocimiento ganado en un problema y aplicarlo a otro.
-	{\it Domain adaptation} (adaptaci\'on de dominio) consiste en la habilidad de
-aplicar un modelo entrenado en uno o mas dominios de origen ({\it source
-		domain}) en un uno distinto pero relacionado ({\it target domain}). La figura
-\ref{fig:mnist-to-svhn} muestra un ejemplo dos {\it datasets} de d\'igitos pero
-con dominios diferentes. Un modelo entrenado con {\it MNIST} no generalizar\'a
-al conjunto {\it SVHN} por m\'as que ambos sean d\'igitos.
+El {\it transfer learning} (transferencia de aprendizaje) es un \'area del {\it
+		machine learning} que se encarga de almacenar el conocimiento ganado en un
+problema y aplicarlo a otro. {\it Domain adaptation} (adaptaci\'on de dominio)
+consiste en la habilidad de aplicar un modelo entrenado en uno o mas dominios
+de origen ({\it source domain}) en un uno distinto pero relacionado ({\it
+		target domain}). La figura \ref{fig:mnist-to-svhn} muestra un ejemplo dos {\it
+		datasets} de d\'igitos pero con dominios diferentes. Un modelo entrenado con
+	{\it MNIST} no generalizar\'a al conjunto {\it SVHN} por m\'as que ambos sean
+d\'igitos.
 
 \begin{figure}[ht]
 	\centering
