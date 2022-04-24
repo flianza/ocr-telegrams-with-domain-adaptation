@@ -1,14 +1,17 @@
 {
   "latex-workshop.latex.recipes": [
     {
-      "name": "pdflatex",
+      "name": "pdflatex -> bibtex -> pdflatex*2",
       "tools": [
-        "pdflatex"
+        "pdflatex",
+        "bibtex",
+        "pdflatex",
+        "pdflatex",
       ]
     }
   ],
-  "latex-workshop.latex.autoClean.run": "onBuilt",
   "latex-workshop.view.pdf.hand": true,
+  "latex-workshop.latex.autoClean.run": "onBuilt",
   "latex-workshop.message.error.show": false,
   "latex-workshop.message.warning.show": false,
   "latex-workshop.latexindent.path": "D://Programs//Latex//latexindent.exe",
