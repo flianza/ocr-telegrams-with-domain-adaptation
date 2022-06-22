@@ -6,7 +6,7 @@ dann:
   momentum: 0.9
   weight_decay: 0.001
   epochs: 20
-  iters_per_epoch: 3000
+  iters_per_epoch: 4000
   trade_off: 1.5
 
 afn:
@@ -14,7 +14,7 @@ afn:
   lr: 0.05
   weight_decay: 0.0005
   epochs: 20
-  iters_per_epoch: 3000
+  iters_per_epoch: 4000
   trade_off_norm: 0.05
   trade_off_entropy: 0.03
   dropout_p: 0.5
@@ -30,7 +30,7 @@ adda:
   momentum: 0.9
   weight_decay: 0.001
   epochs: 20
-  iters_per_epoch: 3000
+  iters_per_epoch: 4000
   trade_off: 1.5
 
 source_only:
@@ -40,7 +40,7 @@ source_only:
   momentum: 0.9
   weight_decay: 0.001
   epochs: 10
-  iters_per_epoch: 3000
+  iters_per_epoch: 4000
 
 target_only:
   lr: 0.05
@@ -49,4 +49,4 @@ target_only:
   momentum: 0.9
   weight_decay: 0.001
   epochs: 10
-  iters_per_epoch: 3000
+  iters_per_epoch: 4000

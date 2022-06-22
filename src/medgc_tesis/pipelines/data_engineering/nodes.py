@@ -37,6 +37,7 @@ def extraer_digitos(telegramas: Dict[str, Callable]) -> Iterable[Dict[str, Any]]
         telegrama = telegrama_loader()
         try:
             telegrama = angle.deskew(telegrama)
+            telegrama = cv2.resize(telegrama, (1700, 2800))
             telegrama = crop.crop_largest_rectagle(telegrama)
 
             xs = lines.buscar_lineas_rectas(telegrama, eje=lines.Eje.X)
