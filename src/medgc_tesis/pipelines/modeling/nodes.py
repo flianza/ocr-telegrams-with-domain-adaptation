@@ -13,6 +13,7 @@ from common.utils.data import ForeverDataIterator
 from matplotlib import pyplot as plt
 from PIL import Image
 from torch.backends import cudnn
+from tqdm import tqdm
 
 from medgc_tesis.pipelines.modeling.models import adda, afn, dann, vanilla
 from medgc_tesis.pipelines.modeling.models.utils import get_backbone_model, validate
@@ -20,6 +21,7 @@ from medgc_tesis.utils.transforms import get_data_transform
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 cudnn.benchmark = True
+tqdm.pandas()
 
 logger = logging.getLogger(__name__)
 
@@ -121,15 +123,15 @@ def entrenar_adda(
 
 def extraer_features(
     modelo: Any,
-    digitos_mnist_train: ForeverDataIterator,
-    digitos_tds_train: ForeverDataIterator,
+    digitos_source: ForeverDataIterator,
+    digitos_target: ForeverDataIterator,
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     feature_extractor = nn.Sequential(modelo.backbone, modelo.pool_layer, modelo.bottleneck).to(device)
-    source_feature = collect_feature(digitos_mnist_train.data_loader, feature_extractor, device)
-    target_feature = collect_feature(digitos_tds_train.data_loader, feature_extractor, device)
+    source_feature = collect_feature(digitos_source.data_loader, feature_extractor, device)
+    target_feature = collect_feature(digitos_target.data_loader, feature_extractor, device)
 
-    A_distance = a_distance.calculate(source_feature, target_feature, device, training_epochs=4)
-    logger.info("A-distance: %f" % A_distance)
+    # A_distance = a_distance.calculate(source_feature, target_feature, device, training_epochs=4)
+    # logger.info("A-distance: %f" % A_distance)
 
     df_source_feature = pd.DataFrame(source_feature.numpy())
     df_source_feature.columns = df_source_feature.columns.astype(str)
@@ -155,35 +157,36 @@ def aplicar_umap(features_modelo_mnist, features_modelo_tds):
 
 
 def graficar_umap(df_umap: pd.DataFrame) -> plt.figure:
-    df_domain_1 = df_umap.query("domain == 1.0")
-    df_domain_0 = df_umap.query("domain == 0.0").sample(n=df_domain_1.shape[0])
+    df_source = df_umap.query("domain == 1.0")
+    df_target = df_umap.query("domain == 0.0").sample(n=df_source.shape[0])
 
     fig, ax = plt.subplots(figsize=(7, 7))
-    ax.scatter(df_domain_0["0"], df_domain_0["1"], label="target", alpha=0.1)
-    ax.scatter(df_domain_1["0"], df_domain_1["1"], label="source", alpha=0.1)
+    ax.scatter(df_target["0"], df_target["1"], label="target", alpha=0.1)
+    ax.scatter(df_source["0"], df_source["1"], label="source", alpha=0.1)
     plt.legend()
     return fig
 
 
-def aplicar_modelo(modelo, dataset_telegramas):
+def aplicar_modelo(modelo, dataset_telegramas: pd.DataFrame) -> pd.DataFrame:
     transform = get_data_transform()
 
     def predecir_digitos(digitos):
-        voto_predicho = ""
+        xs = []
         for digito in digitos:
             image = Image.fromarray(np.uint8(np.stack(digito, axis=0)))
             x_transformed = transform(image)
             x_transformed = x_transformed.to(device)
             x_transformed = x_transformed.unsqueeze(0)
-            y_pred = modelo(x_transformed)
-            y_pred = y_pred.max(1)[1].item()
-            voto_predicho += str(y_pred)
-        return voto_predicho
+            xs.append(x_transformed)
+        xs = torch.cat(xs)
+        y_hat = modelo(xs)
+        y_pred = y_hat.max(1)[1].cpu().numpy()
+        return "".join(str(x) for x in y_pred)
 
     with torch.no_grad():
-        dataset_telegramas["voto_predicho"] = dataset_telegramas.digitos.apply(predecir_digitos)
-        dataset_telegramas["voto_predicho"] = dataset_telegramas["voto_predicho"].astype(str)
+        dataset_telegramas["voto_predicho"] = dataset_telegramas.digitos.progress_apply(predecir_digitos)
 
+    dataset_telegramas["voto_predicho"] = dataset_telegramas["voto_predicho"].astype(str)
     dataset_telegramas = dataset_telegramas.drop(columns=["digitos"])
 
     def calcular_iou(x):

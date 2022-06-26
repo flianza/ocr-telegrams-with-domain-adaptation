@@ -26,7 +26,7 @@ class ForeverItaratorDataSet(AbstractDataSet):
         self.dataset = None
 
     def _load(self) -> ForeverDataIterator:
-        dataset_loader = DataLoader(self.dataset, batch_size=32, shuffle=True, drop_last=True)
+        dataset_loader = DataLoader(self.dataset, batch_size=64, shuffle=True, drop_last=True)
 
         return ForeverDataIterator(dataset_loader)
 

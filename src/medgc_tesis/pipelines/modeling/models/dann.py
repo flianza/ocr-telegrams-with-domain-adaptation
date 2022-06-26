@@ -33,7 +33,7 @@ def train(
         backbone,
         num_classes=10,
         bottleneck_dim=args.bottleneck_dim,
-        pool_layer=nn.Identity(),
+        # pool_layer=nn.Identity(),
         finetune=True,
     ).to(device)
     domain_discriminator = DomainDiscriminator(in_feature=classifier.features_dim, hidden_size=1024).to(device)
@@ -55,10 +55,11 @@ def train(
     domain_adv = DomainAdversarialLoss(domain_discriminator).to(device)
 
     # start training
-    best_acc = 0.0
+    best_loss = 999.9
     best_state = {}
     best_epoch = -1
     history = []
+    counter = 0
     for epoch in range(args.epochs):
         logger.info("lr: %f" % lr_scheduler.get_last_lr()[0])
 
@@ -80,15 +81,21 @@ def train(
         logger.info("test acc: %f" % acc)
         logger.info(confusion_matrix)
 
-        # remember best acc and save checkpoint
-        if acc > best_acc:
+        # remember best loss and save checkpoint
+        if loss < best_loss:
             best_state = classifier.state_dict()
-            best_acc = acc
+            best_loss = loss
             best_epoch = epoch
+            counter = 0
+        else:
+            counter += 1
+            if counter > args.early_stopping:
+                logger.info("stopping at epoch: %f" % epoch)
+                break
 
         history.append((loss, acc))
 
-    logger.info("best acc: %f" % best_acc)
+    logger.info("best loss: %f" % best_loss)
     logger.info("best epoch: %f" % best_epoch)
 
     classifier.load_state_dict(best_state)
@@ -141,13 +148,14 @@ def train_epoch(
         y_s, _ = y.chunk(2, dim=0)
         f_s, f_t = f.chunk(2, dim=0)
 
+        # compute losses and acc
         cls_loss = F.cross_entropy(y_s, labels_s)
         transfer_loss = domain_adv(f_s, f_t)
         domain_acc = domain_adv.domain_discriminator_accuracy
         loss = cls_loss + transfer_loss * args.trade_off
-
         cls_acc = accuracy(y_s, labels_s)[0]
 
+        # save losses and acc
         losses.update(loss.item(), x_s.size(0))
         cls_accs.update(cls_acc.item(), x_s.size(0))
         domain_accs.update(domain_acc.item(), x_s.size(0))

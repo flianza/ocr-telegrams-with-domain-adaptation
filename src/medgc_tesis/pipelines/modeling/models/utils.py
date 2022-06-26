@@ -10,6 +10,7 @@ from common.modules.classifier import Classifier
 from common.utils.data import ForeverDataIterator
 from common.utils.meter import AverageMeter, ProgressMeter
 from common.utils.metric import ConfusionMatrix, accuracy
+from common.vision.models import resnet18, resnet50
 from torch.optim import SGD
 from torch.optim.lr_scheduler import LambdaLR
 
@@ -52,7 +53,7 @@ def validate(device: torch.device, val_loader, model, print_freq=100) -> Tuple[f
     return top1.avg, confusion_matrix.format(range(10))
 
 
-def pretrain(
+def train_epoch(
     device: torch.device,
     train_source_iter: ForeverDataIterator,
     model: Classifier,
@@ -133,4 +134,4 @@ class LeNet(nn.Sequential):
 
 
 def get_backbone_model():
-    return LeNet()
+    return resnet50()

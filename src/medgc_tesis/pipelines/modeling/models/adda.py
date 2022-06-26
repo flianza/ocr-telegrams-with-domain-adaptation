@@ -32,7 +32,11 @@ def train(
     args,
 ) -> Tuple[Any, pd.DataFrame]:
     classifier = ImageClassifier(
-        backbone, 10, bottleneck_dim=args.bottleneck_dim, pool_layer=nn.Identity(), finetune=True
+        backbone,
+        num_classes=10,
+        bottleneck_dim=args.bottleneck_dim,
+        # pool_layer=nn.Identity(),
+        finetune=True,
     ).to(device)
     domain_discriminator = DomainDiscriminator(in_feature=classifier.features_dim, hidden_size=1024).to(device)
 
@@ -55,10 +59,11 @@ def train(
     lr_scheduler_d = LambdaLR(optimizer_d, lambda x: args.lr_d * (1.0 + args.lr_gamma * float(x)) ** (-args.lr_decay))
 
     # start training
-    best_acc = 0.0
+    best_loss = 999.9
     best_state = {}
     best_epoch = -1
     history = []
+    counter = 0
     for epoch in range(args.epochs):
         logger.info("lr classifier: %f" % lr_scheduler.get_last_lr()[0])
         logger.info("lr discriminator: %f" % lr_scheduler_d.get_last_lr()[0])
@@ -85,15 +90,21 @@ def train(
         logger.info("test acc: %f" % acc)
         logger.info(confusion_matrix)
 
-        # remember best acc and save checkpoint
-        if acc > best_acc:
+        # remember best loss and save checkpoint
+        if loss < best_loss:
             best_state = classifier.state_dict()
-            best_acc = acc
+            best_loss = loss
             best_epoch = epoch
+            counter = 0
+        else:
+            counter += 1
+            if counter > args.early_stopping:
+                logger.info("stopping at epoch: %f" % epoch)
+                break
 
         history.append((loss, acc))
 
-    logger.info("best acc: %f" % best_acc)
+    logger.info("best loss: %f" % best_loss)
     logger.info("best epoch: %f" % best_epoch)
 
     classifier.load_state_dict(best_state)
@@ -149,7 +160,7 @@ def train_epoch(
         set_requires_grad(domain_discriminator, False)
         x = torch.cat((x_s, x_t), dim=0)
         y, f = model(x)
-        y_s, y_t = y.chunk(2, dim=0)
+        y_s, _ = y.chunk(2, dim=0)
         loss_s = F.cross_entropy(y_s, labels_s)
 
         # adversarial training to fool the discriminator

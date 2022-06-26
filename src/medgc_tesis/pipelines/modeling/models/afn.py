@@ -31,17 +31,10 @@ def train(
     classifier = ImageClassifier(
         backbone,
         num_classes=10,
-        bottleneck_dim=args.bottleneck_dim,
-        pool_layer=nn.Identity(),
-        finetune=True,
-    ).to(device)
-    classifier = ImageClassifier(
-        backbone,
-        10,
-        args.num_blocks,
+        num_blocks=args.num_blocks,
         bottleneck_dim=args.bottleneck_dim,
         dropout_p=args.dropout_p,
-        pool_layer=nn.Identity(),
+        # pool_layer=nn.Identity(),
         finetune=True,
     ).to(device)
     adaptive_feature_norm = AdaptiveFeatureNorm(args.delta).to(device)
@@ -50,7 +43,7 @@ def train(
     optimizer = SGD(classifier.get_parameters(), args.lr, weight_decay=args.weight_decay)
 
     # start training
-    best_acc = 0.0
+    best_loss = 999.9
     best_state = {}
     best_epoch = -1
     history = []
@@ -74,14 +67,20 @@ def train(
         logger.info(confusion_matrix)
 
         # remember best acc and save checkpoint
-        if acc > best_acc:
+        if loss < best_loss:
             best_state = classifier.state_dict()
-            best_acc = acc
+            best_loss = loss
             best_epoch = epoch
+            counter = 0
+        else:
+            counter += 1
+            if counter > args.early_stopping:
+                logger.info("stopping at epoch: %f" % epoch)
+                break
 
         history.append((loss, acc))
 
-    logger.info("best acc: %f" % best_acc)
+    logger.info("best loss: %f" % best_loss)
     logger.info("best epoch: %f" % best_epoch)
 
     classifier.load_state_dict(best_state)

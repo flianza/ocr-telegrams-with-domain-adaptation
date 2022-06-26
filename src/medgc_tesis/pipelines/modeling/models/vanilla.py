@@ -8,7 +8,7 @@ from common.modules.classifier import Classifier
 from torch.optim import SGD
 from torch.optim.lr_scheduler import LambdaLR
 
-from medgc_tesis.pipelines.modeling.models.utils import pretrain, validate
+from medgc_tesis.pipelines.modeling.models.utils import train_epoch, validate
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +20,12 @@ def train(
     digitos_test,
     args,
 ) -> Tuple[Any, pd.DataFrame]:
-    classifier = Classifier(backbone, num_classes=10, pool_layer=nn.Identity(), finetune=True).to(device)
+    classifier = Classifier(
+        backbone,
+        num_classes=10,
+        # pool_layer=nn.Identity(),
+        finetune=True,
+    ).to(device)
 
     # define optimizer and lr scheduler
     optimizer = SGD(
@@ -36,15 +41,16 @@ def train(
     )
 
     # start training
-    best_acc = 0.0
+    best_loss = 999.0
     best_state = {}
     best_epoch = -1
     history = []
+    counter = 0
     for epoch in range(args.epochs):
         logger.info("lr: %f" % lr_scheduler.get_last_lr()[0])
 
         # train for one epoch
-        loss = pretrain(
+        loss = train_epoch(
             device,
             train_source_iter=digitos_train,
             model=classifier,
@@ -60,14 +66,20 @@ def train(
         logger.info(confusion_matrix)
 
         # remember best acc and save checkpoint
-        if acc > best_acc:
+        if loss < best_loss:
             best_state = classifier.state_dict()
-            best_acc = acc
+            best_loss = loss
             best_epoch = epoch
+            counter = 0
+        else:
+            counter += 1
+            if counter > args.early_stopping:
+                logger.info("stopping at epoch: %f" % epoch)
+                break
 
         history.append((loss, acc))
 
-    logger.info("best acc: %f" % best_acc)
+    logger.info("best loss: %f" % best_loss)
     logger.info("best epoch: %f" % best_epoch)
 
     classifier.load_state_dict(best_state)
