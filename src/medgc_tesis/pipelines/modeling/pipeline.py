@@ -33,7 +33,7 @@ def create_subpipeline(type: str, train_func: Callable, datasets=None) -> Pipeli
             ),
             node(
                 extraer_features,
-                inputs=[f"modelo_{type}", "digitos_mnist_train", "digitos_tds_train"],
+                inputs=[f"modelo_{type}", "digitos_mnist_test", "digitos_tds_test"],
                 outputs=[f"modelo_{type}_features_mnist", f"modelo_{type}_features_tds"],
                 name=f"modelo_{type}_extraer_features",
             ),
@@ -67,7 +67,7 @@ def create_pipeline(**kwargs) -> Pipeline:
     pipeline_source_only = create_subpipeline(
         "source_only",
         entrenar_vanilla,
-        datasets=["digitos_mnist_train", "digitos_mnist_test", "digitos_mnist_test"],
+        datasets=["digitos_mnist_train", "digitos_tds_test", "digitos_tds_val"],
     )
     pipeline_target_only = create_subpipeline(
         "target_only",
@@ -75,5 +75,4 @@ def create_pipeline(**kwargs) -> Pipeline:
         datasets=["digitos_tds_train", "digitos_tds_test", "digitos_tds_val"],
     )
 
-    # return pipeline_dann + pipeline_afn + pipeline_adda + pipeline_source_only + pipeline_target_only
-    return pipeline_source_only + pipeline_target_only
+    return pipeline_dann + pipeline_afn + pipeline_adda + pipeline_source_only + pipeline_target_only

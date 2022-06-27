@@ -24,5 +24,9 @@ def crop_largest_rectagle(image: np.ndarray) -> np.ndarray:
     cnts = sorted(cnts, key=cv2.contourArea, reverse=True)
     x, y, w, h = cv2.boundingRect(cnts[0])
 
+    # Separamos un poco los limites para incluir los bordes
+    offset = 3
+    x, y, w, h = x - offset, y - offset, w + 2 * offset, h + 2 * offset
+
     # Recortamos la seccion de votos
     return image[y : (y + h), x : (x + w)]
