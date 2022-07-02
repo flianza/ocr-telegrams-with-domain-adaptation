@@ -15,7 +15,7 @@ from PIL import Image
 from torch.backends import cudnn
 from tqdm import tqdm
 
-from medgc_tesis.pipelines.modeling.models import adda, afn, dann, vanilla
+from medgc_tesis.pipelines.modeling.models import adda, afn, dann, mdd, vanilla
 from medgc_tesis.pipelines.modeling.models.utils import get_backbone_model, validate
 from medgc_tesis.utils.transforms import get_data_transform
 
@@ -121,12 +121,39 @@ def entrenar_adda(
     return classifier, history, metrics
 
 
+def entrenar_mdd(
+    params: Dict,
+    digitos_mnist_train: ForeverDataIterator,
+    digitos_tds_train: ForeverDataIterator,
+    digitos_tds_test: ForeverDataIterator,
+    digitos_tds_val: ForeverDataIterator,
+) -> Tuple[Any, pd.DataFrame, str]:
+    args = Namespace(**params)
+    logger.info(args)
+
+    backbone = get_backbone_model()
+    classifier, history = mdd.train(device, backbone, digitos_mnist_train, digitos_tds_train, digitos_tds_test, args)
+
+    _, confusion_matrix_train = validate(device, digitos_tds_train.data_loader, classifier)
+    _, confusion_matrix_test = validate(device, digitos_tds_test.data_loader, classifier)
+    acc, confusion_matrix_val = validate(device, digitos_tds_val.data_loader, classifier)
+    logger.info("val acc: %f" % acc)
+    logger.info(confusion_matrix_val)
+
+    metrics = f"TRAIN\n{confusion_matrix_train}\n\nTEST\n{confusion_matrix_test}\n\nVAL\n{confusion_matrix_val}"
+
+    return classifier, history, metrics
+
+
 def extraer_features(
     modelo: Any,
     digitos_source: ForeverDataIterator,
     digitos_target: ForeverDataIterator,
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
-    feature_extractor = nn.Sequential(modelo.backbone, modelo.pool_layer, modelo.bottleneck).to(device)
+    if hasattr(modelo, "pool_layer"):
+        feature_extractor = nn.Sequential(modelo.backbone, modelo.pool_layer, modelo.bottleneck).to(device)
+    else:
+        feature_extractor = nn.Sequential(modelo.backbone, modelo.bottleneck).to(device)
     source_feature = collect_feature(digitos_source.data_loader, feature_extractor, device)
     target_feature = collect_feature(digitos_target.data_loader, feature_extractor, device)
 

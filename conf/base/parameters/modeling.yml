@@ -36,6 +36,19 @@ adda:
   iters_per_epoch: 1000
   early_stopping: 5
 
+mdd:
+  margin: 4.0
+  bottleneck_dim: 256
+  lr: 0.05
+  lr_gamma: 0.001
+  lr_decay: 0.25
+  momentum: 0.9
+  weight_decay: 0.001
+  trade_off: 1.5
+  epochs: 40
+  iters_per_epoch: 1000
+  early_stopping: 5
+
 source_only:
   lr: 0.05
   lr_gamma: 0.001

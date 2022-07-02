@@ -146,6 +146,74 @@ modelo_adda_predicciones:
   type: pandas.CSVDataSet
   filepath: data/07_model_output/adda/predicciones.csv
 
+# ――――――――― MDD ―――――――――
+
+modelo_mdd:
+  type: kedro_imagenes.extras.datasets.pytorch_model_dataset.PytorchModelDataSet
+  filepath: data/06_models/mdd/modelo.pth
+
+modelo_mdd_history:
+  type: pandas.CSVDataSet
+  filepath: data/06_models/mdd/history.csv
+
+modelo_mdd_metrics:
+  type: kedro.extras.datasets.text.TextDataSet
+  filepath: data/06_models/mdd/metrics.txt
+
+modelo_mdd_features_mnist:
+  type: pandas.ParquetDataSet
+  filepath: data/06_models/mdd/features_mnist.parquet
+
+modelo_mdd_features_tds:
+  type: pandas.ParquetDataSet
+  filepath: data/06_models/mdd/features_tds.parquet
+
+modelo_mdd_features_umap:
+  type: pandas.ParquetDataSet
+  filepath: data/06_models/mdd/features_umap.parquet
+
+modelo_mdd_plot_umap:
+  type: kedro.extras.datasets.matplotlib.MatplotlibWriter
+  filepath: data/06_models/mdd/umap.png
+
+modelo_mdd_predicciones:
+  type: pandas.CSVDataSet
+  filepath: data/07_model_output/mdd/predicciones.csv
+
+# ――――――――― self_ensemble ―――――――――
+
+modelo_self_ensemble:
+  type: kedro_imagenes.extras.datasets.pytorch_model_dataset.PytorchModelDataSet
+  filepath: data/06_models/self_ensemble/modelo.pth
+
+modelo_self_ensemble_history:
+  type: pandas.CSVDataSet
+  filepath: data/06_models/self_ensemble/history.csv
+
+modelo_self_ensemble_metrics:
+  type: kedro.extras.datasets.text.TextDataSet
+  filepath: data/06_models/self_ensemble/metrics.txt
+
+modelo_self_ensemble_features_mnist:
+  type: pandas.ParquetDataSet
+  filepath: data/06_models/self_ensemble/features_mnist.parquet
+
+modelo_self_ensemble_features_tds:
+  type: pandas.ParquetDataSet
+  filepath: data/06_models/self_ensemble/features_tds.parquet
+
+modelo_self_ensemble_features_umap:
+  type: pandas.ParquetDataSet
+  filepath: data/06_models/self_ensemble/features_umap.parquet
+
+modelo_self_ensemble_plot_umap:
+  type: kedro.extras.datasets.matplotlib.MatplotlibWriter
+  filepath: data/06_models/self_ensemble/umap.png
+
+modelo_self_ensemble_predicciones:
+  type: pandas.CSVDataSet
+  filepath: data/07_model_output/self_ensemble/predicciones.csv
+
 # ――――――――― SOURCE_ONLY ―――――――――
 
 modelo_source_only:

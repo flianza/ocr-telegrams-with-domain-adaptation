@@ -9,6 +9,7 @@ from medgc_tesis.pipelines.modeling.nodes import (
     entrenar_adda,
     entrenar_afn,
     entrenar_dann,
+    entrenar_mdd,
     entrenar_vanilla,
     extraer_features,
     graficar_umap,
@@ -63,6 +64,7 @@ def create_pipeline(**kwargs) -> Pipeline:
     pipeline_dann = create_subpipeline("dann", entrenar_dann)
     pipeline_afn = create_subpipeline("afn", entrenar_afn)
     pipeline_adda = create_subpipeline("adda", entrenar_adda)
+    pipeline_mdd = create_subpipeline("mdd", entrenar_mdd)
 
     pipeline_source_only = create_subpipeline(
         "source_only",
@@ -75,4 +77,4 @@ def create_pipeline(**kwargs) -> Pipeline:
         datasets=["digitos_tds_train", "digitos_tds_test", "digitos_tds_val"],
     )
 
-    return pipeline_dann + pipeline_afn + pipeline_adda + pipeline_source_only + pipeline_target_only
+    return pipeline_dann + pipeline_afn + pipeline_adda + pipeline_mdd + pipeline_source_only + pipeline_target_only

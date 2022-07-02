@@ -44,7 +44,7 @@ def extraer_digitos(telegramas: Dict[str, Callable]) -> Iterable[Dict[str, Any]]
             ys = lines.buscar_lineas_rectas(telegrama, eje=lines.Eje.Y)
 
             assert len(xs) == 4, f"{nombre}: Debe haber 4 lineas horizontales y hay {len(xs)}"
-            assert len(ys) == 15, f"{nombre}: Debe haber 15 lineas verticales y hay {len(ys)}"
+            assert len(ys) <= 15, f"{nombre}: Debe haber como maximo 15 lineas verticales y hay {len(ys)}"
 
             # Vamos a eliminar la primer row (la que tiene los titulos)
             # y las ultimas 4 (votos blanco, nulos, recurridos, identidad impugnada)
