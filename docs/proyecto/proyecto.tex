@@ -16,6 +16,8 @@
 
 \usepackage{amsmath}
 \usepackage[colorinlistoftodos]{todonotes}
+\usepackage{pgfgantt}
+\renewcommand{\figurename}{Figura}
 
 \title{Proyecto de Tesis}
 \author{Franco Lianza}
@@ -64,10 +66,11 @@ d\'igitos escritos de forma similar a los que se encontraban en el {\it
 dominio distinto.
 
 En trabajos anteriores, se aplican distorsiones al conjunto de entrenamiento
-para intentar que el modelo pueda generalizar y aplicarse a los telegramas de
-elecciones de la Ciudad de Buenos Aires \cite{Lamagna2016}. En el presente
-trabajo se utilizar\'an t\'ecnicas referidas al {\it transfer learning},
-espec\'ificamente de {\it domain adaptation} para resolver el problema.
+para aumentar la cantidad de datos de entrenamiento y de esta forma el modelo
+pueda generalizar y aplicarse a los telegramas de elecciones de la Ciudad de
+Buenos Aires \cite{Lamagna2016}. En el presente trabajo se utilizar\'an
+t\'ecnicas referidas al {\it transfer learning}, espec\'ificamente de {\it
+		domain adaptation} para resolver el problema.
 
 El {\it transfer learning} (transferencia de aprendizaje) es un \'area del {\it
 		machine learning} que se encarga de almacenar el conocimiento ganado en un
@@ -98,9 +101,10 @@ Dr. Leandro Bugnon
 
 La principal motivaci\'on es obtener un modelo que, basado en un {\it dataset}
 similiar, pueda interpretar los d\'igitos de los telegramas de las elecciones
-de Santa Fe sin tener de los {\it labels} de los mismos. De esta manera, el
-modelo podr\'ia utilizarse en futuras elecciones a fin de automatizar la
-digitalizaci\'on de los mismos.
+de Santa Fe sin necesitar el costoso proceso de etiquetar los datos. De esta
+manera, el modelo podr\'ia utilizarse en futuras elecciones a fin de
+automatizar la digitalizaci\'on de los mismos reduciendo considerablemente los
+costos operacionales y reduciendo los posibles errores humanos.
 
 \subsection*{Problemas no resueltos}
 {\it Problemas no resueltos detectados en el área y que el trabajo a realizar
@@ -111,35 +115,42 @@ manual, lo que genera lentitud y desconfianza en el proceso. Detectar los votos
 de manera autom\'atica y reducir la intervenci\'on humana, aumentar\'a la
 eficiencia de las elecciones y la confianza en ellas.
 
+Por otra parte, cada una de las t\'ecnicas existentes de {\it domain
+		adaptation} pretende aumentar el poder de generalizaci\'on del modelo de una
+forma diferente. Debido a la variedad t\'enicas que existen, no es claro c\'ual
+conviene utilizar en la digitalizaci\'on de los telegramas.
+
 \subsection*{Objetivo del trabajo}
 {\it Explicar claramente el objetivo del trabajo, especificando su alcance y limitaciones.}
 
-El objetivo del trabajo consiste en detectar los digitos escritos en los
-telegramas de las elecciones legislativas de Santa Fe utilizando modelos
-entrenados mediante t\'ecnicas de adaptaci\'on de dominio en {\it datasets}
-p\'ublicos de d\'igitos.
+El objetivo del trabajo consiste en desarrollar un m\'etodo para realizar
+adaptaci\'on de dominio de un modelo aplicado a la digitalizaci\'on de los
+telegramas de las elecciones legislativas de Santa Fe sin que necesite el
+etiquetado de los mismos.
 
 \subsection*{Requerimientos y desafíos}
 {\it Requerimientos y desafíos que plantea el trabajo a realizar.}
 
-El trabajo presenta como principal desaf\'io poder extraer los votos de los
-telegramas y analizar distintos modelos utilizando las t\'ecnicas de {\it
-		domain adaptation} disponibles. Tambi\'en constar\'a de investigaci\'on
-respecto a las {\it Generative Adversarial Networks (GANs)} debido a que varios
-algoritmos de {\it domain adaptation} dependen de ellas
-\cite{Tzeng_2017,xu2018unsupervised,ganin2016domain}.
+Debido a que se posee tanto los datos como el poder de c\'omputo, el proyecto
+presenta como principal desaf\'io analizar e implementar distintas t\'ecnicas
+de {\it domain adaptation} a un modelo de reconocimiento de d\'igitos. Se
+deber\'an estudiar diferentes conceptos de los cuales dependen las mismas, como
+las {\it Generative Adversarial Networks (GANs)}
+\cite{Tzeng_2017,ganin2016domain}.
 
 \subsection*{Metodología}
 {\it Metodología a emplear para el desarrollo del trabajo.}
 
-Los telegramas ser\'an descargados desde la
+Se har\'a revisi\'on del estado del arte para despu\'es continuar con el
+preprocesamiento de los datos. Los telegramas ser\'an descargados desde la
 \href{https://op.elecciones.gob.ar/telegramas/generales2021/}{p\'agina oficial
 	del estado argentino}. Luego se extraer\'an los d\'igitos de los votos de cada
 telegrama utilizando la librer\'ia {\it OpenCV} \cite{opencv_library}. Una vez
-obtenido los digitos, se entrenar\'an distintas redes convolucionales (LeNet
-\cite{lecun1998gradient}, ResNet \cite{he2016deep}, etc) utilizando algoritmos
-de {\it domain adaptation}. Finalmente, se evaluar\'an los modelos y se
-seleccionar\'a/n el/los mejor/es.
+obtenido los d\'igitos, se realizar\'an ciclos de selecci\'on de t\'ecnica de
+	{\it domain adaptation}, entrenamiento de distintas redes convolucionales
+(LeNet \cite{lecun1998gradient}, ResNet \cite{he2016deep}, etc),
+implementaci\'on de la adaptaci\'on y evaluaci\'on. Finalmente, se
+seleccionar\'a el mejor modelo adaptado al problema.
 
 \subsection*{Plan de Trabajo}
 {\it Especificar las distintas tareas a realizar con los tiempos que se
@@ -147,20 +158,80 @@ seleccionar\'a/n el/los mejor/es.
 	Indicar las fechas estimadas de inicio y finalización del trabajo.
 }
 
-El trabajo se realizar\'a como consecuencia de la realizaci\'on de las
-siguientes etapas:
+El trabajo se realizar\'a a partir de las siguientes etapas:
 \begin{itemize}
-	\item Investigaci\'on respecto de técnicas de {\it GANs} y {\it domain adaptation}.
-	\item Recolecci\'on de telegramas, extracci\'on de d\'igitos y limpieza de los
-	      mismos.
-	\item Elaboraci\'on de experimentos para el entrenamiento de las redes
-	      convolucionales.
-	\item Evaluaci\'on y comparaci\'on de los modelos obtenidos.
-	\item Redacci\'on final de la tesis.
+	\item \underline{Estudio del estado del arte}: estudiar las diferentes t\'ecnicas
+	      de {\it domain adaptation}.
+	\item \underline{Extracci\'on datos}: recolectar los telegramas
+	      y extraer los d\'igitos de los votos.
+	\item \underline{Limpieza de datos}: detectar votos incorrectos (por ejemplo
+	      letras) y tratarlos para reducir lo m\'aximo posible el ruido
+	      en los datos.
+	\item \underline{Experimentaci\'on}: realizar ciclos de entrenamiento de modelos
+	      y adaptarlos mediante alguna de las t\'ecnicas disponibles.
+	\item \underline{Elaboraci\'on de reportes}: generar reportes que sinteticen los
+	      experimentos realizados para compararlos.
+	\item \underline{Redacci\'on de tesis}.
 \end{itemize}
 
-La fecha de inicio del proyecto es Febrero 2022 y como fecha de finalizaci\'on
-estimada Septiembre 2022.
+Se estima que el proyecto comienza en Agosto del 2022 y finaliza en Diciembre
+del 2022. La figura \ref{fig:gantt} presenta el cronograma propuesto.
+
+\begin{figure}[ht]
+	\begin{center}
+
+		\begin{ganttchart}[y unit title=0.4cm,
+				y unit chart=0.5cm,
+				vgrid,hgrid,
+				title label anchor/.style={below=-1.6ex},
+				title left shift=.05,
+				title right shift=-.05,
+				title height=1,
+				progress label text={},
+				bar height=0.7,
+				group right shift=0,
+				group top shift=.6,
+				group height=.3]{1}{20}
+			%labels
+			\gantttitle{Agosto}{4}
+			\gantttitle{Septiembre}{4}
+			\gantttitle{Octubre}{4}
+			\gantttitle{Noviembre}{4}
+			\gantttitle{Diciembre}{4}\\
+			\gantttitle{1}{1}
+			\gantttitle{2}{1}
+			\gantttitle{3}{1}
+			\gantttitle{4}{1}
+			\gantttitle{1}{1}
+			\gantttitle{2}{1}
+			\gantttitle{3}{1}
+			\gantttitle{4}{1}
+			\gantttitle{1}{1}
+			\gantttitle{2}{1}
+			\gantttitle{3}{1}
+			\gantttitle{4}{1}
+			\gantttitle{1}{1}
+			\gantttitle{2}{1}
+			\gantttitle{3}{1}
+			\gantttitle{4}{1}
+			\gantttitle{1}{1}
+			\gantttitle{2}{1}
+			\gantttitle{3}{1}
+			\gantttitle{4}{1}\\
+
+			%tasks
+			\ganttbar{Estudio del estado del arte}{1}{6} \\
+			\ganttbar{Extracci\'on de datos}{3}{4} \\
+			\ganttbar{Limpieza de datos}{5}{6} \\
+			\ganttbar{Esperimentaci\'on}{7}{12} \\
+			\ganttbar{Elaboraci\'on de reportes}{13}{13} \\
+			\ganttbar{Redacci\'on de tesis}{14}{20}
+
+		\end{ganttchart}
+	\end{center}
+	\caption{Distribuci\'on de las tareas del proyecto.}
+	\label{fig:gantt}
+\end{figure}
 
 \subsection*{Bibliograf\'ia}
 {
