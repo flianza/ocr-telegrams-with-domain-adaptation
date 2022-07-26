@@ -159,9 +159,8 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+/tll
 
-
-notebooks/dann
-notebooks/MNIST
-notebooks/USPS
-notebooks/TDS
+# latex
+*.aux
+*.run.xml
