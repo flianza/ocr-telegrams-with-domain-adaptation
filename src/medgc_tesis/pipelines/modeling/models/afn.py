@@ -5,13 +5,12 @@ from typing import Any, Tuple
 
 import pandas as pd
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
-from common.utils.data import ForeverDataIterator
-from common.utils.meter import AverageMeter
-from common.utils.metric import accuracy
-from dalib.adaptation.afn import AdaptiveFeatureNorm, ImageClassifier
-from dalib.modules.entropy import entropy
+from tllib.modules.entropy import entropy
+from tllib.normalization.afn import AdaptiveFeatureNorm, ImageClassifier
+from tllib.utils.data import ForeverDataIterator
+from tllib.utils.meter import AverageMeter
+from tllib.utils.metric import accuracy
 from torch.optim import SGD
 
 from medgc_tesis.pipelines.modeling.models.logging import StringProgressMeter

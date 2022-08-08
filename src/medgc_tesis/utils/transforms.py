@@ -1,5 +1,5 @@
 import torchvision.transforms as T
-from common.vision.transforms import ResizeImage
+from tllib.vision.transforms import ResizeImage
 
 
 def get_data_transform(
