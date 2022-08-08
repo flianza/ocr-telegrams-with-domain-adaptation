@@ -3,8 +3,7 @@ from typing import Any, Tuple
 
 import pandas as pd
 import torch
-import torch.nn as nn
-from common.modules.classifier import Classifier
+from tllib.modules.classifier import Classifier
 from torch.optim import SGD
 from torch.optim.lr_scheduler import LambdaLR
 

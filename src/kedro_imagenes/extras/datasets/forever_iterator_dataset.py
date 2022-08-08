@@ -2,8 +2,8 @@ import ssl
 from pathlib import PurePosixPath
 from typing import Any, Dict
 
-from common.utils.data import ForeverDataIterator
-from common.vision.datasets import MNIST
+from tllib.utils.data import ForeverDataIterator
+from tllib.vision.datasets import MNIST
 from kedro.io import AbstractDataSet
 from kedro.io.core import get_filepath_str, get_protocol_and_path
 from torch.utils.data import DataLoader

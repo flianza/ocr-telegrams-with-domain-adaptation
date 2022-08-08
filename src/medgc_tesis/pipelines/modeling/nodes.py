@@ -8,10 +8,10 @@ import torch
 import torch.backends.cudnn as cudnn
 import torch.nn as nn
 import umap
-from common.utils.analysis import a_distance, collect_feature
-from common.utils.data import ForeverDataIterator
 from matplotlib import pyplot as plt
 from PIL import Image
+from tllib.utils.analysis import a_distance, collect_feature
+from tllib.utils.data import ForeverDataIterator
 from torch.backends import cudnn
 from tqdm import tqdm
 
@@ -19,7 +19,7 @@ from medgc_tesis.pipelines.modeling.models import adda, afn, dann, mdd, vanilla
 from medgc_tesis.pipelines.modeling.models.utils import get_backbone_model, validate
 from medgc_tesis.utils.transforms import get_data_transform
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 cudnn.benchmark = True
 tqdm.pandas()
 

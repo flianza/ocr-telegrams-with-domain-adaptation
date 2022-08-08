@@ -6,11 +6,11 @@ from typing import Tuple
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from common.modules.classifier import Classifier
-from common.utils.data import ForeverDataIterator
-from common.utils.meter import AverageMeter, ProgressMeter
-from common.utils.metric import ConfusionMatrix, accuracy
-from common.vision.models import resnet18, resnet50
+from tllib.modules.classifier import Classifier
+from tllib.utils.data import ForeverDataIterator
+from tllib.utils.meter import AverageMeter, ProgressMeter
+from tllib.utils.metric import ConfusionMatrix, accuracy
+from tllib.vision.models import resnet18, resnet50
 from torch.optim import SGD
 from torch.optim.lr_scheduler import LambdaLR
 

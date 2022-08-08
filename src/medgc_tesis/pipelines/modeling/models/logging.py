@@ -1,4 +1,4 @@
-from common.utils.meter import ProgressMeter
+from tllib.utils.meter import ProgressMeter
 
 
 class StringProgressMeter(ProgressMeter):

@@ -7,13 +7,13 @@ import pandas as pd
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from common.utils.data import ForeverDataIterator
-from common.utils.meter import AverageMeter
-from common.utils.metric import accuracy, binary_accuracy
-from dalib.adaptation.adda import DomainAdversarialLoss, ImageClassifier
-from dalib.modules.domain_discriminator import DomainDiscriminator
-from dalib.modules.gl import WarmStartGradientLayer
-from dalib.translation.cyclegan.util import set_requires_grad
+from tllib.alignment.adda import DomainAdversarialLoss, ImageClassifier
+from tllib.modules.domain_discriminator import DomainDiscriminator
+from tllib.modules.gl import WarmStartGradientLayer
+from tllib.translation.cyclegan.util import set_requires_grad
+from tllib.utils.data import ForeverDataIterator
+from tllib.utils.meter import AverageMeter
+from tllib.utils.metric import accuracy, binary_accuracy
 from torch.optim import SGD
 from torch.optim.lr_scheduler import LambdaLR
 
