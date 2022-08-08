@@ -14,15 +14,14 @@
   "latex-workshop.latex.autoClean.run": "onBuilt",
   "latex-workshop.message.error.show": false,
   "latex-workshop.message.warning.show": false,
-  "latex-workshop.latexindent.path": "D://Programs//Latex//latexindent.exe",
+  "latex-workshop.latexindent.path": "latexindent",
   "latex-workshop.latexindent.args": [
     "-c",
     "%DIR%/",
     "%TMPFILE%",
     "-y=defaultIndent: '%INDENT%'",
     "-m",
-    "-l",
-    "C:\\Users\\Lianz\\Documents\\medgc-tesis\\thesisSettings.yaml"
+    "-l=/Users/francolianza/code/medgc-tesis/thesis-settings.yaml"
   ],
   "[latex]": {
     "editor.formatOnSave": true,
