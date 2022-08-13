@@ -7,7 +7,7 @@ lookForAlignDelims:
 
 modifyLineBreaks:
   textWrapOptions:
-    columns: 80 # number of columns
+    columns: 120 # number of columns
     perCodeBlockBasis: 1 # per-code-block wrap
     beforeFindingChildCodeBlocks: 1 # wrap *before* finding child code blocks
     mainDocument: 1 # apply to main document
