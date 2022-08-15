@@ -28,7 +28,8 @@ headsepline, % Uncomment to get a line under the header
 \usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography
 \usepackage{tikz}
 \graphicspath{{images/}}
-
+\usepackage{booktabs}
+\usepackage{multirow}
 
 %----------------------------------------------------------------------------------------
 %	MARGIN SETTINGS
@@ -124,7 +125,7 @@ headsepline, % Uncomment to get a line under the header
 %----------------------------------------------------------------------------------------
 
 \begin{acknowledgements}
-	\addchaptertocentry{\acknowledgementname} % Add the acknowledgements to the table of contents
+	\addchaptertocentry{\acknowledgementname}
 	The acknowledgments and the people to thank go here, don't forget to include your project advisor\ldots
 \end{acknowledgements}
 
@@ -164,9 +165,6 @@ headsepline, % Uncomment to get a line under the header
 %----------------------------------------------------------------------------------------
 
 \appendix % Cue to tell LaTeX that the following "chapters" are Appendices
-
-% Include the appendices of the thesis as separate files from the Appendices folder
-% Uncomment the lines as you write the Appendices
 
 \include{appendices/appendixA}
 %\include{appendices/appendixB}
