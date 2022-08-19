@@ -54,7 +54,7 @@ tama\~{n}o de 28x28 pixeles.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.6\textwidth]{chapter1/mnist.png}
+    \includegraphics[width=0.5\textwidth]{chapter1/mnist.png}
     \caption{Ejemplos del dataset MNIST}
     \label{fig:mnist}
 \end{figure}
@@ -118,12 +118,14 @@ entrenamiento) pese al sesgo existente en los datasets mencionados previamente. 
 entrenar de cierta manera un modelo en alguno de los datasets p\'ublicos etiquetados de forma tal que pueda generalizar
 a otro similar.
 
-\section{Transferencia de conocimiento}
+\section{Transferencia del aprendizaje}
 
 Cuando se habla de {\it Deep learning}, se hace referencia a una serie de algoritmos de {\it machine learning} que son
 capaces de utilizar m\'ultiples capas de procesamiento de forma que puedan aprender representaciones de los datos con
 diferentes niveles de abstracci\'on \parencite{lecun2015deep}. Estos algoritmos, denominados redes neuronales profundas (o DNNs por sus siglas en ingl\'es),
 poseen la capacidad de encontrar variables que expliquen la naturaleza del comportamiento de los datos.
+
+(TODO: agregar algun grafico de una red donde se muestre que las capas van extrayendo features)
 
 Los modelos obtenidos a partir del {\it deep learning} han demostrado tener gran capacidad de aprendizaje para todo
 tipo de problemas, como ser {\it computer vision} \parencite{szeliski2010computer, redmon2016yolo}, procesamiento del lenguaje natural \parencite{devlin2018bert}, reconocimiento del habla \parencite{hannun2014deep}, juegos \parencite{silver2016mastering}, generaci\'on de im\'agenes a partir de descripciones \parencite{ramesh2022dalle2}, entre otros.
@@ -134,11 +136,94 @@ mayor\'ia de los modelos que mejores m\'etricas de performance presentan, necesi
 de entrenamiento. Esto implica que, para que los mismos sean de utilidad, resultan de suma importancia los procesos de
 recolecci\'on y etiquetado de los datos. La eficacia de los modelos queda altamente relacionada con la calidad de los
 datos que se posean o se logren conseguir. El etiquetado de los datos es una tarea costosa, ineficiente y hasta a veces
-resulta inviable de realizar \parencite{reis2022data}. En el caso de las elecciones, no es posible tener de antemano la clasificaci\'on de los mismos,
-ya que son completados a mano a\~{n}o a a\~{n}o por diferentes personas.
+resulta inviable de realizar \parencite{reis2022data}. A\~{n}o a a\~{n}o los telegramas de las elecciones son completados a mano por distintas personas,
+por lo que resulta imposible contar con un dataset lo suficientemente general como para ser utilizado en la
+clasificaci\'on de los d\'igitos.
 
 Una posible soluci\'on a este problema consiste en emular la capacidad que tienen los humanos de adquirir conocimiento
 relevante en un \'area y aplicarlo en otra similar \parencite{thrun1998learning}. Es decir, poder {\it transferir} lo aprendido. En el caso del {\it deep learning}, lo que se
-busca es que la red aprenda representaciones lo suficientemente generales para que despues sean utilizados en el
-entrenamiento de una tarea similar. La idea es acortar los tiempos de entrenamiento, mejorar las predicciones y hacer
-modelos m\'as robustos.
+busca es que la red aprenda representaciones lo suficientemente generales para que puedan ser utilizados en el
+entrenamiento de una tarea similar. Esto implica que se puede contar con una red pre-entrenada y luego, continuar
+entren\'andola con los datos propios del problema particular que se quiere resolver. A esto \'ultimo se lo denomina
+    {\it fine tuning}. Lo que se busca es acortar tiempos de entrenamiento, reducir la cantidad de datos necesarios y
+construir modelos m\'as robustos.
+
+\begin{figure}[ht]
+    \centering
+    %\includegraphics[width=0.8\textwidth, height=0.3\textheight]{chapter1/transfer-learning.png}
+
+    \tikzset{every picture/.style={line width=0.75pt}}
+
+    \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+        \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ][fill={rgb, 255:red, 74; green, 144; blue, 226 }  ,fill opacity=1 ] (518.88,125.36) -- (512.2,118.68) -- (512.2,108.76) -- (522.42,108.76) -- (529.1,115.44) -- (529.1,125.36) -- cycle ; \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ] (512.2,108.76) -- (518.88,115.44) -- (518.88,125.36) ; \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ] (518.88,115.44) -- (529.1,115.44) ;
+        \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ][fill={rgb, 255:red, 74; green, 144; blue, 226 }  ,fill opacity=1 ] (518.88,115.44) -- (512.2,108.76) -- (512.2,98.84) -- (522.42,98.84) -- (529.1,105.52) -- (529.1,115.44) -- cycle ; \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ] (512.2,98.84) -- (518.88,105.52) -- (518.88,115.44) ; \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ] (518.88,105.52) -- (529.1,105.52) ;
+        \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ][fill={rgb, 255:red, 74; green, 144; blue, 226 }  ,fill opacity=1 ] (518.88,105.52) -- (512.2,98.84) -- (512.2,88.92) -- (522.42,88.92) -- (529.1,95.6) -- (529.1,105.52) -- cycle ; \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ] (512.2,88.92) -- (518.88,95.6) -- (518.88,105.52) ; \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ] (518.88,95.6) -- (529.1,95.6) ;
+        \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ][fill={rgb, 255:red, 74; green, 144; blue, 226 }  ,fill opacity=1 ] (518.88,95.6) -- (512.2,88.92) -- (512.2,79) -- (522.42,79) -- (529.1,85.68) -- (529.1,95.6) -- cycle ; \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ] (512.2,79) -- (518.88,85.68) -- (518.88,95.6) ; \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ] (518.88,85.68) -- (529.1,85.68) ;
+
+        \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ][fill={rgb, 255:red, 74; green, 144; blue, 226 }  ,fill opacity=1 ] (418.2,158.67) -- (411.4,151.87) -- (411.4,49) -- (421.5,49) -- (428.3,55.8) -- (428.3,158.67) -- cycle ; \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ] (411.4,49) -- (418.2,55.8) -- (418.2,158.67) ; \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ] (418.2,55.8) -- (428.3,55.8) ;
+        \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ][fill={rgb, 255:red, 74; green, 144; blue, 226 }  ,fill opacity=1 ] (467.8,159.47) -- (461,152.67) -- (461,49.8) -- (471.1,49.8) -- (477.9,56.6) -- (477.9,159.47) -- cycle ; \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ] (461,49.8) -- (467.8,56.6) -- (467.8,159.47) ; \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ] (467.8,56.6) -- (477.9,56.6) ;
+        \draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=0.5 ] (166.96,154) -- (135,122.04) -- (135,42) -- (144.89,42) -- (176.85,73.96) -- (176.85,154) -- cycle ; \draw   (135,42) -- (166.96,73.96) -- (166.96,154) ; \draw   (166.96,73.96) -- (176.85,73.96) ;
+        \draw  [color={rgb, 255:red, 65; green, 117; blue, 5 }  ,draw opacity=1 ][fill={rgb, 255:red, 65; green, 117; blue, 5 }  ,fill opacity=0.6 ] (252,141) -- (218,107) -- (218,61) -- (247,61) -- (281,95) -- (281,141) -- cycle ; \draw  [color={rgb, 255:red, 65; green, 117; blue, 5 }  ,draw opacity=1 ] (218,61) -- (252,95) -- (252,141) ; \draw  [color={rgb, 255:red, 65; green, 117; blue, 5 }  ,draw opacity=1 ] (252,95) -- (281,95) ;
+        \draw  [color={rgb, 255:red, 65; green, 117; blue, 5 }  ,draw opacity=1 ][fill={rgb, 255:red, 65; green, 117; blue, 5 }  ,fill opacity=0.6 ] (350.12,133) -- (315,97.88) -- (315,74) -- (339.88,74) -- (375,109.12) -- (375,133) -- cycle ; \draw  [color={rgb, 255:red, 65; green, 117; blue, 5 }  ,draw opacity=1 ] (315,74) -- (350.12,109.12) -- (350.12,133) ; \draw  [color={rgb, 255:red, 65; green, 117; blue, 5 }  ,draw opacity=1 ] (350.12,109.12) -- (375,109.12) ;
+        \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ][fill={rgb, 255:red, 228; green, 167; blue, 218 }  ,fill opacity=1 ] (519.88,279.36) -- (513.2,272.68) -- (513.2,262.76) -- (523.42,262.76) -- (530.1,269.44) -- (530.1,279.36) -- cycle ; \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ] (513.2,262.76) -- (519.88,269.44) -- (519.88,279.36) ; \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ] (519.88,269.44) -- (530.1,269.44) ;
+        \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ][fill={rgb, 255:red, 228; green, 167; blue, 218 }  ,fill opacity=1 ] (519.88,269.44) -- (513.2,262.76) -- (513.2,252.84) -- (523.42,252.84) -- (530.1,259.52) -- (530.1,269.44) -- cycle ; \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ] (513.2,252.84) -- (519.88,259.52) -- (519.88,269.44) ; \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ] (519.88,259.52) -- (530.1,259.52) ;
+        \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ][fill={rgb, 255:red, 228; green, 167; blue, 218 }  ,fill opacity=1 ] (519.88,259.52) -- (513.2,252.84) -- (513.2,242.92) -- (523.42,242.92) -- (530.1,249.6) -- (530.1,259.52) -- cycle ; \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ] (513.2,242.92) -- (519.88,249.6) -- (519.88,259.52) ; \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ] (519.88,249.6) -- (530.1,249.6) ;
+        \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ][fill={rgb, 255:red, 228; green, 167; blue, 218 }  ,fill opacity=1 ] (519.88,249.6) -- (513.2,242.92) -- (513.2,233) -- (523.42,233) -- (530.1,239.68) -- (530.1,249.6) -- cycle ; \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ] (513.2,233) -- (519.88,239.68) -- (519.88,249.6) ; \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ] (519.88,239.68) -- (530.1,239.68) ;
+
+        \draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=0.5 ] (166.96,308) -- (135,276.04) -- (135,196) -- (144.89,196) -- (176.85,227.96) -- (176.85,308) -- cycle ; \draw   (135,196) -- (166.96,227.96) -- (166.96,308) ; \draw   (166.96,227.96) -- (176.85,227.96) ;
+        \draw  [color={rgb, 255:red, 65; green, 117; blue, 5 }  ,draw opacity=1 ][fill={rgb, 255:red, 65; green, 117; blue, 5 }  ,fill opacity=0.6 ] (252,295) -- (218,261) -- (218,215) -- (247,215) -- (281,249) -- (281,295) -- cycle ; \draw  [color={rgb, 255:red, 65; green, 117; blue, 5 }  ,draw opacity=1 ] (218,215) -- (252,249) -- (252,295) ; \draw  [color={rgb, 255:red, 65; green, 117; blue, 5 }  ,draw opacity=1 ] (252,249) -- (281,249) ;
+        \draw  [color={rgb, 255:red, 65; green, 117; blue, 5 }  ,draw opacity=1 ][fill={rgb, 255:red, 65; green, 117; blue, 5 }  ,fill opacity=0.6 ] (350.12,287) -- (315,251.88) -- (315,228) -- (339.88,228) -- (375,263.12) -- (375,287) -- cycle ; \draw  [color={rgb, 255:red, 65; green, 117; blue, 5 }  ,draw opacity=1 ] (315,228) -- (350.12,263.12) -- (350.12,287) ; \draw  [color={rgb, 255:red, 65; green, 117; blue, 5 }  ,draw opacity=1 ] (350.12,263.12) -- (375,263.12) ;
+        \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ][fill={rgb, 255:red, 228; green, 167; blue, 218 }  ,fill opacity=1 ] (418.2,312.67) -- (411.4,305.87) -- (411.4,203) -- (421.5,203) -- (428.3,209.8) -- (428.3,312.67) -- cycle ; \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ] (411.4,203) -- (418.2,209.8) -- (418.2,312.67) ; \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ] (418.2,209.8) -- (428.3,209.8) ;
+        \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ][fill={rgb, 255:red, 228; green, 167; blue, 218 }  ,fill opacity=1 ] (467.8,313.47) -- (461,306.67) -- (461,203.8) -- (471.1,203.8) -- (477.9,210.6) -- (477.9,313.47) -- cycle ; \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ] (461,203.8) -- (467.8,210.6) -- (467.8,313.47) ; \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ] (467.8,210.6) -- (477.9,210.6) ;
+        \draw  [dash pattern={on 4.5pt off 4.5pt}]  (255,150.67) -- (255.32,208.67) ;
+        \draw [shift={(255.33,210.67)}, rotate = 269.68] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+        \draw  [dash pattern={on 4.5pt off 4.5pt}]  (345,137.33) -- (344.67,218) ;
+        \draw [shift={(344.67,220)}, rotate = 270.23] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+        \draw  [color={rgb, 255:red, 128; green, 128; blue, 128 }  ,draw opacity=1 ][fill={rgb, 255:red, 128; green, 128; blue, 128 }  ,fill opacity=0.7 ] (185,96.79) -- (199.4,96.79) -- (199.4,93.5) -- (209,100.08) -- (199.4,106.67) -- (199.4,103.38) -- (185,103.38) -- cycle ;
+        \draw  [color={rgb, 255:red, 128; green, 128; blue, 128 }  ,draw opacity=1 ][fill={rgb, 255:red, 128; green, 128; blue, 128 }  ,fill opacity=0.7 ] (287,97.13) -- (301.4,97.13) -- (301.4,93.83) -- (311,100.42) -- (301.4,107) -- (301.4,103.71) -- (287,103.71) -- cycle ;
+        \draw  [color={rgb, 255:red, 128; green, 128; blue, 128 }  ,draw opacity=1 ][fill={rgb, 255:red, 128; green, 128; blue, 128 }  ,fill opacity=0.7 ] (380.67,97.13) -- (395.07,97.13) -- (395.07,93.83) -- (404.67,100.42) -- (395.07,107) -- (395.07,103.71) -- (380.67,103.71) -- cycle ;
+        \draw  [color={rgb, 255:red, 128; green, 128; blue, 128 }  ,draw opacity=1 ][fill={rgb, 255:red, 128; green, 128; blue, 128 }  ,fill opacity=0.7 ] (433,96.46) -- (447.4,96.46) -- (447.4,93.17) -- (457,99.75) -- (447.4,106.33) -- (447.4,103.04) -- (433,103.04) -- cycle ;
+        \draw  [color={rgb, 255:red, 128; green, 128; blue, 128 }  ,draw opacity=1 ][fill={rgb, 255:red, 128; green, 128; blue, 128 }  ,fill opacity=0.7 ] (483,97.13) -- (497.4,97.13) -- (497.4,93.83) -- (507,100.42) -- (497.4,107) -- (497.4,103.71) -- (483,103.71) -- cycle ;
+        \draw (150.69,97.71) node [rotate=-45.29,xslant=-1.02] {\includegraphics[width=34.45pt,height=42.06pt]{chapter1/mnist3.png}};
+        \draw (150.77,251.82) node [rotate=-44.36,xslant=-0.97] {\includegraphics[width=32.86pt,height=42.51pt]{chapter1/svhn3.png}};
+        \draw  [color={rgb, 255:red, 128; green, 128; blue, 128 }  ,draw opacity=1 ][fill={rgb, 255:red, 128; green, 128; blue, 128 }  ,fill opacity=0.7 ] (185,251.79) -- (199.4,251.79) -- (199.4,248.5) -- (209,255.08) -- (199.4,261.67) -- (199.4,258.38) -- (185,258.38) -- cycle ;
+        \draw  [color={rgb, 255:red, 128; green, 128; blue, 128 }  ,draw opacity=1 ][fill={rgb, 255:red, 128; green, 128; blue, 128 }  ,fill opacity=0.7 ] (287,252.13) -- (301.4,252.13) -- (301.4,248.83) -- (311,255.42) -- (301.4,262) -- (301.4,258.71) -- (287,258.71) -- cycle ;
+        \draw  [color={rgb, 255:red, 128; green, 128; blue, 128 }  ,draw opacity=1 ][fill={rgb, 255:red, 128; green, 128; blue, 128 }  ,fill opacity=0.7 ] (380.67,252.13) -- (395.07,252.13) -- (395.07,248.83) -- (404.67,255.42) -- (395.07,262) -- (395.07,258.71) -- (380.67,258.71) -- cycle ;
+        \draw  [color={rgb, 255:red, 128; green, 128; blue, 128 }  ,draw opacity=1 ][fill={rgb, 255:red, 128; green, 128; blue, 128 }  ,fill opacity=0.7 ] (433,251.46) -- (447.4,251.46) -- (447.4,248.17) -- (457,254.75) -- (447.4,261.33) -- (447.4,258.04) -- (433,258.04) -- cycle ;
+        \draw  [color={rgb, 255:red, 128; green, 128; blue, 128 }  ,draw opacity=1 ][fill={rgb, 255:red, 128; green, 128; blue, 128 }  ,fill opacity=0.7 ] (483,252.13) -- (497.4,252.13) -- (497.4,248.83) -- (507,255.42) -- (497.4,262) -- (497.4,258.71) -- (483,258.71) -- cycle ;
+
+        \draw (261.17,159.83) node [anchor=north west][inner sep=0.75pt]  [font=\footnotesize] [align=left] {
+            \begin{minipage}[lt]{54.58pt}\setlength\topsep{0pt}
+                \begin{center}
+                    Transferencia \\de pesos
+                \end{center}
+            \end{minipage}};
+        \draw (271,11.5) node [anchor=north west][inner sep=0.75pt]   [align=left] {Pre entrenamiento};
+        \draw (305,340) node [anchor=north west][inner sep=0.75pt]   [align=left] {Fine tune};
+        \draw (406.25,28) node [anchor=north west][inner sep=0.75pt]   [align=left] {\textcolor[rgb]{0.29,0.56,0.89}{{\footnotesize Capas densas}}};
+        \draw (408.75,318) node [anchor=north west][inner sep=0.75pt]   [align=left] {\textcolor[rgb]{0.74,0.06,0.88}{{\footnotesize Capas densas}}};
+        \draw (231.25,39.75) node [anchor=north west][inner sep=0.75pt]   [align=left] {{\footnotesize \textcolor[rgb]{0.25,0.46,0.02}{Capas convolucionales}}};
+        \draw (234.75,300.25) node [anchor=north west][inner sep=0.75pt]   [align=left] {{\footnotesize \textcolor[rgb]{0.25,0.46,0.02}{Capas convolucionales}}};
+        \draw (534.75,91.25) node [anchor=north west][inner sep=0.75pt]   [align=left] {{\footnotesize \textcolor[rgb]{0.29,0.56,0.89}{Etiquetas}}};
+        \draw (537.25,246.75) node [anchor=north west][inner sep=0.75pt]   [align=left] {{\footnotesize \textcolor[rgb]{0.74,0.06,0.88}{Etiquetas}}};
+
+    \end{tikzpicture}
+
+    \caption{Estructura de pre-entrenar y fine tuning}
+    \label{fig:pretrain-and-finetuning}
+\end{figure}
+
+El proceso de pre-entrenar y {\it fine tuning} ha mejorado considerablemente los resultados obtenidos en diversos
+problemas del estado del arte, incluso las redes pre-entrenadas pueden ser f\'acilmente adaptadas a otras tareas con
+pocos datos etiquetados. No obstante, en muchos escenarios no se cuenta con datos etiquetados, imposibilitando el {\it
+        fine tuning}. De aqu\'i es que surje la necesidad de transferir el aprendizaje obtenido en un dominio de origen con
+datos etiquetados a otro de destino donde no se poseen etiquetas \parencite{ben2006analysis}. Los modelos de aprendizaje profundo se ven afectados negativamente cuando existe un {\it
+        dataset shift} como se mostr\'o previamente en el cuadro \ref{tab:lenet-distintos-datasets}. Por lo tanto, la {\it
+        adaptaci\'on de dominio} aparece como una soluci\'on cuando la distribuci\'on de los datos de entrenamiento difiere de
+los datos de testing. La idea que persigue es reducir la diferencia que existe entre las distribuciones de origen y
+destino.
+
+(TODO: grafico?)
+
+La tesis abordar\'a el uso de diferentes t\'ecnicas de {\it adaptaci\'on de dominio} para entrenar un modelo capaz de
+transferir el conocimiento del dominio del MNIST a los d\'igitos escritos en los telegramas de las elecciones.
