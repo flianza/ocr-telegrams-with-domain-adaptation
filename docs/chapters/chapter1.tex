@@ -24,7 +24,12 @@ la metodolog\'ia de contabilizac\'ion, idealmente lo escrito a mano en el telegr
 mismo. Sin embargo, como esta tarea es realizada por personas, es plausible pensar que pueden haber errores y demoras
 en dicho proceso.
 
-(TODO: ver de agregar un diagrama del proceso)
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{chapter1/proceso-elecciones.png}
+    \caption{Proceso eleccionario. TODO: CAMBIAR?}
+    \label{fig:proceso-elecciones}
+\end{figure}
 
 A su vez, durante la jornada electoral existe una ansiedad generalizada de la poblaci\'on por saber los resultados
 parciales y finales de la misma, por lo que se debe contratar a una gran cantidad personas destinadas al centro de
@@ -52,7 +57,7 @@ d\'igitos modificando el existente NIST y se propone la red neuronal LeNet-5 par
 dataset MNIST consiste de 60.000 imagenes de entrenamiento y 10.000 de testing. Cada una de las im\'agenes es de un
 tama\~{n}o de 28x28 pixeles.
 
-\begin{figure}[ht]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{chapter1/mnist.png}
     \caption{Ejemplos del dataset MNIST}
@@ -62,7 +67,7 @@ tama\~{n}o de 28x28 pixeles.
 La red posee capas convolucionales las cuales se encargan de extraer caracter\'isticas o patrones de las im\'agenes
 para luego ser procesadas por capas densas que se encargan de la clasificaci\'on.
 
-\begin{figure}[ht]
+\begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{chapter1/lenet5.png}
     \caption{Arquitectura de la red LeNet-5}
@@ -73,14 +78,14 @@ Sin embargo, aunque LeNet-5 (o cualquier otro modelo) presente buenas m\'etricas
 ser aplicado a otro dataset de d\'igitos. El cuadro \ref{tab:lenet-distintos-datasets} muestra la precisi\'on que se
 obtiene al entrenar una red LeNet-5 en distintos datasets de d\'igitos: MNIST \parencite{lecun1998gradient}, USPS \parencite{hull1994database} y SVHN \parencite{netzer2011reading}. La arquitectura de la red posee la capacidad de aprender los patrones de cada uno de los
 ellos pero no logra generalizar a otros. Si bien cada uno de ellos muestran los mismos n\'umeros, lo hacen de forma
-diferente. Esto se debe al {\it sesgo} que existe en los datos. Al entrenar un modelo, el mismo aprende a reconocer
-caracter\'isticas propias del dataset que le permite resolver el problema, incluyendo el sesgo. \'Esto hace que un
-problema "sencillo" de clasificaci\'on de im\'agenes de 28x28 pixeles no sea trivial. Todos los datasets se encuentran
-sesgados de alguna forma y es imposible armarlos de tal forma que no presenten alg\'un nivel de sesgo \parencite{khosla2012undoing}. Cuando los datos con los que se quiere evaluar un modelo provienen de un dominio o
-distribuci\'on diferente al de entrenamiento, se est\'a ante un {\it dataset shift} \parencite{quinonero2008dataset}. Es decir, se le muestra al modelo cosas que nunca vi\'o y, por lo tanto, no sabe
-reconocer.
+diferente. Esto se debe al {\it sesgo} que existe en los datos. Cuando se entrena un modelo se aprende a reconocer
+caracter\'isticas propias del dataset que le permite resolver el problema, incluyendo el sesgo de los mismos. Esto hace
+que un problema "sencillo" de clasificaci\'on de im\'agenes de 28x28 pixeles no sea trivial. Todos los datasets se
+encuentran sesgados de alguna forma y es imposible armarlos de tal forma que no presenten alg\'un nivel de sesgo \parencite{khosla2012undoing}. Cuando los datos con los que se quiere evaluar un modelo provienen de un dominio o
+distribuci\'on diferente al de entrenamiento, se est\'a ante un {\it dataset shift} \parencite{quinonero2008dataset}. Es decir, se le muestran datos al modelo con caracter\'isticas que nunca vi\'o,
+provocando predicciones incorrectas.
 
-\begin{table}[ht]
+\begin{table}[H]
     \centering
     \begin{tabular}{cccc}
         \toprule
@@ -148,7 +153,7 @@ entren\'andola con los datos propios del problema particular que se quiere resol
     {\it fine tuning}. Lo que se busca es acortar tiempos de entrenamiento, reducir la cantidad de datos necesarios y
 construir modelos m\'as robustos.
 
-\begin{figure}[ht]
+\begin{figure}[H]
     \centering
     %\includegraphics[width=0.8\textwidth, height=0.3\textheight]{chapter1/transfer-learning.png}
 
@@ -199,7 +204,7 @@ construir modelos m\'as robustos.
                 \end{center}
             \end{minipage}};
         \draw (271,11.5) node [anchor=north west][inner sep=0.75pt]   [align=left] {Pre entrenamiento};
-        \draw (305,340) node [anchor=north west][inner sep=0.75pt]   [align=left] {Fine tune};
+        \draw (305,340) node [anchor=north west][inner sep=0.75pt]   [align=left] {Fine tuning};
         \draw (406.25,28) node [anchor=north west][inner sep=0.75pt]   [align=left] {\textcolor[rgb]{0.29,0.56,0.89}{{\footnotesize Capas densas}}};
         \draw (408.75,318) node [anchor=north west][inner sep=0.75pt]   [align=left] {\textcolor[rgb]{0.74,0.06,0.88}{{\footnotesize Capas densas}}};
         \draw (231.25,39.75) node [anchor=north west][inner sep=0.75pt]   [align=left] {{\footnotesize \textcolor[rgb]{0.25,0.46,0.02}{Capas convolucionales}}};
@@ -209,7 +214,7 @@ construir modelos m\'as robustos.
 
     \end{tikzpicture}
 
-    \caption{Estructura de pre-entrenar y fine tuning}
+    \caption{Estructura de pre-entrenar y fine tuning.}
     \label{fig:pretrain-and-finetuning}
 \end{figure}
 
@@ -222,8 +227,6 @@ datos etiquetados a otro de destino donde no se poseen etiquetas \parencite{ben2
         adaptaci\'on de dominio} aparece como una soluci\'on cuando la distribuci\'on de los datos de entrenamiento difiere de
 los datos de testing. La idea que persigue es reducir la diferencia que existe entre las distribuciones de origen y
 destino.
-
-(TODO: grafico?)
 
 La tesis abordar\'a el uso de diferentes t\'ecnicas de {\it adaptaci\'on de dominio} para entrenar un modelo capaz de
 transferir el conocimiento del dominio del MNIST a los d\'igitos escritos en los telegramas de las elecciones.
