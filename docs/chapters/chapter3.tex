@@ -3,9 +3,18 @@
 \label{Chapter3}
 
 En este cap\'itulo se detallar\'an los procesos abordados para la extracci\'on y clasificaci\'on de los d\'igitos
-escritos en los telegramas de las elecciones.
+escritos en los telegramas de las elecciones. Primero se describir\'a el proceso de obtenci\'on, limpieza y
+transformaci\'on de los datos a fin de obtener un dataset con el cual entrenar. Luego, se describir\'an los procesos a
+ser llevados a cabo para el dise\~{n}o experimental de los modelos.
 
-\section{Extracci\'on, transformaci\'on y carga de d\'igitos de los telegramas}
+\section{Descripci\'on de los datos}
+
+Los telegramas fueron descargados desde la \href{https://op.elecciones.gob.ar/telegramas/generales2021/}{p\'agina
+    oficial del estado argentino}. Presentan un formato est\'andar en forma de grilla donde en cada rengl\'on se encuentra
+el partido pol\'itico y los votos obtenidos para diputados y senadores. En la p\'agina tambi\'en se puede descargar un
+CSV donde se encuentra el {\it id} de cada telegrama y los valores digitalizados oficialmente.
+
+\section{Extracci\'on de d\'igitos de los telegramas}
 
 Los telegramas de las elecciones de Santa Fe presentan un formato tabular, donde cada fila representa un partido
 pol\'itico y los votos obtenidos abiertos por senadores y diputados. Se debieron ejecutar m\'ultiples pasos de
@@ -24,7 +33,7 @@ funci\'on \verb|getRotationMatrix2D| de OpenCV.
 
     \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
 
-        \draw (370,140) node  {\includegraphics[width=135pt,height=210pt]{chapter3/etl-2-rotacion.png}};
+        \draw (370,140) node  {\includegraphics[width=135pt,height=210pt]{chapter3/etl-1-rotacion.png}};
         \draw (90,140) node  {\includegraphics[width=135pt,height=210pt]{chapter3/etl-1-telegrama.png}};
         \draw    (190.8,110.6) -- (267.4,110.6) ;
         \draw [shift={(269.4,110.6)}, rotate = 180] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
@@ -38,7 +47,139 @@ funci\'on \verb|getRotationMatrix2D| de OpenCV.
 
 \subsection{Extracci\'on de la grilla de votos}
 El siguiente paso consiste en poder seleccionar la grilla de los votos y poder extraerla para seguir trabajando en
-ella.
+ella. Esto puede realizarse utilizando la funcion \verb|getContours| de OpenCV y qued\'andose con el contorno de mayor
+\'area.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth, height=0.3\textwidth]{chapter3/etl-2-grilla.png}
+    \caption{Grilla de votos extra\'ida buscando el contorno de mayor \'area.}
+    \label{fig:etl-2-grilla}
+\end{figure}
+
+\subsection{Detecci\'on de l\'ineas de la grilla de votos}
+Teniendo la grilla de votos separada del telegrama, se procede a detectar las l\'ineas para poder extraer cada registro
+de la misma. Si bien OpenCV posee funciones para la detecci\'on de l\'ineas, se opt\'o por utilizar un enfoque
+simplificado. El mismo es similar al utilizado en \parencite{lamagna2016lectura}. Debido a que la grilla se encuentra enderezada, se puede utilizar proyecciones de los
+colores sobre los ejes $x$ e $y$ para detectarlas. Al sumar todos los colores por eje, se pueden encontrar los picos
+donde se encuentran las lineas horizontales y verticales. Posteriormente, se selecciona un umbral de corte por cada
+eje, siendo el promedio menos dos desv\'ios est\'andar. La figura \ref{fig:etl-3-proyecciones} muestra las proyecciones
+obtenidas con los umbrales por cada eje.
+
+\begin{figure}
+    \centering
+
+    \tikzset{every picture/.style={line width=0.75pt}}
+
+    \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+        \draw (142.77,162.65) node  {\includegraphics[width=214.16pt,height=173.4pt]{chapter3/etl-3-grilla.png}};
+        \draw (303.6,159.11) node [rotate=-90] {\includegraphics[width=172pt,height=46.15pt]{chapter3/etl-3-grilla-proyeccion-y.png}};
+        \draw (142.5,30.77) node  {\includegraphics[width=213.75pt,height=46.15pt]{chapter3/etl-3-grilla-proyeccion-x.png}};
+    \end{tikzpicture}
+
+    \caption{Proyecciones de los ejes de la grilla. En rojo se marca el umbral de corte.}
+    \label{fig:etl-3-proyecciones}
+\end{figure}
+
+Sin embargo, aunque se seleccione aquellos pixeles que se encuentren por debajo del umbral, por cada pico existe mas de
+un pixel. Siguiendo con el ejemplo, en el eje $x$ se obtienen los siguientes pixeles que se encuentran en los "picos":
+
+\begin{verbatim}
+    array([    3,    4,    5,    6,    7,  100,  119,  120,  988, 
+             989,  990,  991,  992, 1215, 1216, 1217, 1218, 1219, 
+            1423, 1424, 1425, 1426, 1427])
+\end{verbatim}
+
+Con la estrategia del umbral no se obtienen las 4 l\'ineas que se desean detectar sobre el eje $x$. No obstante, se
+puede aplicar un clustering jer\'arquico sobre los \'indices obtenidos y luego calcular el \'indice promedio de cada
+cluster para tomarlo como \'unico representante. El proceso se repite de la misma manera sobre el eje $y$. Esta
+\'ultima modificaci\'on sobre el trabajo realizado en \parencite{lamagna2016lectura} asegura tener un \'unico pixel por l\'inea.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth, height=0.3\textwidth]{chapter3/etl-3-grilla-detectada.png}
+    \caption{Grilla detectada (en verde) utilizando el umbral por sobre las proyecciones y su posterior agrupamiento con clustering jer\'arquico.}
+    \label{fig:etl-3-grilla-detectada}
+\end{figure}
+
+\subsection{Segmentaci\'on de d\'igitos}
+
+Una vez obtenida la grilla, se itera por cada registro obteniendo los rect\'angulos que contienen los votos, ignorando
+el primer rengl\'on que contiene los t\'itulos de la grilla.
+
+\begin{figure}[H]
+    \centering
+    \frame{\includegraphics[height=15pt]{chapter3/etl-4-registro-1.png}}
+    \frame{\includegraphics[height=15pt]{chapter3/etl-4-registro-2.png}}
+    \frame{\includegraphics[height=15pt]{chapter3/etl-4-registro-3.png}}
+    \caption{Primer registro extra\'ido de la grilla de votos.}
+    \label{fig:etl-4-registro}
+\end{figure}
+
+Para separar cada d\'igito en una \'unica imagen, se utiliza un an\'alisis de componentes conectados
+(\verb|connectedComponents| de OpenCV) y se recortan aquellos contornos que posean de \'area entre el $5\%$ y el $70\%$
+de los pixeles totales de la imagen. Los valores fueron obtenidos mediante experimentaci\'on y sirven para descartar
+ruido que pueda detectar el an\'alisis de componentes conectados.
+
+\begin{figure}[H]
+    \centering
+    \frame{\includegraphics[height=15pt]{chapter3/etl-4-digito-1.png}}
+    \frame{\includegraphics[height=15pt]{chapter3/etl-4-digito-2.png}}
+    \frame{\includegraphics[height=15pt]{chapter3/etl-4-digito-3.png}}
+    \caption{D\'igitos detectados en el primer bloque de votos.}
+    \label{fig:etl-4-digitos}
+\end{figure}
+
+Por \'ultimo, los d\'igitos se guardan de forma que sean cuadrados junto a su etiqueta tomada de la digitalizaci\'on
+oficial. El dataset ser\'a denominado como {\it TDS} (dataset de telegramas) a lo largo de la presente tesis.
+
+\section{An\'alisis del dataset}
+
+Con la estracci\'on descripta en la secci\'on anterior, se procede a hacer un an\'alisis exploratorio de los datos en
+b\'usqueda de posibles errores. La tabla \ref{tab:dataset-telegramas-segmentados} muestra algunos registros del dataset
+que vincula los d\'igitos extra\'idos de los telegramas con los partidos pol\'iticos.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{ccccc}
+        \toprule
+        Telegrama                                                                & Partido & Tipo      & D\'igitos                                                                & Cantidad D\'igitos \\
+        \midrule
+        2100100026X                                                              & Unite   & Diputados & \frame{\includegraphics[width=16px]{chapter3/eda/unite-diputados-1.png}}
+        \frame{\includegraphics[width=16px]{chapter3/eda/unite-diputados-2.png}}
+        \frame{\includegraphics[width=16px]{chapter3/eda/unite-diputados-3.png}} & 3                                                                                                                   \\
+        2100100026X                                                              & Unite   & Senadores & \frame{\includegraphics[width=16px]{chapter3/eda/unite-senadores-1.png}}
+        \frame{\includegraphics[width=16px]{chapter3/eda/unite-senadores-2.png}}
+        \frame{\includegraphics[width=16px]{chapter3/eda/unite-senadores-3.png}}
+        \frame{\includegraphics[width=16px]{chapter3/eda/unite-senadores-4.png}} & 4                                                                                                                   \\
+        \bottomrule
+
+    \end{tabular}
+    \caption{Ejemplo de registros del dataset.}
+    \label{tab:dataset-telegramas-segmentados}
+\end{table}
+
+El lector podr\'a darse cuenta que existen errores en el cuadro anterior. En la columna de d\'igitos donde se deber\'ia
+encontrar s\'olamente n\'umeros existe uno incorrecto para senadores. Para limpiar estas extracciones incorrectas, se
+calculan dos columnas las cuales contienen la proporci\'on m\'inima y m\'axima de pixeles blancos en las im\'agenes. La
+figura \ref{fig:histogramas-min-max-prop-blanco} muestra los histogramas generales de estas dos variables.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[h]{0.48\textwidth}
+        \includegraphics[width=1\textwidth]{chapter3/eda/hist-min-prop-blanco.png}
+        \caption{Dominios distintos, discriminables.}
+        \label{fig:histograma-min-prop-blanco}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[h]{0.48\textwidth}
+        \includegraphics[width=1\textwidth]{chapter3/eda/hist-max-prop-blanco.png}
+        \caption{Dominios distintos, discriminables.}
+        \label{fig:histograma-max-prop-blanco}
+    \end{subfigure}
+    \caption{algo}
+    \label{fig:histogramas-min-max-prop-blanco}
+\end{figure}
 
 \section{Dise\~{n}o experimental}
 
@@ -46,7 +187,7 @@ ella.
 
 \section{M\'etricas de evaluaci\'on}
 
-Los modelos entrenados ser\'an evaluados con distintas m\'etricas, descripta en las siguientes sub-secciones del
+Los modelos entrenados ser\'an evaluados con distintas m\'etricas, descriptas en las siguientes sub-secciones del
 cap\'itulo. Las mismas pretenden evaluar qu\'e tan buenos son los modelos y qu\'e capacidad de adaptaci\'on de dominio
 poseen.
 
@@ -104,7 +245,7 @@ $\beta$ permite asignar un peso distinto a la precisi\'on o al recall dentro del
 ambas poseen el mismo peso.
 
 \begin{equation}
-    F_{\beta}(y, \hat{y}) = (1 + \beta^2) \frac{precision(y, \hat{y}) \times recall(y, \hat{y})}{\beta^2 precision(y, \hat{y}) + recall(y, \hat{y})}
+    F_{\beta}(y, \hat{y}) = (1 + \beta^2) \times \frac{precision(y, \hat{y}) \times recall(y, \hat{y})}{\beta^2 \times precision(y, \hat{y}) + recall(y, \hat{y})}
 \end{equation}
 
 El rango de valores es de $[0, 1]$, donde 1 corresponde a un clasificador que funciona sin errores.
@@ -123,11 +264,11 @@ viene dado por:
                                   & = 0.5
 \end{align}
 
-De forma general: sea $y_{i}$ el d\'igito $i$-\'esimo del voto real $y$, $\hat{y_{i}}$ el d\'igito $i$-\'esimo del voto
-predicho por el modelo $\hat{y}$, entonces la m\'etrica viene dada por:
+De forma general: sea $y_{i}$ el d\'igito $i$-\'esimo del voto real $y$ de longitud $n$, $\hat{y_{j}}$ el d\'igito
+$j$-\'esimo del voto predicho por el modelo $\hat{y}$ de longitud $m$, entonces la m\'etrica viene dada por:
 
 \begin{equation}
-    IoU(y, \hat{y}) = \frac{\lvert \{y_{i}\} \bigcap \{\hat{y_{i}}\}\rvert}{\lvert \{y_{i}\} \bigcup \{\hat{y_{i}}\}\rvert}
+    IoU(y, \hat{y}) = \frac{\lvert \{y_{i}\} \bigcap \{\hat{y_{j}}\}\rvert}{\lvert \{y_{i}\} \bigcup \{\hat{y_{j}}\}\rvert} \forall i \in \{1, \cdots, n\}, \forall j \in \{1, \cdots, m\}
 \end{equation}
 
 \subsection{Distancia $\mathcal{A}$}
@@ -171,7 +312,7 @@ dominios son similares entre si, por lo que se espera que $dist_\mathcal{A} \app
                 \end{minipage}};
             \draw [color={rgb, 255:red, 65; green, 117; blue, 5 }  ,draw opacity=1 ][line width=2.25]  [dash pattern={on 6.75pt off 4.5pt}]  (60,45) -- (169,154) ;
         \end{tikzpicture}
-        \caption{Dominios distintos, f\'acilmente discriminables.}
+        \caption{Dominios distintos, discriminables.}
         \label{fig:dominios-distintos}
     \end{subfigure}
     \hfill
