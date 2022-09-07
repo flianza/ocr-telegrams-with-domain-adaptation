@@ -123,19 +123,19 @@ ruido que pueda detectar el an\'alisis de componentes conectados.
 
 \begin{figure}[H]
     \centering
-    \frame{\includegraphics[height=15pt]{chapter3/etl-4-digito-1.png}}
-    \frame{\includegraphics[height=15pt]{chapter3/etl-4-digito-2.png}}
-    \frame{\includegraphics[height=15pt]{chapter3/etl-4-digito-3.png}}
+    \frame{\includegraphics[scale=0.6]{chapter3/etl-4-digito-1.png}}
+    \frame{\includegraphics[scale=0.6]{chapter3/etl-4-digito-2.png}}
+    \frame{\includegraphics[scale=0.6]{chapter3/etl-4-digito-3.png}}
     \caption{D\'igitos detectados en el primer bloque de votos.}
     \label{fig:etl-4-digitos}
 \end{figure}
 
-Por \'ultimo, los d\'igitos se guardan de forma que sean cuadrados junto a su etiqueta tomada de la digitalizaci\'on
-oficial. El dataset ser\'a denominado como {\it TDS} (dataset de telegramas) a lo largo de la presente tesis.
+Por \'ultimo, los d\'igitos son encuadrados y se guardan junto al partido pol\'itico y al tipo de voto (senadores o
+diputados) en un dataset, cuyo an\'alisis ser\'a abordado en la siguiente secci\'on.
 
 \section{An\'alisis del dataset}
 
-Con la estracci\'on descripta en la secci\'on anterior, se procede a hacer un an\'alisis exploratorio de los datos en
+Con la extracci\'on descripta en la secci\'on anterior, se procede a hacer un an\'alisis exploratorio de los datos en
 b\'usqueda de posibles errores. La tabla \ref{tab:dataset-telegramas-segmentados} muestra algunos registros del dataset
 que vincula los d\'igitos extra\'idos de los telegramas con los partidos pol\'iticos.
 
@@ -143,43 +143,87 @@ que vincula los d\'igitos extra\'idos de los telegramas con los partidos pol\'it
     \centering
     \begin{tabular}{ccccc}
         \toprule
-        Telegrama                                                                & Partido & Tipo      & D\'igitos                                                                & Cantidad D\'igitos \\
+        Telegrama                                                               & Partido         & Tipo      & D\'igitos                                                                & \# D\'igitos \\
         \midrule
-        2100100026X                                                              & Unite   & Diputados & \frame{\includegraphics[width=16px]{chapter3/eda/unite-diputados-1.png}}
-        \frame{\includegraphics[width=16px]{chapter3/eda/unite-diputados-2.png}}
-        \frame{\includegraphics[width=16px]{chapter3/eda/unite-diputados-3.png}} & 3                                                                                                                   \\
-        2100100026X                                                              & Unite   & Senadores & \frame{\includegraphics[width=16px]{chapter3/eda/unite-senadores-1.png}}
-        \frame{\includegraphics[width=16px]{chapter3/eda/unite-senadores-2.png}}
-        \frame{\includegraphics[width=16px]{chapter3/eda/unite-senadores-3.png}}
-        \frame{\includegraphics[width=16px]{chapter3/eda/unite-senadores-4.png}} & 4                                                                                                                   \\
+        2100100026X                                                             & Unite           & Diputados & \frame{\includegraphics[scale=0.6]{chapter3/eda/unite-diputados-1.png}}
+        \frame{\includegraphics[scale=0.6]{chapter3/eda/unite-diputados-2.png}}
+        \frame{\includegraphics[scale=0.6]{chapter3/eda/unite-diputados-3.png}} & 3                                                                                                                     \\
+        2100100026X                                                             & Unite           & Senadores & \frame{\includegraphics[scale=0.08]{chapter3/eda/unite-senadores-1.png}}
+        \frame{\includegraphics[scale=0.6]{chapter3/eda/unite-senadores-2.png}}
+        \frame{\includegraphics[scale=0.6]{chapter3/eda/unite-senadores-3.png}}
+        \frame{\includegraphics[scale=0.6]{chapter3/eda/unite-senadores-4.png}} & 4                                                                                                                     \\
+        2100100067X                                                             & Frente de Todos & Diputados & \frame{\includegraphics[scale=0.6]{chapter3/eda/todos-diputados-1.png}}
+        \frame{\includegraphics[scale=0.6]{chapter3/eda/todos-diputados-2.png}}
+        \frame{\includegraphics[scale=0.6]{chapter3/eda/todos-diputados-3.png}}
+        \frame{\includegraphics[scale=0.6]{chapter3/eda/todos-diputados-4.png}} & 4                                                                                                                     \\
+        2100100067X                                                             & Frente de Todos & Senadores & \frame{\includegraphics[scale=0.6]{chapter3/eda/todos-senadores-1.png}}
+        \frame{\includegraphics[scale=0.6]{chapter3/eda/todos-senadores-2.png}}
+        \frame{\includegraphics[scale=0.6]{chapter3/eda/todos-senadores-3.png}} & 3                                                                                                                     \\
         \bottomrule
 
     \end{tabular}
-    \caption{Ejemplo de registros del dataset.}
+    \caption{Ejemplo de registros del dataset. Cada fila representa un voto.}
     \label{tab:dataset-telegramas-segmentados}
 \end{table}
 
-El lector podr\'a darse cuenta que existen errores en el cuadro anterior. En la columna de d\'igitos donde se deber\'ia
-encontrar s\'olamente n\'umeros existe uno incorrecto para senadores. Para limpiar estas extracciones incorrectas, se
-calculan dos columnas las cuales contienen la proporci\'on m\'inima y m\'axima de pixeles blancos en las im\'agenes. La
-figura \ref{fig:histogramas-min-max-prop-blanco} muestra los histogramas generales de estas dos variables.
+El lector podr\'a darse cuenta que existen errores en el cuadro anterior. En primer lugar, en la columna donde
+s\'olamente deben haber las im\'agenes de los d\'igitos existe una con una l\'inea en el segundo registro. Por otro
+lado, tambi\'en existen d\'igitos mal escritos como los que se encuentran en los dos \'ultimos registros. Para limpiar
+estas extracciones incorrectas, se calculan dos columnas las cuales contienen las proporciones m\'inimas y m\'aximas de
+pixeles blancos en las im\'agenes por cada voto. La figura \ref{fig:histogramas-min-max-prop-blanco} muestra los
+histogramas generales de las mismas.
 
 \begin{figure}[H]
     \centering
     \begin{subfigure}[h]{0.48\textwidth}
         \includegraphics[width=1\textwidth]{chapter3/eda/hist-min-prop-blanco.png}
-        \caption{Dominios distintos, discriminables.}
+        \caption{Histograma de la proporci\'on m\'inima de pixeles blancos en un voto.}
         \label{fig:histograma-min-prop-blanco}
     \end{subfigure}
     \hfill
     \begin{subfigure}[h]{0.48\textwidth}
         \includegraphics[width=1\textwidth]{chapter3/eda/hist-max-prop-blanco.png}
-        \caption{Dominios distintos, discriminables.}
+        \caption{Histograma de la proporci\'on m\'axima de pixeles blancos en un voto.}
         \label{fig:histograma-max-prop-blanco}
     \end{subfigure}
-    \caption{algo}
+    \caption{Histogramas de proporciones de pixeles blancos por voto.}
     \label{fig:histogramas-min-max-prop-blanco}
 \end{figure}
+
+La cola derecha de la distribuci\'on de \ref{fig:histograma-max-prop-blanco} presenta un pico anormal en el extremo
+cercano a 1. Al eliminar aquellas im\'agenes de d\'igitos que posean mas de un $95\%$ de pixeles blancos, se logran
+descartar los casos de l\'ineas como la vista en el cuadro \ref{tab:dataset-telegramas-segmentados}. Por el contrario,
+al eliminar aquellas im\'agenes que posean menos del $50\%$ de pixeles blancos, se logran descartar los casos de
+escritura incorrecta.
+
+El siguiente punto a analizar es el tama\~{n}o de las im\'agenes. Como fue mostrado en el cuadro
+\ref{tab:dataset-telegramas-segmentados}, las im\'agenes no fueron estandarizadas en un tama\~{n}o est\'andar. De
+manera an\'aloga a la variable de proporci\'on de pixeles blancos, se calculan las variables m\'inimo y m\'aximo
+tama\~{n}o por voto. La tabla \ref{tab:describe-min-max-size} muestra los estad\'isticos descriptivos de las mismas.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{crrrrr}
+        \toprule
+        Variable            & Promedio & Desv\'io & M\'inimo & Mediana & M\'aximo \\
+        \midrule
+        Tama\~{n}o m\'inimo & 38.35    & 9.61     & 13       & 37      & 621      \\
+        Tama\~{n}o m\'aximo & 44.80    & 10.73    & 18       & 43      & 621      \\
+        \bottomrule
+    \end{tabular}
+    \caption{Estad\'isticos descriptivos del m\'inimo y m\'aximo tama\~{n}o de las im\'agenes de los votos.}
+    \label{tab:describe-min-max-size}
+\end{table}
+
+Al analizar los valores extremos, se encuentran telegramas que fueron cargados de forma incorrecta (ver anexo
+\ref{anexo:telegrama-erroneo}) o con caligraf\'ia en la cual los n\'umeros se encuentran unidos y no pueden ser
+separados por el an\'alisis de componentes conectados de OpenCV (ver anexo \ref{anexo:telegrama-numeros-juntos}). Se
+eliminan estos casos filtrando por aquellos registros que se encuentren por fuera de la media +- 4 desv\'ios
+est\'andar.
+
+Concluida la etapa de an\'alisis y limpieza, se exportan los d\'igitos en un formato similar al dataset {\it MNIST} con
+la etiqueta que oficialmente fue registrada en las elecciones del 2021. El mismo ser\'a nombrado como {\it TDS}
+(dataset de telegramas) de aqu\'i en adelante.
 
 \section{Dise\~{n}o experimental}
 
