@@ -1,70 +1,84 @@
 dann:
-  bottleneck_dim: 256
+  # GENERAL
   lr: 0.05
   lr_gamma: 0.001
   lr_decay: 0.25
   momentum: 0.9
   weight_decay: 0.001
-  trade_off: 1.5
-  epochs: 40
   iters_per_epoch: 1000
   early_stopping: 5
+  epochs: 40
+  # DA
+  bottleneck_dim: 256
+  # PARTICULAR
+  trade_off: 1.5
 
 afn:
-  bottleneck_dim: 256
+  # GENERAL
   lr: 0.05
   weight_decay: 0.001
+  iters_per_epoch: 1000
+  early_stopping: 5
+  epochs: 40
+  # DA
+  bottleneck_dim: 256
+  # PARTICULAR
   trade_off_norm: 0.05
   trade_off_entropy: 0.03
   dropout_p: 0.5
   delta: 0.3
   num_blocks: 2
-  epochs: 40
-  iters_per_epoch: 1000
-  early_stopping: 5
 
 adda:
-  bottleneck_dim: 256
+  # GENERAL
   lr: 0.05
   lr_gamma: 0.001
   lr_decay: 0.25
-  lr_d: 0.05
   momentum: 0.9
   weight_decay: 0.001
-  trade_off: 1.5
-  epochs: 40
   iters_per_epoch: 1000
   early_stopping: 5
+  epochs: 40
+  # DA
+  bottleneck_dim: 256
+  # PARTICULAR
+  lr_d: 0.05
+  trade_off: 1.5
 
 mdd:
-  margin: 4.0
-  bottleneck_dim: 256
+  # GENERAL
   lr: 0.05
   lr_gamma: 0.001
   lr_decay: 0.25
   momentum: 0.9
   weight_decay: 0.001
-  trade_off: 1.5
-  epochs: 40
   iters_per_epoch: 1000
   early_stopping: 5
+  epochs: 40
+  # DA
+  bottleneck_dim: 256
+  # PARTICULAR
+  margin: 4.0
+  trade_off: 1.5
 
 source_only:
+  # GENERAL
   lr: 0.05
   lr_gamma: 0.001
   lr_decay: 0.25
   momentum: 0.9
   weight_decay: 0.001
-  epochs: 10
   iters_per_epoch: 1000
   early_stopping: 3
+  epochs: 10
 
 target_only:
+  # GENERAL
   lr: 0.05
   lr_gamma: 0.001
   lr_decay: 0.25
   momentum: 0.9
   weight_decay: 0.001
-  epochs: 10
   iters_per_epoch: 1000
   early_stopping: 3
+  epochs: 10

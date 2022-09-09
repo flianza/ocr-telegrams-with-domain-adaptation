@@ -223,7 +223,9 @@ est\'andar.
 
 Concluida la etapa de an\'alisis y limpieza, se exportan los d\'igitos en un formato similar al dataset {\it MNIST} con
 la etiqueta que oficialmente fue registrada en las elecciones del 2021. El mismo ser\'a nombrado como {\it TDS}
-(dataset de telegramas) de aqu\'i en adelante.
+(dataset de telegramas) de aqu\'i en adelante. El mismo posee un total de 170.718 im\'agenes de d\'igitos cuadradas con
+sus dimensiones orginales, es decir, no se encuentran estandarizados en una dimension espec\'ifica. Esto \'ultimo es
+adrede ya que puede servir para mejorar el dataset en futuros trabajos.
 
 \begin{figure}[H]
     \centering
@@ -233,6 +235,61 @@ la etiqueta que oficialmente fue registrada en las elecciones del 2021. El mismo
 \end{figure}
 
 \section{Dise\~{n}o experimental}
+
+Se entrenaron redes ResNet-50 \parencite{he2016deep} por cada una de las t\'ecnicas de adaptaci\'on de dominio descriptas en el cap\'itulo
+\ref{Chapter2}. Adicionalmente, se entren\'o una sin ninguna de las t\'ecnicas mencionadas para ser utilizada como
+base.
+
+\subsection{Metodolog\'ia de entrenamiento}
+
+Para entrenar modelos mediante adaptaci\'on de dominio, se precisan dos datasets: el de origen que se encuentra
+etiquetado y el de destino sin etiquetar. Los experimentos llevados a cabo utilizan el {\it MNIST} como origen y el
+    {\it TDS} como destino. Se realizaron 3 particiones de cada uno:
+
+\begin{itemize}
+    \item Entrenamiento (70\% de cada dataset): utilizado para entrenar la ResNet-50 en cada \'epoca.
+    \item Validaci\'on (15\% de cada dataset): utilizado para calcular los mejores hiperpar\'ametros del modelo.
+    \item Test (15\% de cada dataset): utilizado para calcular las m\'etricas y gr\'aficos finales del modelo entrenado.
+\end{itemize}
+
+El algoritmo de entrenamiento detallado en \ref{alg:experimento} se repite por cada uno de los experimentos planteados
+anteriormente.
+
+\begin{algorithm}
+    \caption{Experimento}
+    \label{alg:experimento}
+    \begin{algorithmic}
+        \STATE mejor\_loss $\gets$ 999.999
+        \STATE mejor\_modelo $\gets$ NULL
+        \FOR{iteracion en max\_iters\_optimizacion}
+        \STATE params $\gets$ estimar\_params()
+        \STATE mejor\_loss\_epoch $\gets$ 999.999
+        \STATE counter $\gets$ 0
+        \FOR{epoch en epochs}
+        \STATE modelo $\gets$ entrenar\_epoch($MNIST_{train}$, $TDS_{train}$, params)
+        \STATE loss $\gets$ validar(modelo, $MNIST_{val}$, $TDS_{val}$)
+        \IF{loss < mejor\_loss\_epoch}
+        \STATE mejor\_loss\_epoch $\gets$ loss
+        \STATE mejor\_modelo\_epoch $\gets$ modelo
+        \STATE counter $\gets$ 0
+        \ELSE
+        \STATE counter++
+        \IF{counter > early\_stopping}
+        \STATE break
+        \ENDIF
+        \ENDIF
+        \ENDFOR
+        \IF{mejor\_loss\_epoch < mejor\_loss}
+        \STATE mejor\_loss $\gets$ mejor\_loss\_epoch
+        \STATE mejor\_modelo $\gets$ mejor\_modelo\_epoch
+        \ENDIF
+        \ENDFOR
+        \STATE evaluar(mejor\_modelo, $MNIST_{test}$, $TDS_{test}$)
+    \end{algorithmic}
+
+\end{algorithm}
+
+\subsection{Selecci\'on y optimizaci\'on del modelo}
 
 \lipsum[1]
 
