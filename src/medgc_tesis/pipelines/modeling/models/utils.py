@@ -134,4 +134,4 @@ class LeNet(nn.Sequential):
 
 
 def get_backbone_model():
-    return resnet50()
+    return LeNet()

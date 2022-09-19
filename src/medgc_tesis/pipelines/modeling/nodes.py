@@ -1,197 +1,175 @@
 import logging
-from argparse import Namespace
-from typing import Any, Dict, Tuple
 
 import numpy as np
+import optuna
 import pandas as pd
 import torch
 import torch.backends.cudnn as cudnn
-import torch.nn as nn
-import umap
-from matplotlib import pyplot as plt
+from optuna.samplers import RandomSampler
 from PIL import Image
-from tllib.utils.analysis import a_distance, collect_feature
-from tllib.utils.data import ForeverDataIterator
+from pytorch_lightning import Trainer, seed_everything
+from pytorch_lightning.callbacks import ModelCheckpoint
+from pytorch_lightning.callbacks.early_stopping import EarlyStopping
+from pytorch_lightning.loggers import TensorBoardLogger
 from torch.backends import cudnn
 from tqdm import tqdm
 
 from medgc_tesis.pipelines.modeling.models import adda, afn, dann, mdd, vanilla
-from medgc_tesis.pipelines.modeling.models.utils import get_backbone_model, validate
+from medgc_tesis.pipelines.modeling.models.data import DomainAdaptationDataModule
+from medgc_tesis.pipelines.modeling.utils import LeNetBackbone
 from medgc_tesis.utils.transforms import get_data_transform
 
-device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 cudnn.benchmark = True
 tqdm.pandas()
 
 logger = logging.getLogger(__name__)
+seed_everything(48721, workers=True)
+
+# region ADDA
+def entrenar_prueba_adda():
+    model_name = "adda"
+
+    study = optuna.create_study(
+        directions=["minimize", "maximize"],
+        study_name=model_name,
+        sampler=RandomSampler(42),
+    )
+    study.optimize(suggest_adda, n_trials=10)
+
+    best_params = study.best_trials[0].params
+
+    best_model, _ = fit_adda(best_params, test=True)
+
+    return best_model
 
 
-def entrenar_vanilla(
-    params: Dict,
-    digitos_train: ForeverDataIterator,
-    digitos_test: ForeverDataIterator,
-    digitos_val: ForeverDataIterator,
-) -> Tuple[Any, pd.DataFrame, str]:
-    args = Namespace(**params)
-    logger.info(args)
+def suggest_adda(trial: optuna.Trial):
+    params = {
+        "lr": trial.suggest_float("lr", 1e-4, 0.1),
+        "lr_d": trial.suggest_float("lr_d", 1e-4, 0.1),
+        "trade_off": trial.suggest_float("trade_off", 0.5, 2),
+    }
+    _, val_metrics = fit_adda(params, test=False)
 
-    backbone = get_backbone_model()
-    classifier, history = vanilla.train(device, backbone, digitos_train, digitos_test, args)
-
-    _, confusion_matrix_train = validate(device, digitos_train.data_loader, classifier)
-    _, confusion_matrix_test = validate(device, digitos_test.data_loader, classifier)
-    acc, confusion_matrix_val = validate(device, digitos_val.data_loader, classifier)
-    logger.info("val acc: %f" % acc)
-    logger.info(confusion_matrix_val)
-
-    metrics = f"TRAIN\n{confusion_matrix_train}\n\nTEST\n{confusion_matrix_test}\n\nVAL\n{confusion_matrix_val}"
-
-    return classifier, history, metrics
+    return val_metrics["val_domain_acc"], val_metrics["val_class_acc"]
 
 
-def entrenar_dann(
-    params: Dict,
-    digitos_mnist_train: ForeverDataIterator,
-    digitos_tds_train: ForeverDataIterator,
-    digitos_tds_test: ForeverDataIterator,
-    digitos_tds_val: ForeverDataIterator,
-) -> Tuple[Any, pd.DataFrame, str]:
-    args = Namespace(**params)
-    logger.info(args)
+def fit_adda(params, test):
+    model_name = "adda"
+    backbone = LeNetBackbone()
 
-    backbone = get_backbone_model()
-    classifier, history = dann.train(device, backbone, digitos_mnist_train, digitos_tds_train, digitos_tds_test, args)
+    dm = DomainAdaptationDataModule(transform=backbone.data_transform())
 
-    _, confusion_matrix_train = validate(device, digitos_tds_train.data_loader, classifier)
-    _, confusion_matrix_test = validate(device, digitos_tds_test.data_loader, classifier)
-    acc, confusion_matrix_val = validate(device, digitos_tds_val.data_loader, classifier)
-    logger.info("val acc: %f" % acc)
-    logger.info(confusion_matrix_val)
+    params.update(
+        {
+            "lr_gamma": 0.001,
+            "lr_decay": 0.25,
+            "momentum": 0.9,
+            "weight_decay": 0.001,
+            "bottleneck_dim": 256,
+        }
+    )
 
-    metrics = f"TRAIN\n{confusion_matrix_train}\n\nTEST\n{confusion_matrix_test}\n\nVAL\n{confusion_matrix_val}"
+    model = adda.AddaModel(backbone=backbone, **params)
 
-    return classifier, history, metrics
+    trainer = Trainer(
+        accelerator="gpu",
+        gpus=0,
+        max_epochs=10,
+        callbacks=[
+            EarlyStopping(monitor="val_domain_acc", mode="min", patience=3),
+            ModelCheckpoint(
+                monitor="val_domain_acc",
+                filename=model_name + "-{epoch:02d}-{val_domain_acc:.4f}",
+            ),
+        ],
+        deterministic=True,
+        logger=TensorBoardLogger("tb_logs", name=model_name),
+    )
 
+    trainer.fit(model, datamodule=dm)
 
-def entrenar_afn(
-    params: Dict,
-    digitos_mnist_train: ForeverDataIterator,
-    digitos_tds_train: ForeverDataIterator,
-    digitos_tds_test: ForeverDataIterator,
-    digitos_tds_val: ForeverDataIterator,
-) -> Tuple[Any, pd.DataFrame, str]:
-    args = Namespace(**params)
-    logger.info(args)
+    val_metrics = trainer.validate(model, datamodule=dm)
 
-    backbone = get_backbone_model()
-    classifier, history = afn.train(device, backbone, digitos_mnist_train, digitos_tds_train, digitos_tds_test, args)
+    if test:
+        trainer.test(model, datamodule=dm)
 
-    _, confusion_matrix_train = validate(device, digitos_tds_train.data_loader, classifier)
-    _, confusion_matrix_test = validate(device, digitos_tds_test.data_loader, classifier)
-    acc, confusion_matrix_val = validate(device, digitos_tds_val.data_loader, classifier)
-    logger.info("val acc: %f" % acc)
-    logger.info(confusion_matrix_val)
-
-    metrics = f"TRAIN\n{confusion_matrix_train}\n\nTEST\n{confusion_matrix_test}\n\nVAL\n{confusion_matrix_val}"
-
-    return classifier, history, metrics
+    return model.classifier, val_metrics[0]
 
 
-def entrenar_adda(
-    params: Dict,
-    digitos_mnist_train: ForeverDataIterator,
-    digitos_tds_train: ForeverDataIterator,
-    digitos_tds_test: ForeverDataIterator,
-    digitos_tds_val: ForeverDataIterator,
-) -> Tuple[Any, pd.DataFrame, str]:
-    args = Namespace(**params)
-    logger.info(args)
+# endregion
 
-    backbone = get_backbone_model()
-    classifier, history = adda.train(device, backbone, digitos_mnist_train, digitos_tds_train, digitos_tds_test, args)
+# region source_only
+def entrenar_prueba_source_only():
+    model_name = "source_only"
 
-    _, confusion_matrix_train = validate(device, digitos_tds_train.data_loader, classifier)
-    _, confusion_matrix_test = validate(device, digitos_tds_test.data_loader, classifier)
-    acc, confusion_matrix_val = validate(device, digitos_tds_val.data_loader, classifier)
-    logger.info("val acc: %f" % acc)
-    logger.info(confusion_matrix_val)
+    study = optuna.create_study(
+        directions=["minimize", "maximize"],
+        study_name=model_name,
+        sampler=RandomSampler(42),
+    )
+    study.optimize(suggest_source_only, n_trials=10)
 
-    metrics = f"TRAIN\n{confusion_matrix_train}\n\nTEST\n{confusion_matrix_test}\n\nVAL\n{confusion_matrix_val}"
+    best_params = study.best_trials[0].params
 
-    return classifier, history, metrics
+    best_model, _ = fit_source_only(best_params, test=True)
+
+    return best_model
 
 
-def entrenar_mdd(
-    params: Dict,
-    digitos_mnist_train: ForeverDataIterator,
-    digitos_tds_train: ForeverDataIterator,
-    digitos_tds_test: ForeverDataIterator,
-    digitos_tds_val: ForeverDataIterator,
-) -> Tuple[Any, pd.DataFrame, str]:
-    args = Namespace(**params)
-    logger.info(args)
+def suggest_source_only(trial: optuna.Trial):
+    params = {
+        "lr": trial.suggest_float("lr", 1e-4, 0.1),
+    }
+    _, val_metrics = fit_source_only(params, test=False)
 
-    backbone = get_backbone_model()
-    classifier, history = mdd.train(device, backbone, digitos_mnist_train, digitos_tds_train, digitos_tds_test, args)
-
-    _, confusion_matrix_train = validate(device, digitos_tds_train.data_loader, classifier)
-    _, confusion_matrix_test = validate(device, digitos_tds_test.data_loader, classifier)
-    acc, confusion_matrix_val = validate(device, digitos_tds_val.data_loader, classifier)
-    logger.info("val acc: %f" % acc)
-    logger.info(confusion_matrix_val)
-
-    metrics = f"TRAIN\n{confusion_matrix_train}\n\nTEST\n{confusion_matrix_test}\n\nVAL\n{confusion_matrix_val}"
-
-    return classifier, history, metrics
+    return val_metrics["val_loss"], val_metrics["val_class_acc"]
 
 
-def extraer_features(
-    modelo: Any,
-    digitos_source: ForeverDataIterator,
-    digitos_target: ForeverDataIterator,
-) -> Tuple[pd.DataFrame, pd.DataFrame]:
-    if hasattr(modelo, "pool_layer"):
-        feature_extractor = nn.Sequential(modelo.backbone, modelo.pool_layer, modelo.bottleneck).to(device)
-    else:
-        feature_extractor = nn.Sequential(modelo.backbone, modelo.bottleneck).to(device)
-    source_feature = collect_feature(digitos_source.data_loader, feature_extractor, device)
-    target_feature = collect_feature(digitos_target.data_loader, feature_extractor, device)
+def fit_source_only(params, test):
+    model_name = "source_only"
+    backbone = LeNetBackbone()
 
-    # A_distance = a_distance.calculate(source_feature, target_feature, device, training_epochs=4)
-    # logger.info("A-distance: %f" % A_distance)
+    dm = DomainAdaptationDataModule(transform=backbone.data_transform())
 
-    df_source_feature = pd.DataFrame(source_feature.numpy())
-    df_source_feature.columns = df_source_feature.columns.astype(str)
-    df_target_feature = pd.DataFrame(target_feature.numpy())
-    df_target_feature.columns = df_target_feature.columns.astype(str)
+    params.update(
+        {
+            "lr_gamma": 0.001,
+            "lr_decay": 0.25,
+            "momentum": 0.9,
+            "weight_decay": 0.001,
+        }
+    )
 
-    return df_source_feature, df_target_feature
+    model = vanilla.SourceOnlyModel(backbone=backbone, **params)
+
+    trainer = Trainer(
+        accelerator="gpu",
+        gpus=0,
+        max_epochs=10,
+        callbacks=[
+            EarlyStopping(monitor="val_loss", mode="min", patience=3),
+            ModelCheckpoint(
+                monitor="val_loss",
+                filename=model_name + "-{epoch:02d}-{val_loss:.4f}",
+            ),
+        ],
+        deterministic=True,
+        logger=TensorBoardLogger("tb_logs", name=model_name),
+    )
+
+    trainer.fit(model, datamodule=dm)
+
+    val_metrics = trainer.validate(model, datamodule=dm)
+
+    if test:
+        trainer.test(model, datamodule=dm)
+
+    return model.classifier, val_metrics[0]
 
 
-def aplicar_umap(features_modelo_mnist, features_modelo_tds):
-    source_feature = features_modelo_mnist.values
-    target_feature = features_modelo_tds.values
-    features = np.concatenate([source_feature, target_feature], axis=0)
-
-    X_umap = umap.UMAP(random_state=33).fit_transform(features)
-    domains = np.concatenate((np.ones(len(source_feature)), np.zeros(len(target_feature))))
-
-    df = pd.DataFrame(X_umap)
-    df["domain"] = domains
-    df.columns = df.columns.astype(str)
-
-    return df
-
-
-def graficar_umap(df_umap: pd.DataFrame) -> plt.figure:
-    df_source = df_umap.query("domain == 1.0")
-    df_target = df_umap.query("domain == 0.0").sample(n=df_source.shape[0])
-
-    fig, ax = plt.subplots(figsize=(7, 7))
-    ax.scatter(df_target["0"], df_target["1"], label="target", alpha=0.1)
-    ax.scatter(df_source["0"], df_source["1"], label="source", alpha=0.1)
-    plt.legend()
-    return fig
+# endregion
 
 
 def aplicar_modelo(modelo, dataset_telegramas: pd.DataFrame) -> pd.DataFrame:

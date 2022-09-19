@@ -5,14 +5,8 @@ from kedro.pipeline.modular_pipeline import pipeline
 
 from medgc_tesis.pipelines.modeling.nodes import (
     aplicar_modelo,
-    aplicar_umap,
-    entrenar_adda,
-    entrenar_afn,
-    entrenar_dann,
-    entrenar_mdd,
-    entrenar_vanilla,
-    extraer_features,
-    graficar_umap,
+    entrenar_prueba_adda,
+    entrenar_prueba_source_only,
 )
 
 
@@ -61,20 +55,36 @@ def create_subpipeline(type: str, train_func: Callable, datasets=None) -> Pipeli
 
 
 def create_pipeline(**kwargs) -> Pipeline:
-    pipeline_dann = create_subpipeline("dann", entrenar_dann)
-    pipeline_afn = create_subpipeline("afn", entrenar_afn)
-    pipeline_adda = create_subpipeline("adda", entrenar_adda)
-    pipeline_mdd = create_subpipeline("mdd", entrenar_mdd)
+    # pipeline_dann = create_subpipeline("dann", entrenar_dann)
+    # pipeline_afn = create_subpipeline("afn", entrenar_afn)
+    # pipeline_adda = create_subpipeline("adda", entrenar_adda)
+    # pipeline_mdd = create_subpipeline("mdd", entrenar_mdd)
 
-    pipeline_source_only = create_subpipeline(
-        "source_only",
-        entrenar_vanilla,
-        datasets=["digitos_mnist_train", "digitos_tds_test", "digitos_tds_val"],
-    )
-    pipeline_target_only = create_subpipeline(
-        "target_only",
-        entrenar_vanilla,
-        datasets=["digitos_tds_train", "digitos_tds_test", "digitos_tds_val"],
-    )
+    # pipeline_source_only = create_subpipeline(
+    #     "source_only",
+    #     entrenar_vanilla,
+    #     datasets=["digitos_mnist_train", "digitos_tds_test", "digitos_tds_val"],
+    # )
+    # pipeline_target_only = create_subpipeline(
+    #     "target_only",
+    #     entrenar_vanilla,
+    #     datasets=["digitos_tds_train", "digitos_tds_test", "digitos_tds_val"],
+    # )
 
-    return pipeline_dann + pipeline_afn + pipeline_adda + pipeline_mdd + pipeline_source_only + pipeline_target_only
+    # return pipeline_dann + pipeline_afn + pipeline_adda + pipeline_mdd + pipeline_source_only + pipeline_target_only
+    return pipeline(
+        [
+            node(
+                entrenar_prueba_adda,
+                inputs=None,
+                outputs="modelo_adda",
+                name="entrenar_prueba_adda",
+            ),
+            node(
+                entrenar_prueba_source_only,
+                inputs=None,
+                outputs="modelo_source_only",
+                name="entrenar_prueba_source_only",
+            ),
+        ]
+    )
