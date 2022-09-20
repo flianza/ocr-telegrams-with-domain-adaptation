@@ -10,7 +10,7 @@
       "request": "launch",
       "console": "integratedTerminal",
       "module": "kedro",
-      "justMyCode": false,
+      "justMyCode": true,
       "args": ["run", "--pipeline=modeling"]
     }
   ]

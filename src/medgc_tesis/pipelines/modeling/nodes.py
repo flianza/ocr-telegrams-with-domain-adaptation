@@ -1,3 +1,4 @@
+import json
 import logging
 
 import numpy as np
@@ -27,7 +28,7 @@ logger = logging.getLogger(__name__)
 seed_everything(48721, workers=True)
 
 # region ADDA
-def entrenar_prueba_adda():
+def entrenar_adda():
     model_name = "adda"
 
     study = optuna.create_study(
@@ -35,27 +36,27 @@ def entrenar_prueba_adda():
         study_name=model_name,
         sampler=RandomSampler(42),
     )
-    study.optimize(suggest_adda, n_trials=10)
+    study.optimize(_suggest_adda, n_trials=15)
 
     best_params = study.best_trials[0].params
 
-    best_model, _ = fit_adda(best_params, test=True)
+    best_model, _ = _fit_adda(best_params, test=True)
 
     return best_model
 
 
-def suggest_adda(trial: optuna.Trial):
+def _suggest_adda(trial: optuna.Trial):
     params = {
         "lr": trial.suggest_float("lr", 1e-4, 0.1),
         "lr_d": trial.suggest_float("lr_d", 1e-4, 0.1),
         "trade_off": trial.suggest_float("trade_off", 0.5, 2),
     }
-    _, val_metrics = fit_adda(params, test=False)
+    _, val_metrics = _fit_adda(params, test=False)
 
     return val_metrics["val_domain_acc"], val_metrics["val_class_acc"]
 
 
-def fit_adda(params, test):
+def _fit_adda(params, test):
     model_name = "adda"
     backbone = LeNetBackbone()
 
@@ -93,6 +94,244 @@ def fit_adda(params, test):
     val_metrics = trainer.validate(model, datamodule=dm)
 
     if test:
+        with open(f"data/06_models/{model_name}/best_params.json", "w") as f:
+            json.dump(params, f)
+        trainer.test(model, datamodule=dm)
+
+    return model.classifier, val_metrics[0]
+
+
+# endregion
+
+# region DANN
+def entrenar_dann():
+    model_name = "dann"
+
+    study = optuna.create_study(
+        directions=["minimize", "maximize"],
+        study_name=model_name,
+        sampler=RandomSampler(42),
+    )
+    study.optimize(_suggest_dann, n_trials=15)
+
+    best_params = study.best_trials[0].params
+
+    best_model, _ = _fit_dann(best_params, test=True)
+
+    return best_model
+
+
+def _suggest_dann(trial: optuna.Trial):
+    params = {
+        "lr": trial.suggest_float("lr", 1e-4, 0.1),
+        "trade_off": trial.suggest_float("trade_off", 0.5, 2),
+    }
+    _, val_metrics = _fit_dann(params, test=False)
+
+    return val_metrics["val_domain_acc"], val_metrics["val_class_acc"]
+
+
+def _fit_dann(params, test):
+    model_name = "dann"
+    backbone = LeNetBackbone()
+
+    dm = DomainAdaptationDataModule(transform=backbone.data_transform())
+
+    params.update(
+        {
+            "lr_gamma": 0.001,
+            "lr_decay": 0.25,
+            "momentum": 0.9,
+            "weight_decay": 0.001,
+            "bottleneck_dim": 256,
+        }
+    )
+
+    model = dann.DannModel(backbone=backbone, **params)
+
+    trainer = Trainer(
+        accelerator="gpu",
+        gpus=0,
+        max_epochs=10,
+        callbacks=[
+            EarlyStopping(monitor="val_domain_acc", mode="min", patience=3),
+            ModelCheckpoint(
+                monitor="val_domain_acc",
+                filename=model_name + "-{epoch:02d}-{val_domain_acc:.4f}",
+            ),
+        ],
+        deterministic=True,
+        logger=TensorBoardLogger("tb_logs", name=model_name),
+    )
+
+    trainer.fit(model, datamodule=dm)
+
+    val_metrics = trainer.validate(model, datamodule=dm)
+
+    if test:
+        with open(f"data/06_models/{model_name}/best_params.json", "w") as f:
+            json.dump(params, f)
+        trainer.test(model, datamodule=dm)
+
+    return model.classifier, val_metrics[0]
+
+
+# endregion
+
+# region MDD
+def entrenar_mdd():
+    model_name = "mdd"
+
+    study = optuna.create_study(
+        directions=["minimize", "maximize"],
+        study_name=model_name,
+        sampler=RandomSampler(42),
+    )
+    study.optimize(_suggest_mdd, n_trials=15)
+
+    best_params = study.best_trials[0].params
+
+    best_model, _ = _fit_mdd(best_params, test=True)
+
+    return best_model
+
+
+def _suggest_mdd(trial: optuna.Trial):
+    params = {
+        "lr": trial.suggest_float("lr", 1e-4, 0.1),
+        "trade_off": trial.suggest_float("trade_off", 0.5, 2),
+        "margin": trial.suggest_float("margin", 1, 10),
+    }
+    _, val_metrics = _fit_mdd(params, test=False)
+
+    return val_metrics["val_loss"], val_metrics["val_class_acc"]
+
+
+def _fit_mdd(params, test):
+    model_name = "mdd"
+    backbone = LeNetBackbone()
+
+    dm = DomainAdaptationDataModule(transform=backbone.data_transform())
+
+    params.update(
+        {
+            "lr_gamma": 0.001,
+            "lr_decay": 0.25,
+            "momentum": 0.9,
+            "weight_decay": 0.001,
+            "bottleneck_dim": 256,
+        }
+    )
+
+    model = mdd.MddModel(backbone=backbone, **params)
+
+    trainer = Trainer(
+        accelerator="gpu",
+        gpus=0,
+        max_epochs=10,
+        callbacks=[
+            EarlyStopping(monitor="val_loss", mode="min", patience=3),
+            ModelCheckpoint(
+                monitor="val_loss",
+                filename=model_name + "-{epoch:02d}-{val_loss:.4f}",
+            ),
+        ],
+        deterministic=True,
+        logger=TensorBoardLogger("tb_logs", name=model_name),
+    )
+
+    trainer.fit(model, datamodule=dm)
+
+    val_metrics = trainer.validate(model, datamodule=dm)
+
+    if test:
+        with open(f"data/06_models/{model_name}/best_params.json", "w") as f:
+            json.dump(params, f)
+        trainer.test(model, datamodule=dm)
+
+    return model.classifier, val_metrics[0]
+
+
+# endregion
+
+# region AFN
+def entrenar_afn():
+    model_name = "afn"
+
+    study = optuna.create_study(
+        directions=["minimize", "maximize"],
+        study_name=model_name,
+        sampler=RandomSampler(42),
+    )
+    study.optimize(_suggest_afn, n_trials=15)
+
+    best_params = study.best_trials[0].params
+
+    del best_params["enable_trade_off_entropy"]
+    best_model, _ = _fit_afn(best_params, test=True)
+
+    return best_model
+
+
+def _suggest_afn(trial: optuna.Trial):
+    params = {
+        "lr": trial.suggest_float("lr", 1e-4, 0.1),
+        "delta": trial.suggest_uniform("delta", 0.01, 5),
+        "num_blocks": trial.suggest_int("num_blocks", 1, 4),
+        "dropout_p": trial.suggest_float("dropout_p", 0.3, 0.7),
+        "trade_off_norm": trial.suggest_uniform("trade_off_norm", 0.001, 0.1),
+    }
+
+    enable_trade_off_entropy = trial.suggest_categorical("enable_trade_off_entropy", [True, False])
+    if enable_trade_off_entropy:
+        params.update(
+            {
+                "trade_off_entropy": trial.suggest_uniform("trade_off_entropy", 0.001, 0.1),
+            }
+        )
+
+    _, val_metrics = _fit_afn(params, test=False)
+
+    return val_metrics["val_loss"], val_metrics["val_class_acc"]
+
+
+def _fit_afn(params, test):
+    model_name = "afn"
+    backbone = LeNetBackbone()
+
+    dm = DomainAdaptationDataModule(transform=backbone.data_transform())
+
+    params.update(
+        {
+            "weight_decay": 0.001,
+            "bottleneck_dim": 256,
+        }
+    )
+
+    model = afn.AfnModel(backbone=backbone, **params)
+
+    trainer = Trainer(
+        accelerator="gpu",
+        gpus=0,
+        max_epochs=10,
+        callbacks=[
+            EarlyStopping(monitor="val_loss", mode="min", patience=3),
+            ModelCheckpoint(
+                monitor="val_loss",
+                filename=model_name + "-{epoch:02d}-{val_loss:.4f}",
+            ),
+        ],
+        deterministic=True,
+        logger=TensorBoardLogger("tb_logs", name=model_name),
+    )
+
+    trainer.fit(model, datamodule=dm)
+
+    val_metrics = trainer.validate(model, datamodule=dm)
+
+    if test:
+        with open(f"data/06_models/{model_name}/best_params.json", "w") as f:
+            json.dump(params, f)
         trainer.test(model, datamodule=dm)
 
     return model.classifier, val_metrics[0]
@@ -101,7 +340,7 @@ def fit_adda(params, test):
 # endregion
 
 # region source_only
-def entrenar_prueba_source_only():
+def entrenar_source_only():
     model_name = "source_only"
 
     study = optuna.create_study(
@@ -109,25 +348,25 @@ def entrenar_prueba_source_only():
         study_name=model_name,
         sampler=RandomSampler(42),
     )
-    study.optimize(suggest_source_only, n_trials=10)
+    study.optimize(_suggest_source_only, n_trials=15)
 
     best_params = study.best_trials[0].params
 
-    best_model, _ = fit_source_only(best_params, test=True)
+    best_model, _ = _fit_source_only(best_params, test=True)
 
     return best_model
 
 
-def suggest_source_only(trial: optuna.Trial):
+def _suggest_source_only(trial: optuna.Trial):
     params = {
         "lr": trial.suggest_float("lr", 1e-4, 0.1),
     }
-    _, val_metrics = fit_source_only(params, test=False)
+    _, val_metrics = _fit_source_only(params, test=False)
 
     return val_metrics["val_loss"], val_metrics["val_class_acc"]
 
 
-def fit_source_only(params, test):
+def _fit_source_only(params, test):
     model_name = "source_only"
     backbone = LeNetBackbone()
 
@@ -164,6 +403,81 @@ def fit_source_only(params, test):
     val_metrics = trainer.validate(model, datamodule=dm)
 
     if test:
+        with open(f"data/06_models/{model_name}/best_params.json", "w") as f:
+            json.dump(params, f)
+        trainer.test(model, datamodule=dm)
+
+    return model.classifier, val_metrics[0]
+
+
+# endregion
+
+# region target_only
+def entrenar_target_only():
+    model_name = "target_only"
+
+    study = optuna.create_study(
+        directions=["minimize", "maximize"],
+        study_name=model_name,
+        sampler=RandomSampler(42),
+    )
+    study.optimize(_suggest_target_only, n_trials=15)
+
+    best_params = study.best_trials[0].params
+
+    best_model, _ = _fit_target_only(best_params, test=True)
+
+    return best_model
+
+
+def _suggest_target_only(trial: optuna.Trial):
+    params = {
+        "lr": trial.suggest_float("lr", 1e-4, 0.1),
+    }
+    _, val_metrics = _fit_target_only(params, test=False)
+
+    return val_metrics["val_loss"], val_metrics["val_class_acc"]
+
+
+def _fit_target_only(params, test):
+    model_name = "target_only"
+    backbone = LeNetBackbone()
+
+    dm = DomainAdaptationDataModule(transform=backbone.data_transform())
+
+    params.update(
+        {
+            "lr_gamma": 0.001,
+            "lr_decay": 0.25,
+            "momentum": 0.9,
+            "weight_decay": 0.001,
+        }
+    )
+
+    model = vanilla.TargetOnlyModel(backbone=backbone, **params)
+
+    trainer = Trainer(
+        accelerator="gpu",
+        gpus=0,
+        max_epochs=10,
+        callbacks=[
+            EarlyStopping(monitor="val_loss", mode="min", patience=3),
+            ModelCheckpoint(
+                monitor="val_loss",
+                filename=model_name + "-{epoch:02d}-{val_loss:.4f}",
+            ),
+        ],
+        deterministic=True,
+        logger=TensorBoardLogger("tb_logs", name=model_name),
+    )
+
+    trainer.fit(model, datamodule=dm)
+
+    val_metrics = trainer.validate(model, datamodule=dm)
+
+    if test:
+        with open(f"data/06_models/{model_name}/best_params.json", "w") as f:
+            json.dump(params, f)
         trainer.test(model, datamodule=dm)
 
     return model.classifier, val_metrics[0]
@@ -173,7 +487,9 @@ def fit_source_only(params, test):
 
 
 def aplicar_modelo(modelo, dataset_telegramas: pd.DataFrame) -> pd.DataFrame:
-    transform = get_data_transform()
+    transform = LeNetBackbone().data_transform()
+    modelo = modelo.to("cuda")
+    modelo.eval()
 
     def predecir_digitos(digitos):
         xs = []
