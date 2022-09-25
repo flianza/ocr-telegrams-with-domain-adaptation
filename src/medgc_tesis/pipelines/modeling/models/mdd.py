@@ -18,7 +18,8 @@ logger = logging.getLogger(__name__)
 class MddModel(DomainAdaptationModel):
     def __init__(self, backbone, bottleneck_dim, lr, momentum, weight_decay, lr_gamma, lr_decay, margin, trade_off):
         super().__init__(
-            name="mdd",
+            da_technique="mdd",
+            model_name=backbone.name,
             classifier=ImageClassifier(
                 backbone.model(),
                 num_classes=10,

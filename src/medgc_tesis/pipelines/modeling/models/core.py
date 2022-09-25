@@ -1,31 +1,24 @@
 import json
 import logging
-from dataclasses import dataclass
-from typing import Any, Callable, Type
 
 import matplotlib.pyplot as plt
-import optuna
 import pytorch_lightning as pl
 import torch
 import torch.nn.functional as F
 import torchdrift
-from optuna.samplers import RandomSampler
-from pytorch_lightning.loggers import TensorBoardLogger
 from sklearn.metrics import f1_score
 from tllib.utils.metric import ConfusionMatrix, accuracy
 from torch import nn
 
-from medgc_tesis.pipelines.modeling.models.data import DomainAdaptationDataModule
-from medgc_tesis.pipelines.modeling.utils import Backbone, analyze_latent_space
+from medgc_tesis.pipelines.modeling.utils import analyze_latent_space
 
 logger = logging.getLogger(__name__)
 
 
 class DomainAdaptationModel(pl.LightningModule):
-    def __init__(self, name, classifier):
+    def __init__(self, da_technique, model_name, classifier):
         super().__init__()
-        self.name = name
-        self.root_dir = f"data/06_models/{name}"
+        self.root_dir = f"data/06_models/{da_technique}/{model_name}"
         self.classifier = classifier
         self.confusion_matrix = ConfusionMatrix(10)
 
@@ -106,5 +99,3 @@ class DomainAdaptationModel(pl.LightningModule):
 
         plt.legend()
         fig.savefig(f"{self.root_dir}/umap.png")
-
-

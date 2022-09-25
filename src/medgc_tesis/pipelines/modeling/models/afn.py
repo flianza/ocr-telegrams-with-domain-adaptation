@@ -26,7 +26,8 @@ class AfnModel(DomainAdaptationModel):
         trade_off_entropy=None,
     ):
         super().__init__(
-            name="afn",
+            da_technique="afn",
+            model_name=backbone.name,
             classifier=ImageClassifier(
                 backbone.model(),
                 num_classes=10,

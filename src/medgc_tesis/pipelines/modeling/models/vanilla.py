@@ -15,7 +15,8 @@ logger = logging.getLogger(__name__)
 class SourceOnlyModel(DomainAdaptationModel):
     def __init__(self, backbone, lr, momentum, weight_decay, lr_gamma, lr_decay):
         super().__init__(
-            name="source_only",
+            da_technique="source_only",
+            model_name=backbone.name,
             classifier=Classifier(
                 backbone.model(),
                 num_classes=10,
@@ -108,7 +109,8 @@ class SourceOnlyModel(DomainAdaptationModel):
 class TargetOnlyModel(DomainAdaptationModel):
     def __init__(self, backbone, lr, momentum, weight_decay, lr_gamma, lr_decay):
         super().__init__(
-            name="target_only",
+            da_technique="target_only",
+            model_name=backbone.name,
             classifier=Classifier(
                 backbone.model(),
                 num_classes=10,

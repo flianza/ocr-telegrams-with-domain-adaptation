@@ -1,9 +1,8 @@
 import pytorch_lightning as pl
-from pytorch_lightning.trainer.states import RunningStage
 from pytorch_lightning.trainer.supporters import CombinedLoader
 from torch.utils.data import DataLoader
 
-from medgc_tesis.pipelines.modeling.utils import (
+from medgc_tesis.pipelines.modeling.data import (
     ForeverDataIteratorCustom,
     MNISTCustom,
     TDSCustom,
@@ -11,7 +10,7 @@ from medgc_tesis.pipelines.modeling.utils import (
 
 
 class DomainAdaptationDataModule(pl.LightningDataModule):
-    def __init__(self, batch_size=128, transform=None):
+    def __init__(self, batch_size=1024, transform=None):
         super().__init__()
         self.data_dir = ".\\data\\05_model_input\\"
         self.batch_size = batch_size

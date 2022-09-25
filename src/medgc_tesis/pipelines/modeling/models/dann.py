@@ -16,7 +16,8 @@ logger = logging.getLogger(__name__)
 class DannModel(DomainAdaptationModel):
     def __init__(self, backbone, bottleneck_dim, lr, momentum, weight_decay, lr_gamma, lr_decay, trade_off):
         super().__init__(
-            name="dann",
+            da_technique="dann",
+            model_name=backbone.name,
             classifier=ImageClassifier(
                 backbone.model(),
                 num_classes=10,

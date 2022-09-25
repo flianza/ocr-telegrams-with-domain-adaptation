@@ -18,7 +18,8 @@ logger = logging.getLogger(__name__)
 class AddaModel(DomainAdaptationModel):
     def __init__(self, backbone, bottleneck_dim, lr, lr_d, momentum, weight_decay, lr_gamma, lr_decay, trade_off):
         super().__init__(
-            name="adda",
+            da_technique="adda",
+            model_name=backbone.name,
             classifier=ImageClassifier(
                 backbone.model(),
                 num_classes=10,

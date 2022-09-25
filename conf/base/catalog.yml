@@ -46,238 +46,126 @@ digitos_tds_val:
 
 # ――――――――― DANN ―――――――――
 
-modelo_dann:
+modelo_lenet_dann:
   type: kedro_imagenes.extras.datasets.pytorch_model_dataset.PytorchModelDataSet
-  filepath: data/06_models/dann/modelo.pth
+  filepath: data/06_models/dann/lenet/modelo.pth
 
-modelo_dann_history:
+modelo_lenet_dann_predicciones:
   type: pandas.CSVDataSet
-  filepath: data/06_models/dann/history.csv
+  filepath: data/07_model_output/dann/lenet/predicciones.csv
 
-modelo_dann_metrics:
-  type: kedro.extras.datasets.text.TextDataSet
-  filepath: data/06_models/dann/metrics.txt
+modelo_resnet_dann:
+  type: kedro_imagenes.extras.datasets.pytorch_model_dataset.PytorchModelDataSet
+  filepath: data/06_models/dann/resnet/modelo.pth
 
-modelo_dann_features_mnist:
-  type: pandas.ParquetDataSet
-  filepath: data/06_models/dann/features_mnist.parquet
-
-modelo_dann_features_tds:
-  type: pandas.ParquetDataSet
-  filepath: data/06_models/dann/features_tds.parquet
-
-modelo_dann_features_umap:
-  type: pandas.ParquetDataSet
-  filepath: data/06_models/dann/features_umap.parquet
-
-modelo_dann_plot_umap:
-  type: kedro.extras.datasets.matplotlib.MatplotlibWriter
-  filepath: data/06_models/dann/umap.png
-
-modelo_dann_predicciones:
+modelo_resnet_dann_predicciones:
   type: pandas.CSVDataSet
-  filepath: data/07_model_output/dann/predicciones.csv
+  filepath: data/07_model_output/dann/resnet/predicciones.csv
 
 # ――――――――― AFN ―――――――――
 
-modelo_afn:
+modelo_lenet_afn:
   type: kedro_imagenes.extras.datasets.pytorch_model_dataset.PytorchModelDataSet
-  filepath: data/06_models/afn/modelo.pth
+  filepath: data/06_models/afn/lenet/modelo.pth
 
-modelo_afn_history:
+modelo_lenet_afn_predicciones:
   type: pandas.CSVDataSet
-  filepath: data/06_models/afn/history.csv
+  filepath: data/07_model_output/afn/lenet/predicciones.csv
 
-modelo_afn_metrics:
-  type: kedro.extras.datasets.text.TextDataSet
-  filepath: data/06_models/afn/metrics.txt
+modelo_resnet_afn:
+  type: kedro_imagenes.extras.datasets.pytorch_model_dataset.PytorchModelDataSet
+  filepath: data/06_models/afn/resnet/modelo.pth
 
-modelo_afn_features_mnist:
-  type: pandas.ParquetDataSet
-  filepath: data/06_models/afn/features_mnist.parquet
-
-modelo_afn_features_tds:
-  type: pandas.ParquetDataSet
-  filepath: data/06_models/afn/features_tds.parquet
-
-modelo_afn_features_umap:
-  type: pandas.ParquetDataSet
-  filepath: data/06_models/afn/features_umap.parquet
-
-modelo_afn_plot_umap:
-  type: kedro.extras.datasets.matplotlib.MatplotlibWriter
-  filepath: data/06_models/afn/umap.png
-
-modelo_afn_predicciones:
+modelo_resnet_afn_predicciones:
   type: pandas.CSVDataSet
-  filepath: data/07_model_output/afn/predicciones.csv
+  filepath: data/07_model_output/afn/resnet/predicciones.csv
 
 # ――――――――― ADDA ―――――――――
 
-modelo_adda:
+modelo_lenet_adda:
   type: kedro_imagenes.extras.datasets.pytorch_model_dataset.PytorchModelDataSet
-  filepath: data/06_models/adda/modelo.pth
+  filepath: data/06_models/adda/lenet/modelo.pth
 
-modelo_adda_history:
+modelo_lenet_adda_predicciones:
   type: pandas.CSVDataSet
-  filepath: data/06_models/adda/history.csv
+  filepath: data/07_model_output/adda/lenet/predicciones.csv
 
-modelo_adda_metrics:
-  type: kedro.extras.datasets.text.TextDataSet
-  filepath: data/06_models/adda/metrics.txt
+modelo_resnet_adda:
+  type: kedro_imagenes.extras.datasets.pytorch_model_dataset.PytorchModelDataSet
+  filepath: data/06_models/adda/resnet/modelo.pth
 
-modelo_adda_features_mnist:
-  type: pandas.ParquetDataSet
-  filepath: data/06_models/adda/features_mnist.parquet
-
-modelo_adda_features_tds:
-  type: pandas.ParquetDataSet
-  filepath: data/06_models/adda/features_tds.parquet
-
-modelo_adda_features_umap:
-  type: pandas.ParquetDataSet
-  filepath: data/06_models/adda/features_umap.parquet
-
-modelo_adda_plot_umap:
-  type: kedro.extras.datasets.matplotlib.MatplotlibWriter
-  filepath: data/06_models/adda/umap.png
-
-modelo_adda_predicciones:
+modelo_resnet_adda_predicciones:
   type: pandas.CSVDataSet
-  filepath: data/07_model_output/adda/predicciones.csv
+  filepath: data/07_model_output/adda/resnet/predicciones.csv
 
 # ――――――――― MDD ―――――――――
 
-modelo_mdd:
+modelo_lenet_mdd:
   type: kedro_imagenes.extras.datasets.pytorch_model_dataset.PytorchModelDataSet
-  filepath: data/06_models/mdd/modelo.pth
+  filepath: data/06_models/mdd/lenet/modelo.pth
 
-modelo_mdd_history:
+modelo_lenet_mdd_predicciones:
   type: pandas.CSVDataSet
-  filepath: data/06_models/mdd/history.csv
+  filepath: data/07_model_output/mdd/lenet/predicciones.csv
 
-modelo_mdd_metrics:
-  type: kedro.extras.datasets.text.TextDataSet
-  filepath: data/06_models/mdd/metrics.txt
+modelo_resnet_mdd:
+  type: kedro_imagenes.extras.datasets.pytorch_model_dataset.PytorchModelDataSet
+  filepath: data/06_models/mdd/resnet/modelo.pth
 
-modelo_mdd_features_mnist:
-  type: pandas.ParquetDataSet
-  filepath: data/06_models/mdd/features_mnist.parquet
-
-modelo_mdd_features_tds:
-  type: pandas.ParquetDataSet
-  filepath: data/06_models/mdd/features_tds.parquet
-
-modelo_mdd_features_umap:
-  type: pandas.ParquetDataSet
-  filepath: data/06_models/mdd/features_umap.parquet
-
-modelo_mdd_plot_umap:
-  type: kedro.extras.datasets.matplotlib.MatplotlibWriter
-  filepath: data/06_models/mdd/umap.png
-
-modelo_mdd_predicciones:
+modelo_resnet_mdd_predicciones:
   type: pandas.CSVDataSet
-  filepath: data/07_model_output/mdd/predicciones.csv
+  filepath: data/07_model_output/mdd/
 
 # ――――――――― self_ensemble ―――――――――
 
-modelo_self_ensemble:
+modelo_lenet_self_ensemble:
   type: kedro_imagenes.extras.datasets.pytorch_model_dataset.PytorchModelDataSet
-  filepath: data/06_models/self_ensemble/modelo.pth
+  filepath: data/06_models/self_ensemble/lenet/modelo.pth
 
-modelo_self_ensemble_history:
+modelo_lenet_self_ensemble_predicciones:
   type: pandas.CSVDataSet
-  filepath: data/06_models/self_ensemble/history.csv
+  filepath: data/07_model_output/self_ensemble/lenet/predicciones.csv
 
-modelo_self_ensemble_metrics:
-  type: kedro.extras.datasets.text.TextDataSet
-  filepath: data/06_models/self_ensemble/metrics.txt
+modelo_resnet_self_ensemble:
+  type: kedro_imagenes.extras.datasets.pytorch_model_dataset.PytorchModelDataSet
+  filepath: data/06_models/self_ensemble/resnet/modelo.pth
 
-modelo_self_ensemble_features_mnist:
-  type: pandas.ParquetDataSet
-  filepath: data/06_models/self_ensemble/features_mnist.parquet
-
-modelo_self_ensemble_features_tds:
-  type: pandas.ParquetDataSet
-  filepath: data/06_models/self_ensemble/features_tds.parquet
-
-modelo_self_ensemble_features_umap:
-  type: pandas.ParquetDataSet
-  filepath: data/06_models/self_ensemble/features_umap.parquet
-
-modelo_self_ensemble_plot_umap:
-  type: kedro.extras.datasets.matplotlib.MatplotlibWriter
-  filepath: data/06_models/self_ensemble/umap.png
-
-modelo_self_ensemble_predicciones:
+modelo_resnet_self_ensemble_predicciones:
   type: pandas.CSVDataSet
-  filepath: data/07_model_output/self_ensemble/predicciones.csv
+  filepath: data/07_model_output/self_ensemble/resnet/predicciones.csv
 
 # ――――――――― SOURCE_ONLY ―――――――――
 
-modelo_source_only:
+modelo_lenet_source_only:
   type: kedro_imagenes.extras.datasets.pytorch_model_dataset.PytorchModelDataSet
-  filepath: data/06_models/source_only/modelo.pth
+  filepath: data/06_models/source_only/lenet/modelo.pth
 
-modelo_source_only_history:
+modelo_lenet_source_only_predicciones:
   type: pandas.CSVDataSet
-  filepath: data/06_models/source_only/history.csv
+  filepath: data/07_model_output/source_only/lenet/predicciones.csv
 
-modelo_source_only_metrics:
-  type: kedro.extras.datasets.text.TextDataSet
-  filepath: data/06_models/source_only/metrics.txt
+modelo_resnet_source_only:
+  type: kedro_imagenes.extras.datasets.pytorch_model_dataset.PytorchModelDataSet
+  filepath: data/06_models/source_only/resnet/modelo.pth
 
-modelo_source_only_features_mnist:
-  type: pandas.ParquetDataSet
-  filepath: data/06_models/source_only/features_mnist.parquet
-
-modelo_source_only_features_tds:
-  type: pandas.ParquetDataSet
-  filepath: data/06_models/source_only/features_tds.parquet
-
-modelo_source_only_features_umap:
-  type: pandas.ParquetDataSet
-  filepath: data/06_models/source_only/features_umap.parquet
-
-modelo_source_only_plot_umap:
-  type: kedro.extras.datasets.matplotlib.MatplotlibWriter
-  filepath: data/06_models/source_only/umap.png
-
-modelo_source_only_predicciones:
+modelo_resnet_source_only_predicciones:
   type: pandas.CSVDataSet
-  filepath: data/07_model_output/source_only/predicciones.csv
+  filepath: data/07_model_output/source_only/resnet/predicciones.csv
 
 # ――――――――― TARGET_ONLY ―――――――――
 
-modelo_target_only:
+modelo_lenet_target_only:
   type: kedro_imagenes.extras.datasets.pytorch_model_dataset.PytorchModelDataSet
-  filepath: data/06_models/target_only/modelo.pth
+  filepath: data/06_models/target_only/lenet/modelo.pth
 
-modelo_target_only_history:
+modelo_lenet_target_only_predicciones:
   type: pandas.CSVDataSet
-  filepath: data/06_models/target_only/history.csv
+  filepath: data/07_model_output/target_only/lenet/predicciones.csv
 
-modelo_target_only_metrics:
-  type: kedro.extras.datasets.text.TextDataSet
-  filepath: data/06_models/target_only/metrics.txt
+modelo_resnet_target_only:
+  type: kedro_imagenes.extras.datasets.pytorch_model_dataset.PytorchModelDataSet
+  filepath: data/06_models/target_only/resnet/modelo.pth
 
-modelo_target_only_features_mnist:
-  type: pandas.ParquetDataSet
-  filepath: data/06_models/target_only/features_mnist.parquet
-
-modelo_target_only_features_tds:
-  type: pandas.ParquetDataSet
-  filepath: data/06_models/target_only/features_tds.parquet
-
-modelo_target_only_features_umap:
-  type: pandas.ParquetDataSet
-  filepath: data/06_models/target_only/features_umap.parquet
-
-modelo_target_only_plot_umap:
-  type: kedro.extras.datasets.matplotlib.MatplotlibWriter
-  filepath: data/06_models/target_only/umap.png
-
-modelo_target_only_predicciones:
+modelo_resnet_target_only_predicciones:
   type: pandas.CSVDataSet
-  filepath: data/07_model_output/target_only/predicciones.csv
+  filepath: data/07_model_output/target_only/resnet/predicciones.csv
