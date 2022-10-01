@@ -5,76 +5,143 @@ from kedro.pipeline.modular_pipeline import pipeline
 
 from medgc_tesis.pipelines.modeling.nodes import (
     aplicar_modelo,
-    aplicar_umap,
-    entrenar_adda,
-    entrenar_afn,
-    entrenar_dann,
-    entrenar_mdd,
-    entrenar_vanilla,
-    extraer_features,
-    graficar_umap,
+    entrenar_lenet_adda,
+    entrenar_lenet_afn,
+    entrenar_lenet_dann,
+    entrenar_lenet_mdd,
+    entrenar_lenet_source_only,
+    entrenar_lenet_target_only,
+    entrenar_resnet_adda,
+    entrenar_resnet_afn,
+    entrenar_resnet_dann,
+    entrenar_resnet_mdd,
+    entrenar_resnet_source_only,
+    entrenar_resnet_target_only,
 )
 
 
-def create_subpipeline(type: str, train_func: Callable, datasets=None) -> Pipeline:
-    if datasets is None:
-        datasets = [
-            "digitos_mnist_train",
-            "digitos_tds_train",
-            "digitos_tds_test",
-            "digitos_tds_val",
-        ]
+def create_pipeline(**kwargs) -> Pipeline:
     return pipeline(
         [
+            # ADDA
             node(
-                train_func,
-                inputs=[f"params:{type}"] + datasets,
-                outputs=[f"modelo_{type}", f"modelo_{type}_history", f"modelo_{type}_metrics"],
-                name=f"entrenar_{type}",
+                entrenar_lenet_adda,
+                inputs=None,
+                outputs="modelo_lenet_adda",
+                name="entrenar_lenet_adda",
             ),
             node(
-                extraer_features,
-                inputs=[f"modelo_{type}", "digitos_mnist_test", "digitos_tds_test"],
-                outputs=[f"modelo_{type}_features_mnist", f"modelo_{type}_features_tds"],
-                name=f"modelo_{type}_extraer_features",
+                entrenar_resnet_adda,
+                inputs=None,
+                outputs="modelo_resnet_adda",
+                name="entrenar_resnet_adda",
+            ),
+            # SOURCE_ONLY
+            node(
+                entrenar_lenet_source_only,
+                inputs=None,
+                outputs="modelo_lenet_source_only",
+                name="entrenar_lenet_source_only",
             ),
             node(
-                aplicar_umap,
-                inputs=[f"modelo_{type}_features_mnist", f"modelo_{type}_features_tds"],
-                outputs=f"modelo_{type}_features_umap",
-                name=f"modelo_{type}_aplicar_umap",
+                entrenar_resnet_source_only,
+                inputs=None,
+                outputs="modelo_resnet_source_only",
+                name="entrenar_resnet_source_only",
+            ),
+            # TARGET_ONLY
+            node(
+                entrenar_lenet_target_only,
+                inputs=None,
+                outputs="modelo_lenet_target_only",
+                name="entrenar_lenet_target_only",
             ),
             node(
-                graficar_umap,
-                inputs=[f"modelo_{type}_features_umap"],
-                outputs=f"modelo_{type}_plot_umap",
-                name=f"modelo_{type}_graficar_umap",
+                entrenar_resnet_target_only,
+                inputs=None,
+                outputs="modelo_resnet_target_only",
+                name="entrenar_resnet_target_only",
+            ),
+            # DANN
+            node(
+                entrenar_lenet_dann,
+                inputs=None,
+                outputs="modelo_lenet_dann",
+                name="entrenar_lenet_dann",
             ),
             node(
-                aplicar_modelo,
-                inputs=[f"modelo_{type}", "dataset_telegramas"],
-                outputs=f"modelo_{type}_predicciones",
-                name=f"modelo_{type}_aplicar_modelo",
+                entrenar_resnet_dann,
+                inputs=None,
+                outputs="modelo_resnet_dann",
+                name="entrenar_resnet_dann",
             ),
-        ],
+            # MDD
+            node(
+                entrenar_lenet_mdd,
+                inputs=None,
+                outputs="modelo_lenet_mdd",
+                name="entrenar_lenet_mdd",
+            ),
+            node(
+                entrenar_resnet_mdd,
+                inputs=None,
+                outputs="modelo_resnet_mdd",
+                name="entrenar_resnet_mdd",
+            ),
+            # AFN
+            node(
+                entrenar_lenet_afn,
+                inputs=None,
+                outputs="modelo_lenet_afn",
+                name="entrenar_lenet_afn",
+            ),
+            node(
+                entrenar_resnet_afn,
+                inputs=None,
+                outputs="modelo_resnet_afn",
+                name="entrenar_resnet_afn",
+            ),
+            # node(
+            #     aplicar_modelo,
+            #     inputs=["modelo_lenet_adda", "dataset_telegramas"],
+            #     outputs="modelo_lenet_adda_predicciones",
+            #     name="modelo_lenet_adda_aplicar_modelo",
+            # ),
+            # node(
+            #     aplicar_modelo,
+            #     inputs=["modelo_lenet_source_only", "dataset_telegramas"],
+            #     outputs="modelo_lenet_source_only_predicciones",
+            #     name="modelo_lenet_source_only_aplicar_modelo",
+            # ),
+            # node(
+            #     aplicar_modelo,
+            #     inputs=["modelo_lenet_target_only", "dataset_telegramas"],
+            #     outputs="modelo_lenet_target_only_predicciones",
+            #     name="modelo_lenet_target_only_aplicar_modelo",
+            # ),
+            # node(
+            #     aplicar_modelo,
+            #     inputs=["modelo_lenet_dann", "dataset_telegramas"],
+            #     outputs="modelo_lenet_dann_predicciones",
+            #     name="modelo_lenet_dann_aplicar_modelo",
+            # ),
+            # node(
+            #     aplicar_modelo,
+            #     inputs=["modelo_lenet_mdd", "dataset_telegramas"],
+            #     outputs="modelo_lenet_mdd_predicciones",
+            #     name="modelo_lenet_mdd_aplicar_modelo",
+            # ),
+            # node(
+            #     aplicar_modelo,
+            #     inputs=["modelo_lenet_afn", "dataset_telegramas"],
+            #     outputs="modelo_lenet_afn_predicciones",
+            #     name="modelo_lenet_afn_aplicar_modelo",
+            # ),
+            # node(
+            #     aplicar_modelo,
+            #     inputs=["modelo_lenet_afn", "dataset_telegramas"],
+            #     outputs="modelo_lenet_afn_predicciones",
+            #     name="modelo_lenet_afn_aplicar_modelo",
+            # ),
+        ]
     )
-
-
-def create_pipeline(**kwargs) -> Pipeline:
-    pipeline_dann = create_subpipeline("dann", entrenar_dann)
-    pipeline_afn = create_subpipeline("afn", entrenar_afn)
-    pipeline_adda = create_subpipeline("adda", entrenar_adda)
-    pipeline_mdd = create_subpipeline("mdd", entrenar_mdd)
-
-    pipeline_source_only = create_subpipeline(
-        "source_only",
-        entrenar_vanilla,
-        datasets=["digitos_mnist_train", "digitos_tds_test", "digitos_tds_val"],
-    )
-    pipeline_target_only = create_subpipeline(
-        "target_only",
-        entrenar_vanilla,
-        datasets=["digitos_tds_train", "digitos_tds_test", "digitos_tds_val"],
-    )
-
-    return pipeline_dann + pipeline_afn + pipeline_adda + pipeline_mdd + pipeline_source_only + pipeline_target_only

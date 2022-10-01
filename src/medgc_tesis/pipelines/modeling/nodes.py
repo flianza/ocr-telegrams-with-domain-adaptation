@@ -1,201 +1,97 @@
 import logging
-from argparse import Namespace
-from typing import Any, Dict, Tuple
 
 import numpy as np
 import pandas as pd
 import torch
 import torch.backends.cudnn as cudnn
-import torch.nn as nn
-import umap
-from matplotlib import pyplot as plt
 from PIL import Image
-from tllib.utils.analysis import a_distance, collect_feature
-from tllib.utils.data import ForeverDataIterator
+from pytorch_lightning import seed_everything
 from torch.backends import cudnn
 from tqdm import tqdm
 
-from medgc_tesis.pipelines.modeling.models import adda, afn, dann, mdd, vanilla
-from medgc_tesis.pipelines.modeling.models.utils import get_backbone_model, validate
-from medgc_tesis.utils.transforms import get_data_transform
+from medgc_tesis.pipelines.modeling.backbone import LeNetBackbone, ResNet18Backbone
+from medgc_tesis.pipelines.modeling.optimizers import (
+    adda,
+    afn,
+    dann,
+    mdd,
+    source_only,
+    target_only,
+)
 
-device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 cudnn.benchmark = True
 tqdm.pandas()
 
 logger = logging.getLogger(__name__)
+seed_everything(48721, workers=True)
 
 
-def entrenar_vanilla(
-    params: Dict,
-    digitos_train: ForeverDataIterator,
-    digitos_test: ForeverDataIterator,
-    digitos_val: ForeverDataIterator,
-) -> Tuple[Any, pd.DataFrame, str]:
-    args = Namespace(**params)
-    logger.info(args)
-
-    backbone = get_backbone_model()
-    classifier, history = vanilla.train(device, backbone, digitos_train, digitos_test, args)
-
-    _, confusion_matrix_train = validate(device, digitos_train.data_loader, classifier)
-    _, confusion_matrix_test = validate(device, digitos_test.data_loader, classifier)
-    acc, confusion_matrix_val = validate(device, digitos_val.data_loader, classifier)
-    logger.info("val acc: %f" % acc)
-    logger.info(confusion_matrix_val)
-
-    metrics = f"TRAIN\n{confusion_matrix_train}\n\nTEST\n{confusion_matrix_test}\n\nVAL\n{confusion_matrix_val}"
-
-    return classifier, history, metrics
+def entrenar_lenet_adda():
+    adda.setup(backbone=LeNetBackbone)
+    return adda.optimize()
 
 
-def entrenar_dann(
-    params: Dict,
-    digitos_mnist_train: ForeverDataIterator,
-    digitos_tds_train: ForeverDataIterator,
-    digitos_tds_test: ForeverDataIterator,
-    digitos_tds_val: ForeverDataIterator,
-) -> Tuple[Any, pd.DataFrame, str]:
-    args = Namespace(**params)
-    logger.info(args)
-
-    backbone = get_backbone_model()
-    classifier, history = dann.train(device, backbone, digitos_mnist_train, digitos_tds_train, digitos_tds_test, args)
-
-    _, confusion_matrix_train = validate(device, digitos_tds_train.data_loader, classifier)
-    _, confusion_matrix_test = validate(device, digitos_tds_test.data_loader, classifier)
-    acc, confusion_matrix_val = validate(device, digitos_tds_val.data_loader, classifier)
-    logger.info("val acc: %f" % acc)
-    logger.info(confusion_matrix_val)
-
-    metrics = f"TRAIN\n{confusion_matrix_train}\n\nTEST\n{confusion_matrix_test}\n\nVAL\n{confusion_matrix_val}"
-
-    return classifier, history, metrics
+def entrenar_resnet_adda():
+    adda.setup(backbone=ResNet18Backbone)
+    return adda.optimize()
 
 
-def entrenar_afn(
-    params: Dict,
-    digitos_mnist_train: ForeverDataIterator,
-    digitos_tds_train: ForeverDataIterator,
-    digitos_tds_test: ForeverDataIterator,
-    digitos_tds_val: ForeverDataIterator,
-) -> Tuple[Any, pd.DataFrame, str]:
-    args = Namespace(**params)
-    logger.info(args)
-
-    backbone = get_backbone_model()
-    classifier, history = afn.train(device, backbone, digitos_mnist_train, digitos_tds_train, digitos_tds_test, args)
-
-    _, confusion_matrix_train = validate(device, digitos_tds_train.data_loader, classifier)
-    _, confusion_matrix_test = validate(device, digitos_tds_test.data_loader, classifier)
-    acc, confusion_matrix_val = validate(device, digitos_tds_val.data_loader, classifier)
-    logger.info("val acc: %f" % acc)
-    logger.info(confusion_matrix_val)
-
-    metrics = f"TRAIN\n{confusion_matrix_train}\n\nTEST\n{confusion_matrix_test}\n\nVAL\n{confusion_matrix_val}"
-
-    return classifier, history, metrics
+def entrenar_lenet_dann():
+    dann.setup(backbone=LeNetBackbone)
+    return dann.optimize()
 
 
-def entrenar_adda(
-    params: Dict,
-    digitos_mnist_train: ForeverDataIterator,
-    digitos_tds_train: ForeverDataIterator,
-    digitos_tds_test: ForeverDataIterator,
-    digitos_tds_val: ForeverDataIterator,
-) -> Tuple[Any, pd.DataFrame, str]:
-    args = Namespace(**params)
-    logger.info(args)
-
-    backbone = get_backbone_model()
-    classifier, history = adda.train(device, backbone, digitos_mnist_train, digitos_tds_train, digitos_tds_test, args)
-
-    _, confusion_matrix_train = validate(device, digitos_tds_train.data_loader, classifier)
-    _, confusion_matrix_test = validate(device, digitos_tds_test.data_loader, classifier)
-    acc, confusion_matrix_val = validate(device, digitos_tds_val.data_loader, classifier)
-    logger.info("val acc: %f" % acc)
-    logger.info(confusion_matrix_val)
-
-    metrics = f"TRAIN\n{confusion_matrix_train}\n\nTEST\n{confusion_matrix_test}\n\nVAL\n{confusion_matrix_val}"
-
-    return classifier, history, metrics
+def entrenar_resnet_dann():
+    dann.setup(backbone=ResNet18Backbone)
+    return dann.optimize()
 
 
-def entrenar_mdd(
-    params: Dict,
-    digitos_mnist_train: ForeverDataIterator,
-    digitos_tds_train: ForeverDataIterator,
-    digitos_tds_test: ForeverDataIterator,
-    digitos_tds_val: ForeverDataIterator,
-) -> Tuple[Any, pd.DataFrame, str]:
-    args = Namespace(**params)
-    logger.info(args)
-
-    backbone = get_backbone_model()
-    classifier, history = mdd.train(device, backbone, digitos_mnist_train, digitos_tds_train, digitos_tds_test, args)
-
-    _, confusion_matrix_train = validate(device, digitos_tds_train.data_loader, classifier)
-    _, confusion_matrix_test = validate(device, digitos_tds_test.data_loader, classifier)
-    acc, confusion_matrix_val = validate(device, digitos_tds_val.data_loader, classifier)
-    logger.info("val acc: %f" % acc)
-    logger.info(confusion_matrix_val)
-
-    metrics = f"TRAIN\n{confusion_matrix_train}\n\nTEST\n{confusion_matrix_test}\n\nVAL\n{confusion_matrix_val}"
-
-    return classifier, history, metrics
+def entrenar_lenet_mdd():
+    mdd.setup(backbone=LeNetBackbone)
+    return mdd.optimize()
 
 
-def extraer_features(
-    modelo: Any,
-    digitos_source: ForeverDataIterator,
-    digitos_target: ForeverDataIterator,
-) -> Tuple[pd.DataFrame, pd.DataFrame]:
-    if hasattr(modelo, "pool_layer"):
-        feature_extractor = nn.Sequential(modelo.backbone, modelo.pool_layer, modelo.bottleneck).to(device)
-    else:
-        feature_extractor = nn.Sequential(modelo.backbone, modelo.bottleneck).to(device)
-    source_feature = collect_feature(digitos_source.data_loader, feature_extractor, device)
-    target_feature = collect_feature(digitos_target.data_loader, feature_extractor, device)
-
-    # A_distance = a_distance.calculate(source_feature, target_feature, device, training_epochs=4)
-    # logger.info("A-distance: %f" % A_distance)
-
-    df_source_feature = pd.DataFrame(source_feature.numpy())
-    df_source_feature.columns = df_source_feature.columns.astype(str)
-    df_target_feature = pd.DataFrame(target_feature.numpy())
-    df_target_feature.columns = df_target_feature.columns.astype(str)
-
-    return df_source_feature, df_target_feature
+def entrenar_resnet_mdd():
+    mdd.setup(backbone=ResNet18Backbone)
+    return mdd.optimize()
 
 
-def aplicar_umap(features_modelo_mnist, features_modelo_tds):
-    source_feature = features_modelo_mnist.values
-    target_feature = features_modelo_tds.values
-    features = np.concatenate([source_feature, target_feature], axis=0)
-
-    X_umap = umap.UMAP(random_state=33).fit_transform(features)
-    domains = np.concatenate((np.ones(len(source_feature)), np.zeros(len(target_feature))))
-
-    df = pd.DataFrame(X_umap)
-    df["domain"] = domains
-    df.columns = df.columns.astype(str)
-
-    return df
+def entrenar_lenet_afn():
+    afn.setup(backbone=LeNetBackbone)
+    return afn.optimize()
 
 
-def graficar_umap(df_umap: pd.DataFrame) -> plt.figure:
-    df_source = df_umap.query("domain == 1.0")
-    df_target = df_umap.query("domain == 0.0").sample(n=df_source.shape[0])
+def entrenar_resnet_afn():
+    afn.setup(backbone=ResNet18Backbone)
+    return afn.optimize()
 
-    fig, ax = plt.subplots(figsize=(7, 7))
-    ax.scatter(df_target["0"], df_target["1"], label="target", alpha=0.1)
-    ax.scatter(df_source["0"], df_source["1"], label="source", alpha=0.1)
-    plt.legend()
-    return fig
+
+def entrenar_lenet_source_only():
+    source_only.setup(backbone=LeNetBackbone)
+    return source_only.optimize()
+
+
+def entrenar_resnet_source_only():
+    source_only.setup(backbone=ResNet18Backbone)
+    return source_only.optimize()
+
+
+def entrenar_lenet_target_only():
+    target_only.setup(backbone=LeNetBackbone)
+    return target_only.optimize()
+
+
+def entrenar_resnet_target_only():
+    target_only.setup(backbone=ResNet18Backbone)
+    return target_only.optimize()
 
 
 def aplicar_modelo(modelo, dataset_telegramas: pd.DataFrame) -> pd.DataFrame:
-    transform = get_data_transform()
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    transform = LeNetBackbone().data_transform()
+    modelo = modelo.to("cuda")
+    modelo.eval()
 
     def predecir_digitos(digitos):
         xs = []

@@ -36,9 +36,9 @@ adda:
   lr_decay: 0.25
   momentum: 0.9
   weight_decay: 0.001
-  iters_per_epoch: 1000
-  early_stopping: 5
-  epochs: 40
+  # iters_per_epoch: 1000
+  # early_stopping: 5
+  # epochs: 40
   # DA
   bottleneck_dim: 256
   # PARTICULAR
@@ -68,9 +68,9 @@ source_only:
   lr_decay: 0.25
   momentum: 0.9
   weight_decay: 0.001
-  iters_per_epoch: 1000
-  early_stopping: 3
-  epochs: 10
+  # iters_per_epoch: 1000
+  # early_stopping: 3
+  # epochs: 10
 
 target_only:
   # GENERAL

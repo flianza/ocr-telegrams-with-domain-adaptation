@@ -165,3 +165,5 @@ venv.bak/
 *.aux
 *.run.xml
 *-blx.bib
+
+/tb_logs/**
