@@ -114,7 +114,7 @@ modelo_resnet_mdd:
 
 modelo_resnet_mdd_predicciones:
   type: pandas.CSVDataSet
-  filepath: data/07_model_output/mdd/
+  filepath: data/07_model_output/mdd/resnet/predicciones.csv
 
 # ――――――――― self_ensemble ―――――――――
 
