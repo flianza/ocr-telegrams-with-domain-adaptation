@@ -45,7 +45,7 @@ def _suggest_target_only(trial: optuna.Trial):
     }
     _, val_metrics = _fit_target_only(params, test=False)
 
-    return val_metrics["val_loss"], val_metrics["val_class_acc"]
+    return val_metrics["val_loss"], val_metrics["val_cls_acc"]
 
 
 def _fit_target_only(params, test):

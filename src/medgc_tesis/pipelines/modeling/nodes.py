@@ -87,27 +87,48 @@ def entrenar_resnet_target_only():
 
 
 def aplicar_modelo(modelo, dataset_telegramas: pd.DataFrame) -> pd.DataFrame:
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda")
 
-    transform = LeNetBackbone().data_transform()
-    modelo = modelo.to("cuda")
+    modelo = modelo.to(device)
     modelo.eval()
 
-    def predecir_digitos(digitos):
-        xs = []
-        for digito in digitos:
-            image = Image.fromarray(np.uint8(np.stack(digito, axis=0)))
-            x_transformed = transform(image)
-            x_transformed = x_transformed.to(device)
-            x_transformed = x_transformed.unsqueeze(0)
-            xs.append(x_transformed)
-        xs = torch.cat(xs)
-        y_hat = modelo(xs)
-        y_pred = y_hat.max(1)[1].cpu().numpy()
-        return "".join(str(x) for x in y_pred)
+    try:
+        transform = LeNetBackbone().data_transform()
 
-    with torch.no_grad():
-        dataset_telegramas["voto_predicho"] = dataset_telegramas.digitos.progress_apply(predecir_digitos)
+        def predecir_digitos(digitos):
+            xs = []
+            for digito in digitos:
+                image = Image.fromarray(np.uint8(np.stack(digito, axis=0)))
+                x_transformed = transform(image)
+                x_transformed = x_transformed.to(device)
+                x_transformed = x_transformed.unsqueeze(0)
+                xs.append(x_transformed)
+            xs = torch.cat(xs)
+            y_hat = modelo(xs)
+            y_pred = y_hat.max(1)[1].cpu().numpy()
+            return "".join(str(x) for x in y_pred)
+
+        with torch.no_grad():
+            dataset_telegramas["voto_predicho"] = dataset_telegramas.digitos.progress_apply(predecir_digitos)
+
+    except:
+        transform = ResNet18Backbone().data_transform()
+
+        def predecir_digitos(digitos):
+            xs = []
+            for digito in digitos:
+                image = Image.fromarray(np.uint8(np.stack(digito, axis=0)))
+                x_transformed = transform(image)
+                x_transformed = x_transformed.to(device)
+                x_transformed = x_transformed.unsqueeze(0)
+                xs.append(x_transformed)
+            xs = torch.cat(xs)
+            y_hat = modelo(xs)
+            y_pred = y_hat.max(1)[1].cpu().numpy()
+            return "".join(str(x) for x in y_pred)
+
+        with torch.no_grad():
+            dataset_telegramas["voto_predicho"] = dataset_telegramas.digitos.progress_apply(predecir_digitos)
 
     dataset_telegramas["voto_predicho"] = dataset_telegramas["voto_predicho"].astype(str)
     dataset_telegramas = dataset_telegramas.drop(columns=["digitos"])

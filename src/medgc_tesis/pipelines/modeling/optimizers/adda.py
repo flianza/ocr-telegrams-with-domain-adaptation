@@ -26,7 +26,7 @@ def setup(backbone: Type[Backbone]):
 
 def optimize():
     study = optuna.create_study(
-        directions=["minimize", "maximize"],
+        directions=["minimize", "minimize"],
         study_name=experiment_name,
         sampler=RandomSampler(42),
     )
@@ -42,12 +42,12 @@ def optimize():
 def _suggest_adda(trial: optuna.Trial):
     params = {
         "lr": trial.suggest_float("lr", 1e-4, 0.1),
-        "lr_d": trial.suggest_float("lr_d", 1e-4, 0.1),
-        "trade_off": trial.suggest_float("trade_off", 0.5, 2),
+        "pretrain_lr": trial.suggest_float("pretrain_lr", 1e-4, 0.1),
+        "pretrain_epochs": trial.suggest_int("pretrain_epochs", 5, 10),
     }
     _, val_metrics = _fit_adda(params, test=False)
 
-    return val_metrics["val_domain_acc"], val_metrics["val_class_acc"]
+    return val_metrics["val_loss"], val_metrics["val_domain_acc"]
 
 
 def _fit_adda(params, test):
