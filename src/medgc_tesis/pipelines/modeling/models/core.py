@@ -46,7 +46,7 @@ class DomainAdaptationModel(pl.LightningModule):
         loss = F.cross_entropy(y, labels_s)
 
         (acc1,) = accuracy(y, labels_s, topk=(1,))
-        f1 = torch.Tensor([f1_score(labels_s.cpu(), y.cpu().argmax(1), average="micro")])
+        f1 = torch.Tensor([f1_score(labels_s.cpu(), y.cpu().argmax(1), average="macro")])
         self.confusion_matrix.update(labels_s.cpu(), y.cpu().argmax(1))
 
         feature = self.feature_extractor(x_t)

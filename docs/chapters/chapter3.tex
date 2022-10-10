@@ -251,45 +251,54 @@ etiquetado y el de destino sin etiquetar. Los experimentos llevados a cabo utili
 origen y otro del de destino. Se realizaron 3 particiones de cada uno:
 
 \begin{itemize}
-    \item Entrenamiento (70\% de cada dataset): utilizado para entrenar la ResNet-50 en cada \'epoca.
+    \item Entrenamiento (70\% de cada dataset): utilizado para entrenar la ResNet-18 en cada \'epoca.
     \item Validaci\'on (15\% de cada dataset): utilizado para calcular los mejores hiperpar\'ametros del modelo.
     \item Test (15\% de cada dataset): utilizado para calcular las m\'etricas y gr\'aficos finales del modelo entrenado.
 \end{itemize}
 
+Los modelos se entrenaron utilizando Stochastic Gradient Descent (SGD) \parencite{sutskever2013importance} utilizando nesterov, 0.9 como momento y 0.001 de weight decay.
+
 \subsection{Selecci\'on y optimizaci\'on del modelo}
 
 La optimizaci\'on de hiperpar\'ametros se realiz\'o utilizando la librer\'ia Optuna \parencite{optuna_2019}. Se ejecutaron 15 rondas de optimizaci\'on con 10 \'epocas de entrenamiento por cada experimento.
-El cuadro \ref{tab:rangos-hiperparametros} muestra los rangos de valores a optimizar para cada uno.
+En cada uno de los experimentos, se optimizaron los hiperpar\'ametros para minimizar el loss de cada modelo. El cuadro
+\ref{tab:rangos-hiperparametros} muestra los rangos b\'usqueda.
 
 \begin{table}[H]
     \centering
-    \begin{tabular}{lccccc}
+    \begin{tabular}{l|ccccc}
         \toprule
-                    & ADDA        & AFN          & DANN        & MDD         & Source Only \\
+                           & ADDA        & AFN          & DANN        & MDD         & Sin AD      \\
         \midrule
-        LR          & [1e-4, 0.1] & [1e-4, 0.1]  & [1e-4, 0.1] & [1e-4, 0.1] & [1e-4, 0.1] \\
-        LR Disc.    & [1e-4, 0.1] & -            & -           & -           & -           \\
-        T-O Losses  & [0.5, 2]    & -            & [0.5, 2]    & [0.5, 2]    & -           \\
-        T-O Norm    & -           & [0.001, 0.1] & -           & -           & -           \\
-        T-O Entropy & -           & [0.0, 0.1]   & -           & -           & -           \\
-        Delta       & -           & [0.01, 5]    & -           & -           & -           \\
-        \# Blocks   & -           & [1, 4]       & -           & -           & -           \\
-        Dropout     & -           & [0.3, 0.7]   & -           & -           & -           \\
-        Margin      & -           & -            & -           & [1, 10]     & -           \\
+        LR$^{*}$           & [1e-4, 0.1] & [1e-4, 0.1]  & [1e-4, 0.1] & [1e-4, 0.1] & [1e-4, 0.1] \\
+        Pretrain LR$^{*}$  & [1e-4, 0.1] & -            & -           & -           & -           \\
+        Pretrain Epochs    & [5, 10]     & -            & [0.5, 2]    & [0.5, 2]    & -           \\
+        T-O$^{**}$ Losses  & [0.5, 2]    & -            & [0.5, 2]    & [0.5, 2]    & -           \\
+        T-O$^{**}$ Norm    & -           & [0.001, 0.1] & -           & -           & -           \\
+        T-O$^{**}$ Entropy & -           & [0.0, 0.1]   & -           & -           & -           \\
+        Delta              & -           & [0.01, 5]    & -           & -           & -           \\
+        \# Blocks          & -           & [1, 4]       & -           & -           & -           \\
+        Dropout            & -           & [0.3, 0.7]   & -           & -           & -           \\
+        Margin             & -           & -            & -           & [1, 10]     & -           \\
         \bottomrule
     \end{tabular}
-    \caption{Rango de hiperpar\'ametros optimizados.}
+    \caption{Rango de hiperpar\'ametros optimizados. $^{*}$LR refiere a "learning rate". $^{**}$T-O refiere a "trade-off".}
     \label{tab:rangos-hiperparametros}
 \end{table}
 
-Se seleccion\'o aquellos modelos cuyos hiperpar\'ametros que minimicen el loss de validaci\'on particular de cada
-experimento.
+Se implement\'o una disminuci\'on del learning rate en cada iteraci\'on de cada \'epoca, mediante la f\'ormula
+\ref{eq:learning-rate}. Se mantuvieron constantes los valores de $\gamma=0.001$ y $\theta = 0.25$.
+
+\begin{equation}
+    \eta_t = \eta_0 * (1 + \gamma * t)^{-\theta}
+    \label{eq:learning-rate}
+\end{equation}
 
 \section{M\'etricas de evaluaci\'on}
 
 Los modelos optimizados ser\'an evaluados con distintas m\'etricas en tiempo de test, descriptas en las siguientes
-sub-secciones del cap\'itulo. Las mismas pretenden evaluar qu\'e tan buenos son los modelos y qu\'e capacidad de
-adaptaci\'on de dominio poseen.
+sub-secciones del cap\'itulo. Las mismas pretenden evaluar qu\'e tan buenos son los modelos respecto a la tarea de
+clasificaci\'on y qu\'e capacidad de adaptaci\'on de dominio poseen.
 
 \subsection{Accuracy}
 
@@ -451,7 +460,7 @@ dominios son similares entre si, por lo que se espera que $dist_\mathcal{A} \app
 Durante el proyecto se utiliza como clasificador una regresi\'on log\'istica a fin de calcular la distancia
 $\mathcal{A}$.
 
-\subsection{Test Discrepancia M\'axima Promedio}
+\subsection{Discrepancia M\'axima Promedio}
 
 \cite{gretton2012kernel} introduce un test estad\'istico que permite identificar si una distribuci\'on es distinta a
 otra llamado Discrepancia M\'axima Promedio (MMD por sus siglas en ingl\'es). El test permite analizar qu\'e tan
@@ -472,3 +481,4 @@ Se utiliz\'o la librer\'ia \href{https://github.com/torchdrift/torchdrift/}{Torc
 evaluaci\'on de los modelos. La misma utiliza una variaci\'on de test MMD utilizando un kernel RBF para aproximar $P_X$
 y $P_Y$.
 
+TODO: Completar como se calcula el score del test
