@@ -167,3 +167,5 @@ venv.bak/
 *-blx.bib
 
 /tb_logs/**
+!data/06_models/**
+!data/07_model_output/**
