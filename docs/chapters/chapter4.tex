@@ -77,6 +77,15 @@ El cuadro \ref{tab:iou-cant-aciertos-en-telegramas} confirma la elecci\'on del m
 Independientemente de qu\'e t\'ecnica de adaptaci\'on se utilice, todas presentan mejores porcentajes de aciertos
 promedio que los modelos que fueron entrenados \'unicamente con $MNIST$.
 
+\section{Comparaci\'on de espacios latentes}
+
+\lipsum[1]
+
+\section*{\'Analisis de errores}
+
+Los errores de predicci\'on de los modelos pueden reflejarse en las distribuci\'on de la m\'etrica $IoU$ para cada uno
+de ellos.
+
 \begin{figure}[H]
     \centering
     \begin{subfigure}[h]{0.43\textwidth}
@@ -105,21 +114,33 @@ promedio que los modelos que fueron entrenados \'unicamente con $MNIST$.
 
 Resulta interesante mencionar existen telegramas que son m\'as dif\'iciles de analizar que otros. Esto puede
 evidenciarse en los histogramas de la figura \ref{fig:histogramas-ious} donde se pueden observar un conjunto de
-observaciones que contienen valores entre [0, 0.2] en todos los experimentos realizados. Esto puede deberse varias
-cuestiones:
+observaciones que contienen valores entre [0, 0.2] en todos los experimentos realizados. Luego de analizar cada uno de
+estos casos, se detectaron las siguientes situaciones:
 
 \begin{itemize}
-    \item Telegramas donde existen otros caracteres distintos a n\'umeros (ver ejemplo en el anexo
-          \ref{anexo:telegrama-erroneo-caracteres-especiales}).
-    \item Telegramas cargados de forma err\'onea (ver ejemplo en el anexo \ref{anexo:telegrama-erroneo}).
-    \item Telegramas correctos pero por alguna cuesti\'on la l\'ogica de extracci\'on de d\'igitos funciona incorrectamente (ver
-          ejemplo en el anexo \ref{anexo:telegrama-erroneo-caracteres-especiales}).
+    \item Telegramas cargados de forma err\'ones: ver ejemplo en el anexo \ref{anexo:telegrama-erroneo}.
+    \item Telegramas correctos pero por alguna cuesti\'on la l\'ogica de extracci\'on de d\'igitos no funciona correctamente: ver
+          ejemplo en el anexo \ref{anexo:telegrama-numeros-juntos}.
+    \item Telegramas donde existen otros caracteres distintos a n\'umeros: al ser un cuadro de texto libre sin formato, los jefes
+          de mesa pueden escribir lo que deseen. Ver ejemplo en el anexo \ref{anexo:telegrama-erroneo-caracteres-especiales}
+          donde se representa el $0$ a la izquierda con $X$.
+    \item Telegramas de mesas donde la mayor cantidad de votos se las lleva un \'unico partido y completan los votos a la
+          izquierda con $0$: al agregar los ceros a la izquierda, aumenta la probabilidad de que el modelo se equivoque con esos
+          ceros que no aportan al n\'umero final. Ver ejemplo en el anexo \ref{anexo:telegrama-erroneo-muchos-ceros}.
 \end{itemize}
 
-\section{Comparaci\'on de espacios latentes}
+En los primeros dos puntos se describen problemas problemas que fueron detectados en el proceso de ETL del cap\'itulo
+\ref{Chapter3}. Estandarizar los telegramas agregando un casillero por cada d\'igito junto a mejorar el proceso de
+extracci\'on de los mismos, supondr\'a una mejora considerable en las capacidades predictivas de los modelos.
 
-\lipsum[1]
+El tercer punto presenta un problema dentro de la adaptaci\'on de dominio. La misma supone que, si bien los datasets de
+origen y destino son diferentes pero representan lo mismo, debe existir la misma cantidad de clases entre origen y
+destino. Al agregar uno o varios caracteres adicionales en $TDS$ (como es el ejemplo donde representaban el $0$ con una
+$X$), se est\'a incumpliendo este supuesto.
 
-\section{An\'alisis de errores}
+El cuarto punto aumenta la probabilidad de error en los modelos debido a que el $0$ a la izquierda no aporta
+significado alguno al n\'umero de la cantidad de votos que se desea predecir.
 
-\lipsum[1]
+Estandarizar la carga de los telegramas por parte de los jefes de mesa mediante alguna capacitaci\'on permitir\'ia
+reducir los errores de los puntos tres y cuatro en elecciones futuras.
+
