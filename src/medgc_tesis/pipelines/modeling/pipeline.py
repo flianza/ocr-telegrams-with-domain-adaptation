@@ -29,7 +29,9 @@ def create_steps(model_name, da_technique):
 
 def create_pipeline(**kwargs) -> Pipeline:
 
-    lenet_adda_steps = create_steps("lenet", "adda")
-    resnet_adda_steps = create_steps("resnet", "adda")
+    pipes = []
+    for modelo in ["resnet", "lenet"]:
+        for da in ["afn"]:
+            pipes += create_steps(modelo, da)
 
-    return pipeline(lenet_adda_steps + resnet_adda_steps)
+    return pipeline(pipes)

@@ -178,23 +178,23 @@ class TargetOnlyModel(DomainAdaptationModel):
         x_s, labels_s = batch["mnist"]
         x_t, labels_t = batch["tds"]
 
-        y_t = self.classifier(x_t)
+        y_s = self.classifier(x_s)
 
-        loss = F.cross_entropy(y_t, labels_t)
-        cls_acc = accuracy(y_t, labels_t)[0]
+        loss = F.cross_entropy(y_s, labels_s)
+        cls_acc = accuracy(y_s, labels_s)[0]
 
         return {
-            "val_loss_step": loss,
-            "val_class_acc_step": cls_acc,
+            "loss": loss,
+            "cls_acc": cls_acc,
         }
 
     def validation_epoch_end(self, outputs) -> None:
-        avg_loss = torch.stack([x["val_loss_step"] for x in outputs]).mean()
-        avg_class_acc = torch.stack([x["val_class_acc_step"] for x in outputs]).mean()
+        loss = torch.stack([x["loss"] for x in outputs]).mean()
+        cls_acc = torch.stack([x["cls_acc"] for x in outputs]).mean()
 
         self.log_dict(
             {
-                "val_loss": avg_loss,
-                "val_class_acc": avg_class_acc,
+                "val_loss": loss,
+                "val_cls_acc": cls_acc,
             }
         )

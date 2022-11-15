@@ -1,1 +1,1 @@
-{"lr": 0.005902552855603127, "pretrain_lr": 0.08663099696291603, "pretrain_epochs": 8, "lr_gamma": 0.001, "lr_decay": 0.25, "momentum": 0.9, "weight_decay": 0.001, "bottleneck_dim": 256}
+{"lr": 0.05990598257128396, "pretrain_lr": 0.01568626218019941, "pretrain_epochs": 5, "lr_gamma": 0.001, "lr_decay": 0.25, "momentum": 0.9, "weight_decay": 0.001, "bottleneck_dim": 256}

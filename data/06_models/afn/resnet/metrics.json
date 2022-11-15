@@ -1,1 +1,1 @@
-{"test_acc": 98.67621612548828, "test_loss": 0.09575653076171875, "test_f1": 0.9867621660232544, "test_drift_score": 0.003670718986541033, "test_drift_pvalue": 0.0, "test_a_distance": 1.0047016274864378}
+{"test_acc": 98.28559112548828, "test_loss": 0.13079284131526947, "test_f1": 0.9826639890670776, "test_drift_score": 0.003967815078794956, "test_drift_pvalue": 0.0, "test_a_distance": 1.0886075949367089}
