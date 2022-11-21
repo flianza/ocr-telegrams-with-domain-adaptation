@@ -1,4 +1,183 @@
-@inbook{Gretton_2009,
+
+@inproceedings{sutskever2013importance,
+  title     = {On the importance of initialization and momentum in deep learning},
+  author    = {Sutskever, Ilya and Martens, James and Dahl, George and Hinton, Geoffrey},
+  booktitle = {Proceedings of the 30th International Conference on Machine Learning},
+  pages     = {1139--1147},
+  year      = {2013},
+  editor    = {Dasgupta, Sanjoy and McAllester, David},
+  volume    = {28},
+  number    = {3},
+  series    = {Proceedings of Machine Learning Research},
+  address   = {Atlanta, Georgia, USA},
+  month     = {17--19 Jun},
+  publisher = {PMLR},
+  pdf       = {http://proceedings.mlr.press/v28/sutskever13.pdf},
+  url       = {https://proceedings.mlr.press/v28/sutskever13.html},
+  abstract  = {Deep and recurrent neural networks (DNNs and RNNs respectively) are powerful models that were considered to be almost impossible to train using stochastic gradient descent with momentum. In this paper, we show that when stochastic gradient descent with momentum uses a well-designed random initialization and a particular type of slowly increasing schedule for the momentum parameter, it can train both DNNs and RNNs (on datasets with long-term dependencies) to levels of performance that were previously achievable only with Hessian-Free optimization. We find that both the initialization and the momentum are crucial since poorly initialized networks cannot be trained with momentum and well-initialized networks perform markedly worse when the momentum is absent or poorly tuned.     Our success training these models suggests that previous attempts to train deep and recurrent neural networks from random initializations have likely failed due to poor initialization schemes. Furthermore, carefully tuned momentum methods suffice for dealing with the curvature issues in deep and recurrent network training objectives without the need for sophisticated second-order methods.   }
+}
+
+@inproceedings{he2016deep,
+  title     = {Deep residual learning for image recognition},
+  author    = {He, Kaiming and Zhang, Xiangyu and Ren, Shaoqing and Sun, Jian},
+  booktitle = {Proceedings of the IEEE conference on computer vision and pattern recognition},
+  pages     = {770--778},
+  year      = {2016}
+}
+
+@inproceedings{optuna_2019,
+  title     = {Optuna: A Next-generation Hyperparameter Optimization Framework},
+  author    = {Akiba, Takuya and Sano, Shotaro and Yanase, Toshihiko and Ohta, Takeru and Koyama, Masanori},
+  booktitle = {Proceedings of the 25rd {ACM} {SIGKDD} International Conference on Knowledge Discovery and Data Mining},
+  year      = {2019}
+}
+
+@misc{tllib,
+  author    = {Junguang Jiang, Baixu Chen, Bo Fu, Mingsheng Long},
+  title     = {Transfer-Learning-library},
+  year      = {2020},
+  publisher = {GitHub},
+  journal   = {GitHub repository},
+  url       = {https://github.com/thuml/Transfer-Learning-Library}
+}
+
+@incollection{NEURIPS2019_9015,
+  title     = {PyTorch: An Imperative Style, High-Performance Deep Learning Library},
+  author    = {Paszke, Adam and Gross, Sam and Massa, Francisco and Lerer, Adam and Bradbury, James and Chanan, Gregory and Killeen, Trevor and Lin, Zeming and Gimelshein, Natalia and Antiga, Luca and Desmaison, Alban and Kopf, Andreas and Yang, Edward and DeVito, Zachary and Raison, Martin and Tejani, Alykhan and Chilamkurthy, Sasank and Steiner, Benoit and Fang, Lu and Bai, Junjie and Chintala, Soumith},
+  booktitle = {Advances in Neural Information Processing Systems 32},
+  editor    = {H. Wallach and H. Larochelle and A. Beygelzimer and F. d\textquotesingle Alch\'{e}-Buc and E. Fox and R. Garnett},
+  pages     = {8024--8035},
+  year      = {2019},
+  publisher = {Curran Associates, Inc.},
+  url       = {http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf}
+}
+
+@article{gretton2012kernel,
+  title     = {A kernel two-sample test},
+  author    = {Gretton, Arthur and Borgwardt, Karsten M and Rasch, Malte J and Sch{\"o}lkopf, Bernhard and Smola, Alexander},
+  journal   = {The Journal of Machine Learning Research},
+  volume    = {13},
+  number    = {1},
+  pages     = {723--773},
+  year      = {2012},
+  publisher = {JMLR. org}
+}
+
+@misc{jiang2022machine,
+  doi       = {10.48550/ARXIV.2201.05867},
+  url       = {https://arxiv.org/abs/2201.05867},
+  author    = {Jiang, Junguang and Shu, Yang and Wang, Jianmin and Long, Mingsheng},
+  keywords  = {Machine Learning (cs.LG), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  title     = {Transferability in Deep Learning: A Survey},
+  publisher = {arXiv},
+  year      = {2022},
+  copyright = {arXiv.org perpetual, non-exclusive license}
+}
+
+@article{randazzo2020self-classifying,
+  author  = {Randazzo, Ettore and Mordvintsev, Alexander and Niklasson, Eyvind and Levin, Michael and Greydanus, Sam},
+  title   = {Self-classifying MNIST Digits},
+  journal = {Distill},
+  year    = {2020},
+  note    = {https://distill.pub/2020/selforg/mnist},
+  doi     = {10.23915/distill.00027.002}
+}
+
+@inproceedings{ben2006analysis,
+  author    = {Ben-David, Shai and Blitzer, John and Crammer, Koby and Pereira, Fernando},
+  booktitle = {Advances in Neural Information Processing Systems},
+  editor    = {B. Sch\"{o}lkopf and J. Platt and T. Hoffman},
+  pages     = {},
+  publisher = {MIT Press},
+  title     = {Analysis of Representations for Domain Adaptation},
+  url       = {https://proceedings.neurips.cc/paper/2006/file/b1b0432ceafb0ce714426e9114852ac7-Paper.pdf},
+  volume    = {19},
+  year      = {2006}
+}
+
+@book{quinonero2008dataset,
+  title     = {Dataset shift in machine learning},
+  author    = {Quinonero-Candela, Joaquin and Sugiyama, Masashi and Schwaighofer, Anton and Lawrence, Neil D},
+  year      = {2008},
+  publisher = {Mit Press}
+}
+
+@article{hull1994database,
+  title     = {A database for handwritten text recognition research},
+  author    = {Hull, Jonathan J.},
+  journal   = {IEEE Transactions on pattern analysis and machine intelligence},
+  volume    = {16},
+  number    = {5},
+  pages     = {550--554},
+  year      = {1994},
+  publisher = {IEEE}
+}
+
+@article{netzer2011reading,
+  title  = {Reading digits in natural images with unsupervised feature learning},
+  author = {Netzer, Yuval and Wang, Tao and Coates, Adam and Bissacco, Alessandro and Wu, Bo and Ng, Andrew Y},
+  year   = {2011}
+}
+
+@misc{thrun1998learning,
+  title     = {Learning to learn},
+  author    = {Thrun, Sebastian and Pratt, Lorien},
+  year      = {1998},
+  publisher = {Kluwer Academic Publishers}
+}
+
+@inproceedings{redmon2016yolo,
+  title     = {You only look once: Unified, real-time object detection},
+  author    = {Redmon, Joseph and Divvala, Santosh and Girshick, Ross and Farhadi, Ali},
+  booktitle = {Proceedings of the IEEE conference on computer vision and pattern recognition},
+  pages     = {779--788},
+  year      = {2016}
+}
+
+@article{silver2016mastering,
+  title     = {Mastering the game of Go with deep neural networks and tree search},
+  author    = {Silver, David and Huang, Aja and Maddison, Chris J and Guez, Arthur and Sifre, Laurent and Van Den Driessche, George and Schrittwieser, Julian and Antonoglou, Ioannis and Panneershelvam, Veda and Lanctot, Marc and others},
+  journal   = {nature},
+  volume    = {529},
+  number    = {7587},
+  pages     = {484--489},
+  year      = {2016},
+  publisher = {Nature Publishing Group}
+}
+
+@article{hannun2014deep,
+  title   = {Deep speech: Scaling up end-to-end speech recognition},
+  author  = {Hannun, Awni and Case, Carl and Casper, Jared and Catanzaro, Bryan and Diamos, Greg and Elsen, Erich and Prenger, Ryan and Satheesh, Sanjeev and Sengupta, Shubho and Coates, Adam and others},
+  journal = {arXiv preprint arXiv:1412.5567},
+  year    = {2014}
+}
+
+@article{devlin2018bert,
+  title   = {Bert: Pre-training of deep bidirectional transformers for language understanding},
+  author  = {Devlin, Jacob and Chang, Ming-Wei and Lee, Kenton and Toutanova, Kristina},
+  journal = {arXiv preprint arXiv:1810.04805},
+  year    = {2018}
+}
+
+@article{lecun2015deep,
+  title     = {Deep learning},
+  author    = {LeCun, Yann and Bengio, Yoshua and Hinton, Geoffrey},
+  journal   = {nature},
+  volume    = {521},
+  number    = {7553},
+  pages     = {436--444},
+  year      = {2015},
+  publisher = {Nature Publishing Group}
+}
+
+@article{ramesh2022dalle2,
+  title   = {Hierarchical text-conditional image generation with clip latents},
+  author  = {Ramesh, Aditya and Dhariwal, Prafulla and Nichol, Alex and Chu, Casey and Chen, Mark},
+  journal = {arXiv preprint arXiv:2204.06125},
+  year    = {2022}
+}
+
+@inbook{gretton2009dataset,
   title        = {Covariate shift and local learning by distribution matching},
   author       = {Gretton, A. and Smola, AJ. and Huang, J. and Schmittfull, M. and Borgwardt, KM. and Sch{\"o}lkopf, B.},
   booktitle    = {Dataset Shift in Machine Learning},
@@ -45,7 +224,7 @@
   publisher = {Ieee}
 }
 
-@phdthesis{Lamagna2016,
+@phdthesis{lamagna2016lectura,
   title     = {Lectura artificial de n{\'u}meros manuscritos en datos abiertos de elecciones legislativas en la Ciudad de Buenos Aires},
   author    = {Lamagna, Walter Marcelo},
   publisher = {Universidad de Buenos Aires. Facultad de Ciencias Exactas y Naturales},
@@ -54,7 +233,7 @@
   keywords  = {ELECCIONES; DATAMINING; GOBIERNO ABIERTO; PROCESAMIENTO DE IMAGENES; REDES NEURONALES CONVOLUCIONALES}
 }
 
-@inproceedings{Tzeng_2017,
+@inproceedings{tzeng2017adversarial,
   author    = {Tzeng, Eric and Hoffman, Judy and Saenko, Kate and Darrell, Trevor},
   title     = {Adversarial Discriminative Domain Adaptation},
   booktitle = {Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
@@ -89,12 +268,4 @@
   priority             = {4},
   title                = {{The OpenCV Library}},
   year                 = {2000}
-}
-
-@inproceedings{he2016deep,
-  title     = {Deep residual learning for image recognition},
-  author    = {He, Kaiming and Zhang, Xiangyu and Ren, Shaoqing and Sun, Jian},
-  booktitle = {Proceedings of the IEEE conference on computer vision and pattern recognition},
-  pages     = {770--778},
-  year      = {2016}
 }

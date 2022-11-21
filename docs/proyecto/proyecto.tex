@@ -19,47 +19,102 @@
 \usepackage{pgfgantt}
 \renewcommand{\figurename}{Figura}
 
-\title{Proyecto de Tesis}
+\title{Proyecto de Tesis\\ \large Clasificaci\'on de los digitos escritos en los telegramas de las elecciones legislativas en Santa Fe mediante
+t\'ecnicas de adaptaci\'on de dominio.}
 \author{Franco Lianza}
 \begin{document}
 
 \input{title.tex}
 \newpage
 
-\subsection*{Tema}
-{\it Título del trabajo}
+\section*{Resumen}
 
-Clasificaci\'on de los digitos escritos en los telegramas de las elecciones legislativas en Santa Fe mediante t\'ecnicas de adaptaci\'on de dominio.
+En Argentina se celebran elecciones cada 2 a\~{n}os, lo cual implica que se debe incurrir en altos costos para poder
+llevarlas a cabo. Al finalizar el dia del sufragio, cada una de las mesas de voto arman una planilla con los votos
+obtenidos por cada partido pol\'itico. La misma es enviada al correo en forma de telegrama para luego ser escaneado y
+enviado a un centro de c\'omputo. El proceso por el cual se digitalizan a mano cada uno de los telegramas los
+telegramas en un sistema central es costoso, ineficiente y suceptible a errores humanos. Contar con una herramienta que
+permita digitalizar autom\'aticamente cada uno de los telegramas al sistema central de c\'omputo, agilizar\'a y
+aportar\'a transparencia al proceso reduciendo los costos y errores. Por tal motivo, se centrar\'a en desarrollar un
+proceso de extracci\'on de d\'igitos de los telegramas para luego entrenar distintos modelos que sean capaces de
+clasificarlos. De esta manera, se podr\'an definir m\'etricas que permitan seleccionar el mejor de ellos y
+disponibilizarlo en las pr\'oximas elecciones.
 
-\subsection*{Resumen}
-{\it Resumen del área sobre la que se realizará el trabajo.}
+\section*{Motivación e importancia del campo}
 
-La rama de {\it Computer Vision} se encarga desarrollar herramientas para reconocer patrones complejos en im\'agenes en m\'ultiples dominios. Se ha extendido
-exponencialmente a lo largo del tiempo, llegando a un punto en el cual se pueden detectar todo tipo de objetos con una precisi\'on \'optima
-\cite{szeliski2010computer}.
+Existen, principalmente, tres tipos de elecciones:
 
-Las t\'ecnicas desarrolladas en el \'area precisan de un gran volumen de datos para su entrenamiento. Esto implica que es de suma importancia de tener
-disponibles las {\it labels} (etiquetas) de los datos que se van a utilizar para entrenar los modelos. El etiquetado de los datos es una tarea costosa,
-ineficiente y hasta a veces resulta inviable de realizar \cite{reis2022data}.
+\begin{itemize}
+	\item Elecciones nacionales, para elegir a las autoridades federales del país: el Poder Ejecutivo, constituido por el
+	      Presidente y el vicepresidente y el Congreso Nacional, formado por Senadores y Diputados.
+	\item Elecciones provinciales y de la Ciudad de Buenos Aires o locales, para elegir a las autoridades de cada provincia: los
+	      poderes ejecutivos de las provincias y sus legislaturas.
+	\item Elecciones municipales, regidas por las leyes y procedimientos de cada provincia.
+\end{itemize}
 
-A\'un teniendo los {\it labels}, puede ocurrir que el {\it dataset} (conjunto de datos) donde se va a utilizar el modelo resulte diferente al que se utilizó
-para entrenarlo. Por mencionar, un modelo de detecci\'on de rostros entrenado en una etnia demogr\'afica particular funcionar\'a de manera err\'onea si se lo
-aplica a otra. Este fen\'onmeno se conoce como {\it dataset bias} o {\it dataset shift} (sesgo en los datos). Dicho de otra manera, un modelo entrenado en un
-	{\it dataset} puede no generalizar correctamente debido al {\it dataset bias}. Algunos autores afirman que el sesgo es un problema que no se puede evitar al
-momento de crear un {\it dataset} \cite{khosla2012undoing}.
+Si bien emitir el sufragio es diferente en cada una de ellas, generalmente consta de ingresar a un cuarto oscuro,
+elegir el candidato que se desea y depositar el voto en una urna. Al finalizar la jornada, las autoridades de mesas
+recuentan los votos y llenan una planilla a mano alzada donde se resume la cantidad de votos obtenidos por cada
+candidato o partido pol\'itico. Dicha planilla es escaneada y enviada a traves de un telegrama del correo argentino al
+centro de c\'omputo para su procesamiento. Una vez all\'i, se contabilizan en un sistema inform\'atico a partir de un
+grupo de empleados. Finalmente, se procede a una etapa de validaci\'on de los datos para constatar que lo computado
+coincide con lo escrito.
 
-La detecci\'on de d\'igitos en los telegramas de elecciones en Argentina podr\'ia llevarse a cabo mediante un modelo entrenado en {\it datasets} de d\'igitos
-p\'ublicos como el {\it MNIST} \cite{lecun1998gradient}. Como no existe una \'unica forma de escribir, el modelo estar\'a sesgado a reconocer d\'igitos
-escritos de forma similar a los que se encontraban en el {\it dataset} de entrenamiento. No ser\'a capaz de generalizar lo aprendido en un dominio distinto.
+Para que el proceso sea lo mas r\'apido y eficaz posible, se requiere a una gran cantidad personas destinadas al centro
+de c\'omputo. Tal soluci\'on hace que el proceso sea altamente ineficiente en cuanto a tiempos y costos se refiere. En
+las elecciones legislativas del 2021 se gastaron unos \$17.000 millones de pesos de los cuales \$4.000 millones de
+pesos fueron destinados a sueldos para el personal\footnote{Fuente:
+	\href{https://www.cronista.com/economia-politica/Elecciones-legislativas-2021-cuanto-mas-se-gastara-por-el-coronavirus-segun-el-Presupuesto-20201004-0006.html}{El
+		cronista}}.
 
-En trabajos anteriores, se aplican distorsiones al conjunto de entrenamiento para aumentar la cantidad de datos de entrenamiento y de esta forma el modelo
-pueda generalizar y aplicarse a los telegramas de elecciones de la Ciudad de Buenos Aires \cite{Lamagna2016}. En el presente trabajo se utilizar\'an t\'ecnicas
-referidas al {\it transfer learning}, espec\'ificamente de {\it domain adaptation} para resolver el problema.
+\section*{Requerimientos y desafíos}
 
-El {\it transfer learning} (transferencia de aprendizaje) es un \'area del {\it machine learning} que se encarga de almacenar el conocimiento ganado en un
-problema y aplicarlo a otro. {\it Domain adaptation} (adaptaci\'on de dominio) consiste en la habilidad de aplicar un modelo entrenado en uno o mas dominios de
-origen ({\it source domain}) en un uno distinto pero relacionado ({\it target domain}). La figura \ref{fig:mnist-to-svhn} muestra un ejemplo dos {\it datasets}
-de d\'igitos pero con dominios diferentes. Un modelo entrenado con {\it MNIST} no generalizar\'a al conjunto {\it SVHN} por m\'as que ambos sean d\'igitos.
+La clasificaci\'on de n\'umeros es un problema que, si bien parece resuelto con \cite{lecun1998gradient} y la
+creaci\'on del dataset MNIST, no debe ser tomada a la ligera. Si bien la rama de {\it Computer Vision}, que se encarga
+de desarrollar herramientas capaces de reconocer patrones complejos en im\'agenes, se encuentra en un punto en el cual
+presenta resultados \'optimos en la mayor\'ia de los casos \cite{szeliski2010computer, redmon2016yolo}; no se encuentra
+exenta al problema del sesgo en los datos.
+
+No existe una \'unica forma de escribir y a\~{n}o a a\~{n}o cambian las personas que son los jefes de mesa encargados
+de completar los telegramas. Las caracter\'isticas de los n\'umeros escritos difiere entre cada elecci\'on. Cuando la
+distribuci\'on de los datos de entrenamiento difiere a la de los datos de aplicaci\'on, se est\'a ante un {\it
+		corrimiento de dominio} ({\it domain shift} o {\it data drift} en ingl\'es). Esto provoca los siguientes problemas:
+
+\begin{itemize}
+	\item No se puede utilizar un modelo entrenado en telegramas de elecciones pasadas.
+	\item Para entrenar alg\'un modelo de clasificaci\'on de im\'agenes se requiere de una gran cantidad de datos y sus
+	      respectivas etiquetas.
+\end{itemize}
+
+Es por lo expuesto que no puede utilizarse un esquema de entrenamiento convencional. Una alternativa es la realizada en
+trabajos anteriores, donde se aplicaron distorsiones al conjunto de entrenamiento para aumentar la cantidad de datos de
+entrenamiento y que de esta forma el modelo pueda generalizar y aplicarse a los telegramas de elecciones de la Ciudad
+de Buenos Aires \cite{lamagna2016lectura}. No obstante, no se muestran m\'etricas concretas respecto de los resultados
+obtenidos en los telegramas reales.
+
+\section*{Problemas no resueltos}
+
+El problema que quiere resolver es la digitalizaci\'on autom\'atica de los telegramas mediante machine learning de
+forma robusta.
+
+La digitalizaci\'on de los telegramas de las elecciones sigue siendo de forma manual, lo que genera lentitud y
+desconfianza en el proceso. Detectar los votos de manera autom\'atica y reducir la intervenci\'on humana, aumentar\'a
+la eficiencia de las elecciones y la confianza en ellas.
+
+\section*{Soluci\'on propuesta}
+
+Durante el proceso de digitalizaci\'on de los telegramas en una elecci\'on, se ejecutar\'a el proceso que se encarga de
+extraer los d\'igitos de los mismos y entrenar\'a un modelo de clasificaci\'on espec\'ifico a partir de {\it transfer
+		learning}. Luego, se aplicar\'a el modelo y su salida ser\'a el voto digitalizado junto a su probabilidad. De esta
+menera, la digitalizaci\'on estar\'a realizada y se podra\'a proceder al proceso de validaci\'on humana de las
+predicciones.
+
+El {\it transfer learning} (transferencia de aprendizaje) es un \'area del {\it machine learning} que se encarga de
+almacenar el conocimiento ganado en un problema y aplicarlo a otro \cite{thrun1998learning}. Sin embargo, como no se
+dispondr\'an de las etiquetas al momento de la elecci\'on, se utilizar\'an t\'ecnicas de {\it adaptaci\'on de dominio}
+(AD). La misma consiste en la habilidad de aplicar un modelo entrenado en uno o mas dominios de origen ({\it source
+		domain}) en un uno distinto pero relacionado ({\it target domain}) \cite{ben2006analysis}. A modo de ejemplo, la figura
+\ref{fig:mnist-to-svhn} muestra dos conjuntos de datos de d\'igitos pero con dominios diferentes.
 
 \begin{figure}[ht]
 	\centering
@@ -68,57 +123,32 @@ de d\'igitos pero con dominios diferentes. Un modelo entrenado con {\it MNIST} n
 	\label{fig:mnist-to-svhn}
 \end{figure}
 
-\subsection*{Director o Tutor}
-{\it El nombre del director o tutor de la tesis o trabajo, si éste ya
-	hubiese aceptado la tarea.}
+\section*{Objetivo del trabajo}
 
-Dr. Leandro Bugnon
+Como objetivo general del trabajo se pretende desarrollar un proceso que permita transformar los telegramas de
+elecciones legislativas de Santa Fe, entrenar un modelo de clasificaci\'on mediante una t\'ecnica de adaptaci\'on de
+dominio y poder digitalizar los telegramas.
 
-\subsection*{Motivación e importancia del campo}
-{\it Explicar la o las motivaciones que llevan a realizar el trabajo planteado
-	y su importancia.}
+Esto desprende los siguientes objetivos espec\'ificos:
+\begin{itemize}
+	\item Armar el proceso de ETL de los telegramas que permita limpiar y extraer los d\'igitos.
+	\item Determinar un conjunto de datos etiquetado a ser utilizado como dominio de origen.
+	\item Entrenar distintos arquitecturas de redes convolucionales mediante t\'ecnicas de adaptaci\'on de dominio.
+	\item Analizar y evaluar las m\'etricas que permitan seleccionar el mejor modelo.
+	\item Seleccionar el mejor par modelo - t\'ecnica AD.
+\end{itemize}
 
-La principal motivaci\'on es obtener un modelo que, basado en un {\it dataset} similiar ya etiquetado, pueda interpretar los d\'igitos de los telegramas de las
-elecciones de Santa Fe sin necesitar el costoso proceso de etiquetar los datos. De esta manera, el modelo podr\'ia utilizarse en futuras elecciones a fin de
-automatizar la digitalizaci\'on de los mismos reduciendo considerablemente los costos operacionales y reduciendo los posibles errores humanos.
+\section*{Metodología}
 
-\subsection*{Problemas no resueltos}
-{\it Problemas no resueltos detectados en el área y que el trabajo a realizar
-	pretende resolver.}
+Se har\'a revisi\'on del estado del arte para despu\'es continuar con el preprocesamiento de los datos. Los telegramas
+ser\'an descargados desde la \href{https://op.elecciones.gob.ar/telegramas/generales2021/}{p\'agina oficial del estado
+	argentino}. Luego se extraer\'an los d\'igitos de los votos de cada telegrama utilizando la librer\'ia {\it OpenCV}
+\cite{opencv_library} y Python. Se realizar\'an ciclos de entrenamiento de distintas redes convolucionales (LeNet
+\cite{lecun1998gradient}, ResNet \cite{he2016deep}, etc) en el dominio de origen para luego aplicar t\'ecnicas de AD
+que permita transferir el conocimiento al dominio de destino (telegramas legislativos de Santa Fe). Se evaluar\'an las
+m\'etricas de cada uno de ellos y se proceder\'a a elegir el mejor.
 
-La digitalizaci\'on de los telegramas de las elecciones sigue siendo de forma manual, lo que genera lentitud y desconfianza en el proceso. Detectar los votos
-de manera autom\'atica y reducir la intervenci\'on humana, aumentar\'a la eficiencia de las elecciones y la confianza en ellas.
-
-Por otra parte, cada una de las t\'ecnicas existentes de {\it domain adaptation} pretende aumentar el poder de generalizaci\'on del modelo de una forma
-diferente. Debido a la variedad t\'enicas que existen, no es claro c\'ual conviene utilizar en la digitalizaci\'on de los telegramas.
-
-\subsection*{Objetivo del trabajo}
-{\it Explicar claramente el objetivo del trabajo, especificando su alcance y limitaciones.}
-
-El objetivo del trabajo consiste en desarrollar un m\'etodo para realizar adaptaci\'on de dominio de un modelo aplicado a la digitalizaci\'on de los telegramas
-de las elecciones legislativas de Santa Fe sin que necesite el etiquetado de los mismos.
-
-\subsection*{Requerimientos y desafíos}
-{\it Requerimientos y desafíos que plantea el trabajo a realizar.}
-
-Debido a que se posee tanto los datos como el poder de c\'omputo, el proyecto presenta como principal desaf\'io analizar e implementar distintas t\'ecnicas de
-	{\it domain adaptation} a un modelo de reconocimiento de d\'igitos. Se deber\'an estudiar diferentes conceptos de los cuales dependen las mismas, como las {\it
-		Generative Adversarial Networks (GANs)} \cite{Tzeng_2017,ganin2016domain}.
-
-\subsection*{Metodología}
-{\it Metodología a emplear para el desarrollo del trabajo.}
-
-Se har\'a revisi\'on del estado del arte para despu\'es continuar con el preprocesamiento de los datos. Los telegramas ser\'an descargados desde la
-\href{https://op.elecciones.gob.ar/telegramas/generales2021/}{p\'agina oficial del estado argentino}. Luego se extraer\'an los d\'igitos de los votos de cada
-telegrama utilizando la librer\'ia {\it OpenCV} \cite{opencv_library}. Una vez obtenido los d\'igitos, se realizar\'an ciclos de selecci\'on de t\'ecnica de
-	{\it domain adaptation}, entrenamiento de distintas redes convolucionales (LeNet \cite{lecun1998gradient}, ResNet \cite{he2016deep}, etc), implementaci\'on de
-la adaptaci\'on y evaluaci\'on. Finalmente, se seleccionar\'a el mejor modelo adaptado al problema.
-
-\subsection*{Plan de Trabajo}
-{\it Especificar las distintas tareas a realizar con los tiempos que se
-	estime que deberían insumir.
-	Indicar las fechas estimadas de inicio y finalización del trabajo.
-}
+\section*{Plan de Trabajo}
 
 El trabajo se realizar\'a a partir de las siguientes etapas:
 \begin{itemize}
@@ -136,7 +166,8 @@ El trabajo se realizar\'a a partir de las siguientes etapas:
 	\item \underline{Redacci\'on de tesis}.
 \end{itemize}
 
-Se estima que el proyecto comienza en Agosto del 2022 y finaliza en Diciembre del 2022. La figura \ref{fig:gantt} presenta el cronograma propuesto.
+Se estima que el proyecto comienza en Agosto del 2022 y finaliza en Diciembre del 2022. La figura \ref{fig:gantt}
+presenta el cronograma propuesto.
 
 \begin{figure}[ht]
 	\begin{center}
@@ -194,12 +225,12 @@ Se estima que el proyecto comienza en Agosto del 2022 y finaliza en Diciembre de
 	\label{fig:gantt}
 \end{figure}
 
-\subsection*{Bibliograf\'ia}
-{
-	%Disable chapter command
-	\renewcommand{\chapter}[2]{}
-	\bibliographystyle{unsrt}
-	\bibliography{refs}
-}
+\section*{Bibliograf\'ia}
+ {
+  %Disable section* command
+  \renewcommand{\section*}[2]{}
+  \bibliographystyle{unsrt}
+  \bibliography{refs}
+ }
 
 \end{document}
