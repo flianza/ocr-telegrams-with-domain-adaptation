@@ -1,11 +1,15 @@
-\documentclass[a4paper, twoside]{report}
+\documentclass[a4paper, twoside, spanish]{report}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
 \graphicspath{{images/}}
 
+\usepackage[backend=bibtex,style=authoryear,natbib=true]{biblatex}
+\addbibresource{refs.bib}
+\usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography
 \usepackage[a4paper,width=150mm,top=25mm,bottom=25mm,bindingoffset=6mm]{geometry}
 \usepackage{fancyhdr}
+\RequirePackage{babel} % Required for automatically changing names of document elements to languages besides english
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead{}
@@ -30,14 +34,14 @@ t\'ecnicas de adaptaci\'on de dominio.}
 \section*{Resumen}
 
 En Argentina se celebran elecciones cada 2 a\~{n}os, lo cual implica que se debe incurrir en altos costos para poder
-llevarlas a cabo. Al finalizar el dia del sufragio, cada una de las mesas de voto arman una planilla con los votos
-obtenidos por cada partido pol\'itico. La misma es enviada al correo en forma de telegrama para luego ser escaneado y
-enviado a un centro de c\'omputo. El proceso por el cual se digitalizan a mano cada uno de los telegramas los
-telegramas en un sistema central es costoso, ineficiente y suceptible a errores humanos. Contar con una herramienta que
-permita digitalizar autom\'aticamente cada uno de los telegramas al sistema central de c\'omputo, agilizar\'a y
+llevarlas a cabo. Al finalizar el dia del sufragio, cada una de las mesas de voto elaboran una planilla con los votos
+obtenidos por cada partido pol\'itico. Las mismas son enviadas al Correo Argentino en forma de telegrama para luego ser
+escaneadas y enviadas a un centro de c\'omputo en formato PDF. El proceso por el cual se digitalizan a mano cada uno de
+los telegramas en un sistema central es costoso, ineficiente y suceptible a errores humanos. Contar con una herramienta
+que permita digitalizar autom\'aticamente cada uno de los telegramas al sistema central de c\'omputo, agilizar\'a y
 aportar\'a transparencia al proceso reduciendo los costos y errores. Por tal motivo, se centrar\'a en desarrollar un
 proceso de extracci\'on de d\'igitos de los telegramas para luego entrenar distintos modelos que sean capaces de
-clasificarlos. De esta manera, se podr\'an definir m\'etricas que permitan seleccionar el mejor de ellos y
+clasificarlos. De esta manera, se podr\'an evaluar m\'etricas que permitan seleccionar el mejor de ellos y
 disponibilizarlo en las pr\'oximas elecciones.
 
 \section*{Motivación e importancia del campo}
@@ -69,11 +73,11 @@ pesos fueron destinados a sueldos para el personal\footnote{Fuente:
 
 \section*{Requerimientos y desafíos}
 
-La clasificaci\'on de n\'umeros es un problema que, si bien parece resuelto con \cite{lecun1998gradient} y la
-creaci\'on del dataset MNIST, no debe ser tomada a la ligera. Si bien la rama de {\it Computer Vision}, que se encarga
-de desarrollar herramientas capaces de reconocer patrones complejos en im\'agenes, se encuentra en un punto en el cual
-presenta resultados \'optimos en la mayor\'ia de los casos \cite{szeliski2010computer, redmon2016yolo}; no se encuentra
-exenta al problema del sesgo en los datos.
+La herramienta debe poder clasificar de forma autom\'atica con el menor error posible los d\'igitos de los telegramas
+para poder digitalizarlos. Si bien la clasificaci\'on de n\'umeros es un problema que, ya se encuentra resuelto con
+\parencite{lecun1998gradient} y la creaci\'on del dataset MNIST, no debe ser tomada a la ligera. Si bien la rama de {\it
+		Computer Vision}, que se encarga de desarrollar herramientas capaces de reconocer patrones complejos en im\'agenes, se
+encuentra en un punto en el cual presenta resultados \'optimos en la mayor\'ia de los casos \parencite{szeliski2010computer, redmon2016yolo}; no se encuentra exenta al problema del sesgo en los datos.
 
 No existe una \'unica forma de escribir y a\~{n}o a a\~{n}o cambian las personas que son los jefes de mesa encargados
 de completar los telegramas. Las caracter\'isticas de los n\'umeros escritos difiere entre cada elecci\'on. Cuando la
@@ -81,40 +85,38 @@ distribuci\'on de los datos de entrenamiento difiere a la de los datos de aplica
 		corrimiento de dominio} ({\it domain shift} o {\it data drift} en ingl\'es). Esto provoca los siguientes problemas:
 
 \begin{itemize}
+	\item Un modelo entrenado con datos p\'ublicos como MNIST no funcionar\'a correctamente en los d\'igitos escritos en
+	      Argentina.
 	\item No se puede utilizar un modelo entrenado en telegramas de elecciones pasadas.
 	\item Para entrenar alg\'un modelo de clasificaci\'on de im\'agenes se requiere de una gran cantidad de datos y sus
 	      respectivas etiquetas.
 \end{itemize}
 
-Es por lo expuesto que no puede utilizarse un esquema de entrenamiento convencional. Una alternativa es la realizada en
-trabajos anteriores, donde se aplicaron distorsiones al conjunto de entrenamiento para aumentar la cantidad de datos de
-entrenamiento y que de esta forma el modelo pueda generalizar y aplicarse a los telegramas de elecciones de la Ciudad
-de Buenos Aires \cite{lamagna2016lectura}. No obstante, no se muestran m\'etricas concretas respecto de los resultados
-obtenidos en los telegramas reales.
+Es por lo expuesto que no puede utilizarse un esquema de entrenamiento de modelos convencional. Una alternativa es la
+realizada en trabajos anteriores, donde se aplicaron distorsiones al conjunto de entrenamiento para aumentar la
+cantidad de datos de entrenamiento y que, de esta forma, el modelo pueda generalizar y aplicarse a los telegramas de
+elecciones de la Ciudad de Buenos Aires \parencite{lamagna2016lectura}. No obstante, no se muestran m\'etricas concretas respecto de los resultados obtenidos en
+los telegramas reales.
 
 \section*{Problemas no resueltos}
 
-El problema que quiere resolver es la digitalizaci\'on autom\'atica de los telegramas mediante machine learning de
-forma robusta.
+El problema que quiere resolver es la digitalizaci\'on autom\'atica de los telegramas mediante {\it machine learning}
+de forma robusta.
 
 La digitalizaci\'on de los telegramas de las elecciones sigue siendo de forma manual, lo que genera lentitud y
-desconfianza en el proceso. Detectar los votos de manera autom\'atica y reducir la intervenci\'on humana, aumentar\'a
+desconfianza en el proceso. Clasificar los votos de manera autom\'atica y reducir la intervenci\'on humana, aumentar\'a
 la eficiencia de las elecciones y la confianza en ellas.
 
-\section*{Soluci\'on propuesta}
+Desde un punto de vista t\'ecnico, entrenar un modelo en estas circunstancias donde las etiquetas pueden no ser
+confiables o directamente no existir, implica que se necesite de alguna t\'ecnica de {\it transfer learning}. El mismo
+es un \'area del {\it machine learning} que se encarga de almacenar el conocimiento ganado en un problema y aplicarlo a
+otro \parencite{thrun1998learning}. En este caso, se utilizar\'an t\'ecnicas de {\it adaptaci\'on de dominio} (AD) para el
+entrenamiento. La misma consiste en la habilidad de aplicar un modelo entrenado en uno o mas dominios de origen ({\it
+		source domain}) en un uno distinto pero relacionado ({\it target domain}) \parencite{ben2006analysis}. Existen numerosas t\'ecnicas de AD y, hasta el momento, no existen precedentes que analicen
+cual es la mejor para detectar d\'igitos en elecciones de Argentina.
 
-Durante el proceso de digitalizaci\'on de los telegramas en una elecci\'on, se ejecutar\'a el proceso que se encarga de
-extraer los d\'igitos de los mismos y entrenar\'a un modelo de clasificaci\'on espec\'ifico a partir de {\it transfer
-		learning}. Luego, se aplicar\'a el modelo y su salida ser\'a el voto digitalizado junto a su probabilidad. De esta
-menera, la digitalizaci\'on estar\'a realizada y se podra\'a proceder al proceso de validaci\'on humana de las
-predicciones.
-
-El {\it transfer learning} (transferencia de aprendizaje) es un \'area del {\it machine learning} que se encarga de
-almacenar el conocimiento ganado en un problema y aplicarlo a otro \cite{thrun1998learning}. Sin embargo, como no se
-dispondr\'an de las etiquetas al momento de la elecci\'on, se utilizar\'an t\'ecnicas de {\it adaptaci\'on de dominio}
-(AD). La misma consiste en la habilidad de aplicar un modelo entrenado en uno o mas dominios de origen ({\it source
-		domain}) en un uno distinto pero relacionado ({\it target domain}) \cite{ben2006analysis}. A modo de ejemplo, la figura
-\ref{fig:mnist-to-svhn} muestra dos conjuntos de datos de d\'igitos pero con dominios diferentes.
+A modo de ejemplo, la figura \ref{fig:mnist-to-svhn} muestra dos conjuntos de datos de d\'igitos pero con dominios
+diferentes.
 
 \begin{figure}[ht]
 	\centering
@@ -122,6 +124,14 @@ dispondr\'an de las etiquetas al momento de la elecci\'on, se utilizar\'an t\'ec
 	\caption{Ejemplo dominios diferentes: MNIST y SVHN}
 	\label{fig:mnist-to-svhn}
 \end{figure}
+
+\section*{Soluci\'on propuesta}
+
+La soluci\'on que se propone es la siguiente: durante el proceso de digitalizaci\'on de los telegramas en una
+elecci\'on, se ejecutar\'a un proceso que se encarga de extraer los d\'igitos de los mismos y entrenar\'a un modelo de
+clasificaci\'on espec\'ifico a partir de {\it transfer learning}. Luego, se aplicar\'a el modelo y su salida ser\'a el
+voto digitalizado junto a su probabilidad. De esta menera, la digitalizaci\'on estar\'a realizada y se podra\'a
+proceder al proceso de validaci\'on humana de las predicciones.
 
 \section*{Objetivo del trabajo}
 
@@ -143,10 +153,10 @@ Esto desprende los siguientes objetivos espec\'ificos:
 Se har\'a revisi\'on del estado del arte para despu\'es continuar con el preprocesamiento de los datos. Los telegramas
 ser\'an descargados desde la \href{https://op.elecciones.gob.ar/telegramas/generales2021/}{p\'agina oficial del estado
 	argentino}. Luego se extraer\'an los d\'igitos de los votos de cada telegrama utilizando la librer\'ia {\it OpenCV}
-\cite{opencv_library} y Python. Se realizar\'an ciclos de entrenamiento de distintas redes convolucionales (LeNet
-\cite{lecun1998gradient}, ResNet \cite{he2016deep}, etc) en el dominio de origen para luego aplicar t\'ecnicas de AD
-que permita transferir el conocimiento al dominio de destino (telegramas legislativos de Santa Fe). Se evaluar\'an las
-m\'etricas de cada uno de ellos y se proceder\'a a elegir el mejor.
+\parencite{opencv_library} y Python. Se realizar\'an ciclos de entrenamiento de distintas redes convolucionales (LeNet
+\parencite{lecun1998gradient}, ResNet \parencite{he2016deep}, etc) en el dominio de origen para luego aplicar t\'ecnicas de AD que permita transferir el
+conocimiento al dominio de destino (telegramas legislativos de Santa Fe). Se evaluar\'an las m\'etricas de cada uno de
+ellos y se proceder\'a a elegir el mejor.
 
 \section*{Plan de Trabajo}
 
@@ -225,12 +235,6 @@ presenta el cronograma propuesto.
 	\label{fig:gantt}
 \end{figure}
 
-\section*{Bibliograf\'ia}
- {
-  %Disable section* command
-  \renewcommand{\section*}[2]{}
-  \bibliographystyle{unsrt}
-  \bibliography{refs}
- }
+\printbibliography[heading=bibintoc]
 
 \end{document}
