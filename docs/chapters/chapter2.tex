@@ -42,8 +42,8 @@ de origen \parencite{sugiyama2007direct} o buscando una transformación de la di
 \subsection{Domain Adversarial Neural Network}
 Un gran hito al momento de modelar distribuciones es la Red Generativa Adversaria {\it GAN} \parencite{goodfellow2020generative}. Inspirada en estas arquitecturas GAN, la Red Neural Adversaria de Dominio {\it DANN} \parencite{ganin2016domain} dos redes en la adaptación del dominio (figura \ref{fig:dann-esquema}). La primera es la
 discriminadora de dominios $\mathcal{D}$ entrenada para distinguir las características de origen de las de destino y la
-segunda es a generadora de características $\mathcal{G}$ que se entrena para confundir a $\mathcal{D}$ y para ayudar a
-la red clasificadora $\mathcal{C}$.
+segunda es una generadora de características $\mathcal{G}$ que se entrena para confundir a $\mathcal{D}$ y
+simult\'aneamente ayudar a la red clasificadora $\mathcal{C}$.
 
 \begin{figure}[H]
     \centering
@@ -190,9 +190,9 @@ la red clasificadora $\mathcal{C}$.
 \end{figure}
 
 Las redes DANN poseen una funci\'on de p\'erdida $\mathcal{L}_\mathcal{G}$ que depende de $\mathcal{L}_\mathcal{C}$ y
-$\mathcal{L}_\mathcal{D}$.
-
-$\mathcal{L}_\mathcal{C}$ mide el error que posee la red en la clasificaci\'on de los datos de origen y viene dada por el {\it cross-entropy} $\mathcal{L}_{CE}$ aplicado a la salida de la red $\mathcal{C}$.
+$\mathcal{L}_\mathcal{D}$. $\mathcal{L}_\mathcal{C}$ mide el error que posee la red en la clasificaci\'on de los datos
+de origen y viene dada por el {\it cross-entropy} $\mathcal{L}_{CE}$ aplicado a la salida de la red $\mathcal{C}$. El
+objetivo de $\mathcal{D}$ ser\'a la descripta en la ecuaci\'on \ref{eq:dann-loss-clasificadora}:
 
 \begin{align}
     \min_{\mathcal{C}} \mathcal{L}_\mathcal{C}(\mathbf{x}^s, \mathbf{y}^s) & = \mathcal{L}_{CE}(C(\mathcal{G}(\mathbf{x}^s)), \mathbf{y}^s) \nonumber \\
@@ -212,14 +212,14 @@ proporci\'on esperada de datos de origen $\mathcal{\hat{S}}$ y destino $\mathcal
     \label{eq:dann-loss-discriminadora}
 \end{align}
 
-Por lo tanto, el $\mathcal{L}_\mathcal{G}$ de $\mathcal{G}$ viene dado por la ecuaci\'on \ref{eq:dann-loss}. Donde
-$\lambda$ es un hiper-par\'ametro a optimizar que regula el trade-off entre la clasificaci\'on y la discriminaci\'on
-adversaria. La minimización de $\mathcal{L}_\mathcal{C}$ dará lugar a representaciones discriminables, mientras que la
-disminución de $\mathcal{L}_\mathcal{D}$ dará lugar a representaciones transferibles.
+Por lo tanto, el $\mathcal{L}_\mathcal{G}$ viene dado por la ecuaci\'on \ref{eq:dann-loss-generadora}. Donde $\lambda$
+es un hiper-par\'ametro a optimizar que regula el trade-off entre la clasificaci\'on y la discriminaci\'on adversaria.
+La minimización de $\mathcal{L}_\mathcal{C}$ dará lugar a representaciones discriminables, mientras que la disminución
+de $\mathcal{L}_\mathcal{D}$ dará lugar a representaciones transferibles.
 
 \begin{align}
     \min_{\mathcal{G}} \mathcal{L}_\mathcal{G}(\mathbf{x}^s, \mathbf{x}^t) = \mathcal{L}_\mathcal{C}(\mathbf{x}^s, \mathbf{y}^s) + \lambda \mathcal{L}_\mathcal{D}(\mathbf{x}^s, \mathbf{x}^t)
-    \label{eq:dann-loss}
+    \label{eq:dann-loss-generadora}
 \end{align}
 
 \subsection{Adversarial Discriminative Domain Adaptation}
@@ -412,7 +412,7 @@ $\mathcal{D}$.
 No obstante del cambio, los objetivos son similares a {\it ADDA} excepci\'on de $\mathcal{G}_t$. La ecuaci\'on
 \ref{eq:adda-loss-clasificadora} contiene $\mathcal{L}_\mathcal{C}$ que es an\'aloga a
 \ref{eq:dann-loss-clasificadora}. La ecuaci\'on \ref{eq:adda-loss-discriminadora} contiene $\mathcal{L}_\mathcal{D}$
-que es an\'aloga a \ref{eq:dann-loss-discriminadora}. Finalmente, la ecuaci\'on \ref{eq:adda-loss} contiene
+que es an\'aloga a \ref{eq:dann-loss-discriminadora}. Finalmente, la ecuaci\'on \ref{eq:adda-loss-generadora} contiene
 $\mathcal{L}_{\mathcal{G}_s}$ que asigna gradientes peque\~{n}os a registros de destino que sean similares a los de
 origen y gradientes mas grandes para los otros registros de destino.
 
@@ -428,7 +428,7 @@ origen y gradientes mas grandes para los otros registros de destino.
 
 \begin{align}
     \min_{\mathcal{G}_t} \mathcal{L}_{\mathcal{G}_t}(\mathbf{x}^t) & = - \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}} \log[\mathcal{D}(\mathcal{G}_t(\mathbf{x}^t))]
-    \label{eq:adda-loss}
+    \label{eq:adda-loss-generadora}
 \end{align}
 
 \subsection{AFN}
