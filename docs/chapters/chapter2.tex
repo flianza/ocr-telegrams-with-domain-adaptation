@@ -40,7 +40,7 @@ Se han propuesto muchos métodos para la adaptación de dominios, ya sea pondera
 de origen \parencite{sugiyama2007direct} o buscando una transformación de la distribución de origen a la distribución de destino \parencite{gong2013connecting}. Esta tesis analizar\'a algunos de los m\'etodos m\'as actuales del ultimo caso.
 
 \subsection{Domain Adversarial Neural Network}
-Un gran hito al momento de modelar distribuciones es la Red Generativa Adversaria {\it GAN} \parencite{goodfellow2020generative}. Inspirada en estas arquitecturas GAN, la Red Neural Adversaria de Dominio {\it DANN} \parencite{ganin2016domain} dos redes en la adaptación del dominio (figura \ref{fig:esquema-dann}). La primera es la
+Un gran hito al momento de modelar distribuciones es la Red Generativa Adversaria {\it GAN} \parencite{goodfellow2020generative}. Inspirada en estas arquitecturas GAN, la Red Neural Adversaria de Dominio {\it DANN} \parencite{ganin2016domain} dos redes en la adaptación del dominio (figura \ref{fig:dann-esquema}). La primera es la
 discriminadora de dominios $\mathcal{D}$ entrenada para distinguir las características de origen de las de destino y la
 segunda es a generadora de características $\mathcal{G}$ que se entrena para confundir a $\mathcal{D}$ y para ayudar a
 la red clasificadora $\mathcal{C}$.
@@ -107,13 +107,13 @@ la red clasificadora $\mathcal{C}$.
 
         \draw (165.83,123.42) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
                 \begin{center}
-                    $z^t$
+                    $\mathbf{z}^t$
                 \end{center}
 
             \end{minipage}};
         \draw (165.83,48.08) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
                 \begin{center}
-                    $z^s$
+                    $\mathbf{z}^s$
                 \end{center}
 
             \end{minipage}};
@@ -137,13 +137,13 @@ la red clasificadora $\mathcal{C}$.
             \end{minipage}};
         \draw (54.25,106.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
                 \begin{center}
-                    $x^t$
+                    $\mathbf{x}^t$
                 \end{center}
 
             \end{minipage}};
         \draw (54.25,64.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
                 \begin{center}
-                    $x^s$
+                    $\mathbf{x}^s$
                 \end{center}
 
             \end{minipage}};
@@ -167,13 +167,13 @@ la red clasificadora $\mathcal{C}$.
             \end{minipage}};
         \draw (313.25,28.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
                 \begin{center}
-                    $y^s$
+                    $\mathbf{y}^s$
                 \end{center}
 
             \end{minipage}};
         \draw (313.25,66.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
                 \begin{center}
-                    $\hat{y}^s$
+                    $\hat{\mathbf{y}}^s$
                 \end{center}
 
             \end{minipage}};
@@ -186,42 +186,252 @@ la red clasificadora $\mathcal{C}$.
 
     \caption{Esquema de las {\it DANN}. Los supra indices $s$ y $t$ indican si los datos son del origen o destino respectivamente.
         Los c\'irculos con l\'ineas rayadas son salidas de los modelos mientras que los c\'irculos de l\'ineas s\'olidas son datos conocidos.}
-    \label{fig:esquema-dann}
+    \label{fig:dann-esquema}
 \end{figure}
 
-Las redes DANN poseen una funci\'on de p\'erdida $\mathcal{L}$ que depende de $\mathcal{L}_\mathcal{C}$ y
+Las redes DANN poseen una funci\'on de p\'erdida $\mathcal{L}_\mathcal{G}$ que depende de $\mathcal{L}_\mathcal{C}$ y
 $\mathcal{L}_\mathcal{D}$.
 
 $\mathcal{L}_\mathcal{C}$ mide el error que posee la red en la clasificaci\'on de los datos de origen y viene dada por el {\it cross-entropy} $\mathcal{L}_{CE}$ aplicado a la salida de la red $\mathcal{C}$.
 
 \begin{align}
-    \mathcal{L}_\mathcal{C}(x^s, y^s) & = \mathcal{L}_{CE}(C(\mathcal{G}(x^s)), y^s) \nonumber                \\
-                                      & = \mathcal{L}_{CE}(C(z^s), y^s) \nonumber                             \\
-                                      & = \mathcal{L}_{CE}(\hat{y}^s, y^s) \label{eq:dann-loss-clasificadora}
+    \min_{\mathcal{C}} \mathcal{L}_\mathcal{C}(\mathbf{x}^s, \mathbf{y}^s) & = \mathcal{L}_{CE}(C(\mathcal{G}(\mathbf{x}^s)), \mathbf{y}^s) \nonumber \\
+                                                                           & = \mathcal{L}_{CE}(C(\mathbf{z}^s), \mathbf{y}^s) \nonumber              \\
+                                                                           & = \mathcal{L}_{CE}(\hat{\mathbf{y}}^s, \mathbf{y}^s)
+    \label{eq:dann-loss-clasificadora}
 \end{align}
 
 La funci\'on de p\'erdida de $\mathcal{D}$ viene dada por la ecuaci\'on \ref{eq:dann-loss-discriminadora}, donde
-$\mathbb{E}_{x^s \sim \mathcal{\hat{S}}}$ y $\mathbb{E}_{x^t \sim \mathcal{\hat{T}}}$ representan la proporci\'on
-esperada de datos de origen $\mathcal{\hat{S}}$ y destino $\mathcal{\hat{T}}$ respectivamente.
+$\mathbb{E}_{\mathbf{x}^s \sim \mathcal{\hat{S}}}$ y $\mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}}$ representan la
+proporci\'on esperada de datos de origen $\mathcal{\hat{S}}$ y destino $\mathcal{\hat{T}}$ respectivamente.
 
 \begin{align}
-    \mathcal{L}_\mathcal{D}(x^s, x^t) & = \mathbb{E}_{x^s \sim \mathcal{\hat{S}}}\log[\mathcal{D}(\mathcal{G}(x^s))] + \mathbb{E}_{x^t \sim \mathcal{\hat{T}}}\log[1-\mathcal{D}(\mathcal{G}(x^t))] \nonumber \\
-                                      & = \mathbb{E}_{x^s \sim \mathcal{\hat{S}}}\log[\mathcal{D}(z^s)] + \mathbb{E}_{x^t \sim \mathcal{\hat{T}}}\log[1-\mathcal{D}(z^t)] \nonumber                           \\
-                                      & = \mathbb{E}_{x^s \sim \mathcal{\hat{S}}}\log[d^s] + \mathbb{E}_{x^t \sim \mathcal{\hat{T}}}\log[1-d^t] \label{eq:dann-loss-discriminadora}
+    \max_{\mathcal{G},\mathcal{D}} \mathcal{L}_\mathcal{D}(\mathbf{x}^s, \mathbf{x}^t) & = \mathbb{E}_{\mathbf{x}^s \sim \mathcal{\hat{S}}}\log[\mathcal{D}(\mathcal{G}(\mathbf{x}^s))] + \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}}\log[1-\mathcal{D}(\mathcal{G}(\mathbf{x}^t))] \nonumber \\
+                                                                                       & = \mathbb{E}_{\mathbf{x}^s \sim \mathcal{\hat{S}}}\log[\mathcal{D}(\mathbf{z}^s)] + \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}}\log[1-\mathcal{D}(\mathbf{z}^t)] \nonumber                           \\
+                                                                                       & = \mathbb{E}_{\mathbf{x}^s \sim \mathcal{\hat{S}}}\log[d^s] + \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}}\log[1-d^t]
+    \label{eq:dann-loss-discriminadora}
 \end{align}
 
-Por lo tanto, el $\mathcal{L}$ de una {\it DANN} viene dado por la ecuaci\'on \ref{eq:dann-loss}. Donde $\lambda$ es un
-hiper-par\'ametro a optimizar que regula el trade-off de la clasificaci\'on y la discriminaci\'on.
+Por lo tanto, el $\mathcal{L}_\mathcal{G}$ de $\mathcal{G}$ viene dado por la ecuaci\'on \ref{eq:dann-loss}. Donde
+$\lambda$ es un hiper-par\'ametro a optimizar que regula el trade-off entre la clasificaci\'on y la discriminaci\'on
+adversaria. La minimización de $\mathcal{L}_\mathcal{C}$ dará lugar a representaciones discriminables, mientras que la
+disminución de $\mathcal{L}_\mathcal{D}$ dará lugar a representaciones transferibles.
 
 \begin{align}
-    \mathcal{L}(x^s, x^t) = \mathcal{L}_\mathcal{C}(x^s, y^s) + \lambda \mathcal{L}_\mathcal{D}(x^s, x^t)
+    \min_{\mathcal{G}} \mathcal{L}_\mathcal{G}(\mathbf{x}^s, \mathbf{x}^t) = \mathcal{L}_\mathcal{C}(\mathbf{x}^s, \mathbf{y}^s) + \lambda \mathcal{L}_\mathcal{D}(\mathbf{x}^s, \mathbf{x}^t)
     \label{eq:dann-loss}
 \end{align}
 
-\subsection{AFN}
-\lipsum[1]
+\subsection{Adversarial Discriminative Domain Adaptation}
+Las redes Adversarial Discriminative Domain Adaptation {\it ADDA} surgen a partir de las {\it DANN} debido a que su
+estrategia de optimización podría no funcionar bien en la práctica debido a la desvanecimiento del gradiente, que
+también es un problema importante en el entrenamiento de GANs. Por ejemplo, cuando el espacio latente de destino
+generado $\mathbf{z}^t$ es extremadamente distinguible del de origen tal que $\mathcal{D}(\mathbf{z}^t)=0$, el
+gradiente es peque\~{n}o y vice versa. Esto provoca que la optimizaci\'on de $\mathcal{G}$ sea extremadamente
+dif\'icil.
 
-\subsection{ADDA}
+Las redes {\it ADDA} separan la optimizaci\'on de $\mathcal{G}$ y de $\mathcal{D}$ en dos objetivos separados (figura
+\ref{fig:adda-esquema}) siendo el primero el pre-entrenamiento de $\mathcal{G}_s$ y $\mathcal{C}$ en los datos de
+origen y el otro siendo la adaptaci\'on adversaria de una $\mathcal{G}_t$ utilizando a $\mathcal{G}_s$ pre-entrenada y
+$\mathcal{D}$.
+
+\begin{figure}[H]
+    \centering
+
+    \tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+    \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+        %uncomment if require: \path (0,385); %set diagram left start at 0, and has height of 385
+
+        \draw   (20.33,88.25) .. controls (20.33,79.83) and (27.16,73) .. (35.58,73) .. controls (44.01,73) and (50.83,79.83) .. (50.83,88.25) .. controls (50.83,96.67) and (44.01,103.5) .. (35.58,103.5) .. controls (27.16,103.5) and (20.33,96.67) .. (20.33,88.25) -- cycle ;
+
+        \draw   (70.67,52.17) -- (110.67,64.17) -- (110.67,114.17) -- (70.67,126.17) -- cycle ;
+        \draw    (50.83,88.25) -- (67.33,88.25) ;
+        \draw [shift={(70.33,88.25)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw  [dash pattern={on 4.5pt off 4.5pt}] (134.58,88.25) .. controls (134.58,79.83) and (141.41,73) .. (149.83,73) .. controls (158.26,73) and (165.08,79.83) .. (165.08,88.25) .. controls (165.08,96.67) and (158.26,103.5) .. (149.83,103.5) .. controls (141.41,103.5) and (134.58,96.67) .. (134.58,88.25) -- cycle ;
+
+        \draw   (188.67,77.98) .. controls (188.67,74.82) and (191.23,72.26) .. (194.38,72.26) -- (232.95,72.26) .. controls (236.11,72.26) and (238.67,74.82) .. (238.67,77.98) -- (238.67,95.12) .. controls (238.67,98.27) and (236.11,100.83) .. (232.95,100.83) -- (194.38,100.83) .. controls (191.23,100.83) and (188.67,98.27) .. (188.67,95.12) -- cycle ;
+        \draw   (265.67,66.92) .. controls (265.67,58.49) and (272.49,51.67) .. (280.92,51.67) .. controls (289.34,51.67) and (296.17,58.49) .. (296.17,66.92) .. controls (296.17,75.34) and (289.34,82.17) .. (280.92,82.17) .. controls (272.49,82.17) and (265.67,75.34) .. (265.67,66.92) -- cycle ;
+        \draw  [dash pattern={on 4.5pt off 4.5pt}] (265.67,104.92) .. controls (265.67,96.49) and (272.49,89.67) .. (280.92,89.67) .. controls (289.34,89.67) and (296.17,96.49) .. (296.17,104.92) .. controls (296.17,113.34) and (289.34,120.17) .. (280.92,120.17) .. controls (272.49,120.17) and (265.67,113.34) .. (265.67,104.92) -- cycle ;
+        \draw   (320.67,88.25) .. controls (320.67,78.45) and (334.57,70.5) .. (351.73,70.5) .. controls (368.88,70.5) and (382.79,78.45) .. (382.79,88.25) .. controls (382.79,98.05) and (368.88,106) .. (351.73,106) .. controls (334.57,106) and (320.67,98.05) .. (320.67,88.25) -- cycle ;
+        \draw    (111.33,88.17) -- (131.67,88.17) ;
+        \draw [shift={(134.67,88.17)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw    (164.67,88.25) -- (185,88.25) ;
+        \draw [shift={(188,88.25)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw    (239.33,78.64) -- (262.93,68.14) ;
+        \draw [shift={(265.67,66.92)}, rotate = 156] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw    (239.33,94.83) -- (262.87,103.84) ;
+        \draw [shift={(265.67,104.92)}, rotate = 200.95] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw    (295.5,64.58) -- (320.09,79.29) ;
+        \draw [shift={(322.67,80.83)}, rotate = 210.89] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw    (295.5,109.58) -- (320.68,96.24) ;
+        \draw [shift={(323.33,94.83)}, rotate = 152.08] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw   (19.33,215.25) .. controls (19.33,206.83) and (26.16,200) .. (34.58,200) .. controls (43.01,200) and (49.83,206.83) .. (49.83,215.25) .. controls (49.83,223.67) and (43.01,230.5) .. (34.58,230.5) .. controls (26.16,230.5) and (19.33,223.67) .. (19.33,215.25) -- cycle ;
+
+        \draw   (69.67,179.17) -- (109.67,191.17) -- (109.67,241.17) -- (69.67,253.17) -- cycle ;
+        \draw    (49.83,215.25) -- (66.33,215.25) ;
+        \draw [shift={(69.33,215.25)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw  [dash pattern={on 4.5pt off 4.5pt}] (133.58,215.25) .. controls (133.58,206.83) and (140.41,200) .. (148.83,200) .. controls (157.26,200) and (164.08,206.83) .. (164.08,215.25) .. controls (164.08,223.67) and (157.26,230.5) .. (148.83,230.5) .. controls (140.41,230.5) and (133.58,223.67) .. (133.58,215.25) -- cycle ;
+
+        \draw    (110.33,215.17) -- (130.67,215.17) ;
+        \draw [shift={(133.67,215.17)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw    (164.08,215.25) -- (191.07,247.45) ;
+        \draw [shift={(193,249.75)}, rotate = 230.03] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw   (19.33,301.75) .. controls (19.33,293.33) and (26.16,286.5) .. (34.58,286.5) .. controls (43.01,286.5) and (49.83,293.33) .. (49.83,301.75) .. controls (49.83,310.17) and (43.01,317) .. (34.58,317) .. controls (26.16,317) and (19.33,310.17) .. (19.33,301.75) -- cycle ;
+
+        \draw   (69.67,265.67) -- (109.67,277.67) -- (109.67,327.67) -- (69.67,339.67) -- cycle ;
+        \draw    (49.83,301.75) -- (66.33,301.75) ;
+        \draw [shift={(69.33,301.75)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw  [dash pattern={on 4.5pt off 4.5pt}] (133.58,301.75) .. controls (133.58,293.33) and (140.41,286.5) .. (148.83,286.5) .. controls (157.26,286.5) and (164.08,293.33) .. (164.08,301.75) .. controls (164.08,310.17) and (157.26,317) .. (148.83,317) .. controls (140.41,317) and (133.58,310.17) .. (133.58,301.75) -- cycle ;
+        \draw    (110.33,301.67) -- (130.67,301.67) ;
+        \draw [shift={(133.67,301.67)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw    (163.67,301.75) -- (191.07,269.19) ;
+        \draw [shift={(193,266.89)}, rotate = 130.08] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw   (193,249.75) .. controls (193,246.59) and (195.56,244.04) .. (198.71,244.04) -- (237.29,244.04) .. controls (240.44,244.04) and (243,246.59) .. (243,249.75) -- (243,266.89) .. controls (243,270.05) and (240.44,272.61) .. (237.29,272.61) -- (198.71,272.61) .. controls (195.56,272.61) and (193,270.05) .. (193,266.89) -- cycle ;
+
+        \draw  [dash pattern={on 4.5pt off 4.5pt}] (270.83,242.5) .. controls (270.83,234.08) and (277.66,227.25) .. (286.08,227.25) .. controls (294.51,227.25) and (301.33,234.08) .. (301.33,242.5) .. controls (301.33,250.92) and (294.51,257.75) .. (286.08,257.75) .. controls (277.66,257.75) and (270.83,250.92) .. (270.83,242.5) -- cycle ;
+
+        \draw  [dash pattern={on 4.5pt off 4.5pt}] (270.83,279.5) .. controls (270.83,271.08) and (277.66,264.25) .. (286.08,264.25) .. controls (294.51,264.25) and (301.33,271.08) .. (301.33,279.5) .. controls (301.33,287.92) and (294.51,294.75) .. (286.08,294.75) .. controls (277.66,294.75) and (270.83,287.92) .. (270.83,279.5) -- cycle ;
+
+        \draw   (325.83,259.83) .. controls (325.83,250.03) and (339.74,242.08) .. (356.9,242.08) .. controls (374.05,242.08) and (387.96,250.03) .. (387.96,259.83) .. controls (387.96,269.64) and (374.05,277.58) .. (356.9,277.58) .. controls (339.74,277.58) and (325.83,269.64) .. (325.83,259.83) -- cycle ;
+
+        \draw    (243.17,251.56) -- (268.12,239.78) ;
+        \draw [shift={(270.83,238.5)}, rotate = 154.73] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw    (243.17,264.75) -- (268.35,281.82) ;
+        \draw [shift={(270.83,283.5)}, rotate = 214.13] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw    (301.33,238.5) -- (325.25,252.56) ;
+        \draw [shift={(327.83,254.08)}, rotate = 210.46] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw    (301.33,283.5) -- (326.52,270.15) ;
+        \draw [shift={(329.17,268.75)}, rotate = 152.08] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw [line width=1.5]  [dash pattern={on 5.63pt off 4.5pt}]  (20,140) -- (399.5,140) ;
+
+        \draw (280.92,66.92) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{y}^s$
+                \end{center}
+            \end{minipage}};
+        \draw (280.92,104.92) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{y}^s$
+                \end{center}
+            \end{minipage}};
+        \draw (351.73,88.25) node   [align=left] {\begin{minipage}[lt]{32.64pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathcal{L}_C$
+                \end{center}
+            \end{minipage}};
+        \draw (149.83,88.25) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{z}^s$
+                \end{center}
+            \end{minipage}};
+        \draw (35.58,88.25) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{x}^s$
+                \end{center}
+            \end{minipage}};
+        \draw (90.67,89.17) node   [align=left] {\begin{minipage}[lt]{22.78pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathcal{G}_s$
+                \end{center}
+            \end{minipage}};
+        \draw (213.67,86.73) node   [align=left] {\begin{minipage}[lt]{26.23pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathcal{C}_s$
+                \end{center}
+            \end{minipage}};
+        \draw (89.67,216.17) node   [align=left] {\begin{minipage}[lt]{22.78pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathcal{G}_s$
+                \end{center}
+            \end{minipage}};
+        \draw (148.83,215.25) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{z}^s$
+                \end{center}
+            \end{minipage}};
+        \draw (34.58,215.25) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{x}^s$
+                \end{center}
+            \end{minipage}};
+        \draw (89.67,302.67) node   [align=left] {\begin{minipage}[lt]{22.78pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathcal{G}_t$
+                \end{center}
+            \end{minipage}};
+        \draw (34.58,301.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{x}^t$
+                \end{center}
+            \end{minipage}};
+        \draw (148.83,301.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{z}^t$
+                \end{center}
+            \end{minipage}};
+        \draw (218,258.5) node   [align=left] {\begin{minipage}[lt]{26.23pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathcal{D}$
+                \end{center}
+            \end{minipage}};
+        \draw (356.9,259.83) node   [align=left] {\begin{minipage}[lt]{32.64pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathcal{L}_\mathcal{D}$
+                \end{center}
+            \end{minipage}};
+        \draw (286.08,279.5) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{d}^t$
+                \end{center}
+            \end{minipage}};
+        \draw (286.08,242.5) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{d}^s$
+                \end{center}
+            \end{minipage}};
+        \draw (210.75,37.5) node   [align=left] {\begin{minipage}[lt]{258.06pt}\setlength\topsep{0pt}
+                \begin{center}
+                    Pre-entrenamiento
+                \end{center}
+            \end{minipage}};
+        \draw (204.25,165) node   [align=left] {\begin{minipage}[lt]{266.22pt}\setlength\topsep{0pt}
+                \begin{center}
+                    Adaptaci\'on adversaria
+                \end{center}
+            \end{minipage}};
+
+    \end{tikzpicture}
+    \caption{Esquema de las {\it ADDA}. Los supra indices $s$ y $t$ indican si los datos son del origen o destino respectivamente.
+        Los c\'irculos con l\'ineas rayadas son salidas de los modelos mientras que los c\'irculos de l\'ineas s\'olidas son datos conocidos.
+        La primera fase consta de un pre-entrenamiento con una red generadora $\mathcal{G}_s$ con los datos origen y la segunda fase de adaptaci\'on
+        consta de otra red generadora $\mathcal{G}_t$ que debe aprender a generar el mismo espacio latente que $\mathcal{G}_s$ con los datos de destino para confundir a $\mathcal{D}$.}
+    \label{fig:adda-esquema}
+\end{figure}
+
+No obstante del cambio, los objetivos son similares a {\it ADDA} excepci\'on de $\mathcal{G}_t$. La ecuaci\'on
+\ref{eq:adda-loss-clasificadora} contiene $\mathcal{L}_\mathcal{C}$ que es an\'aloga a
+\ref{eq:dann-loss-clasificadora}. La ecuaci\'on \ref{eq:adda-loss-discriminadora} contiene $\mathcal{L}_\mathcal{D}$
+que es an\'aloga a \ref{eq:dann-loss-discriminadora}. Finalmente, la ecuaci\'on \ref{eq:adda-loss} contiene
+$\mathcal{L}_{\mathcal{G}_s}$ que asigna gradientes peque\~{n}os a registros de destino que sean similares a los de
+origen y gradientes mas grandes para los otros registros de destino.
+
+\begin{align}
+    \min_{\mathcal{G}_s, \mathcal{C}} \mathcal{L}_\mathcal{C}(\mathbf{x}^s, \mathbf{y}^s) & = \mathcal{L}_{CE}(C(\mathcal{G}_s(\mathbf{x}^s)), \mathbf{y}^s)
+    \label{eq:adda-loss-clasificadora}
+\end{align}
+
+\begin{align}
+    \max_{\mathcal{D}} \mathcal{L}_\mathcal{D}(\mathbf{x}^s, \mathbf{x}^t) & = \mathbb{E}_{\mathbf{x}^s \sim \mathcal{\hat{S}}}\log[\mathcal{D}(\mathcal{G}_s(\mathbf{x}^s))] + \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}}\log[1-\mathcal{D}(\mathcal{G}_t(\mathbf{x}^t))]
+    \label{eq:adda-loss-discriminadora}
+\end{align}
+
+\begin{align}
+    \min_{\mathcal{G}_t} \mathcal{L}_{\mathcal{G}_t}(\mathbf{x}^t) & = - \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}} \log[\mathcal{D}(\mathcal{G}_t(\mathbf{x}^t))]
+    \label{eq:adda-loss}
+\end{align}
+
+\subsection{AFN}
 \lipsum[1]
 
 \subsection{MDD}
