@@ -1,188 +1,229 @@
 \chapter{Marco te\'orico}
 \label{Chapter2}
 
+En este capítulo se presenta una visión general de la bibliografía relacionada al objetivo del presente trabajo. En la
+primera sección se detalla una revisión de trabajos relacionados. En ... % TODO: completar
+
 \section{Reconocimiento de d\'igitos}
-
-La clasificaci\'on de d\'igitos es un problema resuelto desde \citeyear{lecun1998gradient}. En uno de los primeros
-exponentes de lo que luego se denomin\'o {\it deep learning}, \cite{lecun1998gradient} se crea un nuevo dataset de
-d\'igitos modificando el existente NIST y se propone la red neuronal LeNet-5 para la clasificaci\'on de los mismos. El
-dataset MNIST consiste de 60.000 imagenes de entrenamiento y 10.000 de testing. Cada una de las im\'agenes es de un
-tama\~{n}o de 28x28 pixeles.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{chapter2/mnist.png}
-    \caption{Ejemplos del dataset MNIST}
-    \label{fig:mnist}
-\end{figure}
-
-La red posee capas convolucionales las cuales se encargan de extraer caracter\'isticas o patrones de las im\'agenes
-para luego ser procesadas por capas densas que se encargan de la clasificaci\'on.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{chapter2/lenet5.png}
-    \caption{Arquitectura de la red LeNet-5}
-    \label{fig:lenet-5}
-\end{figure}
-
-Sin embargo, aunque LeNet-5 (o cualquier otro modelo) presente buenas m\'etricas de performance, no significa que pueda
-ser aplicado a otro dataset de d\'igitos. El cuadro \ref{tab:lenet-distintos-datasets} muestra la precisi\'on que se
-obtiene al entrenar una red LeNet-5 en distintos datasets de d\'igitos: MNIST \parencite{lecun1998gradient}, USPS \parencite{hull1994database} y SVHN \parencite{netzer2011reading}. La arquitectura de la red posee la capacidad de aprender los patrones de cada uno de los
-ellos pero no logra generalizar a otros. Si bien cada uno de ellos muestran los mismos n\'umeros, lo hacen de forma
-diferente. Esto se debe al {\it sesgo} que existe en los datos. Cuando se entrena un modelo se aprende a reconocer
-caracter\'isticas propias del dataset que le permite resolver el problema, incluyendo el sesgo de los mismos. Esto hace
-que un problema "sencillo" de clasificaci\'on de im\'agenes de 28x28 pixeles no sea trivial. Todos los datasets se
-encuentran sesgados de alguna forma y es imposible armarlos de tal forma que no presenten alg\'un nivel de sesgo \parencite{khosla2012undoing}. Cuando los datos con los que se quiere evaluar un modelo provienen de un dominio o
-distribuci\'on diferente al de entrenamiento, se est\'a ante un {\it dataset shift} \parencite{quinonero2008dataset}. Es decir, se le muestran datos al modelo con caracter\'isticas que nunca vi\'o,
-provocando predicciones incorrectas.
-
-\begin{table}[H]
-    \centering
-    \begin{tabular}{cccc}
-        \toprule
-        {}                                                & \multicolumn{3}{c}{Testing}                                                                                               \\
-        {}                                                & MNIST                                             & USPS                              & SVHN                              \\
-        Entrenamiento                                     & \includegraphics[width=16px]{chapter2/mnist3.png}
-        \includegraphics[width=16px]{chapter2/mnist6.png}
-        \includegraphics[width=16px]{chapter2/mnist8.png} & \includegraphics[width=16px]{chapter2/usps3.png}
-        \includegraphics[width=16px]{chapter2/usps6.png}
-        \includegraphics[width=16px]{chapter2/usps8.png}  & \includegraphics[width=16px]{chapter2/svhn3.png}
-        \includegraphics[width=16px]{chapter2/svhn6.png}
-        \includegraphics[width=16px]{chapter2/svhn8.png}                                                                                                                              \\
-        \midrule
-        MNIST                                             & \multirow{2}{*}{\textbf{99.17\%}}                 & \multirow{2}{*}{78.08\%}          & \multirow{2}{*}{31.50\%}          \\
-        \includegraphics[width=16px]{chapter2/mnist3.png}
-        \includegraphics[width=16px]{chapter2/mnist6.png}
-        \includegraphics[width=16px]{chapter2/mnist8.png} &                                                   &                                   &                                   \\
-        USPS                                              & \multirow{2}{*}{57.10\%}                          & \multirow{2}{*}{\textbf{95.42\%}} & \multirow{2}{*}{26.94\%}          \\
-        \includegraphics[width=16px]{chapter2/usps3.png}
-        \includegraphics[width=16px]{chapter2/usps6.png}
-        \includegraphics[width=16px]{chapter2/usps8.png}  &                                                   &                                   &                                   \\
-        SVHN                                              & \multirow{2}{*}{61.92\%}                          & \multirow{2}{*}{64.28\%}          & \multirow{2}{*}{\textbf{89.52\%}} \\
-        \includegraphics[width=16px]{chapter2/svhn3.png}
-        \includegraphics[width=16px]{chapter2/svhn6.png}
-        \includegraphics[width=16px]{chapter2/svhn8.png}  &                                                   &                                   &                                   \\
-        \bottomrule
-    \end{tabular}
-    \caption{Precisi\'on obtenida al entrenar una LeNet-5 con distintos datasets de d\'igitos.}
-    \label{tab:lenet-distintos-datasets}
-\end{table}
-
-El problema que abordar\'a la presente tesis es c\'omo se puede entrenar un modelo que aprenda a clasificar d\'igitos
-para ser utilizados en los telegramas de elecciones legislativas de Santa Fe del 2021 (distinto al dominio de
-entrenamiento) pese al sesgo existente en los datasets mencionados previamente. Para poder lograrlo, se necesita
-entrenar de cierta manera un modelo en alguno de los datasets p\'ublicos etiquetados de forma tal que pueda generalizar
-a otro similar.
+\lipsum[1]
 
 \section{Redes Neuronales}
+\lipsum[1]
 
-Cuando se habla de {\it Deep learning}, se hace referencia a una serie de algoritmos de {\it machine learning} que son
-capaces de utilizar m\'ultiples capas de procesamiento de forma que puedan aprender representaciones de los datos con
-diferentes niveles de abstracci\'on \parencite{lecun2015deep}. Estos algoritmos, denominados redes neuronales profundas (o DNNs por sus siglas en ingl\'es),
-poseen la capacidad de encontrar variables que expliquen la naturaleza del comportamiento de los datos.
+\subsection{Redes densas}
+\lipsum[1]
+% TODO: hablar de pre-train y fine-tuning
 
-(TODO: agregar algun grafico de una red donde se muestre que las capas van extrayendo features)
+\subsection{Convolucionales}
+\lipsum[1]
 
-Los modelos obtenidos a partir del {\it deep learning} han demostrado tener gran capacidad de aprendizaje para todo
-tipo de problemas, como ser {\it computer vision} \parencite{szeliski2010computer, redmon2016yolo}, procesamiento del lenguaje natural \parencite{devlin2018bert}, reconocimiento del habla \parencite{hannun2014deep}, juegos \parencite{silver2016mastering}, generaci\'on de im\'agenes a partir de descripciones \parencite{ramesh2022dalle2}, entre otros.
+\subsection{Arquitecturas}
+\lipsum[1]
 
-Aunque la utilidad de estos modelos se encuentra demostrada y d\'ia a d\'ia son utilizados en diferentes \'ambitos de
-la vida, presentan un gran problema: la enorme cantidad de datos etiquetados que requieren para su entrenamiento. La
-mayor\'ia de los modelos que mejores m\'etricas de performance presentan, necesitan millones de datos en sus datasets
-de entrenamiento. Esto implica que, para que los mismos sean de utilidad, resultan de suma importancia los procesos de
-recolecci\'on y etiquetado de los datos. La eficacia de los modelos queda altamente relacionada con la calidad de los
-datos que se posean o se logren conseguir. El etiquetado de los datos es una tarea costosa, ineficiente y hasta a veces
-resulta inviable de realizar \parencite{reis2022data}. A\~{n}o a a\~{n}o los telegramas de las elecciones son completados a mano por distintas personas,
-por lo que resulta imposible contar con un dataset lo suficientemente general como para ser utilizado en la
-clasificaci\'on de los d\'igitos.
+\subsubsection{LeNet}
+\lipsum[1]
 
-Una posible soluci\'on a este problema consiste en emular la capacidad que tienen los humanos de adquirir conocimiento
-relevante en un \'area y aplicarlo en otra similar \parencite{thrun1998learning}. Es decir, poder {\it transferir} lo aprendido. En el caso del {\it deep learning}, lo que se
-busca es que la red aprenda representaciones lo suficientemente generales para que puedan ser utilizados en el
-entrenamiento de una tarea similar. Esto implica que se puede contar con una red pre-entrenada y luego, continuar
-entren\'andola con los datos propios del problema particular que se quiere resolver. A esto \'ultimo se lo denomina
-    {\it fine tuning}. Lo que se busca es acortar tiempos de entrenamiento, reducir la cantidad de datos necesarios y
-construir modelos m\'as robustos.
+\subsubsection{ResNet}
+\lipsum[1]
+
+\section{Adaptaci\'on de Dominio}
+El {\it pre-entrenamiento} y el {\it fine-tuning} han mejorado considerablemente el estado del arte para diversos
+problemas y aplicaciones del machine learning, incluso las redes profundas pre-entrenadas pueden adaptarse fácilmente a
+tareas donde se cuenta con una pequeña cantidad de datos etiquetados. Sin embargo, en muchos escenarios prácticos, no
+hay datos de entrenamiento etiquetados y, por lo tanto, existe la necesidad de transferir el aprendizaje de una red
+profunda desde un dominio de origen en el que se dispone de datos de entrenamiento etiquetados a un dominio de destino
+en el que solo existen datos sin etiquetar \parencite{glorot2011domain}. En esta situación, los modelos profundos siguen sufriendo degradaciones de rendimiento debido
+al cambio de distribución \parencite{quinonero2008dataset}. Por lo tanto, se propone la {\it adaptación de dominio} para reducir el cambio de
+distribución entre los dominios de entrenamiento y de prueba \parencite{jiang2022machine}.
+
+Se han propuesto muchos métodos para la adaptación de dominios, ya sea ponderando o seleccionando muestras del dominio
+de origen \parencite{sugiyama2007direct} o buscando una transformación de la distribución de origen a la distribución de destino \parencite{gong2013connecting}. Esta tesis analizar\'a algunos de los m\'etodos m\'as actuales del ultimo caso.
+
+\subsection{Domain Adversarial Neural Network}
+Un gran hito al momento de modelar distribuciones es la Red Generativa Adversaria {\it GAN} \parencite{goodfellow2020generative}. Inspirada en estas arquitecturas GAN, la Red Neural Adversaria de Dominio {\it DANN} \parencite{ganin2016domain} dos redes en la adaptación del dominio (figura \ref{fig:esquema-dann}). La primera es la
+discriminadora de dominios $\mathcal{D}$ entrenada para distinguir las características de origen de las de destino y la
+segunda es a generadora de características $\mathcal{G}$ que se entrena para confundir a $\mathcal{D}$ y para ayudar a
+la red clasificadora $\mathcal{C}$.
 
 \begin{figure}[H]
     \centering
-    %\includegraphics[width=0.8\textwidth, height=0.3\textheight]{chapter2/transfer-learning.png}
 
-    \tikzset{every picture/.style={line width=0.75pt}}
+    \tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
 
     \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
-        \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ][fill={rgb, 255:red, 74; green, 144; blue, 226 }  ,fill opacity=1 ] (518.88,125.36) -- (512.2,118.68) -- (512.2,108.76) -- (522.42,108.76) -- (529.1,115.44) -- (529.1,125.36) -- cycle ; \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ] (512.2,108.76) -- (518.88,115.44) -- (518.88,125.36) ; \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ] (518.88,115.44) -- (529.1,115.44) ;
-        \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ][fill={rgb, 255:red, 74; green, 144; blue, 226 }  ,fill opacity=1 ] (518.88,115.44) -- (512.2,108.76) -- (512.2,98.84) -- (522.42,98.84) -- (529.1,105.52) -- (529.1,115.44) -- cycle ; \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ] (512.2,98.84) -- (518.88,105.52) -- (518.88,115.44) ; \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ] (518.88,105.52) -- (529.1,105.52) ;
-        \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ][fill={rgb, 255:red, 74; green, 144; blue, 226 }  ,fill opacity=1 ] (518.88,105.52) -- (512.2,98.84) -- (512.2,88.92) -- (522.42,88.92) -- (529.1,95.6) -- (529.1,105.52) -- cycle ; \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ] (512.2,88.92) -- (518.88,95.6) -- (518.88,105.52) ; \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ] (518.88,95.6) -- (529.1,95.6) ;
-        \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ][fill={rgb, 255:red, 74; green, 144; blue, 226 }  ,fill opacity=1 ] (518.88,95.6) -- (512.2,88.92) -- (512.2,79) -- (522.42,79) -- (529.1,85.68) -- (529.1,95.6) -- cycle ; \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ] (512.2,79) -- (518.88,85.68) -- (518.88,95.6) ; \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ] (518.88,85.68) -- (529.1,85.68) ;
+        \draw   (39,64.75) .. controls (39,56.33) and (45.83,49.5) .. (54.25,49.5) .. controls (62.67,49.5) and (69.5,56.33) .. (69.5,64.75) .. controls (69.5,73.17) and (62.67,80) .. (54.25,80) .. controls (45.83,80) and (39,73.17) .. (39,64.75) -- cycle ;
 
-        \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ][fill={rgb, 255:red, 74; green, 144; blue, 226 }  ,fill opacity=1 ] (418.2,158.67) -- (411.4,151.87) -- (411.4,49) -- (421.5,49) -- (428.3,55.8) -- (428.3,158.67) -- cycle ; \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ] (411.4,49) -- (418.2,55.8) -- (418.2,158.67) ; \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ] (418.2,55.8) -- (428.3,55.8) ;
-        \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ][fill={rgb, 255:red, 74; green, 144; blue, 226 }  ,fill opacity=1 ] (467.8,159.47) -- (461,152.67) -- (461,49.8) -- (471.1,49.8) -- (477.9,56.6) -- (477.9,159.47) -- cycle ; \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ] (461,49.8) -- (467.8,56.6) -- (467.8,159.47) ; \draw  [color={rgb, 255:red, 74; green, 78; blue, 226 }  ,draw opacity=1 ] (467.8,56.6) -- (477.9,56.6) ;
-        \draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=0.5 ] (166.96,154) -- (135,122.04) -- (135,42) -- (144.89,42) -- (176.85,73.96) -- (176.85,154) -- cycle ; \draw   (135,42) -- (166.96,73.96) -- (166.96,154) ; \draw   (166.96,73.96) -- (176.85,73.96) ;
-        \draw  [color={rgb, 255:red, 65; green, 117; blue, 5 }  ,draw opacity=1 ][fill={rgb, 255:red, 65; green, 117; blue, 5 }  ,fill opacity=0.6 ] (252,141) -- (218,107) -- (218,61) -- (247,61) -- (281,95) -- (281,141) -- cycle ; \draw  [color={rgb, 255:red, 65; green, 117; blue, 5 }  ,draw opacity=1 ] (218,61) -- (252,95) -- (252,141) ; \draw  [color={rgb, 255:red, 65; green, 117; blue, 5 }  ,draw opacity=1 ] (252,95) -- (281,95) ;
-        \draw  [color={rgb, 255:red, 65; green, 117; blue, 5 }  ,draw opacity=1 ][fill={rgb, 255:red, 65; green, 117; blue, 5 }  ,fill opacity=0.6 ] (350.12,133) -- (315,97.88) -- (315,74) -- (339.88,74) -- (375,109.12) -- (375,133) -- cycle ; \draw  [color={rgb, 255:red, 65; green, 117; blue, 5 }  ,draw opacity=1 ] (315,74) -- (350.12,109.12) -- (350.12,133) ; \draw  [color={rgb, 255:red, 65; green, 117; blue, 5 }  ,draw opacity=1 ] (350.12,109.12) -- (375,109.12) ;
-        \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ][fill={rgb, 255:red, 228; green, 167; blue, 218 }  ,fill opacity=1 ] (519.88,279.36) -- (513.2,272.68) -- (513.2,262.76) -- (523.42,262.76) -- (530.1,269.44) -- (530.1,279.36) -- cycle ; \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ] (513.2,262.76) -- (519.88,269.44) -- (519.88,279.36) ; \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ] (519.88,269.44) -- (530.1,269.44) ;
-        \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ][fill={rgb, 255:red, 228; green, 167; blue, 218 }  ,fill opacity=1 ] (519.88,269.44) -- (513.2,262.76) -- (513.2,252.84) -- (523.42,252.84) -- (530.1,259.52) -- (530.1,269.44) -- cycle ; \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ] (513.2,252.84) -- (519.88,259.52) -- (519.88,269.44) ; \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ] (519.88,259.52) -- (530.1,259.52) ;
-        \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ][fill={rgb, 255:red, 228; green, 167; blue, 218 }  ,fill opacity=1 ] (519.88,259.52) -- (513.2,252.84) -- (513.2,242.92) -- (523.42,242.92) -- (530.1,249.6) -- (530.1,259.52) -- cycle ; \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ] (513.2,242.92) -- (519.88,249.6) -- (519.88,259.52) ; \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ] (519.88,249.6) -- (530.1,249.6) ;
-        \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ][fill={rgb, 255:red, 228; green, 167; blue, 218 }  ,fill opacity=1 ] (519.88,249.6) -- (513.2,242.92) -- (513.2,233) -- (523.42,233) -- (530.1,239.68) -- (530.1,249.6) -- cycle ; \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ] (513.2,233) -- (519.88,239.68) -- (519.88,249.6) ; \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ] (519.88,239.68) -- (530.1,239.68) ;
+        \draw   (39,106.75) .. controls (39,98.33) and (45.83,91.5) .. (54.25,91.5) .. controls (62.67,91.5) and (69.5,98.33) .. (69.5,106.75) .. controls (69.5,115.17) and (62.67,122) .. (54.25,122) .. controls (45.83,122) and (39,115.17) .. (39,106.75) -- cycle ;
 
-        \draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=0.5 ] (166.96,308) -- (135,276.04) -- (135,196) -- (144.89,196) -- (176.85,227.96) -- (176.85,308) -- cycle ; \draw   (135,196) -- (166.96,227.96) -- (166.96,308) ; \draw   (166.96,227.96) -- (176.85,227.96) ;
-        \draw  [color={rgb, 255:red, 65; green, 117; blue, 5 }  ,draw opacity=1 ][fill={rgb, 255:red, 65; green, 117; blue, 5 }  ,fill opacity=0.6 ] (252,295) -- (218,261) -- (218,215) -- (247,215) -- (281,249) -- (281,295) -- cycle ; \draw  [color={rgb, 255:red, 65; green, 117; blue, 5 }  ,draw opacity=1 ] (218,215) -- (252,249) -- (252,295) ; \draw  [color={rgb, 255:red, 65; green, 117; blue, 5 }  ,draw opacity=1 ] (252,249) -- (281,249) ;
-        \draw  [color={rgb, 255:red, 65; green, 117; blue, 5 }  ,draw opacity=1 ][fill={rgb, 255:red, 65; green, 117; blue, 5 }  ,fill opacity=0.6 ] (350.12,287) -- (315,251.88) -- (315,228) -- (339.88,228) -- (375,263.12) -- (375,287) -- cycle ; \draw  [color={rgb, 255:red, 65; green, 117; blue, 5 }  ,draw opacity=1 ] (315,228) -- (350.12,263.12) -- (350.12,287) ; \draw  [color={rgb, 255:red, 65; green, 117; blue, 5 }  ,draw opacity=1 ] (350.12,263.12) -- (375,263.12) ;
-        \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ][fill={rgb, 255:red, 228; green, 167; blue, 218 }  ,fill opacity=1 ] (418.2,312.67) -- (411.4,305.87) -- (411.4,203) -- (421.5,203) -- (428.3,209.8) -- (428.3,312.67) -- cycle ; \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ] (411.4,203) -- (418.2,209.8) -- (418.2,312.67) ; \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ] (418.2,209.8) -- (428.3,209.8) ;
-        \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ][fill={rgb, 255:red, 228; green, 167; blue, 218 }  ,fill opacity=1 ] (467.8,313.47) -- (461,306.67) -- (461,203.8) -- (471.1,203.8) -- (477.9,210.6) -- (477.9,313.47) -- cycle ; \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ] (461,203.8) -- (467.8,210.6) -- (467.8,313.47) ; \draw  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ] (467.8,210.6) -- (477.9,210.6) ;
-        \draw  [dash pattern={on 4.5pt off 4.5pt}]  (255,150.67) -- (255.32,208.67) ;
-        \draw [shift={(255.33,210.67)}, rotate = 269.68] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
-        \draw  [dash pattern={on 4.5pt off 4.5pt}]  (345,137.33) -- (344.67,218) ;
-        \draw [shift={(344.67,220)}, rotate = 270.23] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
-        \draw  [color={rgb, 255:red, 128; green, 128; blue, 128 }  ,draw opacity=1 ][fill={rgb, 255:red, 128; green, 128; blue, 128 }  ,fill opacity=0.7 ] (185,96.79) -- (199.4,96.79) -- (199.4,93.5) -- (209,100.08) -- (199.4,106.67) -- (199.4,103.38) -- (185,103.38) -- cycle ;
-        \draw  [color={rgb, 255:red, 128; green, 128; blue, 128 }  ,draw opacity=1 ][fill={rgb, 255:red, 128; green, 128; blue, 128 }  ,fill opacity=0.7 ] (287,97.13) -- (301.4,97.13) -- (301.4,93.83) -- (311,100.42) -- (301.4,107) -- (301.4,103.71) -- (287,103.71) -- cycle ;
-        \draw  [color={rgb, 255:red, 128; green, 128; blue, 128 }  ,draw opacity=1 ][fill={rgb, 255:red, 128; green, 128; blue, 128 }  ,fill opacity=0.7 ] (380.67,97.13) -- (395.07,97.13) -- (395.07,93.83) -- (404.67,100.42) -- (395.07,107) -- (395.07,103.71) -- (380.67,103.71) -- cycle ;
-        \draw  [color={rgb, 255:red, 128; green, 128; blue, 128 }  ,draw opacity=1 ][fill={rgb, 255:red, 128; green, 128; blue, 128 }  ,fill opacity=0.7 ] (433,96.46) -- (447.4,96.46) -- (447.4,93.17) -- (457,99.75) -- (447.4,106.33) -- (447.4,103.04) -- (433,103.04) -- cycle ;
-        \draw  [color={rgb, 255:red, 128; green, 128; blue, 128 }  ,draw opacity=1 ][fill={rgb, 255:red, 128; green, 128; blue, 128 }  ,fill opacity=0.7 ] (483,97.13) -- (497.4,97.13) -- (497.4,93.83) -- (507,100.42) -- (497.4,107) -- (497.4,103.71) -- (483,103.71) -- cycle ;
-        \draw (150.69,97.71) node [rotate=-45.29,xslant=-1.02] {\includegraphics[width=34.45pt,height=42.06pt]{chapter2/mnist3.png}};
-        \draw (150.77,251.82) node [rotate=-44.36,xslant=-0.97] {\includegraphics[width=32.86pt,height=42.51pt]{chapter2/svhn3.png}};
-        \draw  [color={rgb, 255:red, 128; green, 128; blue, 128 }  ,draw opacity=1 ][fill={rgb, 255:red, 128; green, 128; blue, 128 }  ,fill opacity=0.7 ] (185,251.79) -- (199.4,251.79) -- (199.4,248.5) -- (209,255.08) -- (199.4,261.67) -- (199.4,258.38) -- (185,258.38) -- cycle ;
-        \draw  [color={rgb, 255:red, 128; green, 128; blue, 128 }  ,draw opacity=1 ][fill={rgb, 255:red, 128; green, 128; blue, 128 }  ,fill opacity=0.7 ] (287,252.13) -- (301.4,252.13) -- (301.4,248.83) -- (311,255.42) -- (301.4,262) -- (301.4,258.71) -- (287,258.71) -- cycle ;
-        \draw  [color={rgb, 255:red, 128; green, 128; blue, 128 }  ,draw opacity=1 ][fill={rgb, 255:red, 128; green, 128; blue, 128 }  ,fill opacity=0.7 ] (380.67,252.13) -- (395.07,252.13) -- (395.07,248.83) -- (404.67,255.42) -- (395.07,262) -- (395.07,258.71) -- (380.67,258.71) -- cycle ;
-        \draw  [color={rgb, 255:red, 128; green, 128; blue, 128 }  ,draw opacity=1 ][fill={rgb, 255:red, 128; green, 128; blue, 128 }  ,fill opacity=0.7 ] (433,251.46) -- (447.4,251.46) -- (447.4,248.17) -- (457,254.75) -- (447.4,261.33) -- (447.4,258.04) -- (433,258.04) -- cycle ;
-        \draw  [color={rgb, 255:red, 128; green, 128; blue, 128 }  ,draw opacity=1 ][fill={rgb, 255:red, 128; green, 128; blue, 128 }  ,fill opacity=0.7 ] (483,252.13) -- (497.4,252.13) -- (497.4,248.83) -- (507,255.42) -- (497.4,262) -- (497.4,258.71) -- (483,258.71) -- cycle ;
+        \draw   (90,48) -- (130,60) -- (130,110) -- (90,122) -- cycle ;
 
-        \draw (261.17,159.83) node [anchor=north west][inner sep=0.75pt]  [font=\footnotesize] [align=left] {
-            \begin{minipage}[lt]{54.58pt}\setlength\topsep{0pt}
+        \draw    (69.5,64.75) -- (86,64.75) ;
+        \draw [shift={(89,64.75)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw  [dash pattern={on 4.5pt off 4.5pt}] (150.58,48.08) .. controls (150.58,39.66) and (157.41,32.83) .. (165.83,32.83) .. controls (174.26,32.83) and (181.08,39.66) .. (181.08,48.08) .. controls (181.08,56.51) and (174.26,63.33) .. (165.83,63.33) .. controls (157.41,63.33) and (150.58,56.51) .. (150.58,48.08) -- cycle ;
+
+        \draw  [dash pattern={on 4.5pt off 4.5pt}] (150.58,123.42) .. controls (150.58,114.99) and (157.41,108.17) .. (165.83,108.17) .. controls (174.26,108.17) and (181.08,114.99) .. (181.08,123.42) .. controls (181.08,131.84) and (174.26,138.67) .. (165.83,138.67) .. controls (157.41,138.67) and (150.58,131.84) .. (150.58,123.42) -- cycle ;
+
+        \draw   (221,39.81) .. controls (221,36.65) and (223.56,34.1) .. (226.71,34.1) -- (265.29,34.1) .. controls (268.44,34.1) and (271,36.65) .. (271,39.81) -- (271,56.95) .. controls (271,60.11) and (268.44,62.67) .. (265.29,62.67) -- (226.71,62.67) .. controls (223.56,62.67) and (221,60.11) .. (221,56.95) -- cycle ;
+
+        \draw   (220.33,114.81) .. controls (220.33,111.65) and (222.89,109.1) .. (226.05,109.1) -- (264.62,109.1) .. controls (267.77,109.1) and (270.33,111.65) .. (270.33,114.81) -- (270.33,131.95) .. controls (270.33,135.11) and (267.77,137.67) .. (264.62,137.67) -- (226.05,137.67) .. controls (222.89,137.67) and (220.33,135.11) .. (220.33,131.95) -- cycle ;
+
+        \draw  [dash pattern={on 4.5pt off 4.5pt}] (298,105.75) .. controls (298,97.33) and (304.83,90.5) .. (313.25,90.5) .. controls (321.67,90.5) and (328.5,97.33) .. (328.5,105.75) .. controls (328.5,114.17) and (321.67,121) .. (313.25,121) .. controls (304.83,121) and (298,114.17) .. (298,105.75) -- cycle ;
+
+        \draw  [dash pattern={on 4.5pt off 4.5pt}] (298,142.75) .. controls (298,134.33) and (304.83,127.5) .. (313.25,127.5) .. controls (321.67,127.5) and (328.5,134.33) .. (328.5,142.75) .. controls (328.5,151.17) and (321.67,158) .. (313.25,158) .. controls (304.83,158) and (298,151.17) .. (298,142.75) -- cycle ;
+
+        \draw   (353,123.08) .. controls (353,113.28) and (366.91,105.33) .. (384.06,105.33) .. controls (401.22,105.33) and (415.13,113.28) .. (415.13,123.08) .. controls (415.13,132.89) and (401.22,140.83) .. (384.06,140.83) .. controls (366.91,140.83) and (353,132.89) .. (353,123.08) -- cycle ;
+
+        \draw   (298,28.75) .. controls (298,20.33) and (304.83,13.5) .. (313.25,13.5) .. controls (321.67,13.5) and (328.5,20.33) .. (328.5,28.75) .. controls (328.5,37.17) and (321.67,44) .. (313.25,44) .. controls (304.83,44) and (298,37.17) .. (298,28.75) -- cycle ;
+        \draw  [dash pattern={on 4.5pt off 4.5pt}] (298,66.75) .. controls (298,58.33) and (304.83,51.5) .. (313.25,51.5) .. controls (321.67,51.5) and (328.5,58.33) .. (328.5,66.75) .. controls (328.5,75.17) and (321.67,82) .. (313.25,82) .. controls (304.83,82) and (298,75.17) .. (298,66.75) -- cycle ;
+        \draw   (353,50.08) .. controls (353,40.28) and (366.91,32.33) .. (384.06,32.33) .. controls (401.22,32.33) and (415.13,40.28) .. (415.13,50.08) .. controls (415.13,59.89) and (401.22,67.83) .. (384.06,67.83) .. controls (366.91,67.83) and (353,59.89) .. (353,50.08) -- cycle ;
+        \draw    (69.5,106.75) -- (86,106.75) ;
+        \draw [shift={(89,106.75)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw    (130.33,65.33) -- (148.98,56.01) ;
+        \draw [shift={(151.67,54.67)}, rotate = 153.43] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw    (130.33,105.33) -- (149.05,115.86) ;
+        \draw [shift={(151.67,117.33)}, rotate = 209.36] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw    (181.08,50.08) -- (217.33,50.08) ;
+        \draw [shift={(220.33,50.08)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw    (181.08,123.42) -- (217.33,123.42) ;
+        \draw [shift={(220.33,123.42)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw    (174.33,61.33) -- (218.38,112.54) ;
+        \draw [shift={(220.33,114.81)}, rotate = 229.3] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw    (270.33,114.81) -- (295.29,103.03) ;
+        \draw [shift={(298,101.75)}, rotate = 154.73] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw    (270.33,128) -- (295.52,145.07) ;
+        \draw [shift={(298,146.75)}, rotate = 214.13] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw    (328.5,101.75) -- (352.41,115.81) ;
+        \draw [shift={(355,117.33)}, rotate = 210.46] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw    (328.5,146.75) -- (353.68,133.4) ;
+        \draw [shift={(356.33,132)}, rotate = 152.08] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw    (271.67,40.48) -- (295.26,29.97) ;
+        \draw [shift={(298,28.75)}, rotate = 156] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw    (271.67,56.67) -- (295.2,65.68) ;
+        \draw [shift={(298,66.75)}, rotate = 200.95] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw    (327.83,26.42) -- (352.43,41.13) ;
+        \draw [shift={(355,42.67)}, rotate = 210.89] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        \draw    (327.83,71.42) -- (353.02,58.07) ;
+        \draw [shift={(355.67,56.67)}, rotate = 152.08] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+        \draw (165.83,123.42) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
                 \begin{center}
-                    Transferencia \\de pesos
+                    $z^t$
+                \end{center}
+
+            \end{minipage}};
+        \draw (165.83,48.08) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $z^s$
+                \end{center}
+
+            \end{minipage}};
+        \draw (245.33,123.56) node   [align=left] {\begin{minipage}[lt]{26.23pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathcal{D}$
+                \end{center}
+
+            \end{minipage}};
+        \draw (246,48.56) node   [align=left] {\begin{minipage}[lt]{26.23pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathcal{C}$
+                \end{center}
+
+            \end{minipage}};
+        \draw (110,85) node   [align=left] {\begin{minipage}[lt]{22.78pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathcal{G}$
+                \end{center}
+
+            \end{minipage}};
+        \draw (54.25,106.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $x^t$
+                \end{center}
+
+            \end{minipage}};
+        \draw (54.25,64.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $x^s$
+                \end{center}
+
+            \end{minipage}};
+        \draw (313.25,142.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $d^t$
+                \end{center}
+
+            \end{minipage}};
+        \draw (313.25,105.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $d^s$
+                \end{center}
+
+            \end{minipage}};
+        \draw (384.06,123.08) node   [align=left] {\begin{minipage}[lt]{32.64pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathcal{L}_D$
+                \end{center}
+
+            \end{minipage}};
+        \draw (313.25,28.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $y^s$
+                \end{center}
+
+            \end{minipage}};
+        \draw (313.25,66.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\hat{y}^s$
+                \end{center}
+
+            \end{minipage}};
+        \draw (384.06,50.08) node   [align=left] {\begin{minipage}[lt]{32.64pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathcal{L}_C$
                 \end{center}
             \end{minipage}};
-        \draw (271,11.5) node [anchor=north west][inner sep=0.75pt]   [align=left] {Pre entrenamiento};
-        \draw (305,340) node [anchor=north west][inner sep=0.75pt]   [align=left] {Fine tuning};
-        \draw (406.25,28) node [anchor=north west][inner sep=0.75pt]   [align=left] {\textcolor[rgb]{0.29,0.56,0.89}{{\footnotesize Capas densas}}};
-        \draw (408.75,318) node [anchor=north west][inner sep=0.75pt]   [align=left] {\textcolor[rgb]{0.74,0.06,0.88}{{\footnotesize Capas densas}}};
-        \draw (231.25,39.75) node [anchor=north west][inner sep=0.75pt]   [align=left] {{\footnotesize \textcolor[rgb]{0.25,0.46,0.02}{Capas convolucionales}}};
-        \draw (234.75,300.25) node [anchor=north west][inner sep=0.75pt]   [align=left] {{\footnotesize \textcolor[rgb]{0.25,0.46,0.02}{Capas convolucionales}}};
-        \draw (534.75,91.25) node [anchor=north west][inner sep=0.75pt]   [align=left] {{\footnotesize \textcolor[rgb]{0.29,0.56,0.89}{Etiquetas}}};
-        \draw (537.25,246.75) node [anchor=north west][inner sep=0.75pt]   [align=left] {{\footnotesize \textcolor[rgb]{0.74,0.06,0.88}{Etiquetas}}};
-
     \end{tikzpicture}
 
-    \caption{Estructura de pre-entrenar y fine tuning.}
-    \label{fig:pretrain-and-finetuning}
+    \caption{Esquema de las {\it DANN}. Los supra indices $s$ y $t$ indican si los datos son del origen o destino respectivamente.
+        Los c\'irculos con l\'ineas rayadas son salidas de los modelos mientras que los c\'irculos de l\'ineas s\'olidas son datos conocidos.}
+    \label{fig:esquema-dann}
 \end{figure}
 
-El proceso de pre-entrenar y {\it fine tuning} ha mejorado considerablemente los resultados obtenidos en diversos
-problemas del estado del arte, incluso las redes pre-entrenadas pueden ser f\'acilmente adaptadas a otras tareas con
-pocos datos etiquetados. No obstante, en muchos escenarios no se cuenta con datos etiquetados, imposibilitando el {\it
-        fine tuning}. De aqu\'i es que surje la necesidad de transferir el aprendizaje obtenido en un dominio de origen con
-datos etiquetados a otro de destino donde no se poseen etiquetas \parencite{ben2006analysis}. Los modelos de aprendizaje profundo se ven afectados negativamente cuando existe un {\it
-        dataset shift} como se mostr\'o previamente en el cuadro \ref{tab:lenet-distintos-datasets}. Por lo tanto, la {\it
-        adaptaci\'on de dominio} aparece como una soluci\'on cuando la distribuci\'on de los datos de entrenamiento difiere de
-los datos de testing. La idea que persigue es reducir la diferencia que existe entre las distribuciones de origen y
-destino.
+Las redes DANN poseen una funci\'on de p\'erdida $\mathcal{L}$ que depende de $\mathcal{L}_\mathcal{C}$ y
+$\mathcal{L}_\mathcal{D}$.
 
-La tesis abordar\'a el uso de diferentes t\'ecnicas de {\it adaptaci\'on de dominio} para entrenar un modelo capaz de
-transferir el conocimiento del dominio del MNIST a los d\'igitos escritos en los telegramas de las elecciones.
+$\mathcal{L}_\mathcal{C}$ mide el error que posee la red en la clasificaci\'on de los datos de origen y viene dada por el {\it cross-entropy} $\mathcal{L}_{CE}$ aplicado a la salida de la red $\mathcal{C}$.
 
-\section{Adaptaci\'on de Dominio}
+\begin{align}
+    \mathcal{L}_\mathcal{C}(x^s, y^s) & = \mathcal{L}_{CE}(C(\mathcal{G}(x^s)), y^s) \nonumber                \\
+                                      & = \mathcal{L}_{CE}(C(z^s), y^s) \nonumber                             \\
+                                      & = \mathcal{L}_{CE}(\hat{y}^s, y^s) \label{eq:dann-loss-clasificadora}
+\end{align}
 
+La funci\'on de p\'erdida de $\mathcal{D}$ viene dada por la ecuaci\'on \ref{eq:dann-loss-discriminadora}, donde
+$\mathbb{E}_{x^s \sim \mathcal{\hat{S}}}$ y $\mathbb{E}_{x^t \sim \mathcal{\hat{T}}}$ representan la proporci\'on
+esperada de datos de origen $\mathcal{\hat{S}}$ y destino $\mathcal{\hat{T}}$ respectivamente.
+
+\begin{align}
+    \mathcal{L}_\mathcal{D}(x^s, x^t) & = \mathbb{E}_{x^s \sim \mathcal{\hat{S}}}\log[\mathcal{D}(\mathcal{G}(x^s))] + \mathbb{E}_{x^t \sim \mathcal{\hat{T}}}\log[1-\mathcal{D}(\mathcal{G}(x^t))] \nonumber \\
+                                      & = \mathbb{E}_{x^s \sim \mathcal{\hat{S}}}\log[\mathcal{D}(z^s)] + \mathbb{E}_{x^t \sim \mathcal{\hat{T}}}\log[1-\mathcal{D}(z^t)] \nonumber                           \\
+                                      & = \mathbb{E}_{x^s \sim \mathcal{\hat{S}}}\log[d^s] + \mathbb{E}_{x^t \sim \mathcal{\hat{T}}}\log[1-d^t] \label{eq:dann-loss-discriminadora}
+\end{align}
+
+Por lo tanto, el $\mathcal{L}$ de una {\it DANN} viene dado por la ecuaci\'on \ref{eq:dann-loss}. Donde $\lambda$ es un
+hiper-par\'ametro a optimizar que regula el trade-off de la clasificaci\'on y la discriminaci\'on.
+
+\begin{align}
+    \mathcal{L}(x^s, x^t) = \mathcal{L}_\mathcal{C}(x^s, y^s) + \lambda \mathcal{L}_\mathcal{D}(x^s, x^t)
+    \label{eq:dann-loss}
+\end{align}
+
+\subsection{AFN}
 \lipsum[1]
+
+\subsection{ADDA}
+\lipsum[1]
+
+\subsection{MDD}
+\lipsum[1]
+
