@@ -43,7 +43,7 @@ def _suggest_bsp(trial: optuna.Trial):
     params = {
         "lr": trial.suggest_float("lr", 1e-4, 0.1),
         "trade_off": trial.suggest_float("trade_off", 0.5, 2),
-        "trade_off_bsp": trial.suggest_float("trade_off", 1e-5, 0.1),
+        "trade_off_bsp": trial.suggest_float("trade_off_bsp", 1e-5, 0.1),
     }
     _, val_metrics = _fit_bsp(params, test=False)
 

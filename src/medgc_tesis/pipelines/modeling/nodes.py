@@ -13,6 +13,7 @@ from medgc_tesis.pipelines.modeling.backbone import LeNetBackbone, ResNet18Backb
 from medgc_tesis.pipelines.modeling.optimizers import (
     adda,
     afn,
+    bsp,
     dann,
     mdd,
     source_only,
@@ -64,6 +65,16 @@ def entrenar_lenet_afn():
 def entrenar_resnet_afn():
     afn.setup(backbone=ResNet18Backbone)
     return afn.optimize()
+
+
+def entrenar_lenet_bsp():
+    bsp.setup(backbone=LeNetBackbone)
+    return bsp.optimize()
+
+
+def entrenar_resnet_bsp():
+    bsp.setup(backbone=ResNet18Backbone)
+    return bsp.optimize()
 
 
 def entrenar_lenet_source_only():
