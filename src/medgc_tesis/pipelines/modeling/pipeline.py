@@ -1,5 +1,3 @@
-from typing import Callable
-
 from kedro.pipeline import Pipeline, node
 from kedro.pipeline.modular_pipeline import pipeline
 
@@ -31,7 +29,7 @@ def create_pipeline(**kwargs) -> Pipeline:
 
     pipes = []
     for modelo in ["resnet", "lenet"]:
-        for da in ["afn"]:
+        for da in ["bsp"]:
             pipes += create_steps(modelo, da)
 
     return pipeline(pipes)

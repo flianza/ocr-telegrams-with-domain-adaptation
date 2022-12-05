@@ -116,23 +116,23 @@ modelo_resnet_mdd_predicciones:
   type: pandas.CSVDataSet
   filepath: data/07_model_output/mdd/resnet/predicciones.csv
 
-# ――――――――― self_ensemble ―――――――――
+# ――――――――― BSP ―――――――――
 
-modelo_lenet_self_ensemble:
+modelo_lenet_bsp:
   type: kedro_imagenes.extras.datasets.pytorch_model_dataset.PytorchModelDataSet
-  filepath: data/06_models/self_ensemble/lenet/modelo.pth
+  filepath: data/06_models/bsp/lenet/modelo.pth
 
-modelo_lenet_self_ensemble_predicciones:
+modelo_lenet_bsp_predicciones:
   type: pandas.CSVDataSet
-  filepath: data/07_model_output/self_ensemble/lenet/predicciones.csv
+  filepath: data/07_model_output/bsp/lenet/predicciones.csv
 
-modelo_resnet_self_ensemble:
+modelo_resnet_bsp:
   type: kedro_imagenes.extras.datasets.pytorch_model_dataset.PytorchModelDataSet
-  filepath: data/06_models/self_ensemble/resnet/modelo.pth
+  filepath: data/06_models/bsp/resnet/modelo.pth
 
-modelo_resnet_self_ensemble_predicciones:
+modelo_resnet_bsp_predicciones:
   type: pandas.CSVDataSet
-  filepath: data/07_model_output/self_ensemble/resnet/predicciones.csv
+  filepath: data/07_model_output/bsp/resnet/predicciones.csv
 
 # ――――――――― SOURCE_ONLY ―――――――――
 
