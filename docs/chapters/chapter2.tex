@@ -40,9 +40,9 @@ Se han propuesto muchos métodos para la adaptación de dominios, ya sea pondera
 de origen \parencite{sugiyama2007direct} o buscando una transformación de la distribución de origen a la distribución de destino \parencite{gong2013connecting}. Esta tesis analizar\'a algunos de los m\'etodos m\'as actuales del ultimo caso.
 
 \subsection{Domain Adversarial Neural Network}
-Un gran hito al momento de modelar distribuciones es la Red Generativa Adversaria {\it GAN} \parencite{goodfellow2020generative}. Inspirada en estas arquitecturas GAN, la Red Neural Adversaria de Dominio {\it DANN} \parencite{ganin2016domain} dos redes en la adaptación del dominio (figura \ref{fig:dann-esquema}). La primera es la
-discriminadora de dominios $\mathcal{D}$ entrenada para distinguir las características de origen de las de destino y la
-segunda es una generadora de características $\mathcal{G}$ que se entrena para confundir a $\mathcal{D}$ y
+Un gran hito al momento de modelar distribuciones es la Red Generativa Adversaria {\it GAN} \parencite{goodfellow2020generative}. Inspirada en estas arquitecturas GAN, la Red Neural Adversaria de Dominio {\it DANN} \parencite{ganin2016domain} consta de dos redes en la adaptación del dominio (figura \ref{fig:dann-esquema}). La primera es
+la discriminadora de dominios $\mathcal{D}$ entrenada para distinguir las características de origen de las de destino y
+la segunda es una generadora de características $\mathcal{G}$ que se entrena para confundir a $\mathcal{D}$ y
 simult\'aneamente ayudar a la red clasificadora $\mathcal{C}$.
 
 \begin{figure}[H]
@@ -223,12 +223,11 @@ de $\mathcal{L}_\mathcal{D}$ dará lugar a representaciones transferibles.
 \end{align}
 
 \subsection{Adversarial Discriminative Domain Adaptation}
-Las redes Adversarial Discriminative Domain Adaptation {\it ADDA} surgen a partir de las {\it DANN} debido a que su
-estrategia de optimización podría no funcionar bien en la práctica debido a la desvanecimiento del gradiente, que
-también es un problema importante en el entrenamiento de GANs. Por ejemplo, cuando el espacio latente de destino
-generado $\mathbf{z}^t$ es extremadamente distinguible del de origen tal que $\mathcal{D}(\mathbf{z}^t)=0$, el
-gradiente es peque\~{n}o y vice versa. Esto provoca que la optimizaci\'on de $\mathcal{G}$ sea extremadamente
-dif\'icil.
+Las redes Adversarial Discriminative Domain Adaptation {\it ADDA} \parencite{tzeng2017adversarial} surgen a partir de las {\it DANN} debido a que su estrategia de optimización podría no
+funcionar bien en la práctica debido a la desvanecimiento del gradiente, que también es un problema importante en el
+entrenamiento de GANs. Por ejemplo, cuando el espacio latente de destino generado $\mathbf{z}^t$ es extremadamente
+distinguible del de origen tal que $\mathcal{D}(\mathbf{z}^t)=0$, el gradiente es peque\~{n}o y vice versa. Esto
+provoca que la optimizaci\'on de $\mathcal{G}$ sea extremadamente dif\'icil.
 
 Las redes {\it ADDA} separan la optimizaci\'on de $\mathcal{G}$ y de $\mathcal{D}$ en dos objetivos separados (figura
 \ref{fig:adda-esquema}) siendo el primero el pre-entrenamiento de $\mathcal{G}_s$ y $\mathcal{C}$ en los datos de
@@ -431,9 +430,131 @@ origen y gradientes mas grandes para los otros registros de destino.
     \label{eq:adda-loss-generadora}
 \end{align}
 
-\subsection{AFN}
+\subsection{Batch Spectral Penalization}
 \lipsum[1]
 
-\subsection{MDD}
+\subsection{Margin Disparity Discrepancy}
+
+Las t\'ecnicas detalladas hasta el momento implican algoritmos de optimizaci\'on minimax, que funcionan correctamente
+en los m\'etodos basados en el aprendizaje adversario. Sin embargo, estos algoritmos utilizan funciones de scoreoque
+carecen de garant\'ias te\'oricas ya que se estudiaron funciones de p\'erdida 0-1. Es por esto que se introducen
+m\'etodos que apuntan a reducir la brecha que existe entre la teor\'ia y el algoritmo, como Margin Disparity
+Discrepancy {\it MDD} \parencite{zhang2019bridging}.
+
+\begin{figure}[H]
+    \centering
+
+    \tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+    \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+        %uncomment if require: \path (0,424); %set diagram left start at 0, and has height of 424
+
+        %Shape: Circle [id:dp37402229817841603] 
+        \draw   (60.5,104.75) .. controls (60.5,96.33) and (67.33,89.5) .. (75.75,89.5) .. controls (84.17,89.5) and (91,96.33) .. (91,104.75) .. controls (91,113.17) and (84.17,120) .. (75.75,120) .. controls (67.33,120) and (60.5,113.17) .. (60.5,104.75) -- cycle ;
+        %Shape: Trapezoid [id:dp5518581764728496] 
+        \draw   (110,68) -- (150,80) -- (150,130) -- (110,142) -- cycle ;
+        %Straight Lines [id:da7900111351501842] 
+        \draw    (91,104.75) -- (107.5,104.75) ;
+        \draw [shift={(110.5,104.75)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Shape: Circle [id:dp6237032464701955] 
+        \draw  [dash pattern={on 4.5pt off 4.5pt}] (171.08,105.08) .. controls (171.08,96.66) and (177.91,89.83) .. (186.33,89.83) .. controls (194.76,89.83) and (201.58,96.66) .. (201.58,105.08) .. controls (201.58,113.51) and (194.76,120.33) .. (186.33,120.33) .. controls (177.91,120.33) and (171.08,113.51) .. (171.08,105.08) -- cycle ;
+        %Rounded Rect [id:dp17455651105714143] 
+        \draw   (225,66.31) .. controls (225,63.15) and (227.56,60.6) .. (230.71,60.6) -- (269.29,60.6) .. controls (272.44,60.6) and (275,63.15) .. (275,66.31) -- (275,83.45) .. controls (275,86.61) and (272.44,89.17) .. (269.29,89.17) -- (230.71,89.17) .. controls (227.56,89.17) and (225,86.61) .. (225,83.45) -- cycle ;
+        %Shape: Circle [id:dp2140151642409336] 
+        \draw   (302,55.25) .. controls (302,46.83) and (308.83,40) .. (317.25,40) .. controls (325.67,40) and (332.5,46.83) .. (332.5,55.25) .. controls (332.5,63.67) and (325.67,70.5) .. (317.25,70.5) .. controls (308.83,70.5) and (302,63.67) .. (302,55.25) -- cycle ;
+        %Shape: Circle [id:dp8313620493224034] 
+        \draw  [dash pattern={on 4.5pt off 4.5pt}] (302,93.25) .. controls (302,84.83) and (308.83,78) .. (317.25,78) .. controls (325.67,78) and (332.5,84.83) .. (332.5,93.25) .. controls (332.5,101.67) and (325.67,108.5) .. (317.25,108.5) .. controls (308.83,108.5) and (302,101.67) .. (302,93.25) -- cycle ;
+        %Shape: Ellipse [id:dp0600451143745524] 
+        \draw   (357,76.58) .. controls (357,66.78) and (370.91,58.83) .. (388.06,58.83) .. controls (405.22,58.83) and (419.13,66.78) .. (419.13,76.58) .. controls (419.13,86.39) and (405.22,94.33) .. (388.06,94.33) .. controls (370.91,94.33) and (357,86.39) .. (357,76.58) -- cycle ;
+        %Straight Lines [id:da9980456278456524] 
+        \draw    (198.75,94.75) -- (222.9,75.61) ;
+        \draw [shift={(225.25,73.75)}, rotate = 141.6] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da3629940013678272] 
+        \draw    (275.67,66.98) -- (299.26,56.47) ;
+        \draw [shift={(302,55.25)}, rotate = 156] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da8352907095901936] 
+        \draw    (275.67,83.17) -- (299.2,92.18) ;
+        \draw [shift={(302,93.25)}, rotate = 200.95] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da1138581727231831] 
+        \draw    (332.5,55.25) -- (356.34,67.77) ;
+        \draw [shift={(359,69.17)}, rotate = 207.71] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da07484994635417963] 
+        \draw    (332.5,93.25) -- (356.85,84.21) ;
+        \draw [shift={(359.67,83.17)}, rotate = 159.64] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da7386987904124067] 
+        \draw    (150.5,104.75) -- (167,104.75) ;
+        \draw [shift={(170,104.75)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Rounded Rect [id:dp7058372380502067] 
+        \draw   (226,129.31) .. controls (226,126.15) and (228.56,123.6) .. (231.71,123.6) -- (270.29,123.6) .. controls (273.44,123.6) and (276,126.15) .. (276,129.31) -- (276,146.45) .. controls (276,149.61) and (273.44,152.17) .. (270.29,152.17) -- (231.71,152.17) .. controls (228.56,152.17) and (226,149.61) .. (226,146.45) -- cycle ;
+        %Shape: Circle [id:dp8799954567091415] 
+        \draw  [dash pattern={on 4.5pt off 4.5pt}] (301.5,138.25) .. controls (301.5,129.83) and (308.33,123) .. (316.75,123) .. controls (325.17,123) and (332,129.83) .. (332,138.25) .. controls (332,146.67) and (325.17,153.5) .. (316.75,153.5) .. controls (308.33,153.5) and (301.5,146.67) .. (301.5,138.25) -- cycle ;
+        %Shape: Ellipse [id:dp09534345336772221] 
+        \draw   (358,139.58) .. controls (358,129.78) and (371.91,121.83) .. (389.06,121.83) .. controls (406.22,121.83) and (420.13,129.78) .. (420.13,139.58) .. controls (420.13,149.39) and (406.22,157.33) .. (389.06,157.33) .. controls (371.91,157.33) and (358,149.39) .. (358,139.58) -- cycle ;
+        %Straight Lines [id:da6601974145410334] 
+        \draw    (197.25,116.75) -- (223.78,135.05) ;
+        \draw [shift={(226.25,136.75)}, rotate = 214.59] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da32804094797701633] 
+        \draw    (275.75,138.25) -- (298.5,138.25) ;
+        \draw [shift={(301.5,138.25)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da19377630354971975] 
+        \draw    (329.25,103.75) -- (357.8,130.13) ;
+        \draw [shift={(360,132.17)}, rotate = 222.74] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da39400351361192065] 
+        \draw    (332,138.25) -- (355,138.25) ;
+        \draw [shift={(358,138.25)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+        % Text Node
+        \draw (70.67,100) node [anchor=north west][inner sep=0.75pt]    {$\mathbf{x}$};
+        % Text Node
+        \draw (123.33,95.73) node [anchor=north west][inner sep=0.75pt]    {$\mathcal{G}$};
+        % Text Node
+        \draw (181.33,100) node [anchor=north west][inner sep=0.75pt]    {$\mathbf{z}$};
+        % Text Node
+        \draw (242.67,66.4) node [anchor=north west][inner sep=0.75pt]    {$\mathcal{C}$};
+        % Text Node
+        \draw (242.67,127) node [anchor=north west][inner sep=0.75pt]    {$\mathcal{C}^{'}$};
+        % Text Node
+        \draw (310,128) node [anchor=north west][inner sep=0.75pt]    {$\hat{\mathbf{y}}^{'}$};
+        % Text Node
+        \draw (312,83.4) node [anchor=north west][inner sep=0.75pt]    {$\hat{\mathbf{y}}$};
+        % Text Node
+        \draw (312,48) node [anchor=north west][inner sep=0.75pt]    {$\mathbf{y}$};
+        % Text Node
+        \draw (376.67,67.4) node [anchor=north west][inner sep=0.75pt]    {$\mathcal{L}_{C}$};
+        % Text Node
+        \draw (366.67,128.73) node [anchor=north west][inner sep=0.75pt]    {$\mathcal{L}_{MDD}$};
+
+    \end{tikzpicture}
+    \caption{Esquema de {\it MDD}. Los c\'irculos con l\'ineas rayadas son salidas de los modelos mientras que los c\'irculos de l\'ineas s\'olidas son datos conocidos.
+            {\it MDD} introduce un clasificador clasificador adversario $\mathcal{C}^{'}$ para maximizar la discrepancia y entrena el generador de características $\mathcal{G}$ para
+        minimizar el error de origen como tambien la discrepancia.}
+    \label{fig:mdd-esquema}
+\end{figure}
+
+$\mathcal{L}_{\mathcal{C}}$ contin\'ua siendo la funci\'on {\it cross-entropy} $\mathcal{L}_{CE}$ aplicado a la salida de la red $\mathcal{C}$.
+
+\begin{align}
+    \min_{\mathcal{C}} \mathcal{L}_\mathcal{C}(\mathbf{x}^s, \mathbf{y}^s) = \mathcal{L}_{CE}(C(\mathcal{G}(\mathbf{x}^s)), \mathbf{y}^s)
+    \label{eq:mdd-loss-clasificadora}
+\end{align}
+
+Por otro lado, $\mathcal{L}_{\mathcal{MDD}}$ contiene un {\it margen} $\rho$ que se obtiene introduciendo el
+par\'ametro $\gamma \triangleq \exp \rho$ en la ecuaci\'on \ref{eq:mdd-loss}.
+
+\begin{align}
+    \max_{\mathcal{C}^{'}} \mathcal{L}_{\mathcal{MDD}}(\mathbf{x}^s, \mathbf{x}^t) = & \gamma \mathbb{E}_{\mathbf{x}^s \sim \mathcal{\hat{S}}} \log[\sigma(\mathcal{C}^{'}(\mathcal{G}(\mathbf{x}^s)))] + \nonumber \\
+                                                                                     & \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}} \log[1-\sigma(\mathcal{C}^{'}(\mathcal{G}(\mathbf{x}^t)))]
+    \label{eq:mdd-loss}
+\end{align}
+
+Donde $\sigma$ es la funci\'on {\it softmax}. Por lo tanto, el objetivo de optimización viene dado por la ecuaci\'on
+\ref{eq:mdd-objetivo}, donde $\lambda$ es el trade-off entre la clasificaci\'on y la discriminaci\'on adversaria.
+
+\begin{align}
+    \min_{\mathcal{G}, \mathcal{C}} \mathcal{L}_{\mathcal{C}}(\mathbf{x}^s, \mathbf{x}^t) + \lambda \mathcal{L}_{\mathcal{MDD}}(\mathbf{x}^s, \mathbf{x}^t)
+    \label{eq:mdd-objetivo}
+\end{align} % TODO: quizas convenga dejarlo como Loss de G, asi es consistente con los otros
+
+\subsection{Adaptive Feature Norm}
 \lipsum[1]
 
