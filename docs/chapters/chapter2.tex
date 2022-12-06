@@ -206,9 +206,9 @@ $\mathbb{E}_{\mathbf{x}^s \sim \mathcal{\hat{S}}}$ y $\mathbb{E}_{\mathbf{x}^t \
 proporci\'on esperada de datos de origen $\mathcal{\hat{S}}$ y destino $\mathcal{\hat{T}}$ respectivamente.
 
 \begin{align}
-    \max_{\mathcal{G},\mathcal{D}} \mathcal{L}_{adv}(\mathbf{x}^s, \mathbf{x}^t) & = \mathbb{E}_{\mathbf{x}^s \sim \mathcal{\hat{S}}}\log[\mathcal{D}(\mathcal{G}(\mathbf{x}^s))] + \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}}\log[1-\mathcal{D}(\mathcal{G}(\mathbf{x}^t))] \nonumber \\
-                                                                                 & = \mathbb{E}_{\mathbf{x}^s \sim \mathcal{\hat{S}}}\log[\mathcal{D}(\mathbf{z}^s)] + \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}}\log[1-\mathcal{D}(\mathbf{z}^t)] \nonumber                           \\
-                                                                                 & = \mathbb{E}_{\mathbf{x}^s \sim \mathcal{\hat{S}}}\log[\mathbf{d}^s] + \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}}\log[1-\mathbf{d}^t]
+    \max_{\mathcal{D}} \mathcal{L}_{adv}(\mathbf{x}^s, \mathbf{x}^t) & = \mathbb{E}_{\mathbf{x}^s \sim \mathcal{\hat{S}}}\log[\mathcal{D}(\mathcal{G}(\mathbf{x}^s))] + \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}}\log[1-\mathcal{D}(\mathcal{G}(\mathbf{x}^t))] \nonumber \\
+                                                                     & = \mathbb{E}_{\mathbf{x}^s \sim \mathcal{\hat{S}}}\log[\mathcal{D}(\mathbf{z}^s)] + \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}}\log[1-\mathcal{D}(\mathbf{z}^t)] \nonumber                           \\
+                                                                     & = \mathbb{E}_{\mathbf{x}^s \sim \mathcal{\hat{S}}}\log[\mathbf{d}^s] + \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}}\log[1-\mathbf{d}^t]
     \label{eq:dann-loss-discriminadora}
 \end{align}
 
@@ -218,7 +218,7 @@ La minimización de $\mathcal{L}_\mathcal{C}$ dará lugar a representaciones dis
 de $\mathcal{L}_\mathcal{D}$ dará lugar a representaciones transferibles.
 
 \begin{align}
-    \min_{\mathcal{G}} \mathcal{L}_\mathcal{C}(\mathbf{x}^s, \mathbf{y}^s) + \lambda \mathcal{L}_{adv}(\mathbf{x}^s, \mathbf{x}^t)
+    \min_{\mathcal{G},\mathcal{C}} \mathcal{L}_\mathcal{C}(\mathbf{x}^s, \mathbf{y}^s) + \lambda \mathcal{L}_{adv}(\mathbf{x}^s, \mathbf{x}^t)
     \label{eq:dann-objetivo}
 \end{align}
 
@@ -416,43 +416,242 @@ optimizar que asigna gradientes peque\~{n}os a registros de destino que sean sim
 grandes para los otros registros de destino.
 
 \begin{align}
-    \min_{\mathcal{G}_s, \mathcal{C}} \mathcal{L}_\mathcal{C}(\mathbf{x}^s, \mathbf{y}^s) & = \mathcal{L}_{CE}(C(\mathcal{G}_s(\mathbf{x}^s)), \mathbf{y}^s)
-    \label{eq:adda-loss-clasificadora}
-\end{align}
-
-\begin{align}
-    \max_{\mathcal{D}} \mathcal{L}_{adv}(\mathbf{x}^s, \mathbf{x}^t) & = \mathbb{E}_{\mathbf{x}^s \sim \mathcal{\hat{S}}}\log[\mathcal{D}(\mathcal{G}_s(\mathbf{x}^s))] + \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}}\log[1-\mathcal{D}(\mathcal{G}_t(\mathbf{x}^t))]
-    \label{eq:adda-loss-discriminadora}
-\end{align}
-
-\begin{align}
-    \min_{\mathcal{G}_t} - \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}} \log[\mathcal{D}(\mathcal{G}_t(\mathbf{x}^t))]
-    \label{eq:adda-objetivo}
+     & \min_{\mathcal{G}_s, \mathcal{C}} \mathcal{L}_\mathcal{C}(\mathbf{x}^s, \mathbf{y}^s)                                                            = \mathcal{L}_{CE}(C_s(\mathcal{G}_s(\mathbf{x}^s)), \mathbf{y}^s)
+    \label{eq:adda-loss-clasificadora}                                                                                                                                                                                                                                                                                                                                                          \\
+     & \max_{\mathcal{D}} \mathcal{L}_{adv}(\mathbf{x}^s, \mathbf{x}^t)                                                                                 = \mathbb{E}_{\mathbf{x}^s \sim \mathcal{\hat{S}}}\log[\mathcal{D}(\mathcal{G}_s(\mathbf{x}^s))] + \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}}\log[1-\mathcal{D}(\mathcal{G}_t(\mathbf{x}^t))] \label{eq:adda-loss-discriminadora} \\
+     & \min_{\mathcal{G}_t} - \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}} \log[\mathcal{D}(\mathcal{G}_t(\mathbf{x}^t))]  \label{eq:adda-objetivo}
 \end{align}
 
 \subsection{Batch Spectral Penalization}
-\parencite{chen2019transferability}.
 
-Although adversarial domain adaptation enhances the feature transferability, i.e. the ability of feature
-representations to bridge the discrepancy across domains, studies (Chen et al., 2019c) reveal that it is at the expense
-of deteriorating the discriminability, i.e. the easiness of separating categories over the fixed feature
-representations of both domains. Spectral analysis shows that only the eigenvectors corresponding to the largest
-singular values tend to carry transferable knowledge, while other eigenvectors may reflect domain variations and thus
-be overly penalized in domain adversarial training. However, these eigenvectors may convey crucial discriminative
-information, and thus the discriminability is weakened. To tackle this transferability-discriminability dilemma, Batch
-Spectral Penalization (BSP) (Chen et al., 2019c) penalizes the largest singular values so that the other eigenvectors
-can be relatively strengthened to boost the feature discriminability
+Aunque los metodos de adaptaci\'on de dominio adversarios mejoran la {\it transferibilidad} de las características
+aprendidas; es decir, la capacidad de que las representaciones puedan superar las discrepancias entre los dominios, lo
+hacen a costa de la {\it discriminabilidad}; es decir, la facilidad de separar categorias sobre las representaciones de
+ambos dominios \parencite{chen2019transferability}. Al aplicar descomposici\'on en valores singulares ({\it SVD} en ingl\'es) para
+analizar las propiedades espectrales de las representaciones aprendidas en batches, se confirma que los eigenvectors
+con valores singulares m\'as altos dominan la {\it transferibilidad} mientras que los eigenvectors con valores
+singulares m\'as pequeños se encuentran penalizados lo que provoca una {\it discriminabilidad} deficiente. {\it Batch
+        Spectral Penalization} {\it BSP} \parencite{chen2019transferability} penaliza el mayor valor singular para que los dem\'as eigenvectors puedan mejorar la
+    {\it discriminabilidad}. $\mathcal{L}_{BSP}$ es propuesto como un t\'ermino de regularizaci\'on sobre los $k$ mayores
+valores singulares:
 
-Aunque la adaptación de dominio adversarial mejora la transferibilidad de características, es decir, la capacidad de
-las representaciones de características para salvar la discrepancia entre dominios, los estudios (Chen et al., 2019c)
-revelan que es a expensas de deteriorar la discriminabilidad, es decir, la facilidad de separar categorías sobre las
-representaciones de características fijas de ambos dominios. El análisis espectral muestra que solo los eigenvectores
-correspondientes a los valores singulares más grandes tienden a llevar conocimiento transferible, mientras que otros
-eigenvectores pueden reflejar variaciones de dominio y, por lo tanto, ser excesivamente penalizados en el entrenamiento
-adversarial de dominio. Sin embargo, estos vectores propios pueden transmitir información discriminativa crucial, por
-lo que la discriminabilidad se debilita. Para abordar este dilema de transferibilidad-discriminabilidad, Batch Spectral
-Penalization (BSP) (Chen et al., 2019c) penaliza los valores singulares más grandes para que los otros eigenvectores
-puedan fortalecerse relativamente para impulsar la discriminabilidad de la característica
+\begin{align}
+    \mathcal{L}_{BSP}(\mathbf{z}) = \sum_{i=0}^{k} (\sigma_{s, i}^2 + \sigma_{t, i}^2)
+    \label{eq:bsp}
+\end{align}
+
+Donde $\sigma_{s, i}$ y $\sigma_{t, i}$ corresponden al $i$-\'esimo mayor valor singular de $\Sigma_s$ y $\Sigma_t$
+respectivamente. En la presente tesis se utilizar\'a $k=1$.
+
+    {\it BSP} puede integrarse a cualquiera de los esquemas mencionados anteriormente, por ejemplo a una {\it DANN} (figura \ref{fig:bsp-esquema-dann}).
+
+\begin{figure}[H]
+    \centering
+
+    \tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+    \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+        %uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+        %Shape: Circle [id:dp14395415737572304] 
+        \draw   (57,126.75) .. controls (57,118.33) and (63.83,111.5) .. (72.25,111.5) .. controls (80.67,111.5) and (87.5,118.33) .. (87.5,126.75) .. controls (87.5,135.17) and (80.67,142) .. (72.25,142) .. controls (63.83,142) and (57,135.17) .. (57,126.75) -- cycle ;
+
+        %Shape: Circle [id:dp5294927781460403] 
+        \draw   (57,168.75) .. controls (57,160.33) and (63.83,153.5) .. (72.25,153.5) .. controls (80.67,153.5) and (87.5,160.33) .. (87.5,168.75) .. controls (87.5,177.17) and (80.67,184) .. (72.25,184) .. controls (63.83,184) and (57,177.17) .. (57,168.75) -- cycle ;
+
+        %Shape: Trapezoid [id:dp3621515034386269] 
+        \draw   (108,110) -- (148,122) -- (148,172) -- (108,184) -- cycle ;
+
+        %Straight Lines [id:da711615291035981] 
+        \draw    (87.5,126.75) -- (104,126.75) ;
+        \draw [shift={(107,126.75)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Shape: Circle [id:dp5854711906138592] 
+        \draw  [dash pattern={on 4.5pt off 4.5pt}] (168.58,110.08) .. controls (168.58,101.66) and (175.41,94.83) .. (183.83,94.83) .. controls (192.26,94.83) and (199.08,101.66) .. (199.08,110.08) .. controls (199.08,118.51) and (192.26,125.33) .. (183.83,125.33) .. controls (175.41,125.33) and (168.58,118.51) .. (168.58,110.08) -- cycle ;
+
+        %Shape: Circle [id:dp8402316163188099] 
+        \draw  [dash pattern={on 4.5pt off 4.5pt}] (168.58,185.42) .. controls (168.58,176.99) and (175.41,170.17) .. (183.83,170.17) .. controls (192.26,170.17) and (199.08,176.99) .. (199.08,185.42) .. controls (199.08,193.84) and (192.26,200.67) .. (183.83,200.67) .. controls (175.41,200.67) and (168.58,193.84) .. (168.58,185.42) -- cycle ;
+
+        %Rounded Rect [id:dp15165955457538138] 
+        \draw   (239,62.81) .. controls (239,59.65) and (241.56,57.1) .. (244.71,57.1) -- (283.29,57.1) .. controls (286.44,57.1) and (289,59.65) .. (289,62.81) -- (289,79.95) .. controls (289,83.11) and (286.44,85.67) .. (283.29,85.67) -- (244.71,85.67) .. controls (241.56,85.67) and (239,83.11) .. (239,79.95) -- cycle ;
+
+        %Rounded Rect [id:dp47289041628378614] 
+        \draw   (238.33,213.81) .. controls (238.33,210.65) and (240.89,208.1) .. (244.05,208.1) -- (282.62,208.1) .. controls (285.77,208.1) and (288.33,210.65) .. (288.33,213.81) -- (288.33,230.95) .. controls (288.33,234.11) and (285.77,236.67) .. (282.62,236.67) -- (244.05,236.67) .. controls (240.89,236.67) and (238.33,234.11) .. (238.33,230.95) -- cycle ;
+
+        %Shape: Circle [id:dp20484409800302994] 
+        \draw  [dash pattern={on 4.5pt off 4.5pt}] (316,204.75) .. controls (316,196.33) and (322.83,189.5) .. (331.25,189.5) .. controls (339.67,189.5) and (346.5,196.33) .. (346.5,204.75) .. controls (346.5,213.17) and (339.67,220) .. (331.25,220) .. controls (322.83,220) and (316,213.17) .. (316,204.75) -- cycle ;
+
+        %Shape: Circle [id:dp19954579063976796] 
+        \draw  [dash pattern={on 4.5pt off 4.5pt}] (316,241.75) .. controls (316,233.33) and (322.83,226.5) .. (331.25,226.5) .. controls (339.67,226.5) and (346.5,233.33) .. (346.5,241.75) .. controls (346.5,250.17) and (339.67,257) .. (331.25,257) .. controls (322.83,257) and (316,250.17) .. (316,241.75) -- cycle ;
+
+        %Shape: Ellipse [id:dp41632665310072503] 
+        \draw   (370.5,222.08) .. controls (370.5,212.28) and (384.41,204.33) .. (401.56,204.33) .. controls (418.72,204.33) and (432.63,212.28) .. (432.63,222.08) .. controls (432.63,231.89) and (418.72,239.83) .. (401.56,239.83) .. controls (384.41,239.83) and (370.5,231.89) .. (370.5,222.08) -- cycle ;
+
+        %Shape: Circle [id:dp17102829278099274] 
+        \draw   (316,51.75) .. controls (316,43.33) and (322.83,36.5) .. (331.25,36.5) .. controls (339.67,36.5) and (346.5,43.33) .. (346.5,51.75) .. controls (346.5,60.17) and (339.67,67) .. (331.25,67) .. controls (322.83,67) and (316,60.17) .. (316,51.75) -- cycle ;
+        %Shape: Circle [id:dp2918994940011912] 
+        \draw  [dash pattern={on 4.5pt off 4.5pt}] (316,89.75) .. controls (316,81.33) and (322.83,74.5) .. (331.25,74.5) .. controls (339.67,74.5) and (346.5,81.33) .. (346.5,89.75) .. controls (346.5,98.17) and (339.67,105) .. (331.25,105) .. controls (322.83,105) and (316,98.17) .. (316,89.75) -- cycle ;
+        %Shape: Ellipse [id:dp7208514036481783] 
+        \draw   (371,73.08) .. controls (371,63.28) and (384.91,55.33) .. (402.06,55.33) .. controls (419.22,55.33) and (433.13,63.28) .. (433.13,73.08) .. controls (433.13,82.89) and (419.22,90.83) .. (402.06,90.83) .. controls (384.91,90.83) and (371,82.89) .. (371,73.08) -- cycle ;
+        %Straight Lines [id:da35699780719749463] 
+        \draw    (87.5,168.75) -- (104,168.75) ;
+        \draw [shift={(107,168.75)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da18773339124658595] 
+        \draw    (148.33,127.33) -- (166.98,118.01) ;
+        \draw [shift={(169.67,116.67)}, rotate = 153.43] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da22178069673434142] 
+        \draw    (148.33,167.33) -- (167.05,177.86) ;
+        \draw [shift={(169.67,179.33)}, rotate = 209.36] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da7263329854343115] 
+        \draw    (197.25,102) -- (235.88,74.81) ;
+        \draw [shift={(238.33,73.08)}, rotate = 144.86] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da5895896069004276] 
+        \draw    (193.6,197.4) -- (235.71,220.95) ;
+        \draw [shift={(238.33,222.42)}, rotate = 209.22] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da504234275800213] 
+        \draw    (183.83,125.33) -- (236.76,211.26) ;
+        \draw [shift={(238.33,213.81)}, rotate = 238.37] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da10127819240633107] 
+        \draw    (288.33,213.81) -- (313.29,202.03) ;
+        \draw [shift={(316,200.75)}, rotate = 154.73] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da18118282714853473] 
+        \draw    (288.33,227) -- (313.52,244.07) ;
+        \draw [shift={(316,245.75)}, rotate = 214.13] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da46435990995985477] 
+        \draw    (346.5,200.75) -- (370.41,214.81) ;
+        \draw [shift={(373,216.33)}, rotate = 210.46] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da3066500527802958] 
+        \draw    (346.5,245.75) -- (371.68,232.4) ;
+        \draw [shift={(374.33,231)}, rotate = 152.08] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da9357957653419868] 
+        \draw    (289.67,63.48) -- (313.26,52.97) ;
+        \draw [shift={(316,51.75)}, rotate = 156] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da5822336916421971] 
+        \draw    (289.67,79.67) -- (313.2,88.68) ;
+        \draw [shift={(316,89.75)}, rotate = 200.95] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da8400721166176619] 
+        \draw    (345.83,49.42) -- (370.43,64.13) ;
+        \draw [shift={(373,65.67)}, rotate = 210.89] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da5048948243554285] 
+        \draw    (345.83,94.42) -- (371.02,81.07) ;
+        \draw [shift={(373.67,79.67)}, rotate = 152.08] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Shape: Ellipse [id:dp8464659325338855] 
+        \draw   (299.5,146.08) .. controls (299.5,136.28) and (313.41,128.33) .. (330.56,128.33) .. controls (347.72,128.33) and (361.63,136.28) .. (361.63,146.08) .. controls (361.63,155.89) and (347.72,163.83) .. (330.56,163.83) .. controls (313.41,163.83) and (299.5,155.89) .. (299.5,146.08) -- cycle ;
+        %Straight Lines [id:da5523565128759309] 
+        \draw    (197.2,177.4) -- (299.82,155.14) ;
+        \draw [shift={(302.75,154.5)}, rotate = 167.76] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da24838256047555873] 
+        \draw    (199.08,110.08) -- (298.87,138.67) ;
+        \draw [shift={(301.75,139.5)}, rotate = 195.99] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+        % Text Node
+        \draw (331.25,51.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{y}^s$
+                \end{center}
+
+            \end{minipage}};
+        % Text Node
+        \draw (331.25,89.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\hat{\mathbf{y}}^s$
+                \end{center}
+
+            \end{minipage}};
+        % Text Node
+        \draw (402.06,73.08) node   [align=left] {\begin{minipage}[lt]{32.64pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathcal{L}_{\mathcal{C}}$
+                \end{center}
+
+            \end{minipage}};
+        % Text Node
+        \draw (401.56,222.08) node   [align=left] {\begin{minipage}[lt]{32.64pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathcal{L}_{adv}$
+                \end{center}
+
+            \end{minipage}};
+        % Text Node
+        \draw (331.25,241.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{d}^t$
+                \end{center}
+
+            \end{minipage}};
+        % Text Node
+        \draw (331.25,204.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{d}^s$
+                \end{center}
+
+            \end{minipage}};
+        % Text Node
+        \draw (263.33,222.56) node   [align=left] {\begin{minipage}[lt]{26.23pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathcal{D}$
+                \end{center}
+
+            \end{minipage}};
+        % Text Node
+        \draw (264,71.56) node   [align=left] {\begin{minipage}[lt]{26.23pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathcal{C}$
+                \end{center}
+
+            \end{minipage}};
+        % Text Node
+        \draw (183.83,185.42) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{z}^t$
+                \end{center}
+
+            \end{minipage}};
+        % Text Node
+        \draw (183.83,110.08) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{z}^s$
+                \end{center}
+
+            \end{minipage}};
+        % Text Node
+        \draw (128,147) node   [align=left] {\begin{minipage}[lt]{22.78pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathcal{G}$
+                \end{center}
+
+            \end{minipage}};
+        % Text Node
+        \draw (72.25,168.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{x}^t$
+                \end{center}
+
+            \end{minipage}};
+        % Text Node
+        \draw (72.25,126.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{x}^s$
+                \end{center}
+
+            \end{minipage}};
+        % Text Node
+        \draw (312.5,136.4) node [anchor=north west][inner sep=0.75pt]    {$\mathcal{L}_{BSP} $};
+
+    \end{tikzpicture}
+
+    \caption{Esquema de un modelo {\it DANN+BSP}.}
+    \label{fig:bsp-esquema-dann}
+\end{figure}
+
+Por lo tanto, un modelo {\it DANN+BSP} presenta como objetivos:
+
+\begin{align}
+     & \min_{\mathcal{G},\mathcal{C}} \mathcal{L}_\mathcal{C}(\mathbf{x}^s, \mathbf{y}^s) + \lambda \mathcal{L}_{adv}(\mathbf{x}^s, \mathbf{x}^t) + \beta \mathcal{L}_{BSP}(\mathcal{G}(\mathbf{x})) \\
+     & \max_{\mathcal{D}} \mathcal{L}_{adv}(\mathbf{x}^s, \mathbf{x}^t)
+    \label{eq:bsp-dann-obejtivo}
+\end{align}
+
+Donde $\beta$ es el par\'ametro que regula el trade-off de $\mathcal{L}_{BSP}$.
 
 \subsection{Margin Disparity Discrepancy}
 
