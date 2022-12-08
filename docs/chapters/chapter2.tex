@@ -773,8 +773,242 @@ Donde $\sigma$ es la funci\'on {\it softmax}. Por lo tanto, el objetivo de optim
 \begin{align}
     \min_{\mathcal{G}, \mathcal{C}} \mathcal{L}_{\mathcal{C}}(\mathbf{x}^s, \mathbf{x}^t) + \lambda \mathcal{L}_{\mathcal{MDD}}(\mathbf{x}^s, \mathbf{x}^t)
     \label{eq:mdd-objetivo}
-\end{align} % TODO: quizas convenga dejarlo como Loss de G, asi es consistente con los otros
+\end{align}
 
 \subsection{Adaptive Feature Norm}
-\lipsum[1]
 
+El mayor problema que surge de la adaptaci\'on de dominio es la degradaci\'on del modelo en cuanto a la clasificaci\'on \parencite{yosinski2014transferable}. Las divergencias estadísticas existentes pueden no representar con precisión el
+cambio de dominio y subsanar tales discrepancias puede no garantizar la transferencia entre dominios. Tales
+discrepancias se ejemplifican en la figura \ref{fig:afn-source-only}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{chapter2/afn-visda-source-only.png}
+
+    \caption{Visualizaci\'on de las características aprendidas para el origen y destino utilizando un modelo entrenado utilizando muestras del origen. Imagen tomada de \cite{xu2019larger}.}
+    \label{fig:afn-source-only}
+\end{figure}
+
+Esto sugiere que las normas excesivamente pequeñas de las muestras de destino con respecto a las de origen explican el
+deterioro en la clasificación. No obstante, pueden plantearse dos hipótesis:
+
+\begin{itemize}
+    \item Normas de las características desalineadas: el desplazamiento entre los dominios de origen y destino se explica en la
+          desalineación de los valores esperados de las normas de sus características. La coincidencia de las normas de ambos
+          dominios a un escalar arbitrariamente elegido supondrá una mejora en la transferencias.
+    \item Norma de las caracteristicas más pequeña: el desplazamiento entre los dominios se explica debido a las características
+          menos informativas con normas más pequeñas del dominio de destino. Adaptar las características de destino a regiones
+          alejadas de las normas pequeñas supondrá una mejora en la transferencia.
+\end{itemize}
+
+\cite{xu2019larger} propone un método llamado {\it Adaptive Feature Norm AFN} que consiste en normalizar las normas de las características aprendidas por la red $\mathcal{G}$  mediante $n$ bloques $\mathcal{N}$ (compuestos por FC-BN-ReLU-Dropout) y mediante $\mathcal{L}_{AFN}$.
+
+\begin{figure}[H]
+    \centering
+
+    \tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+    \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+        %uncomment if require: \path (0,409); %set diagram left start at 0, and has height of 409
+
+        %Shape: Circle [id:dp36883064074545446] 
+        \draw   (59,84.75) .. controls (59,76.33) and (65.83,69.5) .. (74.25,69.5) .. controls (82.67,69.5) and (89.5,76.33) .. (89.5,84.75) .. controls (89.5,93.17) and (82.67,100) .. (74.25,100) .. controls (65.83,100) and (59,93.17) .. (59,84.75) -- cycle ;
+
+        %Shape: Circle [id:dp7170555789489086] 
+        \draw   (59,126.75) .. controls (59,118.33) and (65.83,111.5) .. (74.25,111.5) .. controls (82.67,111.5) and (89.5,118.33) .. (89.5,126.75) .. controls (89.5,135.17) and (82.67,142) .. (74.25,142) .. controls (65.83,142) and (59,135.17) .. (59,126.75) -- cycle ;
+
+        %Shape: Trapezoid [id:dp6591706550778527] 
+        \draw   (110,68) -- (150,80) -- (150,130) -- (110,142) -- cycle ;
+
+        %Straight Lines [id:da8866180371172607] 
+        \draw    (89.5,84.75) -- (106,84.75) ;
+        \draw [shift={(109,84.75)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Shape: Circle [id:dp7226735192986846] 
+        \draw  [dash pattern={on 4.5pt off 4.5pt}] (264.98,68.75) .. controls (264.98,60.33) and (271.81,53.5) .. (280.23,53.5) .. controls (288.66,53.5) and (295.48,60.33) .. (295.48,68.75) .. controls (295.48,77.17) and (288.66,84) .. (280.23,84) .. controls (271.81,84) and (264.98,77.17) .. (264.98,68.75) -- cycle ;
+        %Shape: Circle [id:dp11338914726883309] 
+        \draw  [dash pattern={on 4.5pt off 4.5pt}] (264.98,144.08) .. controls (264.98,135.66) and (271.81,128.83) .. (280.23,128.83) .. controls (288.66,128.83) and (295.48,135.66) .. (295.48,144.08) .. controls (295.48,152.51) and (288.66,159.33) .. (280.23,159.33) .. controls (271.81,159.33) and (264.98,152.51) .. (264.98,144.08) -- cycle ;
+        %Straight Lines [id:da7817124779055846] 
+        \draw    (89.5,126.75) -- (106,126.75) ;
+        \draw [shift={(109,126.75)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da7526972599979318] 
+        \draw    (244.73,86) -- (263.38,76.67) ;
+        \draw [shift={(266.07,75.33)}, rotate = 153.43] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da13505401193908728] 
+        \draw    (244.73,126) -- (263.45,136.53) ;
+        \draw [shift={(266.07,138)}, rotate = 209.36] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da4909359959704669] 
+        \draw    (295.48,70.75) -- (331.73,70.75) ;
+        \draw [shift={(334.73,70.75)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da25373400738229757] 
+        \draw    (295.48,144.08) -- (331.73,144.08) ;
+        \draw [shift={(334.73,144.08)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Shape: Rectangle [id:dp03201668448552586] 
+        \draw   (220.67,80.6) -- (244.33,80.6) -- (244.33,130.4) -- (220.67,130.4) -- cycle ;
+
+        %Shape: Circle [id:dp0590517882755186] 
+        \draw  [dash pattern={on 4.5pt off 4.5pt}] (170.4,84.95) .. controls (170.4,76.53) and (177.23,69.7) .. (185.65,69.7) .. controls (194.07,69.7) and (200.9,76.53) .. (200.9,84.95) .. controls (200.9,93.37) and (194.07,100.2) .. (185.65,100.2) .. controls (177.23,100.2) and (170.4,93.37) .. (170.4,84.95) -- cycle ;
+        %Shape: Circle [id:dp9792876246953977] 
+        \draw  [dash pattern={on 4.5pt off 4.5pt}] (170.4,126.95) .. controls (170.4,118.53) and (177.23,111.7) .. (185.65,111.7) .. controls (194.07,111.7) and (200.9,118.53) .. (200.9,126.95) .. controls (200.9,135.37) and (194.07,142.2) .. (185.65,142.2) .. controls (177.23,142.2) and (170.4,135.37) .. (170.4,126.95) -- cycle ;
+        %Straight Lines [id:da9352682997505948] 
+        \draw    (200.9,84.95) -- (217.4,84.95) ;
+        \draw [shift={(220.4,84.95)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da9288909607910223] 
+        \draw    (200.9,126.95) -- (217.4,126.95) ;
+        \draw [shift={(220.4,126.95)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da42477525756570467] 
+        \draw    (150.5,85.15) -- (167,85.15) ;
+        \draw [shift={(170,85.15)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da19510792007996902] 
+        \draw    (150.5,125.75) -- (167,125.75) ;
+        \draw [shift={(170,125.75)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Rounded Rect [id:dp8233373593250533] 
+        \draw   (334,62.81) .. controls (334,59.65) and (336.56,57.1) .. (339.71,57.1) -- (378.29,57.1) .. controls (381.44,57.1) and (384,59.65) .. (384,62.81) -- (384,79.95) .. controls (384,83.11) and (381.44,85.67) .. (378.29,85.67) -- (339.71,85.67) .. controls (336.56,85.67) and (334,83.11) .. (334,79.95) -- cycle ;
+
+        %Shape: Circle [id:dp361141070335256] 
+        \draw   (411,51.75) .. controls (411,43.33) and (417.83,36.5) .. (426.25,36.5) .. controls (434.67,36.5) and (441.5,43.33) .. (441.5,51.75) .. controls (441.5,60.17) and (434.67,67) .. (426.25,67) .. controls (417.83,67) and (411,60.17) .. (411,51.75) -- cycle ;
+        %Shape: Circle [id:dp994981759860698] 
+        \draw  [dash pattern={on 4.5pt off 4.5pt}] (411,89.75) .. controls (411,81.33) and (417.83,74.5) .. (426.25,74.5) .. controls (434.67,74.5) and (441.5,81.33) .. (441.5,89.75) .. controls (441.5,98.17) and (434.67,105) .. (426.25,105) .. controls (417.83,105) and (411,98.17) .. (411,89.75) -- cycle ;
+        %Shape: Ellipse [id:dp4863694749188221] 
+        \draw   (466,73.08) .. controls (466,63.28) and (479.91,55.33) .. (497.06,55.33) .. controls (514.22,55.33) and (528.13,63.28) .. (528.13,73.08) .. controls (528.13,82.89) and (514.22,90.83) .. (497.06,90.83) .. controls (479.91,90.83) and (466,82.89) .. (466,73.08) -- cycle ;
+        %Straight Lines [id:da7034112467211542] 
+        \draw    (384.67,63.48) -- (408.26,52.97) ;
+        \draw [shift={(411,51.75)}, rotate = 156] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da28235679904283506] 
+        \draw    (384.67,79.67) -- (408.2,88.68) ;
+        \draw [shift={(411,89.75)}, rotate = 200.95] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da3443605473479898] 
+        \draw    (440.83,49.42) -- (465.43,64.13) ;
+        \draw [shift={(468,65.67)}, rotate = 210.89] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da6547044180228383] 
+        \draw    (440.83,94.42) -- (466.02,81.07) ;
+        \draw [shift={(468.67,79.67)}, rotate = 152.08] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da7710823975987622] 
+        \draw    (291.33,79.33) -- (339.91,129.59) ;
+        \draw [shift={(342,131.75)}, rotate = 225.97] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Shape: Ellipse [id:dp8075338571919093] 
+        \draw   (334.73,144.08) .. controls (334.73,134.28) and (348.64,126.33) .. (365.8,126.33) .. controls (382.95,126.33) and (396.86,134.28) .. (396.86,144.08) .. controls (396.86,153.89) and (382.95,161.83) .. (365.8,161.83) .. controls (348.64,161.83) and (334.73,153.89) .. (334.73,144.08) -- cycle ;
+
+        % Text Node
+        \draw (130,105) node   [align=left] {\begin{minipage}[lt]{22.78pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathcal{G}$
+                \end{center}
+
+            \end{minipage}};
+        % Text Node
+        \draw (74.25,126.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{x}^t$
+                \end{center}
+
+            \end{minipage}};
+        % Text Node
+        \draw (74.25,84.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{x}^s$
+                \end{center}
+
+            \end{minipage}};
+        % Text Node
+        \draw (221,97.4) node [anchor=north west][inner sep=0.75pt]   [align=left] {\begin{minipage}[lt]{15pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathcal{N}$
+                \end{center}
+
+            \end{minipage}};
+        % Text Node
+        \draw (185.65,84.95) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{g}^s$
+                \end{center}
+
+            \end{minipage}};
+        % Text Node
+        \draw (185.65,126.95) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{g}^t$
+                \end{center}
+
+            \end{minipage}};
+        % Text Node
+        \draw (426.25,51.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{y}^s$
+                \end{center}
+
+            \end{minipage}};
+        % Text Node
+        \draw (426.25,89.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\hat{\mathbf{y}}^s$
+                \end{center}
+
+            \end{minipage}};
+        % Text Node
+        \draw (497.06,73.08) node   [align=left] {\begin{minipage}[lt]{32.64pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathcal{L}_{\mathcal{C}}$
+                \end{center}
+
+            \end{minipage}};
+        % Text Node
+        \draw (359,71.56) node   [align=left] {\begin{minipage}[lt]{26.23pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathcal{C}$
+                \end{center}
+
+            \end{minipage}};
+        % Text Node
+        \draw (366,145) node   [align=left] {\begin{minipage}[lt]{35pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathcal{L}_{AFN}$
+                \end{center}
+
+            \end{minipage}};
+        % Text Node
+        \draw (280.23,144.08) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{z}^t$
+                \end{center}
+
+            \end{minipage}};
+        % Text Node
+        \draw (280.23,68.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{z}^s$
+                \end{center}
+
+            \end{minipage}};
+
+    \end{tikzpicture}
+    \caption{Esquema de {\it AFN}. Los supra indices $s$ y $t$ indican si los datos son del origen o destino respectivamente.
+    Los c\'irculos con l\'ineas rayadas son salidas de los modelos mientras que los c\'irculos de l\'ineas s\'olidas son datos conocidos. El modelo {\it backbone} $\mathcal{G}$ produce características $\mathbf{x}$ que luego son aplicadas por bloques $\mathcal{N}$ (FC-BN-ReLU-Dropout) produciendo características normalizadas $\mathbf{d}$. La red clasificadora $\mathcal{C}$ toma las características $\mathbf{d}^s$ y se computa $\mathcal{L}_{\mathcal{C}}$. $\mathcal{L}_{AFN}$ se calcula utilizando $\mathbf{d}$.}
+    \label{fig:afn-esquema}
+\end{figure}
+
+En su variante iterativa, $\mathcal{L}_{AFN}$ se define como:
+
+\begin{align}
+    \min_{\mathcal{G}} \mathcal{L}_{AFN}(\mathbf{x}^s, \mathbf{x}^t) = & \mathbb{E}_{\mathbf{x}^s \sim \mathcal{\hat{S}}} \mathbb{E}[(\| \mathcal{G}(\mathcal{N}(\mathbf{x}^s)) \| - \Delta_r)^2] \nonumber \\
+                                                                       & + \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}} \mathbb{E}[(\| \mathcal{G}(\mathcal{N}(\mathbf{x}^t)) \| - \Delta_r)^2]
+    \label{eq:afn-loss}
+\end{align}
+
+Donde $\Delta_r$ corresponde al escalar que controla la amplitud de la norma. Los autores afirman que puede agregarse
+un término a la ecuación \ref{eq:afn-loss} respecto a la entropía $\mathcal{H}$ de la función {\it softmax} $\sigma$
+para facilitar la discriminabilidad:
+
+\begin{align}
+    \min_{\mathcal{G}} \mathcal{L}_{AFN}(\mathbf{x}^s, \mathbf{x}^t) = & \mathbb{E}_{\mathbf{x}^s \sim \mathcal{\hat{S}}} \mathbb{E}[(\| \mathcal{G}(\mathcal{N}(\mathbf{x}^s)) \| - \Delta_r)^2] \nonumber   \\
+                                                                       & + \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}} \mathbb{E}[(\| \mathcal{G}(\mathcal{N}(\mathbf{x}^t)) \| - \Delta_r)^2] \nonumber \\
+                                                                       & + \mathcal{H}(\sigma(\mathcal{G}(\mathcal{N}(\mathbf{x}^s)) ))
+    \label{eq:afn-loss-entropy}
+\end{align}
+
+Por lo tanto, el objetivo de optimización viene dado por la ecuaci\'on \ref{eq:afn-objetivo}, donde $\lambda$ es el
+trade-off entre la clasificaci\'on y normalizacion de normas.
+
+\begin{align}
+    \min_{\mathcal{G}, \mathcal{C}} \mathcal{L}_{\mathcal{C}}(\mathbf{x}^s, \mathbf{x}^t) + \lambda \mathcal{L}_{\mathcal{AFN}}(\mathbf{x}^s, \mathbf{x}^t)
+    \label{eq:afn-objetivo}
+\end{align}
