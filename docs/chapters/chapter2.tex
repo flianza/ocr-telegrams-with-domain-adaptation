@@ -996,12 +996,12 @@ En su variante iterativa, $\mathcal{L}_{AFN}$ se define como:
 
 Donde $\Delta_r$ corresponde al escalar que controla la amplitud de la norma. Los autores afirman que puede agregarse
 un término a la ecuación \ref{eq:afn-loss} respecto a la entropía $\mathcal{H}$ de la función {\it softmax} $\sigma$
-para facilitar la discriminabilidad:
+para facilitar la discriminabilidad mediante un factor $\beta$:
 
 \begin{align}
     \min_{\mathcal{G}} \mathcal{L}_{AFN}(\mathbf{x}^s, \mathbf{x}^t) = & \mathbb{E}_{\mathbf{x}^s \sim \mathcal{\hat{S}}} \mathbb{E}[(\| \mathcal{G}(\mathcal{N}(\mathbf{x}^s)) \| - \Delta_r)^2] \nonumber   \\
                                                                        & + \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}} \mathbb{E}[(\| \mathcal{G}(\mathcal{N}(\mathbf{x}^t)) \| - \Delta_r)^2] \nonumber \\
-                                                                       & + \mathcal{H}(\sigma(\mathcal{G}(\mathcal{N}(\mathbf{x}^s)) ))
+                                                                       & + \beta \mathcal{H}(\sigma(\mathcal{G}(\mathcal{N}(\mathbf{x}^s)) ))
     \label{eq:afn-loss-entropy}
 \end{align}
 
