@@ -1,0 +1,1 @@
+{"lr": 0.04566139142328189, "trade_off": 1.6777639420895203, "trade_off_bsp": 3.972110727381914e-07, "lr_gamma": 0.001, "lr_decay": 0.25, "momentum": 0.9, "weight_decay": 0.001, "bottleneck_dim": 256}

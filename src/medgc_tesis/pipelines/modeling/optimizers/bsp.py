@@ -26,7 +26,7 @@ def setup(backbone: Type[Backbone]):
 
 def optimize():
     study = optuna.create_study(
-        directions=["minimize", "maximize"],
+        directions=["minimize"],
         study_name=experiment_name,
         sampler=RandomSampler(42),
     )
@@ -43,11 +43,11 @@ def _suggest_bsp(trial: optuna.Trial):
     params = {
         "lr": trial.suggest_float("lr", 1e-4, 0.1),
         "trade_off": trial.suggest_float("trade_off", 0.5, 2),
-        "trade_off_bsp": trial.suggest_float("trade_off_bsp", 1e-5, 0.1),
+        "trade_off_bsp": trial.suggest_loguniform("trade_off_bsp", 1e-7, 1e-4),
     }
     _, val_metrics = _fit_bsp(params, test=False)
 
-    return val_metrics["val_loss"], val_metrics["val_class_acc"]
+    return val_metrics["val_domain_acc"]
 
 
 def _fit_bsp(params, test):
