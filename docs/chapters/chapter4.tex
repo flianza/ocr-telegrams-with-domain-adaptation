@@ -19,19 +19,22 @@ adaptaci\'on.
     \centering
     \begin{tabular}{cc|rrrr}
         \toprule
-                                 &        & Acc.                               & $F_1$                               & $MMD$                               & Dist. $\mathcal{A}$                 \\
-        AD                       & Modelo &                                    &                                     &                                     &                                     \\
+                                     &        & Acc.                                & $F_1$                               & $MMD$                               & Dist. $\mathcal{A}$                 \\
+        AD                           & Modelo &                                     &                                     &                                     &                                     \\
         \midrule
-        \multirow[c]{2}{*}{-}    & ResNet & \textbf{{\footnotesize (1)} 98.73} & \textbf{{\footnotesize (1)} 0.9873} & 0.0595                              & 1.9443                              \\
-                                 & LeNet  & 98.14                              & 0.9814                              & 0.0498                              & 1.9313                              \\\hline
-        \multirow[c]{2}{*}{MDD}  & ResNet & 98.58                              & 0.9858                              & 0.0569                              & 1.9031                              \\
-                                 & LeNet  & {\footnotesize (3)} 98.62          & {\footnotesize (3)} 0.9862          & 0.0363                              & 1.7259                              \\\hline
-        \multirow[c]{2}{*}{DANN} & ResNet & 97.52                              & 0.9752                              & 0.0153                              & 1.6383                              \\
-                                 & LeNet  & 98.14                              & 0.9814                              & {\footnotesize (2)} 0.0119          & {\footnotesize (3)} 1.6231          \\\hline
-        \multirow[c]{2}{*}{AFN}  & ResNet & {\footnotesize (2)} 98.68          & {\footnotesize (2)} 0.9868          & \textbf{{\footnotesize (1)} 0.0037} & \textbf{{\footnotesize (1)} 1.0047} \\
-                                 & LeNet  & 98.58                              & 0.9857                              & {\footnotesize (3)} 0.0138          & {\footnotesize (2)} 1.5920          \\\hline
-        \multirow[c]{2}{*}{ADDA} & ResNet & 89.18                              & 0.8918                              & 0.0225                              & 1.8691                              \\
-                                 & LeNet  & 97.49                              & 0.9749                              & 0.0288                              & 1.8112                              \\
+        \multirow[c]{2}{*}{-}        & ResNet & {\footnotesize (2)} 0.9885          & {\footnotesize (2)} 0.9883          & 0.0632                              & 1.9306                              \\
+                                     & LeNet  & 0.9811                              & 0.9810                              & 0.0469                              & 1.9515                              \\\hline
+        \multirow[c]{2}{*}{DANN}     & ResNet & \textbf{{\footnotesize (1)} 0.9890} & \textbf{{\footnotesize (1)} 0.9890} & 0.1379                              & 1.9776                              \\
+                                     & LeNet  & 0.9822                              & 0.9821                              & {\footnotesize (3)} 0.0090          & 1.6774                              \\\hline
+        \multirow[c]{2}{*}{ADDA}     & ResNet & 0.9476                              & 0.9485                              & 0.0165                              & 1.8495                              \\
+                                     & LeNet  & 0.9191                              & 0.9184                              & 0.0399                              & 1.8495                              \\\hline
+        \multirow[c]{2}{*}{DANN+BSP} & ResNet & 0.9780                              & 0.9777                              & 0.0409                              & 1.7888                              \\
+                                     & LeNet  & 0.9859                              & 0.9857                              & {\footnotesize (2)} 0.0051          & {\footnotesize (3)} 1.6369          \\\hline
+        \multirow[c]{2}{*}{MDD}      & ResNet & {\footnotesize (3)} 0.9864          & {\footnotesize (3)} 0.9863          & 0.0615                              & 1.8987                              \\
+                                     & LeNet  & 0.9856                              & 0.9854                              & 0.0399                              & 1.7468                              \\\hline
+        \multirow[c]{2}{*}{AFN}      & ResNet & 0.9829                              & 0.9827                              & \textbf{{\footnotesize (1)} 0.0040} & \textbf{{\footnotesize (1)} 1.0886} \\
+                                     & LeNet  & 0.9862                              & 0.9859                              & 0.0117                              & {\footnotesize (2)} 1.5747          \\
+
         \bottomrule
     \end{tabular}
     \caption{M\'etricas de los experimentos realizados. Entre par\'entesis se encuentra la posici\'on que ocupa dentro del top 3 de la columna.}

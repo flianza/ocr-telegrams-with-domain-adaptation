@@ -251,7 +251,7 @@ etiquetado y el de destino sin etiquetar. Los experimentos llevados a cabo utili
 origen y otro del de destino. Se realizaron 3 particiones de cada uno:
 
 \begin{itemize}
-    \item Entrenamiento (70\% de cada dataset): utilizado para entrenar la ResNet-18 en cada \'epoca.
+    \item Entrenamiento (70\% de cada dataset): utilizado para entrenar la LeNet-8 y ResNet-18 en cada \'epoca.
     \item Validaci\'on (15\% de cada dataset): utilizado para calcular los mejores hiperpar\'ametros del modelo.
     \item Test (15\% de cada dataset): utilizado para calcular las m\'etricas y gr\'aficos finales del modelo entrenado.
 \end{itemize}
@@ -260,26 +260,23 @@ Los modelos se entrenaron utilizando Stochastic Gradient Descent (SGD) \parencit
 
 \subsection{Selecci\'on y optimizaci\'on del modelo}
 
-La optimizaci\'on de hiperpar\'ametros se realiz\'o utilizando la librer\'ia Optuna \parencite{optuna_2019}. Se ejecutaron 15 rondas de optimizaci\'on con 10 \'epocas de entrenamiento por cada experimento.
+La optimizaci\'on de hiperpar\'ametros se realiz\'o utilizando la librer\'ia Optuna \parencite{optuna_2019}. Se ejecutaron 30 rondas de optimizaci\'on con 10 \'epocas de entrenamiento por cada experimento.
 En cada uno de los experimentos, se optimizaron los hiperpar\'ametros para minimizar el loss de cada modelo. El cuadro
 \ref{tab:rangos-hiperparametros} muestra los rangos b\'usqueda.
 
 \begin{table}[H]
     \centering
-    \begin{tabular}{l|ccccc}
+    \begin{tabular}{l|cccccc}
         \toprule
-                           & ADDA        & AFN          & DANN        & MDD         & Sin AD      \\
+                   & {\it DANN}  & {\it ADDA}  & {\it DANN+BSP} & {\it MDD}   & {\it AFN}    & {\it Sin AD} \\
         \midrule
-        LR$^{*}$           & [1e-4, 0.1] & [1e-4, 0.1]  & [1e-4, 0.1] & [1e-4, 0.1] & [1e-4, 0.1] \\
-        Pretrain LR$^{*}$  & [1e-4, 0.1] & -            & -           & -           & -           \\
-        Pretrain Epochs    & [5, 10]     & -            & [0.5, 2]    & [0.5, 2]    & -           \\
-        T-O$^{**}$ Losses  & [0.5, 2]    & -            & [0.5, 2]    & [0.5, 2]    & -           \\
-        T-O$^{**}$ Norm    & -           & [0.001, 0.1] & -           & -           & -           \\
-        T-O$^{**}$ Entropy & -           & [0.0, 0.1]   & -           & -           & -           \\
-        Delta              & -           & [0.01, 5]    & -           & -           & -           \\
-        \# Blocks          & -           & [1, 4]       & -           & -           & -           \\
-        Dropout            & -           & [0.3, 0.7]   & -           & -           & -           \\
-        Margin             & -           & -            & -           & [1, 10]     & -           \\
+        $\eta_0$   & [1e-4, 0.1] & [1e-4, 0.1] & [1e-4, 0.1]    & [1e-4, 0.1] & [1e-4, 0.1]  & [1e-4, 0.1]  \\
+        $\lambda$  & [0.5, 2]    & [0.5, 2]    & [0.5, 2]       & [0.5, 2]    & [0.001, 0.1] & -            \\
+        $\beta$    & -           & -           & [1e-5, 0.1]    & -           & [0.0, 0.1]   & -            \\
+        $\gamma$   & -           & -           & -              & [1, 10]     & -            & -            \\
+        $\Delta_r$ & -           & -           & -              & -           & [0.01, 5]    & -            \\
+        \# Blocks  & -           & -           & -              & -           & [1, 4]       & -            \\
+        Dropout    & -           & -           & -              & -           & [0.3, 0.7]   & -            \\
         \bottomrule
     \end{tabular}
     \caption{Rango de hiperpar\'ametros optimizados. $^{*}$LR refiere a "learning rate". $^{**}$T-O refiere a "trade-off".}
@@ -290,7 +287,7 @@ Se implement\'o una disminuci\'on del learning rate en cada iteraci\'on de cada 
 \ref{eq:learning-rate}. Se mantuvieron constantes los valores de $\gamma=0.001$ y $\theta = 0.25$.
 
 \begin{equation}
-    \eta_t = \eta_0 * (1 + \gamma * t)^{-\theta}
+    \eta(t) = \eta_0 * (1 + \gamma * t)^{-\theta}
     \label{eq:learning-rate}
 \end{equation}
 
@@ -300,7 +297,8 @@ Los modelos optimizados ser\'an evaluados con distintas m\'etricas en tiempo de 
 sub-secciones del cap\'itulo. Las mismas pretenden evaluar qu\'e tan buenos son los modelos respecto a la tarea de
 clasificaci\'on y qu\'e capacidad de adaptaci\'on de dominio poseen.
 
-\subsection{Accuracy}
+\subsection{Métricas de clasificación}
+\subsubsection{Accuracy}
 
 La m\'etrica de {\it accuracy} permite identificar qu\'e tan cerca o lejos un conjunto de observaciones se encuentra
 respecto a los valores reales. Es el ratio de predicciones correctas sobre las totales.
@@ -317,7 +315,7 @@ Donde:
     \item $1(x)$: es la funci\'on indicador.
 \end{itemize}
 
-\subsection{$F_{1}$}
+\subsubsection{$F_{1}$}
 
 La m\'etrica $F_{1}$ es una media arm\'onica de otras dos: {\it precisi\'on} y {\it recall}. De manera simplificada, la
 primera muestra la capacidad del modelo de no etiquetar como positivo una obsevaci\'on que es negativa y la segunda
@@ -359,7 +357,7 @@ ambas poseen el mismo peso.
 
 El rango de valores es de $[0, 1]$, donde 1 corresponde a un clasificador que funciona sin errores.
 
-\subsection{Intersecci\'on sobre uni\'on}
+\subsubsection{Intersecci\'on sobre uni\'on}
 
 Otra forma de medir el clasificador es mediante la {\it intersecci\'on sobre uni\'on} (IoU por sus siglas en ingl\'es).
 Consta de calcular la cantidad de d\'igitos \'unicos predichos por sobre la cantidad de d\'igitos \'unicos reales. Por
@@ -380,7 +378,8 @@ $j$-\'esimo del voto predicho por el modelo $\hat{y}$ de longitud $m$, entonces 
     IoU(y, \hat{y}) = \frac{\lvert \{y_{i}\} \bigcap \{\hat{y_{j}}\}\rvert}{\lvert \{y_{i}\} \bigcup \{\hat{y_{j}}\}\rvert} \forall i \in \{1, \cdots, n\}, \forall j \in \{1, \cdots, m\}
 \end{equation}
 
-\subsection{Distancia $\mathcal{A}$}
+\subsection{Métricas de adaptación}
+\subsubsection{Distancia $\mathcal{A}$}
 
 La distancia $\mathcal{A}$ mide la similaridad entre dos distribuciones. Puede ser utilizada para analizar los espacios
 latentes de clasificadores en problemas de adaptaci\'on de dominio \parencite{ben2006analysis}. La m\'etrica viene dada por:
@@ -460,7 +459,7 @@ dominios son similares entre si, por lo que se espera que $dist_\mathcal{A} \app
 Durante el proyecto se utiliza como clasificador una regresi\'on log\'istica a fin de calcular la distancia
 $\mathcal{A}$.
 
-\subsection{Discrepancia M\'axima Promedio}
+\subsubsection{Discrepancia M\'axima Promedio}
 
 \cite{gretton2012kernel} introduce un test estad\'istico que permite identificar si una distribuci\'on es distinta a
 otra llamado Discrepancia M\'axima Promedio (MMD por sus siglas en ingl\'es). El test permite analizar qu\'e tan
