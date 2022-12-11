@@ -8,11 +8,139 @@ primera sección se detalla una revisión de trabajos relacionados. En ... % TOD
 \lipsum[1]
 
 \section{Redes Neuronales}
-\lipsum[1]
+\cite{mcculloch1943logical} estudiaron y propusieron un modelo del comportamiento de la
+neurona biológica. La neurona artificial que propusieron fue un sistema binario que consiste en que si la suma de entradas excitatorias supera un umbral de activación, y además no
+hay una entrada inhibitoria, la neurona se activa y emite una respuesta; en caso contrario, la neurona no se activa.
+
+En \citeyear{hebb1949organization} se propone que estas redes podían aprender. Este hecho estaba relacionado con la
+conductividad de la sinapsis. Así, la repetida activación de una neurona por otra, a través de una sinapsis
+determinada, aumenta su conductividad y la hace más propensa a ser activada sucesivamente, induciendo a la formación de
+un circuito de neuronas estrechamente conectadas entre sí \parencite{hebb1949organization}.
+
+Años más tarde, \cite{rosenblatt1958perceptron} propone un modelo de neurona llamadas perceptrones basadas en el modelo
+de McCulloch-Pitts. El mayor logro de Rosenblatt fue que pudo demostrar que, flexibilizando algunas de las reglas de la
+McCulloch-Pitts (la inhibición absoluta, la contribución igual de todas las entradas, etc), las neuronas artificiales
+podían aprender de los datos. Y lo que es más importante, ideó un algoritmo de aprendizaje supervisado para este modelo
+de neurona que permitía averiguar los pesos correctos directamente a partir de los datos de entrenamiento. La sencillez
+y eficacia de este algoritmo de aprendizaje para problemas linealmente separables son algunas de las razones clave por
+las que se hizo tan popular a finales de los años cincuenta y principios de los sesenta. Sin embargo, esta popularidad
+hizo que Rosenblatt exagerara la capacidad de aprendizaje de su perceptrón, dando lugar a expectativas poco realistas
+en la comunidad científica y/o también difundidas por los medios de comunicación.
+
+En \citeyear{minsky1969perceptrons}, se publica un libro en el cual se expone la naturaleza lineal de los perceptrones
+y de sus limitadas capacidades \parencite{minsky1969perceptrons}. A raíz de este evento es que se inicia el denominado "invierno de la inteligencia
+artificial" de los 1980s, donde cesó el interés de la comunidad por los modelos conexionistas.
+
+La contribución más importante en la reemergencia del conexionismo en los años ochenta fue la técnica {\it
+backpropagation} desarrollada por \cite{rumelhart1986learning}. En realidad, esta técnica fue desarrollada inicialmente
+por \cite{werbos1974beyond} y después redescubierta por varios grupos de investigadores \parencite{lecun1985learning, rumelhart1986learning}. Este algoritmo abrió las puertas al uso práctico de las redes
+neuronales en un sinfín de campos. Las más "simples" en la práctica son las llamadas redes multicapa alimentadas hacia
+delante ({\it feed forward}) entrenadas con {\it backpropagation}, también referidas como perceptrones mutlicapa {\it
+        MLP}.
+
+En \citeyear{funahashi1989approximate}, se demuestra teóricamente que una red de este tipo, con una capa oculta, el
+suficiente número de nodos y entrenada con {\it backpropagation}, puede aproximar cualquier función continua con
+cualquier grado de precisión \parencite{funahashi1989approximate}.
 
 \subsection{Redes densas}
-\lipsum[1]
-% TODO: hablar de pre-train y fine-tuning
+Como se detalló anteriormente, los perceptrones son modelos lineales incapaces de resolver problemas que no sean
+linealmente separables por un hiperplano. Una forma de solventar esta situación es encadenar un conjunto de
+perceptrones para crear redes neuronales densas (ver figura \ref{fig:nn}). La predicción $\hat{y}$ de una red es una
+generalización directa de la predicción de un perceptrón. Primero se calculan las activaciones $a_i^1$ de los nodos de
+la capa oculta $h_i^1$ en función de las entradas $x_i$ y los pesos de entrada $w_i^1$. Luego, se calculan las
+activaciones $a_i^2$ de la unidad de salida $h_1^2$ dadas las activaciones de la capa anterior y los pesos $w_i^2$.
+
+\begin{figure}[H]
+    \centering
+
+    \tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+    \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+        %uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+        %Shape: Circle [id:dp4714623984365989] 
+        \draw   (0,12.25) .. controls (0,5.48) and (5.48,0) .. (12.25,0) .. controls (19.02,0) and (24.5,5.48) .. (24.5,12.25) .. controls (24.5,19.02) and (19.02,24.5) .. (12.25,24.5) .. controls (5.48,24.5) and (0,19.02) .. (0,12.25) -- cycle ;
+
+        %Shape: Circle [id:dp25434586654127544] 
+        \draw   (0,52.25) .. controls (0,45.48) and (5.48,40) .. (12.25,40) .. controls (19.02,40) and (24.5,45.48) .. (24.5,52.25) .. controls (24.5,59.02) and (19.02,64.5) .. (12.25,64.5) .. controls (5.48,64.5) and (0,59.02) .. (0,52.25) -- cycle ;
+
+        %Shape: Circle [id:dp9726011815419306] 
+        \draw   (0,92.25) .. controls (0,85.48) and (5.48,80) .. (12.25,80) .. controls (19.02,80) and (24.5,85.48) .. (24.5,92.25) .. controls (24.5,99.02) and (19.02,104.5) .. (12.25,104.5) .. controls (5.48,104.5) and (0,99.02) .. (0,92.25) -- cycle ;
+
+        %Shape: Circle [id:dp2291699685520565] 
+        \draw   (0,132.25) .. controls (0,125.48) and (5.48,120) .. (12.25,120) .. controls (19.02,120) and (24.5,125.48) .. (24.5,132.25) .. controls (24.5,139.02) and (19.02,144.5) .. (12.25,144.5) .. controls (5.48,144.5) and (0,139.02) .. (0,132.25) -- cycle ;
+
+        %Shape: Circle [id:dp14614955000159813] 
+        \draw   (70,52.25) .. controls (70,45.48) and (75.48,40) .. (82.25,40) .. controls (89.02,40) and (94.5,45.48) .. (94.5,52.25) .. controls (94.5,59.02) and (89.02,64.5) .. (82.25,64.5) .. controls (75.48,64.5) and (70,59.02) .. (70,52.25) -- cycle ;
+
+        %Shape: Circle [id:dp8388103519245029] 
+        \draw   (70,92.25) .. controls (70,85.48) and (75.48,80) .. (82.25,80) .. controls (89.02,80) and (94.5,85.48) .. (94.5,92.25) .. controls (94.5,99.02) and (89.02,104.5) .. (82.25,104.5) .. controls (75.48,104.5) and (70,99.02) .. (70,92.25) -- cycle ;
+
+        %Shape: Circle [id:dp7556907650297429] 
+        \draw   (140,72.25) .. controls (140,65.48) and (145.48,60) .. (152.25,60) .. controls (159.02,60) and (164.5,65.48) .. (164.5,72.25) .. controls (164.5,79.02) and (159.02,84.5) .. (152.25,84.5) .. controls (145.48,84.5) and (140,79.02) .. (140,72.25) -- cycle ;
+
+        %Straight Lines [id:da8929189573178169] 
+        \draw    (24.5,12.25) -- (70,52.25) ;
+        %Straight Lines [id:da5905797689118961] 
+        \draw    (24.5,52.25) -- (70,52.25) ;
+        %Straight Lines [id:da8059054934899097] 
+        \draw    (24.5,92.25) -- (70,52.25) ;
+        %Straight Lines [id:da18480058250239084] 
+        \draw    (24.5,132.25) -- (70,52.25) ;
+        %Straight Lines [id:da9649216528295181] 
+        \draw    (24.5,12.25) -- (70,92.25) ;
+        %Straight Lines [id:da2593081377394073] 
+        \draw    (24.5,52.25) -- (70,92.25) ;
+        %Straight Lines [id:da23945860731626256] 
+        \draw    (24.5,92.25) -- (70,92.25) ;
+        %Straight Lines [id:da45284543126132815] 
+        \draw    (24.5,132.25) -- (70,92.25) ;
+        %Straight Lines [id:da8439890580329283] 
+        \draw    (94.5,52.25) -- (140,72.25) ;
+        %Straight Lines [id:da026411209066727226] 
+        \draw    (94.5,92.25) -- (140,72.25) ;
+        %Straight Lines [id:da46511217961352624] 
+        \draw    (164.5,72.25) -- (187.75,72.25) ;
+
+        % Text Node
+        \draw (4.5,5) node [anchor=north west][inner sep=0.75pt]    {$x_{1}$};
+        % Text Node
+        \draw (4.5,45) node [anchor=north west][inner sep=0.75pt]    {$x_{2}$};
+        % Text Node
+        \draw (4.5,85) node [anchor=north west][inner sep=0.75pt]    {$x_{3}$};
+        % Text Node
+        \draw (4.5,125) node [anchor=north west][inner sep=0.75pt]    {$x_{4}$};
+        % Text Node
+        \draw (72,42.4) node [anchor=north west][inner sep=0.75pt]    {$h_{1}^{1}$};
+        % Text Node
+        \draw (72,82.4) node [anchor=north west][inner sep=0.75pt]    {$h_{2}^{1}$};
+        % Text Node
+        \draw (142,62.4) node [anchor=north west][inner sep=0.75pt]    {$h_{1}^{2}$};
+        % Text Node
+        \draw (190,63.4) node [anchor=north west][inner sep=0.75pt]    {$\hat{y}$};
+
+    \end{tikzpicture}
+    \caption{Red neuronal con una capa de entrada de 4 características, una capa oculta de 2 neuronas y una capa de salida con 1 neurona.}
+    \label{fig:nn}
+\end{figure}
+
+La única diferencia entre este cálculo y el del perceptrón es que las unidades ocultas calculan una función no lineal
+de sus entradas. Generalmente es llamada como {\it función de activación} o {\it función de enlace}. Formalmente, si
+$w_{i,d}$ son los pesos que conectan las entradas $d$ a la unidad oculta $i$, entonces la activación de la unidad $i$
+se calcula como:
+
+\begin{align}
+    h_i = f(\mathbf{w}_i \cdot \mathbf{x} + b_i)
+\end{align}
+
+Donde $f$ es la función de activación, $\mathbf{w}_i$ es el vector de pesos que alimentan el nodo $i$ y $b_i$ es el
+término de {\it bias}. Existen múltiples funciones de activación, las más comunes son:
+
+\begin{itemize}
+    \item Tangente hiperbólica: $f(x) = tanh(x)$
+    \item Función sigmoidea: $f(x) = \frac{1}{1+exp(-x)}$
+    \item ReLU: $f(x) = max(0, x)$
+\end{itemize}
 
 \subsection{Convolucionales}
 \lipsum[1]
@@ -25,6 +153,10 @@ primera sección se detalla una revisión de trabajos relacionados. En ... % TOD
 
 \subsubsection{ResNet}
 \lipsum[1]
+
+\section{Aprendizaje por transferencia}
+\lipsum[1]
+% TODO: hablar de pre-train y fine-tuning
 
 \section{Adaptaci\'on de Dominio}
 El {\it pre-entrenamiento} y el {\it fine-tuning} han mejorado considerablemente el estado del arte para diversos
