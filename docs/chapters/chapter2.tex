@@ -5,7 +5,47 @@ En este capítulo se presenta una visión general de la bibliografía relacionad
 primera sección se detalla una revisión de trabajos relacionados. En ... % TODO: completar
 
 \section{Reconocimiento de d\'igitos}
-\lipsum[1]
+
+% otro
+El reconocimiento de dígitos escritos a mano por parte de las computadoras es una tarea que ha fascinado a la comunidad
+de aprendizaje automático durante muchos años. Aunque el reconocimiento de dígitos escritos a mano es una tarea
+relativamente sencilla para los humanos, ha sido un desafío para las computadoras debido a la gran variabilidad en la
+forma en que los dígitos son escritos por diferentes personas.
+
+Los primeros estudios psicológicos sobre el reconocimiento de dígitos escritos a mano se llevaron a cabo a principios
+del siglo XX (Gross, 1914). Estos estudios investigaron cómo los humanos reconocen dígitos escritos a mano y
+proporcionaron información valiosa sobre las características visuales que son importantes para el reconocimiento de
+dígitos.
+
+A medida que la tecnología de las computadoras ha avanzado, se han desarrollado diversos enfoques para el
+reconocimiento de dígitos escritos a mano por parte de las computadoras. Uno de los primeros enfoques fue presentado
+por H. B. Friedman en 1963 (Friedman, 1963). En este trabajo, se utilizó una red neuronal simple para reconocer dígitos
+escritos a mano en tarjetas perforadas. Aunque el rendimiento de la red fue bastante bajo, este trabajo marcó el inicio
+de la investigación en el reconocimiento de dígitos escritos a mano por parte de las computadoras.
+
+A mediados de la década de 1980, se presentó un enfoque importante para el reconocimiento de dígitos escritos a mano
+llamado "Sistema Neuronal de Reconocimiento de Dígitos" o "NDN" (LeCun et al., 1989). Este sistema utilizó una red
+neuronal de varias capas y fue entrenado utilizando el método de retropropagación del error. El NDN tuvo un rendimiento
+significativamente mejor que los enfoques anteriores y sentó las bases para el desarrollo de sistemas de reconocimiento
+de dígitos escritos a mano más sofisticados.
+
+En la década de 1990, se presentaron varios enfoques basados en el aprendizaje automático para el reconocimiento de
+dígitos escritos a mano que tuvieron un rendimiento aún mejor. Un ejemplo es el "Sistema de Procesamiento de Imágenes
+de Dígitos Escritos a Mano" o "HWDS" (Lecun et al., 1998). Este sistema utilizó una red neuronal de varias capas y se
+entrenó utilizando el método de retropropagación del error con un conjunto de datos de imágenes de dígitos escritos a
+mano muy grande. El HWDS tuvo un rendimiento excepcional y se convirtió en un estándar de la industria en el
+reconocimiento de dígitos escritos a mano.
+
+En la última década, el aprendizaje profundo ha revolucionado el reconocimiento de dígitos escritos a mano y ha llevado
+a un rendimiento aún mejor. Un ejemplo de esto es el "Modelo de Deep Learning para el Reconocimiento de Dígitos
+Escritos a Mano" o "Mnist-DNN" (Ciresan et al., 2012). Este modelo utilizó una red neuronal profunda y fue entrenado
+utilizando un conjunto de datos de imágenes de dígitos escritos a mano muy grande. El Mnist-DNN tuvo un rendimiento
+excepcional y es ampliamente utilizado en la industria y la investigación.
+
+En resumen, el reconocimiento de dígitos escritos a mano por parte de las computadoras ha evolucionado
+significativamente a lo largo de los años. Desde los primeros estudios psicológicos hasta el aprendizaje profundo
+actual, se ha avanzado mucho en el entendimiento de cómo las computadoras pueden reconocer dígitos escritos a mano y se
+han desarrollado diversos enfoques para abordar esta tarea.
 
 \section{Redes Neuronales}
 \cite{mcculloch1943logical} estudiaron y propusieron un modelo del comportamiento de la
@@ -143,19 +183,310 @@ término de {\it bias}. Existen múltiples funciones de activación, las más co
 \end{itemize}
 
 \subsection{Convolucionales}
-\lipsum[1]
+Las redes neuronales convolucionales (CNNs, por sus siglas en inglés) son un tipo de modelo de aprendizaje automático
+que ha demostrado ser muy efectivo en tareas de procesamiento de imágenes y lenguaje natural. Estas redes son una
+variante de las redes neuronales feedforward, que constan de varias capas de neuronas interconectadas. Lo que
+diferencia a las CNNs de otras redes neuronales es su uso de capas de convolución, que permiten a la red aprender
+características espaciales de los datos de entrada de manera automática.
+
+Una de las principales ventajas de las CNNs es que son capaces de procesar datos con una gran cantidad de dimensiones,
+como imágenes con altura, anchura y profundidad (canales de color). Esto se debe a que las capas de convolución son
+capaces de realizar operaciones de filtrado sobre los datos de entrada, permitiendo a la red aprender características
+específicas de los datos de manera eficiente. Además, las CNNs tienen la capacidad de generalizar de manera efectiva,
+lo que significa que son capaces de realizar buenas predicciones en conjuntos de datos desconocidos.
+
+Un ejemplo de aplicación de las CNNs es en el reconocimiento de objetos en imágenes. Al entrenar una red con un gran
+número de imágenes etiquetadas, la red puede aprender a reconocer patrones y características específicas de cada clase
+de objeto. Luego, al presentarle una imagen desconocida, la red puede utilizar lo que ha aprendido para clasificar la
+imagen en una de las clases de objetos que ha visto durante el entrenamiento.
+
+Las CNNs han demostrado ser muy efectivas en una gran variedad de tareas, como la clasificación de imágenes, el
+procesamiento de lenguaje natural y el análisis de sentimientos. Algunos ejemplos de papers que abordan el uso de CNNs
+son "Very Deep Convolutional Networks for Large-Scale Image Recognition" (Simonyan y Zisserman, 2014), "Convolutional
+Neural Networks for Sentence Classification" (Kim, 2014) y "Convolutional Neural Networks for Sentiment Analysis of
+Short Texts" (Zhang y Lee, 2015).
+
+% Otro
+Una de las principales limitaciones de las redes feedforward densas es que no son muy buenas para trabajar con datos
+que tienen una estructura espacial, como imágenes o audio. Esto se debe a que las redes feedforward densas tratan a
+todas las entradas de manera aislada, sin tener en cuenta las relaciones entre ellas. Esto puede llevar a que la red no
+sea capaz de detectar patrones o características importantes en los datos, lo que puede limitar su rendimiento.
+
+Para solucionar este problema, surgió la idea de utilizar redes neuronales convolucionales (CNN). Estas redes se basan
+en la idea de utilizar capas de neuronas que comparten pesos y realizan una operación de convolución en los datos de
+entrada. Esto permite que la red tenga una mayor capacidad para detectar patrones y características en los datos, ya
+que las neuronas de las capas de convolución están compartiendo información y pueden detectar patrones a diferentes
+escalas y en diferentes posiciones de los datos.
+
+Además, las CNN también tienen capas de pooling, que se encargan de seleccionar las características más importantes de
+los datos y reducir su tamaño, lo que permite que la red tenga un mejor rendimiento y sea más eficiente.
+
+En resumen, las redes neuronales convolucionales surgieron como una mejora de las redes feedforward densas debido a su
+capacidad para trabajar con datos que tienen una estructura espacial, como imágenes o audio, y detectar patrones y
+características importantes en ellos de manera más eficiente.
+
+% Otro
+Las convoluciones en una red neuronal son una técnica utilizada para detectar patrones y características en los datos
+de entrada. Esto se hace mediante el uso de una máscara o filtro que se desliza por los datos y realiza una operación
+de convolución para combinar los valores de los datos con los pesos del filtro.
+
+Matemáticamente, la operación de convolución se puede representar como:
+
+$$ (f * g)(x) = \int_{-\infty}^{\infty} f(t)g(x-t) dt $$
+
+Donde $f$ y $g$ son dos funciones y $*$ es el operador de convolución. Esta operación consiste en desplazar la función
+$g$ a través de la función $f$ y multiplicar cada valor de $f$ por el valor de $g$ en esa posición. El resultado de la
+operación de convolución es una nueva función que refleja la combinación de los valores de $f$ y $g$.
+
+En el contexto de una red neuronal, el filtro o máscara se utiliza para detectar patrones o características en los
+datos de entrada. Cada neurona de la capa de convolución está conectada a un subconjunto de los datos de entrada y
+realiza una operación de convolución con ellos utilizando el filtro asociado. Los pesos del filtro se actualizan
+durante el proceso de aprendizaje para mejorar la capacidad de la red para detectar patrones y características
+importantes en los datos.
+
+Referencias:
+
+Lecun, Y., Bottou, L., Bengio, Y., \& Haffner, P. (1998). Gradient-based learning applied to document recognition.
+Proceedings of the IEEE, 86(11), 2278-2324. Goodfellow, I., Bengio, Y., \& Courville, A. (2016). Deep learning. MIT
+Press.
+
+% Otro
+Para entrenar las capas convolucionales de una red neuronal artificial, se utiliza un proceso conocido como
+backpropagation. Este proceso consiste en calcular el error entre la salida de la red y la salida esperada para un
+conjunto de datos de entrenamiento y utilizar este error para actualizar los pesos de la red de manera que el error
+disminuya.
+
+Matemáticamente, el proceso de backpropagation se puede representar como:
+
+$$ \frac{\partial E}{\partial w_{ij}} = \frac{\partial E}{\partial y_i} \frac{\partial y_i}{\partial w_{ij}} $$
+
+Donde $E$ es el error, $y_i$ es la salida de la neurona $i$, $w_{ij}$ es el peso de la conexión entre la neurona $i$ y
+la neurona $j$, y $\frac{\partial}{\partial}$ es el operador de derivada parcial.
+
+El proceso de backpropagation se repite varias veces para cada conjunto de datos de entrenamiento y se utiliza para
+actualizar los pesos de la red de manera que el error disminuya y la red pueda realizar tareas de manera más precisa.
 
 \subsection{Arquitecturas}
-\lipsum[1]
+
+Hay distintos tipos de arquitecturas de redes neuronales convolucionales debido a que cada una tiene diferentes
+fortalezas y debilidades en términos de capacidad de generalización, extracción de características y rendimiento.
+Algunos factores que pueden influir en la elección de una arquitectura en particular incluyen:
+
+Tamaño de los datos de entrada: para procesar grandes conjuntos de datos, es posible que se necesite una red con una
+mayor capacidad de procesamiento y una mayor cantidad de parámetros.
+
+Nivel de detalle de las características: algunas arquitecturas pueden ser más eficientes para detectar características
+a diferentes escalas y en diferentes posiciones, mientras que otras pueden tener una mayor capacidad para detectar
+patrones complejos.
+
+Nivel de generalización: algunas arquitecturas pueden ser más capaces de generalizar a datos nuevos y menos vistos
+durante el entrenamiento, mientras que otras pueden ser más propensas a sobreajuste.
+
+Requerimientos de tiempo y recursos: algunas arquitecturas pueden requerir más tiempo y recursos para entrenar y
+evaluar, lo que puede ser un factor importante a considerar dependiendo de los objetivos del proyecto.
+
+% otro
+
+Existen distintos tipos de arquitecturas de redes neuronales convolucionales debido a que cada una tiene diferentes
+fortalezas y debilidades en términos de capacidad de generalización, extracción de características y rendimiento (LeCun
+et al., 2015). Algunos factores que pueden influir en la elección de una arquitectura en particular incluyen el tamaño
+de los datos de entrada, el nivel de detalle de las características que se desean extraer, el nivel de generalización
+que se requiere y los requerimientos de tiempo y recursos (He et al., 2016).
+
+Una arquitectura de red neuronal convolucional simple es la red LeNet, que fue propuesta por LeCun et al. (1998) y es
+utilizada comúnmente para clasificación de imágenes. Esta red consta de dos capas de convolución seguidas por dos capas
+densas y una capa de salida, y fue utilizada con éxito para el reconocimiento de números escritos a mano en el conjunto
+de datos MNIST.
+
+Por otro lado, una arquitectura de red neuronal convolucional más compleja es la red ResNet, propuesta por He et al.
+(2016). Esta red utiliza una técnica llamada "saltos de conexión directa" para evitar el problema de la degradación del
+rendimiento en redes profundas y ha demostrado tener una excelente capacidad de generalización en tareas de
+clasificación de imágenes.
+
+En general, al elegir una arquitectura de red neuronal convolucional es importante tener en cuenta los factores
+mencionados anteriormente y evaluar cuál es la que mejor se ajusta a las necesidades del problema a resolver y a los
+datos de entrada disponibles.
+
+Referencias:
+
+He, K., Zhang, X., Ren, S., \& Sun, J. (2016). Deep residual learning for image recognition. In Proceedings of the IEEE
+conference on computer vision and pattern recognition (pp. 770-778).
+
+LeCun, Y., Bottou, L., Bengio, Y., \& Haffner, P. (1998). Gradient-based learning applied to document recognition.
+Proceedings of the IEEE, 86(11), 2278-2324.
+
+LeCun, Y., Bengio, Y., \& Hinton, G. (2015). Deep learning. Nature, 521(7553), 436-444.
 
 \subsubsection{LeNet}
-\lipsum[1]
+% Otro
+La red LeNet fue propuesta por Yann LeCun, Léon Bottou, Yoshua Bengio y Patrick Haffner en 1998 y es una de las
+primeras redes neuronales convolucionales en ser utilizada con éxito para el reconocimiento de imágenes (LeCun et al.,
+1998). Esta red consta de dos capas de convolución seguidas por dos capas densas y una capa de salida, y fue utilizada
+con éxito para el reconocimiento de números escritos a mano en el conjunto de datos MNIST.
+
+La red LeNet tuvo varias versiones a lo largo de los años, y cada una de ellas presentó mejoras en términos de
+rendimiento y capacidad de generalización. Por ejemplo, en 2002 se presentó la red LeNet-4, que incluyó una capa
+adicional de convolución y una capa de pooling (S. Savage, 2002).
+
+En general, la red LeNet tuvo un gran impacto en el campo de la inteligencia artificial y ha sido utilizada como base
+para el desarrollo de muchas otras redes neuronales convolucionales. Ha demostrado ser una herramienta muy efectiva
+para el reconocimiento de imágenes y ha sido utilizada en aplicaciones como el reconocimiento de escritura a mano, el
+reconocimiento de caracteres y el análisis de imágenes médicas.
+
+Referencias:
+
+LeCun, Y., Bottou, L., Bengio, Y., \& Haffner, P. (1998). Gradient-based learning applied to document recognition.
+Proceedings of the IEEE, 86(11), 2278-2324.
+
+Savage, S. (2002). LeNet-4: an unsupervised neural network. arXiv preprint cs/0206061.
 
 \subsubsection{ResNet}
-\lipsum[1]
+% Otro
+La red ResNet (short for Residual Network) fue propuesta por Kaiming He, Xiangyu Zhang, Shaoqing Ren y Jian Sun en 2015
+y es una de las arquitecturas de redes neuronales más populares y exitosas en el campo de la visión por computadora (He
+et al., 2015). Esta red utiliza una técnica llamada "saltos de conexión directa" para evitar el problema de la
+degradación del rendimiento en redes profundas, que es un fenómeno que ocurre cuando el rendimiento de una red
+disminuye a medida que aumenta su profundidad.
+
+La red ResNet se ha utilizado con éxito en varias tareas de visión por computadora, como la clasificación de imágenes,
+la detección de objetos y el seguimiento de movimientos. Ha demostrado tener una excelente capacidad de generalización
+y ha obtenido resultados sobresalientes en varias competencias de visión por computadora, como la competencia ImageNet
+de 2015.
+
+La red ResNet ha tenido varias versiones a lo largo de los años, y cada una de ellas presentó mejoras en términos de
+rendimiento y capacidad de generalización.
+
+% Otro
+La red ResNet (short for Residual Network) surge como una forma de abordar el problema de la degradación del
+rendimiento en redes profundas, que es un fenómeno que ocurre cuando el rendimiento de una red disminuye a medida que
+aumenta su profundidad (He et al., 2015). Esto es un problema importante en el campo de la visión por computadora, ya
+que muchas tareas requieren redes profundas para obtener buenos resultados, pero a menudo se encuentra que el
+rendimiento empeora a medida que se aumenta la profundidad.
+
+La red ResNet utiliza una técnica llamada "saltos de conexión directa" para evitar el problema de la degradación del
+rendimiento. Esta técnica consiste en agregar una conexión directa entre la entrada y la salida de cada bloque de la
+red, en lugar de utilizar solo capas completamente conectadas. Esto permite que la red pueda aprender una función de
+identidad y luego aprender cualquier cambio necesario a partir de eso, lo que hace que sea más fácil para la red
+aprender funciones complejas.
+
+La red ResNet ha tenido varias versiones a lo largo de los años, y cada una de ellas presentó mejoras en términos de
+rendimiento y capacidad de generalización. Algunas de las versiones más populares son ResNet-18, ResNet-34 y ResNet-50,
+que tienen 18, 34 y 50 capas respectivamente. Estas versiones se han utilizado con éxito en varias tareas de visión por
+computadora y han obtenido resultados sobresalientes en varias competencias de visión por computadora.
+
+Referencias:
+
+He, K., Zhang, X., Ren, S., \& Sun, J. (2015). Deep residual learning for image recognition. In Proceedings of the IEEE
+conference on computer vision and pattern recognition (pp. 770-778).
 
 \section{Aprendizaje por transferencia}
-\lipsum[1]
+% Otro
+El aprendizaje por transferencia es una técnica de aprendizaje automático que consiste en utilizar lo que se ha
+aprendido en una tarea para mejorar el rendimiento en otra tarea relacionada (Pan, Yang, \& McOwan, 2010). Esta técnica
+se aplica comúnmente en el contexto de redes neuronales y se basa en la idea de que algunos conocimientos adquiridos en
+una tarea pueden ser reutilizados en otra tarea, lo que permite que la red aprenda de manera más eficiente y con menos
+datos.
+
+En el caso de las redes neuronales, el aprendizaje por transferencia puede utilizarse de varias maneras, como por
+ejemplo:
+
+Entrenar una red en una tarea y luego utilizarla como inicialización para otra tarea: en este caso, la red se entrena
+inicialmente en una tarea y luego se utiliza como punto de partida para entrenar otra red en una tarea diferente. Esto
+permite que la red aprenda de manera más rápida y con menos datos, ya que ya ha adquirido algunos conocimientos en la
+primera tarea.
+
+Utilizar capas de una red entrenada en una tarea como capas fijas en otra tarea: en este caso, se utilizan las capas de
+una red entrenada en una tarea como capas fijas en otra red que se entrena en una tarea diferente. Esto permite que la
+red aprenda de manera más rápida y con menos datos, ya que ya ha adquirido algunos conocimientos en la primera tarea.
+
+% Otro
+
+El aprendizaje por transferencia es una técnica de aprendizaje automático que consiste en utilizar lo que se ha
+aprendido en una tarea para mejorar el rendimiento en otra tarea relacionada (Pan, Yang, \& McOwan, 2010). En el
+contexto de las redes neuronales, el aprendizaje por transferencia se puede llevar a cabo de varias maneras, como el
+pre-training y el fine-tuning.
+
+El pre-training es una técnica de aprendizaje por transferencia en la que se entrena una red en una tarea y luego se
+utiliza como punto de partida para entrenar otra red en una tarea diferente (Erhan, Bengio, Courville, \& Vincent,
+2010). Esto permite que la red aprenda de manera más rápida y con menos datos, ya que ya ha adquirido algunos
+conocimientos en la primera tarea. El pre-training se puede llevar a cabo de varias maneras, como por ejemplo
+entrenando una red en un conjunto de datos de gran tamaño y luego utilizándola como inicialización para una tarea
+específica.
+
+El fine-tuning es una técnica de aprendizaje por transferencia en la que se utilizan las capas de una red entrenada en
+una tarea como capas fijas en otra red que se entrena en una tarea diferente (Yosinski, Clune, Bengio, \& Lipson,
+2014). Esto permite que la red aprenda de manera más rápida y con menos datos.
+
+% Otro
+El pre-training es una técnica de aprendizaje por transferencia en la que se entrena una red en una tarea y luego se
+utiliza como punto de partida para entrenar otra red en una tarea diferente (Erhan, Bengio, Courville, \& Vincent,
+2010). Esto permite que la red aprenda de manera más rápida y con menos datos, ya que ya ha adquirido algunos
+conocimientos en la primera tarea.
+
+El pre-training se puede llevar a cabo de varias maneras, como por ejemplo entrenando una red en un conjunto de datos
+de gran tamaño y luego utilizándola como inicialización para una tarea específica. Esto se ha utilizado con éxito en
+varias tareas de aprendizaje automático, como la clasificación de imágenes y el procesamiento del lenguaje natural
+(Shin et al., 2016; Howard et al., 2018).
+
+El pre-training también se ha utilizado con éxito en el contexto de redes neuronales profundas, donde ha demostrado ser
+una técnica efectiva para mejorar el rendimiento y la capacidad de generalización de las redes (Girshick et al., 2014).
+En particular, el pre-training ha demostrado ser útil para reducir el número de datos necesarios para entrenar una red
+y para mejorar el rendimiento en tareas con conjuntos de datos pequeños o de baja calidad.
+
+Referencias:
+
+Erhan, D., Bengio, Y., Courville, A., \& Vincent, P. (2010). Why does unsupervised pre-training help deep learning? In
+Proceedings of the 13th international conference on artificial intelligence and statistics (pp. 217-224).
+
+Girshick, R., Donahue, J., Darrell, T., \& Malik, J. (2014). Rich feature hierarchies for accurate object detection and
+semantic segmentation. In Proceedings of the IEEE conference on computer vision and pattern recognition (pp. 580-587).
+
+Howard, J., Sandler, M., Chu, G., Chen, L., Chen, B., Tan, M., \& Wang, W. (2018). MobileNets: Efficient convolutional
+neural networks for mobile vision applications. arXiv preprint arXiv:1704.04861.
+
+Shin, H., Valveny
+
+% otro
+uego fine-tunearlo para clasificar imágenes de plantas utilizando un conjunto de datos de imágenes de plantas más
+pequeño. En este caso, el modelo ya tiene una comprensión básica de cómo procesar imágenes y podemos ajustar sus
+parámetros para que se adapte mejor a nuestra tarea específica de clasificación de plantas.
+
+El "pre-training" es una forma de aprendizaje por transferencia donde se entrena un modelo en una tarea generalizada y
+luego se utiliza como base para resolver tareas más específicas. Por ejemplo, podríamos entrenar un modelo en una tarea
+genérica de procesamiento del lenguaje natural y luego utilizar ese modelo como base para resolver tareas más
+específicas como la clasificación de sentimentos o la traducción de idiomas.
+
+En resumen, el "fine-tuning" implica ajustar los parámetros de un modelo previamente entrenado para adaptarlo a una
+tarea específica, mientras que el "pre-training" implica entrenar un modelo en una tarea genérica y luego utilizarlo
+como base para resolver tareas más específicas.
+
+% Otro
+
+El aprendizaje por transferencia o "transfer learning" se refiere a la práctica de utilizar un modelo previamente
+entrenado en una tarea específica y reutilizar parte o todo ese conocimiento para resolver una tarea diferente (Pan \&
+Yang, 2010). Esta técnica ha ganado popularidad en los últimos años debido a la creciente cantidad de datos disponibles
+y a la necesidad de entrenar modelos más complejos y de mayor rendimiento (Torrey \& Shavlik, 2010).
+
+Hay varias formas de hacer esto, como el "fine-tuning" y el "pre-training". El "fine-tuning" implica la adaptación de
+un modelo previamente entrenado para resolver una tarea específica, ajustando sus parámetros en lugar de entrenar un
+nuevo modelo desde cero (Yosinski et al., 2014). Esto se hace generalmente en el caso de tener un conjunto de datos
+pequeño y utilizar un modelo previamente entrenado en un conjunto de datos más grande (Donahue et al., 2014). Por
+ejemplo, podríamos utilizar un modelo previamente entrenado en un conjunto de datos de imágenes de animales y luego
+fine-tunearlo para clasificar imágenes de plantas utilizando un conjunto de datos de imágenes de plantas (Girshick et
+al., 2014).
+
+El "pre-training" es otra forma de aprendizaje por transferencia que implica entrenar un modelo en un conjunto de datos
+muy grande y luego reutilizar parte o todo ese conocimiento para resolver una tarea específica (Collobert \& Weston,
+2008). El objetivo es aprovechar el conocimiento aprendido por el modelo sobre el conjunto de datos general para
+mejorar el rendimiento en la tarea específica (Erhan et al., 2010). Por ejemplo, podríamos entrenar un modelo en un
+conjunto de datos de texto muy grande y luego utilizar ese modelo pre-entrenado para resolver tareas de procesamiento
+del lenguaje natural, como la clasificación de opiniones o la traducción (Mikolov et al., 2013).
+
+En resumen, el fine-tuning implica la adaptación de un modelo previamente entrenado a una tarea específica mediante el
+ajuste de sus parámetros, mientras que el pre-training involucra el entrenamiento de un modelo en un conjunto de datos
+muy grande y luego la reutilización de ese conocimiento para resolver una tarea específica. Ambas técnicas de
+aprendizaje por transferencia pueden ser útiles en diferentes escenarios y han demostrado mejorar significativamente el
+rendimiento en una variedad de tareas (Shao et al., 2014).
 % TODO: hablar de pre-train y fine-tuning
 
 \section{Adaptaci\'on de Dominio}
