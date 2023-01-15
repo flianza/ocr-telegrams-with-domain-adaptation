@@ -308,129 +308,170 @@ promedio de la submatriz.
     \label{fig:maxpool-ejemplo}
 \end{figure}
 
-Las CNNs han demostrado ser muy efectivas en una gran variedad de tareas, como la clasificación de imágenes, el
-procesamiento de lenguaje natural y el análisis de sentimientos. Algunos ejemplos de papers que abordan el uso de CNNs
-son "Very Deep Convolutional Networks for Large-Scale Image Recognition" (Simonyan y Zisserman, 2014), "Convolutional
-Neural Networks for Sentence Classification" (Kim, 2014) y "Convolutional Neural Networks for Sentiment Analysis of
-Short Texts" (Zhang y Lee, 2015).
-
-% TODO: Agregar grafico? Explicar que las convoluciones se pueden usar para generar features y tirar el grafico con la parte densa
-% TODO: referencias?!
+Las redes neuronales convolutionales tienen una gran variedad de aplicaciones prácticas en diferentes campos, algunas
+de las cuales incluyen:
+\begin{itemize}
+    \item Reconocimiento de imágenes: CNN se utilizan ampliamente en tareas de clasificación de imágenes, como el reconocimiento
+          de objetos, el análisis de sentimientos en imágenes, la generación de descripciones automáticas para imágenes, entre
+          otras \parencite{krizhevsky2017imagenet}.
+    \item Análisis de videos: CNN también se utilizan en tareas de análisis de videos, como el seguimiento de objetos, la
+          detección de eventos, la generación de subtítulos automáticos para videos, entre otras \parencite{simonyan2014twostream}.
+    \item Procesamiento de lenguaje natural: CNN también se utilizan en tareas de procesamiento de lenguaje natural, como la
+          clasificación de texto, la generación de texto, el análisis de sentimientos y la traducción automática \parencite{bugnon2020dl4papers}.
+    \item Medicina: CNN se utilizan en tareas de diagnóstico médico, como la detección de cáncer de mama, la detección de
+          enfermedades cardíacas, la detección de problemas en imágenes médicas, entre otras \parencite{wang2016deep}.
+\end{itemize}
 
 \subsection{Arquitecturas}
 
-% Otro
-
 Hay distintos tipos de arquitecturas de redes neuronales convolucionales debido a que cada una tiene diferentes
-fortalezas y debilidades en términos de capacidad de generalización, extracción de características y rendimiento.
-Algunos factores que pueden influir en la elección de una arquitectura en particular incluyen:
+fortalezas y debilidades en términos de capacidad de generalización, extracción de características y rendimiento \parencite{lecun2015deep}. Algunos factores que pueden influir en la elección de una arquitectura en particular incluyen \parencite{he2016deep}:
 
-Tamaño de los datos de entrada: para procesar grandes conjuntos de datos, es posible que se necesite una red con una
-mayor capacidad de procesamiento y una mayor cantidad de parámetros.
+\begin{itemize}
+    \item Tamaño de los datos de entrada: para procesar grandes conjuntos de datos, es posible que se necesite una red con una
+          mayor capacidad de procesamiento y una mayor cantidad de parámetros.
+    \item Nivel de detalle de las características: algunas arquitecturas pueden ser más eficientes para detectar características
+          a diferentes escalas y en diferentes posiciones, mientras que otras pueden tener una mayor capacidad para detectar
+          patrones complejos.
+    \item Nivel de generalización: algunas arquitecturas pueden ser más capaces de generalizar a datos nuevos y menos vistos
+          durante el entrenamiento, mientras que otras pueden ser más propensas a sobreajuste.
+    \item Requerimientos de tiempo y recursos: algunas arquitecturas pueden requerir más tiempo y recursos para entrenar y
+          evaluar, lo que puede ser un factor importante a considerar dependiendo de los objetivos del proyecto.
+\end{itemize}
 
-Nivel de detalle de las características: algunas arquitecturas pueden ser más eficientes para detectar características
-a diferentes escalas y en diferentes posiciones, mientras que otras pueden tener una mayor capacidad para detectar
-patrones complejos.
+Una arquitectura simple de CNN para la clasificación de imágenes presenta: una subred convolucional $\mathcal{G}$ que
+extraen información y generan características $\mathbf{f}$ a partir de la entrada $\mathbf{x}$; y una subred densa
+$\mathcal{C}$ que se encargan de clasificar las características aprendidas $\mathbf{f}$ en las etiquetas del problema
+$\mathbf{\hat{y}}$.
 
-Nivel de generalización: algunas arquitecturas pueden ser más capaces de generalizar a datos nuevos y menos vistos
-durante el entrenamiento, mientras que otras pueden ser más propensas a sobreajuste.
+\begin{figure}[H]
+    \centering
 
-Requerimientos de tiempo y recursos: algunas arquitecturas pueden requerir más tiempo y recursos para entrenar y
-evaluar, lo que puede ser un factor importante a considerar dependiendo de los objetivos del proyecto.
+    \tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
 
-% otro
+    \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+        %uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
 
-Existen distintos tipos de arquitecturas de redes neuronales convolucionales debido a que cada una tiene diferentes
-fortalezas y debilidades en términos de capacidad de generalización, extracción de características y rendimiento (LeCun
-et al., 2015). Algunos factores que pueden influir en la elección de una arquitectura en particular incluyen el tamaño
-de los datos de entrada, el nivel de detalle de las características que se desean extraer, el nivel de generalización
-que se requiere y los requerimientos de tiempo y recursos (He et al., 2016).
+        %Shape: Circle [id:dp5607633409516137] 
+        \draw   (40.33,108.25) .. controls (40.33,99.83) and (47.16,93) .. (55.58,93) .. controls (64.01,93) and (70.83,99.83) .. (70.83,108.25) .. controls (70.83,116.67) and (64.01,123.5) .. (55.58,123.5) .. controls (47.16,123.5) and (40.33,116.67) .. (40.33,108.25) -- cycle ;
+        %Shape: Trapezoid [id:dp8058596397440787] 
+        \draw   (90.67,72.17) -- (130.67,84.17) -- (130.67,134.17) -- (90.67,146.17) -- cycle ;
+        %Straight Lines [id:da42639122448642897] 
+        \draw    (70.83,108.25) -- (87.33,108.25) ;
+        \draw [shift={(90.33,108.25)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Shape: Circle [id:dp6831404033749999] 
+        \draw  [dash pattern={on 4.5pt off 4.5pt}] (154.58,108.25) .. controls (154.58,99.83) and (161.41,93) .. (169.83,93) .. controls (178.26,93) and (185.08,99.83) .. (185.08,108.25) .. controls (185.08,116.67) and (178.26,123.5) .. (169.83,123.5) .. controls (161.41,123.5) and (154.58,116.67) .. (154.58,108.25) -- cycle ;
+        %Rounded Rect [id:dp3958441794745311] 
+        \draw   (208.67,97.98) .. controls (208.67,94.82) and (211.23,92.26) .. (214.38,92.26) -- (252.95,92.26) .. controls (256.11,92.26) and (258.67,94.82) .. (258.67,97.98) -- (258.67,115.12) .. controls (258.67,118.27) and (256.11,120.83) .. (252.95,120.83) -- (214.38,120.83) .. controls (211.23,120.83) and (208.67,118.27) .. (208.67,115.12) -- cycle ;
+        %Straight Lines [id:da33421369991474537] 
+        \draw    (131.33,108.17) -- (151.67,108.17) ;
+        \draw [shift={(154.67,108.17)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da30712807219538707] 
+        \draw    (184.67,108.25) -- (205,108.25) ;
+        \draw [shift={(208,108.25)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Shape: Circle [id:dp6313033137153481] 
+        \draw  [dash pattern={on 4.5pt off 4.5pt}] (282.58,107.25) .. controls (282.58,98.83) and (289.41,92) .. (297.83,92) .. controls (306.26,92) and (313.08,98.83) .. (313.08,107.25) .. controls (313.08,115.67) and (306.26,122.5) .. (297.83,122.5) .. controls (289.41,122.5) and (282.58,115.67) .. (282.58,107.25) -- cycle ;
+        %Straight Lines [id:da8576886251233382] 
+        \draw    (259.33,107.17) -- (279.67,107.17) ;
+        \draw [shift={(282.67,107.17)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
 
-Una arquitectura de red neuronal convolucional simple es la red LeNet, que fue propuesta por LeCun et al. (1998) y es
-utilizada comúnmente para clasificación de imágenes. Esta red consta de dos capas de convolución seguidas por dos capas
-densas y una capa de salida, y fue utilizada con éxito para el reconocimiento de números escritos a mano en el conjunto
-de datos MNIST.
+        \draw (110.67,109.17) node   [align=left] {\begin{minipage}[lt]{22.78pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathcal{G}$
+                \end{center}
 
-Por otro lado, una arquitectura de red neuronal convolucional más compleja es la red ResNet, propuesta por He et al.
-(2016). Esta red utiliza una técnica llamada "saltos de conexión directa" para evitar el problema de la degradación del
-rendimiento en redes profundas y ha demostrado tener una excelente capacidad de generalización en tareas de
-clasificación de imágenes.
+            \end{minipage}};
+        \draw (233.67,106.73) node   [align=left] {\begin{minipage}[lt]{26.23pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathcal{C}$
+                \end{center}
 
-En general, al elegir una arquitectura de red neuronal convolucional es importante tener en cuenta los factores
-mencionados anteriormente y evaluar cuál es la que mejor se ajusta a las necesidades del problema a resolver y a los
-datos de entrada disponibles.
+            \end{minipage}};
+        \draw (169.83,108.25) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{f}$
+                \end{center}
 
-Referencias:
+            \end{minipage}};
+        \draw (297.83,107.25) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{\hat{y}}$
+                \end{center}
 
-He, K., Zhang, X., Ren, S., \& Sun, J. (2016). Deep residual learning for image recognition. In Proceedings of the IEEE
-conference on computer vision and pattern recognition (pp. 770-778).
+            \end{minipage}};
+        \draw (55.58,108.25) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{x}$
+                \end{center}
 
-LeCun, Y., Bottou, L., Bengio, Y., \& Haffner, P. (1998). Gradient-based learning applied to document recognition.
-Proceedings of the IEEE, 86(11), 2278-2324.
+            \end{minipage}};
 
-LeCun, Y., Bengio, Y., \& Hinton, G. (2015). Deep learning. Nature, 521(7553), 436-444.
+    \end{tikzpicture}
+
+    \caption{Arquitectura de una red simple. Las entradas $\mathbf{x}$ son procesadas por una red convolucional $\mathcal{G}$
+        que generan características $\mathbf{f}$ para luego ser clasificadas por una red densa $\mathcal{C}$ en $\mathbf{\hat{y}}$.}
+    \label{fig:cnn}
+\end{figure}
+
+Tal es el caso de la red LeNet, que fue propuesta por \cite{lecun1998gradient}. Esta red consta de dos capas de
+convolución seguidas por dos capas densas y una capa de salida, y fue utilizada con éxito para el reconocimiento de
+números escritos a mano en el conjunto de datos MNIST.
+
+Por otro lado, una arquitectura de red neuronal convolucional más compleja es la red ResNet (abreviación de Residual
+Network), propuesta por \cite{he2016deep}. Estas redes están diseñadas para resolver el problema de la propagación del
+gradiente en las redes neuronales profundas, lo que permite entrenar modelos con una gran cantidad de capas.
 
 \subsubsection{LeNet}
-% Otro
-La red LeNet fue propuesta por Yann LeCun, Léon Bottou, Yoshua Bengio y Patrick Haffner en 1998 y es una de las
-primeras redes neuronales convolucionales en ser utilizada con éxito para el reconocimiento de imágenes (LeCun et al.,
-1998). Esta red consta de dos capas de convolución seguidas por dos capas densas y una capa de salida, y fue utilizada
-con éxito para el reconocimiento de números escritos a mano en el conjunto de datos MNIST.
+LeNet es una de las primeras arquitecturas de redes neuronales de aprendizaje profundo desarrolladas para tareas de
+reconocimiento de caracteres escritos a mano. Aunque la arquitectura original de LeNet es bastante antigua, su diseño
+sigue siendo relevante hoy en día y se utiliza como una arquitectura básica para tareas similares.
 
-La red LeNet tuvo varias versiones a lo largo de los años, y cada una de ellas presentó mejoras en términos de
-rendimiento y capacidad de generalización. Por ejemplo, en 2002 se presentó la red LeNet-4, que incluyó una capa
-adicional de convolución y una capa de pooling (S. Savage, 2002).
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{chapter2/lenet5.png}
 
-En general, la red LeNet tuvo un gran impacto en el campo de la inteligencia artificial y ha sido utilizada como base
-para el desarrollo de muchas otras redes neuronales convolucionales. Ha demostrado ser una herramienta muy efectiva
-para el reconocimiento de imágenes y ha sido utilizada en aplicaciones como el reconocimiento de escritura a mano, el
-reconocimiento de caracteres y el análisis de imágenes médicas.
+    \caption{Arquitectura de una LeNet-5. Imagen tomada de \cite{lecun1998gradient}.}
+    \label{fig:lenet}
+\end{figure}
 
-Referencias:
+El desarrollo de la LeNet implicó la aparición de las CNNs y sus componentes básicos. No obstante, no fue popular en su
+momento debido a la falta del hardware necesario para entrenarlas y otros algoritmos como las máquinas de vectores de
+soporte (SVM por sus siglas en inglés) que podían obtener resultados similares o superadores \parencite{lecun1998gradient, decoste2002training, lauer2007trainable}.
 
-LeCun, Y., Bottou, L., Bengio, Y., \& Haffner, P. (1998). Gradient-based learning applied to document recognition.
-Proceedings of the IEEE, 86(11), 2278-2324.
-
-Savage, S. (2002). LeNet-4: an unsupervised neural network. arXiv preprint cs/0206061.
+Desde el éxito de AlexNet \parencite{krizhevsky2017imagenet}, las CNNs se han convertido en la mejor opción para aplicaciones de {\it computer
+        vision} y se han creado muchos tipos diferentes de CNN, como las redes R-CNN utilizada para detección y segmentación de
+objetos \parencite{girshick2014rich}. En la actualidad los modelos CNN son bastante diferentes de LeNet, pero todos se desarrollan
+sobre la base de LeNet.
 
 \subsubsection{ResNet}
-% Otro
-La red ResNet (short for Residual Network) fue propuesta por Kaiming He, Xiangyu Zhang, Shaoqing Ren y Jian Sun en 2015
-y es una de las arquitecturas de redes neuronales más populares y exitosas en el campo de la visión por computadora (He
-et al., 2015). Esta red utiliza una técnica llamada "saltos de conexión directa" para evitar el problema de la
-degradación del rendimiento en redes profundas, que es un fenómeno que ocurre cuando el rendimiento de una red
-disminuye a medida que aumenta su profundidad.
 
-La red ResNet se ha utilizado con éxito en varias tareas de visión por computadora, como la clasificación de imágenes,
-la detección de objetos y el seguimiento de movimientos. Ha demostrado tener una excelente capacidad de generalización
-y ha obtenido resultados sobresalientes en varias competencias de visión por computadora, como la competencia ImageNet
-de 2015.
+La idea principal detrás de las redes ResNet es la utilización de {\it bloques residuales} en lugar de las capas
+tradicionales de la red neuronal. Un bloque residual se compone de varias capas de una red neuronal tradicional, pero
+con una conexión residual que permite que la información de entrada se sume directamente a la salida de las capas
+internas. Esto permite que la información se propague de manera más eficiente a través de las capas profundas de la
+red, lo que ayuda a reducir el problema de la propagación del gradiente.
 
-La red ResNet ha tenido varias versiones a lo largo de los años, y cada una de ellas presentó mejoras en términos de
-rendimiento y capacidad de generalización.
+Además, las redes ResNet también utilizan una técnica llamada {\it bottleneck} que reduce el número de canales de
+salida en las capas internas del bloque residual, lo que ayuda a reducir el número de parámetros y mejorar la
+eficiencia del modelo.
 
-% Otro
-La red ResNet (short for Residual Network) surge como una forma de abordar el problema de la degradación del
-rendimiento en redes profundas, que es un fenómeno que ocurre cuando el rendimiento de una red disminuye a medida que
-aumenta su profundidad (He et al., 2015). Esto es un problema importante en el campo de la visión por computadora, ya
-que muchas tareas requieren redes profundas para obtener buenos resultados, pero a menudo se encuentra que el
-rendimiento empeora a medida que se aumenta la profundidad.
+Las redes neuronales ResNet se han desarrollado en diferentes arquitecturas, cada una de las cuales tiene su propio
+conjunto de características y aplicaciones. Las mismas son:
 
-La red ResNet utiliza una técnica llamada "saltos de conexión directa" para evitar el problema de la degradación del
-rendimiento. Esta técnica consiste en agregar una conexión directa entre la entrada y la salida de cada bloque de la
-red, en lugar de utilizar solo capas completamente conectadas. Esto permite que la red pueda aprender una función de
-identidad y luego aprender cualquier cambio necesario a partir de eso, lo que hace que sea más fácil para la red
-aprender funciones complejas.
-
-La red ResNet ha tenido varias versiones a lo largo de los años, y cada una de ellas presentó mejoras en términos de
-rendimiento y capacidad de generalización. Algunas de las versiones más populares son ResNet-18, ResNet-34 y ResNet-50,
-que tienen 18, 34 y 50 capas respectivamente. Estas versiones se han utilizado con éxito en varias tareas de visión por
-computadora y han obtenido resultados sobresalientes en varias competencias de visión por computadora.
-
-Referencias:
-
-He, K., Zhang, X., Ren, S., \& Sun, J. (2015). Deep residual learning for image recognition. In Proceedings of the IEEE
-conference on computer vision and pattern recognition (pp. 770-778).
+\begin{itemize}
+    \item ResNet18 y ResNet34 \parencite{he2016deep}: son arquitecturas de ResNet con un número moderado de capas (18 y 34 respectivamente) que se
+          utilizan comúnmente en tareas de clasificación de imágenes y reconocimiento de objetos.
+    \item ResNet50, ResNet101 y ResNet152 \parencite{he2016deep}: son arquitecturas de ResNet con un mayor número de capas (50, 101 y 152 respectivamente) que se
+          utilizan comúnmente en tareas de detección de objetos y segmentación de imágenes. Estas arquitecturas tienen una mayor
+          capacidad representativa y son más precisas en las tareas de aprendizaje profundo complejas, pero requieren más tiempo
+          de entrenamiento y recursos.
+    \item ResNet-S y ResNet-M \parencite{sandler2018mobilenetv2}: son arquitecturas de ResNet que se utilizan en dispositivos móviles y sistemas de baja
+          potencia. Estas arquitecturas son más ligeras en términos de parámetros y requisitos de cálculo que las arquitecturas
+          anteriores, lo que las hace ideales para la implementación en dispositivos móviles y sistemas de baja potencia.
+    \item ResNeXt \parencite{xie2017aggregated}: es una variante de ResNet que utiliza una técnica llamada {\it agrupación cardinal} para
+          mejorar la capacidad representativa de la red. Esta técnica utiliza varios grupos de canales en lugar de uno solo para
+          mejorar la capacidad representativa del modelo y lograr mejores resultados en tareas de clasificación y reconocimiento.
+\end{itemize}
 
 \section{Aprendizaje por transferencia}
 % Otro
