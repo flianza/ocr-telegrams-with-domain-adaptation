@@ -82,7 +82,7 @@ En \citeyear{funahashi1989approximate}, se demuestra teóricamente que una red d
 suficiente número de nodos y entrenada con {\it backpropagation}, puede aproximar cualquier función continua con
 cualquier grado de precisión \parencite{funahashi1989approximate}.
 
-\subsection{Redes densas}
+\subsection{Redes Densas}
 Como se detalló anteriormente, los perceptrones son modelos lineales incapaces de resolver problemas que no sean
 linealmente separables por un hiperplano. Una forma de solventar esta situación es encadenar un conjunto de
 perceptrones para crear redes neuronales densas (ver figura \ref{fig:nn}). La predicción $\hat{y}$ de una red es una
@@ -183,7 +183,7 @@ término de {\it bias}. Existen múltiples funciones de activación, las más co
     \item Sofmax: $f(x_i) = \sigma(x_i) = \frac{e^{x_{i}}}{\sum_{j=1}^K e^{x_{j}}} \ \ \ para\ i=1,2,\dots,K$
 \end{itemize}
 
-\subsection{Redes convolucionales}
+\subsection{Redes Convolucionales}
 Una de las principales limitaciones de las redes densas es que no son muy buenas para trabajar con datos que tienen una
 estructura espacial, como imágenes o audio. Esto se debe a que las redes densas tratan a todas las entradas de manera
 aislada, sin tener en cuenta las relaciones entre ellas. Esto puede llevar a que la red no sea capaz de detectar
@@ -474,114 +474,26 @@ conjunto de características y aplicaciones. Las mismas son:
 \end{itemize}
 
 \section{Aprendizaje por transferencia}
-% Otro
-El aprendizaje por transferencia es una técnica de aprendizaje automático que consiste en utilizar lo que se ha
-aprendido en una tarea para mejorar el rendimiento en otra tarea relacionada (Pan, Yang, \& McOwan, 2010). Esta técnica
-se aplica comúnmente en el contexto de redes neuronales y se basa en la idea de que algunos conocimientos adquiridos en
-una tarea pueden ser reutilizados en otra tarea, lo que permite que la red aprenda de manera más eficiente y con menos
-datos.
 
-En el caso de las redes neuronales, el aprendizaje por transferencia puede utilizarse de varias maneras, como por
-ejemplo:
+El aprendizaje por transferencia es una técnica que consiste en utilizar lo que se ha aprendido en una tarea para
+mejorar el rendimiento en otra tarea relacionada \parencite{thrun1998learning}. Esta técnica se aplica comúnmente en el contexto de redes neuronales y se basa en la idea de
+que algunos conocimientos adquiridos en una tarea pueden ser reutilizados en otra tarea, lo que permite que la red
+aprenda de manera más eficiente y con menos datos. Ha ganado popularidad en los últimos años debido a la creciente
+cantidad de datos disponibles y a la necesidad de entrenar modelos más complejos y de mayor rendimiento.
 
-Entrenar una red en una tarea y luego utilizarla como inicialización para otra tarea: en este caso, la red se entrena
-inicialmente en una tarea y luego se utiliza como punto de partida para entrenar otra red en una tarea diferente. Esto
-permite que la red aprenda de manera más rápida y con menos datos, ya que ya ha adquirido algunos conocimientos en la
-primera tarea.
+En el contexto de las redes neuronales, el aprendizaje por transferencia se puede llevar a cabo de varias maneras, como
+el {\it pre-entrenamiento} y el {\it fine-tuning}.
 
-Utilizar capas de una red entrenada en una tarea como capas fijas en otra tarea: en este caso, se utilizan las capas de
-una red entrenada en una tarea como capas fijas en otra red que se entrena en una tarea diferente. Esto permite que la
-red aprenda de manera más rápida y con menos datos, ya que ya ha adquirido algunos conocimientos en la primera tarea.
+El pre-entrenamiento es una técnica de aprendizaje por transferencia en la que se entrena una red en una tarea y luego
+se utiliza como punto de partida para entrenar otra red en una tarea diferente \parencite{erhan2010does}. Esto permite que la red aprenda de manera más rápida y con menos datos, ya que ya ha adquirido
+algunos conocimientos en la primera tarea. El pre-entrenamiento se puede llevar a cabo de varias maneras, como por
+ejemplo entrenando una red en un conjunto de datos de gran tamaño y luego utilizándola como inicialización para una
+tarea específica de menor tamaño. Esto se ha utilizado con éxito en varias tareas de aprendizaje automático, como la
+clasificación de imágenes y el procesamiento del lenguaje natural \parencite{howard2017mobilenets}. También se ha utilizado con éxito en el contexto de redes neuronales profundas, donde ha
+demostrado ser una técnica efectiva para mejorar el rendimiento y la capacidad de generalización de las redes \parencite{girshick2014rich}.
 
-% Otro
-
-El aprendizaje por transferencia es una técnica de aprendizaje automático que consiste en utilizar lo que se ha
-aprendido en una tarea para mejorar el rendimiento en otra tarea relacionada (Pan, Yang, \& McOwan, 2010). En el
-contexto de las redes neuronales, el aprendizaje por transferencia se puede llevar a cabo de varias maneras, como el
-pre-training y el fine-tuning.
-
-El pre-training es una técnica de aprendizaje por transferencia en la que se entrena una red en una tarea y luego se
-utiliza como punto de partida para entrenar otra red en una tarea diferente (Erhan, Bengio, Courville, \& Vincent,
-2010). Esto permite que la red aprenda de manera más rápida y con menos datos, ya que ya ha adquirido algunos
-conocimientos en la primera tarea. El pre-training se puede llevar a cabo de varias maneras, como por ejemplo
-entrenando una red en un conjunto de datos de gran tamaño y luego utilizándola como inicialización para una tarea
-específica.
-
-El fine-tuning es una técnica de aprendizaje por transferencia en la que se utilizan las capas de una red entrenada en
-una tarea como capas fijas en otra red que se entrena en una tarea diferente (Yosinski, Clune, Bengio, \& Lipson,
-2014). Esto permite que la red aprenda de manera más rápida y con menos datos.
-
-% Otro
-El pre-training es una técnica de aprendizaje por transferencia en la que se entrena una red en una tarea y luego se
-utiliza como punto de partida para entrenar otra red en una tarea diferente (Erhan, Bengio, Courville, \& Vincent,
-2010). Esto permite que la red aprenda de manera más rápida y con menos datos, ya que ya ha adquirido algunos
-conocimientos en la primera tarea.
-
-El pre-training se puede llevar a cabo de varias maneras, como por ejemplo entrenando una red en un conjunto de datos
-de gran tamaño y luego utilizándola como inicialización para una tarea específica. Esto se ha utilizado con éxito en
-varias tareas de aprendizaje automático, como la clasificación de imágenes y el procesamiento del lenguaje natural
-(Shin et al., 2016; Howard et al., 2018).
-
-El pre-training también se ha utilizado con éxito en el contexto de redes neuronales profundas, donde ha demostrado ser
-una técnica efectiva para mejorar el rendimiento y la capacidad de generalización de las redes (Girshick et al., 2014).
-En particular, el pre-training ha demostrado ser útil para reducir el número de datos necesarios para entrenar una red
-y para mejorar el rendimiento en tareas con conjuntos de datos pequeños o de baja calidad.
-
-Referencias:
-
-Erhan, D., Bengio, Y., Courville, A., \& Vincent, P. (2010). Why does unsupervised pre-training help deep learning? In
-Proceedings of the 13th international conference on artificial intelligence and statistics (pp. 217-224).
-
-Girshick, R., Donahue, J., Darrell, T., \& Malik, J. (2014). Rich feature hierarchies for accurate object detection and
-semantic segmentation. In Proceedings of the IEEE conference on computer vision and pattern recognition (pp. 580-587).
-
-Howard, J., Sandler, M., Chu, G., Chen, L., Chen, B., Tan, M., \& Wang, W. (2018). MobileNets: Efficient convolutional
-neural networks for mobile vision applications. arXiv preprint arXiv:1704.04861.
-
-Shin, H., Valveny
-
-% otro
-uego fine-tunearlo para clasificar imágenes de plantas utilizando un conjunto de datos de imágenes de plantas más
-pequeño. En este caso, el modelo ya tiene una comprensión básica de cómo procesar imágenes y podemos ajustar sus
-parámetros para que se adapte mejor a nuestra tarea específica de clasificación de plantas.
-
-El "pre-training" es una forma de aprendizaje por transferencia donde se entrena un modelo en una tarea generalizada y
-luego se utiliza como base para resolver tareas más específicas. Por ejemplo, podríamos entrenar un modelo en una tarea
-genérica de procesamiento del lenguaje natural y luego utilizar ese modelo como base para resolver tareas más
-específicas como la clasificación de sentimentos o la traducción de idiomas.
-
-En resumen, el "fine-tuning" implica ajustar los parámetros de un modelo previamente entrenado para adaptarlo a una
-tarea específica, mientras que el "pre-training" implica entrenar un modelo en una tarea genérica y luego utilizarlo
-como base para resolver tareas más específicas.
-
-% Otro
-
-El aprendizaje por transferencia o "transfer learning" se refiere a la práctica de utilizar un modelo previamente
-entrenado en una tarea específica y reutilizar parte o todo ese conocimiento para resolver una tarea diferente (Pan \&
-Yang, 2010). Esta técnica ha ganado popularidad en los últimos años debido a la creciente cantidad de datos disponibles
-y a la necesidad de entrenar modelos más complejos y de mayor rendimiento (Torrey \& Shavlik, 2010).
-
-Hay varias formas de hacer esto, como el "fine-tuning" y el "pre-training". El "fine-tuning" implica la adaptación de
-un modelo previamente entrenado para resolver una tarea específica, ajustando sus parámetros en lugar de entrenar un
-nuevo modelo desde cero (Yosinski et al., 2014). Esto se hace generalmente en el caso de tener un conjunto de datos
-pequeño y utilizar un modelo previamente entrenado en un conjunto de datos más grande (Donahue et al., 2014). Por
-ejemplo, podríamos utilizar un modelo previamente entrenado en un conjunto de datos de imágenes de animales y luego
-fine-tunearlo para clasificar imágenes de plantas utilizando un conjunto de datos de imágenes de plantas (Girshick et
-al., 2014).
-
-El "pre-training" es otra forma de aprendizaje por transferencia que implica entrenar un modelo en un conjunto de datos
-muy grande y luego reutilizar parte o todo ese conocimiento para resolver una tarea específica (Collobert \& Weston,
-2008). El objetivo es aprovechar el conocimiento aprendido por el modelo sobre el conjunto de datos general para
-mejorar el rendimiento en la tarea específica (Erhan et al., 2010). Por ejemplo, podríamos entrenar un modelo en un
-conjunto de datos de texto muy grande y luego utilizar ese modelo pre-entrenado para resolver tareas de procesamiento
-del lenguaje natural, como la clasificación de opiniones o la traducción (Mikolov et al., 2013).
-
-En resumen, el fine-tuning implica la adaptación de un modelo previamente entrenado a una tarea específica mediante el
-ajuste de sus parámetros, mientras que el pre-training involucra el entrenamiento de un modelo en un conjunto de datos
-muy grande y luego la reutilización de ese conocimiento para resolver una tarea específica. Ambas técnicas de
-aprendizaje por transferencia pueden ser útiles en diferentes escenarios y han demostrado mejorar significativamente el
-rendimiento en una variedad de tareas (Shao et al., 2014).
-% TODO: hablar de pre-train y fine-tuning
+Por otro lado, el fine-tuning es una técnica den la que se utilizan las capas de una red pre-entrenada en una tarea
+como capas fijas en otra red que se entrena en una tarea diferente \parencite{yosinski2014transferable}. Esto permite que la red aprenda de manera más rápida y con menos datos \parencite{howard2018universal}.
 
 \section{Adaptaci\'on de Dominio}
 El {\it pre-entrenamiento} y el {\it fine-tuning} han mejorado considerablemente el estado del arte para diversos
