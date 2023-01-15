@@ -177,40 +177,17 @@ Donde $f$ es la función de activación, $\mathbf{w}_i$ es el vector de pesos qu
 término de {\it bias}. Existen múltiples funciones de activación, las más comunes son:
 
 \begin{itemize}
-    \item Tangente hiperbólica: $f(x) = tanh(x)$
-    \item Función sigmoidea: $f(x) = \frac{1}{1+exp(-x)}$
+    \item Tangente hiperbólica: $f(x) = tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$
+    \item Función sigmoidea: $f(x) = \sigma(x) = \frac{1}{1+exp(-x)}$
     \item ReLU: $f(x) = max(0, x)$
+    \item Sofmax: $f(x_i) = \sigma(x_i) = \frac{e^{x_{i}}}{\sum_{j=1}^K e^{x_{j}}} \ \ \ para\ i=1,2,\dots,K$
 \end{itemize}
 
 \subsection{Convolucionales}
-Las redes neuronales convolucionales (CNNs, por sus siglas en inglés) son un tipo de modelo de aprendizaje automático
-que ha demostrado ser muy efectivo en tareas de procesamiento de imágenes y lenguaje natural. Estas redes son una
-variante de las redes neuronales feedforward, que constan de varias capas de neuronas interconectadas. Lo que
-diferencia a las CNNs de otras redes neuronales es su uso de capas de convolución, que permiten a la red aprender
-características espaciales de los datos de entrada de manera automática.
-
-Una de las principales ventajas de las CNNs es que son capaces de procesar datos con una gran cantidad de dimensiones,
-como imágenes con altura, anchura y profundidad (canales de color). Esto se debe a que las capas de convolución son
-capaces de realizar operaciones de filtrado sobre los datos de entrada, permitiendo a la red aprender características
-específicas de los datos de manera eficiente. Además, las CNNs tienen la capacidad de generalizar de manera efectiva,
-lo que significa que son capaces de realizar buenas predicciones en conjuntos de datos desconocidos.
-
-Un ejemplo de aplicación de las CNNs es en el reconocimiento de objetos en imágenes. Al entrenar una red con un gran
-número de imágenes etiquetadas, la red puede aprender a reconocer patrones y características específicas de cada clase
-de objeto. Luego, al presentarle una imagen desconocida, la red puede utilizar lo que ha aprendido para clasificar la
-imagen en una de las clases de objetos que ha visto durante el entrenamiento.
-
-Las CNNs han demostrado ser muy efectivas en una gran variedad de tareas, como la clasificación de imágenes, el
-procesamiento de lenguaje natural y el análisis de sentimientos. Algunos ejemplos de papers que abordan el uso de CNNs
-son "Very Deep Convolutional Networks for Large-Scale Image Recognition" (Simonyan y Zisserman, 2014), "Convolutional
-Neural Networks for Sentence Classification" (Kim, 2014) y "Convolutional Neural Networks for Sentiment Analysis of
-Short Texts" (Zhang y Lee, 2015).
-
-% Otro
-Una de las principales limitaciones de las redes feedforward densas es que no son muy buenas para trabajar con datos
-que tienen una estructura espacial, como imágenes o audio. Esto se debe a que las redes feedforward densas tratan a
-todas las entradas de manera aislada, sin tener en cuenta las relaciones entre ellas. Esto puede llevar a que la red no
-sea capaz de detectar patrones o características importantes en los datos, lo que puede limitar su rendimiento.
+Una de las principales limitaciones de las redes densas es que no son muy buenas para trabajar con datos que tienen una
+estructura espacial, como imágenes o audio. Esto se debe a que las redes densas tratan a todas las entradas de manera
+aislada, sin tener en cuenta las relaciones entre ellas. Esto puede llevar a que la red no sea capaz de detectar
+patrones o características importantes en los datos, lo que puede limitar su rendimiento.
 
 Para solucionar este problema, surgió la idea de utilizar redes neuronales convolucionales (CNN). Estas redes se basan
 en la idea de utilizar capas de neuronas que comparten pesos y realizan una operación de convolución en los datos de
@@ -218,55 +195,131 @@ entrada. Esto permite que la red tenga una mayor capacidad para detectar patrone
 que las neuronas de las capas de convolución están compartiendo información y pueden detectar patrones a diferentes
 escalas y en diferentes posiciones de los datos.
 
-Además, las CNN también tienen capas de pooling, que se encargan de seleccionar las características más importantes de
-los datos y reducir su tamaño, lo que permite que la red tenga un mejor rendimiento y sea más eficiente.
-
-En resumen, las redes neuronales convolucionales surgieron como una mejora de las redes feedforward densas debido a su
-capacidad para trabajar con datos que tienen una estructura espacial, como imágenes o audio, y detectar patrones y
-características importantes en ellos de manera más eficiente.
-
-% Otro
-Las convoluciones en una red neuronal son una técnica utilizada para detectar patrones y características en los datos
-de entrada. Esto se hace mediante el uso de una máscara o filtro que se desliza por los datos y realiza una operación
-de convolución para combinar los valores de los datos con los pesos del filtro.
-
 Matemáticamente, la operación de convolución se puede representar como:
 
-$$ (f * g)(x) = \int_{-\infty}^{\infty} f(t)g(x-t) dt $$
+\begin{equation}
+    (f * g)(x) = \int_{-\infty}^{\infty} f(t)g(x-t) dt
+    \label{eq:convolucion}
+\end{equation}
 
 Donde $f$ y $g$ son dos funciones y $*$ es el operador de convolución. Esta operación consiste en desplazar la función
 $g$ a través de la función $f$ y multiplicar cada valor de $f$ por el valor de $g$ en esa posición. El resultado de la
 operación de convolución es una nueva función que refleja la combinación de los valores de $f$ y $g$.
 
-En el contexto de una red neuronal, el filtro o máscara se utiliza para detectar patrones o características en los
-datos de entrada. Cada neurona de la capa de convolución está conectada a un subconjunto de los datos de entrada y
-realiza una operación de convolución con ellos utilizando el filtro asociado. Los pesos del filtro se actualizan
-durante el proceso de aprendizaje para mejorar la capacidad de la red para detectar patrones y características
-importantes en los datos.
+A modo de ejemplo, si se posee una matriz de $6\times6$ $I$ y un filtro $3\times3$ $K$, la operación de convolución $*$
+que produce $I*K$ en una CNN puede visualizarse como:
+\begin{figure}[H]
+    \centering
+    \convoutionpicture 42
+    \caption{Ejemplo de una convolución para una matriz $I$ y un filtro o kernel $K$, produciendo la matriz $I*K$.}
+    \label{fig:convolucion-ejemplo}
+\end{figure}
 
-Referencias:
+Una de las principales ventajas de las CNNs es que son capaces de procesar datos con una gran cantidad de dimensiones,
+como imágenes con altura, anchura y profundidad (canales de color). Esto se debe a que las capas de convolución son
+capaces de realizar operaciones de filtrado sobre los datos de entrada, permitiendo a la red aprender características
+específicas de los datos de manera eficiente. Además, las CNNs tienen la capacidad de generalizar de manera efectiva,
+lo que significa que son capaces de realizar buenas predicciones en conjuntos de datos desconocidos.
 
-Lecun, Y., Bottou, L., Bengio, Y., \& Haffner, P. (1998). Gradient-based learning applied to document recognition.
-Proceedings of the IEEE, 86(11), 2278-2324. Goodfellow, I., Bengio, Y., \& Courville, A. (2016). Deep learning. MIT
-Press.
+Otra ventaja de las CNN es que también cuentan con capas de pooling, que se encargan de seleccionar las características
+más importantes de los datos y reducir su tamaño, lo que permite que la red tenga un mejor rendimiento y sea más
+eficiente. Existen distintos tipos de pooling: {\it max pooling}, el cual calcula el máximo valor de la submatriz; {\it
+min pooling}, el cual calcula el mínimo valor de la submatriz; y {\it average pooling}, el cual calcula el valor
+promedio de la submatriz.
 
-% Otro
-Para entrenar las capas convolucionales de una red neuronal artificial, se utiliza un proceso conocido como
-backpropagation. Este proceso consiste en calcular el error entre la salida de la red y la salida esperada para un
-conjunto de datos de entrenamiento y utilizar este error para actualizar los pesos de la red de manera que el error
-disminuya.
+\begin{figure}[H]
+    \centering
 
-Matemáticamente, el proceso de backpropagation se puede representar como:
+    \begin{tikzpicture}
+        % ------- style -------
+        \tikzset{%
+            parenthesized/.style={%
+                    left delimiter  = (,
+                    right delimiter = ),
+                },
+            node distance = 10mu,
+        }
 
-$$ \frac{\partial E}{\partial w_{ij}} = \frac{\partial E}{\partial y_i} \frac{\partial y_i}{\partial w_{ij}} $$
+        \matrix[matrix of math nodes, parenthesized, ampersand replacement=\&] (I*K) {
+            1 \& 5 \& 2 \& 3 \\
+            3 \& 2 \& 4 \& 2 \\
+            1 \& 4 \& 2 \& 1 \\
+            3 \& 2 \& 1 \& 1 \\
+        };
 
-Donde $E$ es el error, $y_i$ es la salida de la neurona $i$, $w_{ij}$ es el peso de la conexión entre la neurona $i$ y
-la neurona $j$, y $\frac{\partial}{\partial}$ es el operador de derivada parcial.
+        \node (arrow) [right = of I*K] {${} \xRightarrow{\text{maxpool}}  {}$};
 
-El proceso de backpropagation se repite varias veces para cada conjunto de datos de entrenamiento y se utiliza para
-actualizar los pesos de la red de manera que el error disminuya y la red pueda realizar tareas de manera más precisa.
+        \matrix[matrix of math nodes, parenthesized, ampersand replacement=\&] (maxpool) [right = of arrow] {
+            5 \& 4 \\
+            4 \& 2 \\
+        };
+
+        % ------- highlighting -------
+        \newcommand{\padding}{0pt}
+
+        \def\rowResult{1}
+        \def\colResult{1}
+        \begin{scope}[on background layer]
+            \coordinate (Is-nw) at ([xshift=-\padding, yshift=+\padding] I*K-\rowResult-\colResult.north west);
+            \coordinate (Is-se) at ([xshift=+\padding, yshift=-\padding] I*K-\the\numexpr\rowResult+2-1\relax-\the\numexpr\colResult+2-1\relax.south east);
+
+            \filldraw[red, fill opacity=.1] (Is-nw) rectangle (Is-se);
+            \filldraw[red, fill opacity=.1] (maxpool-\rowResult-\colResult.north west) rectangle (maxpool-\rowResult-\colResult.south east);
+        \end{scope}
+
+        \def\rowResult{1}
+        \def\colResult{2}
+        \begin{scope}[on background layer]
+            \coordinate (Is-nw) at ([xshift=-\padding, yshift=+\padding] I*K-\rowResult-\the\numexpr\colResult+1\relax.north west);
+            \coordinate (Is-se) at ([xshift=+\padding, yshift=-\padding] I*K-\the\numexpr\rowResult+1\relax-\the\numexpr\colResult+2\relax.south east);
+
+            \filldraw[green, fill opacity=.1] (Is-nw) rectangle (Is-se);
+            \filldraw[green, fill opacity=.1] (maxpool-\rowResult-\colResult.north west) rectangle (maxpool-\rowResult-\colResult.south east);
+        \end{scope}
+
+        \def\rowResult{2}
+        \def\colResult{1}
+        \begin{scope}[on background layer]
+            \coordinate (Is-nw) at ([xshift=-\padding, yshift=+\padding] I*K-\the\numexpr\rowResult+1\relax-\the\numexpr\colResult+0\relax.north west);
+            \coordinate (Is-se) at ([xshift=+\padding, yshift=-\padding] I*K-\the\numexpr\rowResult+2\relax-\the\numexpr\colResult+1\relax.south east);
+
+            \filldraw[blue, fill opacity=.1] (Is-nw) rectangle (Is-se);
+            \filldraw[blue, fill opacity=.1] (maxpool-\rowResult-\colResult.north west) rectangle (maxpool-\rowResult-\colResult.south east);
+        \end{scope}
+
+        \def\rowResult{2}
+        \def\colResult{2}
+        \begin{scope}[on background layer]
+            \coordinate (Is-nw) at ([xshift=-\padding, yshift=+\padding] I*K-\the\numexpr\rowResult+1\relax-\the\numexpr\colResult+1\relax.north west);
+            \coordinate (Is-se) at ([xshift=+\padding, yshift=-\padding] I*K-\the\numexpr\rowResult+2\relax-\the\numexpr\colResult+2\relax.south east);
+
+            \filldraw[yellow, fill opacity=.1] (Is-nw) rectangle (Is-se);
+            \filldraw[yellow, fill opacity=.1] (maxpool-\rowResult-\colResult.north west) rectangle (maxpool-\rowResult-\colResult.south east);
+        \end{scope}
+
+        % ------- labels -------
+        \tikzset{node distance=0em}
+        \node[below=of I*K] (I*K-label) {$I*K$};
+        \node at (maxpool |- I*K-label) {$maxpool(I*K)$};
+
+    \end{tikzpicture}
+
+    \caption{Maxpool $2\times2$ aplicado al ejemplo de la figura \ref{fig:convolucion-ejemplo} $I*K$.}
+    \label{fig:maxpool-ejemplo}
+\end{figure}
+
+Las CNNs han demostrado ser muy efectivas en una gran variedad de tareas, como la clasificación de imágenes, el
+procesamiento de lenguaje natural y el análisis de sentimientos. Algunos ejemplos de papers que abordan el uso de CNNs
+son "Very Deep Convolutional Networks for Large-Scale Image Recognition" (Simonyan y Zisserman, 2014), "Convolutional
+Neural Networks for Sentence Classification" (Kim, 2014) y "Convolutional Neural Networks for Sentiment Analysis of
+Short Texts" (Zhang y Lee, 2015).
+
+% TODO: Agregar grafico? Explicar que las convoluciones se pueden usar para generar features y tirar el grafico con la parte densa
+% TODO: referencias?!
 
 \subsection{Arquitecturas}
+
+% Otro
 
 Hay distintos tipos de arquitecturas de redes neuronales convolucionales debido a que cada una tiene diferentes
 fortalezas y debilidades en términos de capacidad de generalización, extracción de características y rendimiento.
