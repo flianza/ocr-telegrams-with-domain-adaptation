@@ -53,6 +53,7 @@ Es posible aplicar los modelos sobre todos los telegramas y calcular el $IoU$ pr
 descripto en el cap\'itulo \ref{Chapter3} y la cantidad de aciertos promedio por telegrama utilizando como etiquetas lo
 transcripto en el centro de c\'omputo suponiendo que existen pocos errores en ellos.
 
+TODO: actualizar tabla para agregar DANN + BSP
 \begin{table}[H]
     \centering
     \begin{tabular}{cc|rrr}
@@ -80,6 +81,8 @@ El cuadro \ref{tab:iou-cant-aciertos-en-telegramas} confirma la elecci\'on del m
 Independientemente de qu\'e t\'ecnica de adaptaci\'on se utilice, todas presentan mejores porcentajes de aciertos
 promedio que los modelos que fueron entrenados \'unicamente con $MNIST$.
 
+TODO: Actualizar para agregar DANN + BSP. TODO: buscar una mejor forma de mostrar los histogramas para que se vea las
+distintas distribuciones de aciertos dependiendo de cada modelo y AD.
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{chapter4/dist-aciertos.png}
@@ -89,13 +92,14 @@ promedio que los modelos que fueron entrenados \'unicamente con $MNIST$.
 
 \section{Comparaci\'on de espacios latentes}
 
-\lipsum[1]
+TODO: Mostrar un bueno, un feo y un malo, sino son muchos. quizas podria dejar el resto en un anexo? \lipsum[1]
 
 \section{\'Analisis de errores}
 
 Los errores de predicci\'on de los modelos pueden reflejarse en las distribuci\'on de la m\'etrica $IoU$ para cada uno
 de ellos.
 
+TODO: Agregar DANN + BSP.
 \begin{figure}[H]
     \centering
     \begin{subfigure}[h]{0.43\textwidth}

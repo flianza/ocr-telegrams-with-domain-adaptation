@@ -76,9 +76,21 @@ p\'ublicos y se encuentran subidos en la \href{https://op.elecciones.gob.ar/tele
 
 Para poder llevarlo a cabo, se procede a:
 \begin{itemize}
-    \item Extraer los n\'umeros escritos a mano en los telegramas.
-    \item Evaluar t\'ecnicas de adaptaci\'on de dominio para entrenar modelos destinados a la clasificaci\'on de n\'umeros de los
-          telegramas.
-    \item Analizar los espacios latentes de los modelos con el fin de obtener {\it insights} respecto a la capacidad de
-          generalizaci\'on de los modelos.
+    \item Armar el proceso de ETL de los telegramas que permita limpiar y extraer los d\'igitos.
+    \item Determinar un conjunto de datos etiquetado a ser utilizado como dominio de origen.
+    \item Entrenar distintos arquitecturas de redes convolucionales mediante t\'ecnicas de adaptaci\'on de dominio.
+    \item Analizar y evaluar las m\'etricas que permitan seleccionar el mejor modelo.
+    \item Seleccionar el mejor par modelo - t\'ecnica AD.
+\end{itemize}
+
+\section{Estructura del trabajo}
+Este trabajo se encuentra organizado con la siguiente estructura:
+
+\begin{itemize}
+    \item Capítulo 2: Marco teórico del reconocimiento de dígitos, redes neuronales, aprendizaje por transferencia y adaptación
+          de dominio.
+    \item Capítulo 3: Metodología del trabajo realizado sobre los telegramas de las elecciones de Santa Fe. Proceso de
+          extracción, transformación y limpieza de los mismos. Diseño experimental y métricas de evaluación.
+    \item Capítulo 4: Análisis de resultados. Análisis de métricas, espacios latentes obtenidos y errores.
+    \item Capítulo 5: Conclusiones del trabajo, mejoras planteadas y futuras investigaciones.
 \end{itemize}

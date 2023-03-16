@@ -459,25 +459,38 @@ dominios son similares entre si, por lo que se espera que $dist_\mathcal{A} \app
 Durante el proyecto se utiliza como clasificador una regresi\'on log\'istica a fin de calcular la distancia
 $\mathcal{A}$.
 
-\subsubsection{Discrepancia M\'axima Promedio}
+\subsubsection{Discrepancia de Medias Máxima}
 
-\cite{gretton2012kernel} introduce un test estad\'istico que permite identificar si una distribuci\'on es distinta a
-otra llamado Discrepancia M\'axima Promedio (MMD por sus siglas en ingl\'es). El test permite analizar qu\'e tan
-bien el modelo permite adaptar el aprendizaje del dataset de origen con el de destino. Cuando el test resulte no
-significativo se puede concluir que los espacios latentes generados por el modelo para ambos datasets difieren y no se
-logr\'o una buena adaptaci\'on.
-
-De manera formal, dado un espacio $\mathbb{R}^d$ y muestras IID $X_i \in \mathbb{R}^d, i=1,...N_X$ de la distribuci\'on
-$X \sim P_X$ y $Y_i \in \mathbb{R}^d, i=1,...N_Y$ de la distribuci\'on $Y \sim P_Y$, se quiere demostrar que $P_X$ es
-distinto de $P_Y$. El test planteado es:
+La discrepancia de medias máxima (MMD por sus siglas en inglés) es una prueba estadística basada en {\it kernels} que
+se utiliza para determinar si dos distribuciones dadas son iguales midiendo la distancia entre ellas \parencite{gretton2012kernel}. Dadas las distribuciones $P$ y $Q$ sobre un conjunto $\mathcal{X}$ y un mapa de
+características $\phi : \mathcal{X} \rightarrow \mathcal{H}$ donde $\mathcal{H}$ es un conjunto de destino, MMD se
+define como:
 
 \begin{align}
-    H_0) & P_X \neq P_Y \nonumber \\
-    H_1) & P_X = P_Y
+    MMD^2(P, Q) = \left\lVert \mathbb{E}_{\mathbf{x} \sim P}[\phi(\mathbf{x})] - \mathbb{E}_{\mathbf{y} \sim Q}[\phi(\mathbf{y})]\right\rVert_{\mathcal{H}}^2
+    \label{eq:mmd}
+\end{align}
+
+Por ejemplo, si el mapa de características es $\phi(x)=x$ y $\mathcal{X}=\mathcal{H}=\mathbb{R}^d$, MMD se calcula
+como:
+
+\begin{align}
+    MMD^2(P, Q) & = \left\lVert \mathbb{E}_{\mathbf{x} \sim P}[\phi(\mathbf{x})] - \mathbb{E}_{\mathbf{y} \sim Q}[\phi(\mathbf{y})] \right\rVert_{\mathcal{H}}^2 \nonumber \\
+                & = \left\lVert \mathbb{E}_{\mathbf{x} \sim P}[\mathbf{x}] - \mathbb{E}_{\mathbf{y} \sim Q}[\mathbf{y}] \right\rVert_{\mathbb{R}^d}^2            \nonumber \\
+                & = \left\lVert \mu_{P} - \mu_{Q} \right\rVert_{\mathbb{R}^d}^2
+    \label{eq:mmd-identidad}
+\end{align}
+
+de forma que MMD es la distancia entre las medias de las distribuciones. No obstante, evaluarlas de esta manera puede
+generar que distribuciones con distinta varianza, kurtosis, etc sean consideradas como iguales. Se puede aplicar el
+    {\it kernel trick} para calcular MMD con distancias más complejas. Dado $k(x, y) = \left\langle \phi(x), \phi(y)
+    \right\rangle_{\mathcal{H}} $, MMD se calcula como:
+
+\begin{align}
+    MMD^2(P, Q) & = \left\lVert \mathbb{E}_{\mathbf{x} \sim P}[\phi(\mathbf{x})] - \mathbb{E}_{\mathbf{y} \sim Q}[\phi(\mathbf{y})] \right\rVert_{\mathcal{H}}^2 \nonumber                                                                          \\
+                & = \mathbb{E}_{\mathbf{x}, \mathbf{x'} \sim P} k(\mathbf{x}, \mathbf{x'}) - \mathbb{E}_{\mathbf{y}, \mathbf{y'} \sim Q} k(\mathbf{y}, \mathbf{y'}) - 2 \mathbb{E}_{\mathbf{x} \sim P, \mathbf{y} \sim Q} k(\mathbf{x}, \mathbf{y})
+    \label{eq:mmd-kernel}
 \end{align}
 
 Se utiliz\'o la librer\'ia \href{https://github.com/torchdrift/torchdrift/}{TorchDrift} para implementarlo en la
-evaluaci\'on de los modelos. La misma utiliza una variaci\'on de test MMD utilizando un kernel RBF para aproximar $P_X$
-y $P_Y$.
-
-TODO: Completar como se calcula el score del test
+evaluaci\'on de los modelos utilizando como {\it kernel} RBF.
