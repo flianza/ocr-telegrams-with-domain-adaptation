@@ -53,24 +53,25 @@ Es posible aplicar los modelos sobre todos los telegramas y calcular el $IoU$ pr
 descripto en el cap\'itulo \ref{Chapter3} y la cantidad de aciertos promedio por telegrama utilizando como etiquetas lo
 transcripto en el centro de c\'omputo suponiendo que existen pocos errores en ellos.
 
-TODO: actualizar tabla para agregar DANN + BSP
 \begin{table}[H]
     \centering
     \begin{tabular}{cc|rrr}
         \toprule
-                                 &        & $IoU$ prom.     & \# aciertos prom. & \% aciertos prom. \\
-        AD                       & Modelo &                 &                   &                   \\
+                                     &        & $IoU$ prom.     & \# aciertos prom. & \% aciertos prom. \\
+        AD                           & Modelo &                 &                   &                   \\
         \midrule
-        \multirow[c]{2}{*}{-}    & ResNet & 0.4494          & 4                 & 22\%              \\
-                                 & LeNet  & 0.4715          & 6                 & 33\%              \\\hline
-        \multirow[c]{2}{*}{MDD}  & ResNet & 0.5451          & 8                 & 44\%              \\
-                                 & LeNet  & 0.5801          & 9                 & 50\%              \\\hline
-        \multirow[c]{2}{*}{DANN} & ResNet & 0.6941          & 12                & 67\%              \\
-                                 & LeNet  & 0.7024          & 12                & 67\%              \\\hline
-        \multirow[c]{2}{*}{AFN}  & ResNet & \textbf{0.7486} & \textbf{13}       & \textbf{72\%}     \\
-                                 & LeNet  & 0.6493          & 11                & 61\%              \\\hline
-        \multirow[c]{2}{*}{ADDA} & ResNet & 0.6763          & 11                & 61\%              \\
-                                 & LeNet  & 0.6406          & 10                & 56\%              \\
+        \multirow[c]{2}{*}{-}        & ResNet & 0.4494          & 4                 & 22\%              \\
+                                     & LeNet  & 0.4715          & 6                 & 33\%              \\\hline
+        \multirow[c]{2}{*}{DANN}     & ResNet & 0.6941          & 12                & 67\%              \\
+                                     & LeNet  & 0.7024          & 12                & 67\%              \\\hline
+        \multirow[c]{2}{*}{ADDA}     & ResNet & 0.6763          & 11                & 61\%              \\
+                                     & LeNet  & 0.6406          & 10                & 56\%              \\\hline
+        \multirow[c]{2}{*}{DANN+BSP} & LeNet  & 0.6695          & 11                & 61\%              \\
+                                     & ResNet & 0.6515          & 11                & 61\%              \\\hline
+        \multirow[c]{2}{*}{MDD}      & ResNet & 0.5451          & 8                 & 44\%              \\
+                                     & LeNet  & 0.5801          & 9                 & 50\%              \\\hline
+        \multirow[c]{2}{*}{AFN}      & ResNet & \textbf{0.7486} & \textbf{13}       & \textbf{72\%}     \\
+                                     & LeNet  & 0.6493          & 11                & 61\%              \\
         \bottomrule
     \end{tabular}
     \caption{IoU promedio y cantidad promedio de aciertos al aplicar los modelos a cada telegrama.}
@@ -99,7 +100,6 @@ TODO: Mostrar un bueno, un feo y un malo, sino son muchos. quizas podria dejar e
 Los errores de predicci\'on de los modelos pueden reflejarse en las distribuci\'on de la m\'etrica $IoU$ para cada uno
 de ellos.
 
-TODO: Agregar DANN + BSP.
 \begin{figure}[H]
     \centering
     \begin{subfigure}[h]{0.43\textwidth}
@@ -107,22 +107,26 @@ TODO: Agregar DANN + BSP.
     \end{subfigure}
     \hfill
     \begin{subfigure}[h]{0.43\textwidth}
-        \includegraphics[height=1\textwidth]{chapter4/hist-iou-mdd.png}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[h]{0.43\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/hist-iou-dann.png}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[h]{0.43\textwidth}
-        \includegraphics[height=1\textwidth]{chapter4/hist-iou-afn.png}
     \end{subfigure}
     \hfill
     \begin{subfigure}[h]{0.43\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/hist-iou-adda.png}
     \end{subfigure}
+    \hfill
+    \begin{subfigure}[h]{0.43\textwidth}
+        \includegraphics[height=1\textwidth]{chapter4/hist-iou-bsp.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[h]{0.43\textwidth}
+        \includegraphics[height=1\textwidth]{chapter4/hist-iou-mdd.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[h]{0.43\textwidth}
+        \includegraphics[height=1\textwidth]{chapter4/hist-iou-afn.png}
+    \end{subfigure}
 
-    \caption{Histogramas de la m\'etrica $IoU$ promedio por telegrama por cada par t\'ecnica AD y modelo.}
+    \caption{Histogramas de la m\'etrica $IoU$ promedio por telegrama por cada t\'ecnica AD y modelo.}
     \label{fig:histogramas-ious}
 \end{figure}
 
@@ -132,7 +136,7 @@ observaciones que contienen valores entre [0, 0.2] en todos los experimentos rea
 estos casos, se detectaron las siguientes situaciones:
 
 \begin{itemize}
-    \item Telegramas cargados de forma err\'ones: ver ejemplo en el anexo \ref{anexo:telegrama-erroneo}.
+    \item Telegramas cargados de forma err\'onea: ver ejemplo en el anexo \ref{anexo:telegrama-erroneo}.
     \item Telegramas correctos pero por alguna cuesti\'on la l\'ogica de extracci\'on de d\'igitos no funciona correctamente: ver
           ejemplo en el anexo \ref{anexo:telegrama-numeros-juntos}.
     \item Telegramas donde existen otros caracteres distintos a n\'umeros: al ser un cuadro de texto libre sin formato, los jefes
