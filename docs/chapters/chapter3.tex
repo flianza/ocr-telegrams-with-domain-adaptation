@@ -236,7 +236,7 @@ adrede ya que puede servir para mejorar el dataset en futuros trabajos.
 
 \section{Dise\~{n}o experimental}
 
-Los experimentos fueron programados en Python mediante la librer\'ia \href{https://pytorch.org/}{PyTorch} \parencite{NEURIPS2019_9015} y \href{https://github.com/thuml/Transfer-Learning-Library}{TLLIB} \parencite{tllib} para aplicar las t\'ecnicas de adaptaci\'on de dominio.
+Los experimentos fueron programados en Python mediante la librer\'ia PyTorch \parencite{NEURIPS2019_9015} y TLLIB \parencite{tllib} para aplicar las t\'ecnicas de adaptaci\'on de dominio.
 
 Se entrenaron redes ResNet-50 \parencite{he2016deep} y LeNet-8 \parencite{lecun1998gradient} por cada una de las t\'ecnicas de adaptaci\'on de dominio descriptas en el cap\'itulo
 \ref{Chapter2}. Como modelo baseline, se entrenaron ambas redes sin ninguna t\'ecnica de adaptaci\'on.
@@ -490,5 +490,4 @@ generar que distribuciones con distinta varianza, kurtosis, etc sean considerada
     \label{eq:mmd-kernel}
 \end{align}
 
-Se utiliz\'o la librer\'ia \href{https://github.com/torchdrift/torchdrift/}{TorchDrift} para implementarlo en la
-evaluaci\'on de los modelos utilizando como {\it kernel} RBF.
+Se utiliz\'o la librer\'ia TorchDrift \parencite{torchdrift} para implementarla en la evaluaci\'on de los modelos utilizando como {\it kernel} RBF.
