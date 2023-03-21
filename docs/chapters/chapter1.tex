@@ -63,9 +63,46 @@ creado en el \citeyear{lecun1998gradient}, har\'a malas clasficaciones los d\'ig
 
 Cuando los dominios de entrenamiento (origen) y aplicaci\'on (destino) son distintos, se debe a que hay un {\it sesgo}
 en los datos. Las t\'ecnicas de entrenamiento cl\'asicas suponen que, si bien existe el sesgo existe, \'este ser\'a el
-mismo entre origen y destino. Cuando el supuesto no se cumple, se debe recurrir a t\'ecnicas de entrenamiento m\'as
-complejas donde se intenta que el modelo aprenda a adaptar un dominio a otro. Hoy en d\'ia no hay trabajos relacionados
-a la digitalizaci\'on de telegramas en Argentina que compare c\'ual es la mejor t\'ecnica de adaptaci\'on de dominio.
+mismo entre origen y destino. Cuando el supuesto no se cumple, las predicciones del modelo se ven afectadas
+negativamente. El cuadro \ref{tab:lenet-distintos-datasets} muestra un ejemplo de la degradación de la precisión cuando
+un modelo se aplica a un conjunto de datos que es diferente al cual se entrenó.
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{cccc}
+        \toprule
+        {}                                                & \multicolumn{3}{c}{Testing}                                                                                               \\
+        {}                                                & MNIST                                             & USPS                              & SVHN                              \\
+        Entrenamiento                                     & \includegraphics[width=16px]{chapter1/mnist3.png}
+        \includegraphics[width=16px]{chapter1/mnist6.png}
+        \includegraphics[width=16px]{chapter1/mnist8.png} & \includegraphics[width=16px]{chapter1/usps3.png}
+        \includegraphics[width=16px]{chapter1/usps6.png}
+        \includegraphics[width=16px]{chapter1/usps8.png}  & \includegraphics[width=16px]{chapter1/svhn3.png}
+        \includegraphics[width=16px]{chapter1/svhn6.png}
+        \includegraphics[width=16px]{chapter1/svhn8.png}                                                                                                                              \\
+        \midrule
+        MNIST                                             & \multirow{2}{*}{\textbf{99.17\%}}                 & \multirow{2}{*}{78.08\%}          & \multirow{2}{*}{31.50\%}          \\
+        \includegraphics[width=16px]{chapter1/mnist3.png}
+        \includegraphics[width=16px]{chapter1/mnist6.png}
+        \includegraphics[width=16px]{chapter1/mnist8.png} &                                                   &                                   &                                   \\
+        USPS                                              & \multirow{2}{*}{57.10\%}                          & \multirow{2}{*}{\textbf{95.42\%}} & \multirow{2}{*}{26.94\%}          \\
+        \includegraphics[width=16px]{chapter1/usps3.png}
+        \includegraphics[width=16px]{chapter1/usps6.png}
+        \includegraphics[width=16px]{chapter1/usps8.png}  &                                                   &                                   &                                   \\
+        SVHN                                              & \multirow{2}{*}{61.92\%}                          & \multirow{2}{*}{64.28\%}          & \multirow{2}{*}{\textbf{89.52\%}} \\
+        \includegraphics[width=16px]{chapter1/svhn3.png}
+        \includegraphics[width=16px]{chapter1/svhn6.png}
+        \includegraphics[width=16px]{chapter1/svhn8.png}  &                                                   &                                   &                                   \\
+        \bottomrule
+    \end{tabular}
+    \caption{Precisión que se obtiene al aplicar un modelo LeNet-5 entrenado con otros datasets de dígitos.}
+    \label{tab:lenet-distintos-datasets}
+\end{table}
+
+Es por esto que se debe recurrir a t\'ecnicas de entrenamiento m\'as complejas donde se intenta que el modelo aprenda a
+sin el sesgo de los datos. Es decir, que pueda aprender a {\it adaptarse} de un dominio a otro. En la actualidad no
+existen trabajos publicados relacionados a la digitalizaci\'on de telegramas en Argentina que compare c\'ual es la
+mejor t\'ecnica de adaptaci\'on de dominio.
 
 \section{Objetivos}
 
@@ -76,9 +113,22 @@ p\'ublicos y se encuentran subidos en la \href{https://op.elecciones.gob.ar/tele
 
 Para poder llevarlo a cabo, se procede a:
 \begin{itemize}
-    \item Extraer los n\'umeros escritos a mano en los telegramas.
-    \item Evaluar t\'ecnicas de adaptaci\'on de dominio para entrenar modelos destinados a la clasificaci\'on de n\'umeros de los
-          telegramas.
-    \item Analizar los espacios latentes de los modelos con el fin de obtener {\it insights} respecto a la capacidad de
-          generalizaci\'on de los modelos.
+    \item Armar el proceso de ETL de los telegramas que permita limpiar y extraer los d\'igitos.
+    \item Determinar un conjunto de datos etiquetado a ser utilizado como dominio de origen.
+    \item Entrenar distintos arquitecturas de redes convolucionales mediante t\'ecnicas de adaptaci\'on de dominio.
+    \item Analizar y evaluar las m\'etricas que permitan seleccionar el mejor modelo.
+    \item Seleccionar el mejor par modelo - t\'ecnica de adaptación de dominio.
+    \item Detectar oportunidades de mejora en el proceso eleccionario respecto a los telegramas.
+\end{itemize}
+
+\section{Estructura del trabajo}
+Este trabajo se encuentra organizado con la siguiente estructura:
+
+\begin{itemize}
+    \item Capítulo 2: Marco teórico del reconocimiento de dígitos, redes neuronales, aprendizaje por transferencia y adaptación
+          de dominio.
+    \item Capítulo 3: Metodología del trabajo realizado sobre los telegramas de las elecciones de Santa Fe. Proceso de
+          extracción, transformación y limpieza de los mismos. Diseño experimental y métricas de evaluación.
+    \item Capítulo 4: Análisis de resultados. Análisis de métricas, espacios latentes obtenidos y errores.
+    \item Capítulo 5: Conclusiones del trabajo, mejoras planteadas y futuras investigaciones.
 \end{itemize}

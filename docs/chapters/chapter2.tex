@@ -2,29 +2,470 @@
 \label{Chapter2}
 
 En este capítulo se presenta una visión general de la bibliografía relacionada al objetivo del presente trabajo. En la
-primera sección se detalla una revisión de trabajos relacionados. En ... % TODO: completar
+primera sección se detalla una revisión de trabajos relacionados. En ... TODO: Completar
 
 \section{Reconocimiento de d\'igitos}
-\lipsum[1]
+
+El reconocimiento de dígitos escritos a mano por parte de las computadoras es una tarea que ha fascinado a la comunidad
+de aprendizaje automático durante muchos años. Aunque el reconocimiento de dígitos escritos a mano es una tarea
+relativamente sencilla para los humanos, ha sido un desafío para las computadoras debido a la gran variabilidad en la
+forma en que los dígitos son escritos por diferentes personas.
+
+A mediados de la década de 1980, se presentó un enfoque importante para el reconocimiento de dígitos escritos a mano
+llamado "Sistema Neuronal de Reconocimiento de Dígitos" \parencite{lecun1989backpropagation}. Este sistema utilizó una red neuronal de varias capas y fue entrenado utilizando el
+método de retropropagación del error. El modelo tuvo un rendimiento significativamente mejor que los enfoques
+anteriores y sentó las bases para el desarrollo de sistemas de reconocimiento de dígitos escritos a mano más
+sofisticados.
+
+TODO: agregar mas. en la tesis de lamagna hay mas referencias.
 
 \section{Redes Neuronales}
-\lipsum[1]
+\cite{mcculloch1943logical} estudiaron y propusieron un modelo del comportamiento de la
+neurona biológica. La neurona artificial que propusieron fue un sistema binario que consiste en que si la suma de entradas excitatorias supera un umbral de activación, y además no
+hay una entrada inhibitoria, la neurona se activa y emite una respuesta; en caso contrario, la neurona no se activa.
 
-\subsection{Redes densas}
-\lipsum[1]
-% TODO: hablar de pre-train y fine-tuning
+En \citeyear{hebb1949organization} se propone que estas redes podían aprender. Este hecho estaba relacionado con la
+conductividad de la sinapsis. Así, la repetida activación de una neurona por otra, a través de una sinapsis
+determinada, aumenta su conductividad y la hace más propensa a ser activada sucesivamente, induciendo a la formación de
+un circuito de neuronas estrechamente conectadas entre sí \parencite{hebb1949organization}.
 
-\subsection{Convolucionales}
-\lipsum[1]
+Años más tarde, \cite{rosenblatt1958perceptron} propone un modelo de neurona llamadas perceptrones basadas en el modelo
+de McCulloch-Pitts. El mayor logro de Rosenblatt fue que pudo demostrar que, flexibilizando algunas de las reglas de la
+McCulloch-Pitts (la inhibición absoluta, la contribución igual de todas las entradas, etc), las neuronas artificiales
+podían aprender de los datos. Y lo que es más importante, ideó un algoritmo de aprendizaje supervisado para este modelo
+de neurona que permitía averiguar los pesos correctos directamente a partir de los datos de entrenamiento. La sencillez
+y eficacia de este algoritmo de aprendizaje para problemas linealmente separables son algunas de las razones clave por
+las que se hizo tan popular a finales de los años cincuenta y principios de los sesenta. Sin embargo, esta popularidad
+hizo que Rosenblatt exagerara la capacidad de aprendizaje de su perceptrón, dando lugar a expectativas poco realistas
+en la comunidad científica y/o también difundidas por los medios de comunicación.
+
+En \citeyear{minsky1969perceptrons}, se publica un libro en el cual se expone la naturaleza lineal de los perceptrones
+y de sus limitadas capacidades \parencite{minsky1969perceptrons}. A raíz de este evento es que se inicia el denominado "invierno de la inteligencia
+artificial" de los 1980s, donde cesó el interés de la comunidad por los modelos conexionistas.
+
+La contribución más importante en la reemergencia del conexionismo en los años ochenta fue la técnica {\it
+backpropagation} desarrollada por \cite{rumelhart1986learning}. En realidad, esta técnica fue desarrollada inicialmente
+por \cite{werbos1974beyond} y después redescubierta por varios grupos de investigadores \parencite{lecun1985learning, rumelhart1986learning}. Este algoritmo abrió las puertas al uso práctico de las redes
+neuronales en un sinfín de campos. Las más "simples" en la práctica son las llamadas redes multicapa alimentadas hacia
+delante ({\it feed forward}) entrenadas con {\it backpropagation}, también referidas como perceptrones mutlicapa {\it
+        MLP}.
+
+En \citeyear{funahashi1989approximate}, se demuestra teóricamente que una red de este tipo, con una capa oculta, el
+suficiente número de nodos y entrenada con {\it backpropagation}, puede aproximar cualquier función continua con
+cualquier grado de precisión \parencite{funahashi1989approximate}.
+
+\subsection{Redes Densas}
+Como se detalló anteriormente, los perceptrones son modelos lineales incapaces de resolver problemas que no sean
+linealmente separables por un hiperplano. Una forma de solventar esta situación es encadenar un conjunto de
+perceptrones para crear redes neuronales densas (ver figura \ref{fig:nn}). La predicción $\hat{y}$ de una red es una
+generalización directa de la predicción de un perceptrón. Primero se calculan las activaciones $a_i^1$ de los nodos de
+la capa oculta $h_i^1$ en función de las entradas $x_i$ y los pesos de entrada $w_i^1$. Luego, se calculan las
+activaciones $a_i^2$ de la unidad de salida $h_1^2$ dadas las activaciones de la capa anterior y los pesos $w_i^2$.
+
+\begin{figure}[H]
+    \centering
+
+    \tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+    \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+        %uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+        %Shape: Circle [id:dp4714623984365989] 
+        \draw   (0,12.25) .. controls (0,5.48) and (5.48,0) .. (12.25,0) .. controls (19.02,0) and (24.5,5.48) .. (24.5,12.25) .. controls (24.5,19.02) and (19.02,24.5) .. (12.25,24.5) .. controls (5.48,24.5) and (0,19.02) .. (0,12.25) -- cycle ;
+
+        %Shape: Circle [id:dp25434586654127544] 
+        \draw   (0,52.25) .. controls (0,45.48) and (5.48,40) .. (12.25,40) .. controls (19.02,40) and (24.5,45.48) .. (24.5,52.25) .. controls (24.5,59.02) and (19.02,64.5) .. (12.25,64.5) .. controls (5.48,64.5) and (0,59.02) .. (0,52.25) -- cycle ;
+
+        %Shape: Circle [id:dp9726011815419306] 
+        \draw   (0,92.25) .. controls (0,85.48) and (5.48,80) .. (12.25,80) .. controls (19.02,80) and (24.5,85.48) .. (24.5,92.25) .. controls (24.5,99.02) and (19.02,104.5) .. (12.25,104.5) .. controls (5.48,104.5) and (0,99.02) .. (0,92.25) -- cycle ;
+
+        %Shape: Circle [id:dp2291699685520565] 
+        \draw   (0,132.25) .. controls (0,125.48) and (5.48,120) .. (12.25,120) .. controls (19.02,120) and (24.5,125.48) .. (24.5,132.25) .. controls (24.5,139.02) and (19.02,144.5) .. (12.25,144.5) .. controls (5.48,144.5) and (0,139.02) .. (0,132.25) -- cycle ;
+
+        %Shape: Circle [id:dp14614955000159813] 
+        \draw   (70,52.25) .. controls (70,45.48) and (75.48,40) .. (82.25,40) .. controls (89.02,40) and (94.5,45.48) .. (94.5,52.25) .. controls (94.5,59.02) and (89.02,64.5) .. (82.25,64.5) .. controls (75.48,64.5) and (70,59.02) .. (70,52.25) -- cycle ;
+
+        %Shape: Circle [id:dp8388103519245029] 
+        \draw   (70,92.25) .. controls (70,85.48) and (75.48,80) .. (82.25,80) .. controls (89.02,80) and (94.5,85.48) .. (94.5,92.25) .. controls (94.5,99.02) and (89.02,104.5) .. (82.25,104.5) .. controls (75.48,104.5) and (70,99.02) .. (70,92.25) -- cycle ;
+
+        %Shape: Circle [id:dp7556907650297429] 
+        \draw   (140,72.25) .. controls (140,65.48) and (145.48,60) .. (152.25,60) .. controls (159.02,60) and (164.5,65.48) .. (164.5,72.25) .. controls (164.5,79.02) and (159.02,84.5) .. (152.25,84.5) .. controls (145.48,84.5) and (140,79.02) .. (140,72.25) -- cycle ;
+
+        %Straight Lines [id:da8929189573178169] 
+        \draw    (24.5,12.25) -- (70,52.25) ;
+        %Straight Lines [id:da5905797689118961] 
+        \draw    (24.5,52.25) -- (70,52.25) ;
+        %Straight Lines [id:da8059054934899097] 
+        \draw    (24.5,92.25) -- (70,52.25) ;
+        %Straight Lines [id:da18480058250239084] 
+        \draw    (24.5,132.25) -- (70,52.25) ;
+        %Straight Lines [id:da9649216528295181] 
+        \draw    (24.5,12.25) -- (70,92.25) ;
+        %Straight Lines [id:da2593081377394073] 
+        \draw    (24.5,52.25) -- (70,92.25) ;
+        %Straight Lines [id:da23945860731626256] 
+        \draw    (24.5,92.25) -- (70,92.25) ;
+        %Straight Lines [id:da45284543126132815] 
+        \draw    (24.5,132.25) -- (70,92.25) ;
+        %Straight Lines [id:da8439890580329283] 
+        \draw    (94.5,52.25) -- (140,72.25) ;
+        %Straight Lines [id:da026411209066727226] 
+        \draw    (94.5,92.25) -- (140,72.25) ;
+        %Straight Lines [id:da46511217961352624] 
+        \draw    (164.5,72.25) -- (187.75,72.25) ;
+
+        % Text Node
+        \draw (4.5,5) node [anchor=north west][inner sep=0.75pt]    {$x_{1}$};
+        % Text Node
+        \draw (4.5,45) node [anchor=north west][inner sep=0.75pt]    {$x_{2}$};
+        % Text Node
+        \draw (4.5,85) node [anchor=north west][inner sep=0.75pt]    {$x_{3}$};
+        % Text Node
+        \draw (4.5,125) node [anchor=north west][inner sep=0.75pt]    {$x_{4}$};
+        % Text Node
+        \draw (72,42.4) node [anchor=north west][inner sep=0.75pt]    {$h_{1}^{1}$};
+        % Text Node
+        \draw (72,82.4) node [anchor=north west][inner sep=0.75pt]    {$h_{2}^{1}$};
+        % Text Node
+        \draw (142,62.4) node [anchor=north west][inner sep=0.75pt]    {$h_{1}^{2}$};
+        % Text Node
+        \draw (190,63.4) node [anchor=north west][inner sep=0.75pt]    {$\hat{y}$};
+
+    \end{tikzpicture}
+    \caption{Red neuronal con una capa de entrada de 4 características, una capa oculta de 2 neuronas y una capa de salida con 1 neurona.}
+    \label{fig:nn}
+\end{figure}
+
+La única diferencia entre este cálculo y el del perceptrón es que las unidades ocultas calculan una función no lineal
+de sus entradas. Generalmente es llamada como {\it función de activación} o {\it función de enlace}. Formalmente, si
+$w_{i,d}$ son los pesos que conectan las entradas $d$ a la unidad oculta $i$, entonces la activación de la unidad $i$
+se calcula como:
+
+\begin{align}
+    h_i = f(\mathbf{w}_i \cdot \mathbf{x} + b_i)
+\end{align}
+
+Donde $f$ es la función de activación, $\mathbf{w}_i$ es el vector de pesos que alimentan el nodo $i$ y $b_i$ es el
+término de {\it bias}. Existen múltiples funciones de activación, las más comunes son:
+
+\begin{itemize}
+    \item Tangente hiperbólica: $f(x) = tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$
+    \item Función sigmoidea: $f(x) = \sigma(x) = \frac{1}{1+exp(-x)}$
+    \item ReLU: $f(x) = max(0, x)$
+    \item Sofmax: $f(x_i) = \sigma(x_i) = \frac{e^{x_{i}}}{\sum_{j=1}^K e^{x_{j}}} \ \ \ para\ i=1,2,\dots,K$
+\end{itemize}
+
+\subsection{Redes Convolucionales}
+Una de las principales limitaciones de las redes densas es que no son muy buenas para trabajar con datos que tienen una
+estructura espacial, como imágenes o audio. Esto se debe a que las redes densas tratan a todas las entradas de manera
+aislada, sin tener en cuenta las relaciones entre ellas. Esto puede llevar a que la red no sea capaz de detectar
+patrones o características importantes en los datos, lo que puede limitar su rendimiento.
+
+Para solucionar este problema, surgió la idea de utilizar redes neuronales convolucionales (CNN). Estas redes se basan
+en la idea de utilizar capas de neuronas que comparten pesos y realizan una operación de convolución en los datos de
+entrada. Esto permite que la red tenga una mayor capacidad para detectar patrones y características en los datos, ya
+que las neuronas de las capas de convolución están compartiendo información y pueden detectar patrones a diferentes
+escalas y en diferentes posiciones de los datos.
+
+Matemáticamente, la operación de convolución se puede representar como:
+
+\begin{equation}
+    (f * g)(x) = \int_{-\infty}^{\infty} f(t)g(x-t) dt
+    \label{eq:convolucion}
+\end{equation}
+
+Donde $f$ y $g$ son dos funciones y $*$ es el operador de convolución. Esta operación consiste en desplazar la función
+$g$ a través de la función $f$ y multiplicar cada valor de $f$ por el valor de $g$ en esa posición. El resultado de la
+operación de convolución es una nueva función que refleja la combinación de los valores de $f$ y $g$.
+
+A modo de ejemplo, si se posee una matriz de $6\times6$ $I$ y un filtro $3\times3$ $K$, la operación de convolución $*$
+que produce $I*K$ en una CNN puede visualizarse como:
+\begin{figure}[H]
+    \centering
+    \convoutionpicture 42
+    \caption{Ejemplo de una convolución para una matriz $I$ y un filtro o kernel $K$, produciendo la matriz $I*K$.}
+    \label{fig:convolucion-ejemplo}
+\end{figure}
+
+Una de las principales ventajas de las CNNs es que son capaces de procesar datos con una gran cantidad de dimensiones,
+como imágenes con altura, anchura y profundidad (canales de color). Esto se debe a que las capas de convolución son
+capaces de realizar operaciones de filtrado sobre los datos de entrada, permitiendo a la red aprender características
+específicas de los datos de manera eficiente. Además, las CNNs tienen la capacidad de generalizar de manera efectiva,
+lo que significa que son capaces de realizar buenas predicciones en conjuntos de datos desconocidos.
+
+Otra ventaja de las CNN es que también cuentan con capas de pooling, que se encargan de seleccionar las características
+más importantes de los datos y reducir su tamaño, lo que permite que la red tenga un mejor rendimiento y sea más
+eficiente. Existen distintos tipos de pooling: {\it max pooling}, el cual calcula el máximo valor de la submatriz; {\it
+min pooling}, el cual calcula el mínimo valor de la submatriz; y {\it average pooling}, el cual calcula el valor
+promedio de la submatriz.
+
+\begin{figure}[H]
+    \centering
+
+    \begin{tikzpicture}
+        % ------- style -------
+        \tikzset{%
+            parenthesized/.style={%
+                    left delimiter  = (,
+                    right delimiter = ),
+                },
+            node distance = 10mu,
+        }
+
+        \matrix[matrix of math nodes, parenthesized, ampersand replacement=\&] (I*K) {
+            1 \& 5 \& 2 \& 3 \\
+            3 \& 2 \& 4 \& 2 \\
+            1 \& 4 \& 2 \& 1 \\
+            3 \& 2 \& 1 \& 1 \\
+        };
+
+        \node (arrow) [right = of I*K] {${} \xRightarrow{\text{maxpool}}  {}$};
+
+        \matrix[matrix of math nodes, parenthesized, ampersand replacement=\&] (maxpool) [right = of arrow] {
+            5 \& 4 \\
+            4 \& 2 \\
+        };
+
+        % ------- highlighting -------
+        \newcommand{\padding}{0pt}
+
+        \def\rowResult{1}
+        \def\colResult{1}
+        \begin{scope}[on background layer]
+            \coordinate (Is-nw) at ([xshift=-\padding, yshift=+\padding] I*K-\rowResult-\colResult.north west);
+            \coordinate (Is-se) at ([xshift=+\padding, yshift=-\padding] I*K-\the\numexpr\rowResult+2-1\relax-\the\numexpr\colResult+2-1\relax.south east);
+
+            \filldraw[red, fill opacity=.1] (Is-nw) rectangle (Is-se);
+            \filldraw[red, fill opacity=.1] (maxpool-\rowResult-\colResult.north west) rectangle (maxpool-\rowResult-\colResult.south east);
+        \end{scope}
+
+        \def\rowResult{1}
+        \def\colResult{2}
+        \begin{scope}[on background layer]
+            \coordinate (Is-nw) at ([xshift=-\padding, yshift=+\padding] I*K-\rowResult-\the\numexpr\colResult+1\relax.north west);
+            \coordinate (Is-se) at ([xshift=+\padding, yshift=-\padding] I*K-\the\numexpr\rowResult+1\relax-\the\numexpr\colResult+2\relax.south east);
+
+            \filldraw[green, fill opacity=.1] (Is-nw) rectangle (Is-se);
+            \filldraw[green, fill opacity=.1] (maxpool-\rowResult-\colResult.north west) rectangle (maxpool-\rowResult-\colResult.south east);
+        \end{scope}
+
+        \def\rowResult{2}
+        \def\colResult{1}
+        \begin{scope}[on background layer]
+            \coordinate (Is-nw) at ([xshift=-\padding, yshift=+\padding] I*K-\the\numexpr\rowResult+1\relax-\the\numexpr\colResult+0\relax.north west);
+            \coordinate (Is-se) at ([xshift=+\padding, yshift=-\padding] I*K-\the\numexpr\rowResult+2\relax-\the\numexpr\colResult+1\relax.south east);
+
+            \filldraw[blue, fill opacity=.1] (Is-nw) rectangle (Is-se);
+            \filldraw[blue, fill opacity=.1] (maxpool-\rowResult-\colResult.north west) rectangle (maxpool-\rowResult-\colResult.south east);
+        \end{scope}
+
+        \def\rowResult{2}
+        \def\colResult{2}
+        \begin{scope}[on background layer]
+            \coordinate (Is-nw) at ([xshift=-\padding, yshift=+\padding] I*K-\the\numexpr\rowResult+1\relax-\the\numexpr\colResult+1\relax.north west);
+            \coordinate (Is-se) at ([xshift=+\padding, yshift=-\padding] I*K-\the\numexpr\rowResult+2\relax-\the\numexpr\colResult+2\relax.south east);
+
+            \filldraw[yellow, fill opacity=.1] (Is-nw) rectangle (Is-se);
+            \filldraw[yellow, fill opacity=.1] (maxpool-\rowResult-\colResult.north west) rectangle (maxpool-\rowResult-\colResult.south east);
+        \end{scope}
+
+        % ------- labels -------
+        \tikzset{node distance=0em}
+        \node[below=of I*K] (I*K-label) {$I*K$};
+        \node at (maxpool |- I*K-label) {$maxpool(I*K)$};
+
+    \end{tikzpicture}
+
+    \caption{Maxpool $2\times2$ aplicado al ejemplo de la figura \ref{fig:convolucion-ejemplo} $I*K$.}
+    \label{fig:maxpool-ejemplo}
+\end{figure}
+
+Las redes neuronales convolutionales tienen una gran variedad de aplicaciones prácticas en diferentes campos, algunas
+de las cuales incluyen:
+\begin{itemize}
+    \item Reconocimiento de imágenes: CNN se utilizan ampliamente en tareas de clasificación de imágenes, como el reconocimiento
+          de objetos, el análisis de sentimientos en imágenes, la generación de descripciones automáticas para imágenes, entre
+          otras \parencite{krizhevsky2017imagenet}.
+    \item Análisis de videos: CNN también se utilizan en tareas de análisis de videos, como el seguimiento de objetos, la
+          detección de eventos, la generación de subtítulos automáticos para videos, entre otras \parencite{simonyan2014twostream}.
+    \item Procesamiento de lenguaje natural: CNN también se utilizan en tareas de procesamiento de lenguaje natural, como la
+          clasificación de texto, la generación de texto, el análisis de sentimientos y la traducción automática \parencite{bugnon2020dl4papers}.
+    \item Medicina: CNN se utilizan en tareas de diagnóstico médico, como la detección de cáncer de mama, la detección de
+          enfermedades cardíacas, la detección de problemas en imágenes médicas, entre otras \parencite{wang2016deep}.
+\end{itemize}
 
 \subsection{Arquitecturas}
-\lipsum[1]
+
+Hay distintos tipos de arquitecturas de redes neuronales convolucionales debido a que cada una tiene diferentes
+fortalezas y debilidades en términos de capacidad de generalización, extracción de características y rendimiento \parencite{lecun2015deep}. Algunos factores que pueden influir en la elección de una arquitectura en particular incluyen \parencite{he2016deep}:
+
+\begin{itemize}
+    \item Tamaño de los datos de entrada: para procesar grandes conjuntos de datos, es posible que se necesite una red con una
+          mayor capacidad de procesamiento y una mayor cantidad de parámetros.
+    \item Nivel de detalle de las características: algunas arquitecturas pueden ser más eficientes para detectar características
+          a diferentes escalas y en diferentes posiciones, mientras que otras pueden tener una mayor capacidad para detectar
+          patrones complejos.
+    \item Nivel de generalización: algunas arquitecturas pueden ser más capaces de generalizar a datos nuevos y menos vistos
+          durante el entrenamiento, mientras que otras pueden ser más propensas a sobreajuste.
+    \item Requerimientos de tiempo y recursos: algunas arquitecturas pueden requerir más tiempo y recursos para entrenar y
+          evaluar, lo que puede ser un factor importante a considerar dependiendo de los objetivos del proyecto.
+\end{itemize}
+
+Una arquitectura simple de CNN para la clasificación de imágenes presenta: una subred convolucional $\mathcal{G}$ que
+extraen información y generan características $\mathbf{f}$ a partir de la entrada $\mathbf{x}$; y una subred densa
+$\mathcal{C}$ que se encargan de clasificar las características aprendidas $\mathbf{f}$ en las etiquetas del problema
+$\mathbf{\hat{y}}$.
+
+\begin{figure}[H]
+    \centering
+
+    \tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+    \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+        %uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+        %Shape: Circle [id:dp5607633409516137] 
+        \draw   (40.33,108.25) .. controls (40.33,99.83) and (47.16,93) .. (55.58,93) .. controls (64.01,93) and (70.83,99.83) .. (70.83,108.25) .. controls (70.83,116.67) and (64.01,123.5) .. (55.58,123.5) .. controls (47.16,123.5) and (40.33,116.67) .. (40.33,108.25) -- cycle ;
+        %Shape: Trapezoid [id:dp8058596397440787] 
+        \draw   (90.67,72.17) -- (130.67,84.17) -- (130.67,134.17) -- (90.67,146.17) -- cycle ;
+        %Straight Lines [id:da42639122448642897] 
+        \draw    (70.83,108.25) -- (87.33,108.25) ;
+        \draw [shift={(90.33,108.25)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Shape: Circle [id:dp6831404033749999] 
+        \draw  [dash pattern={on 4.5pt off 4.5pt}] (154.58,108.25) .. controls (154.58,99.83) and (161.41,93) .. (169.83,93) .. controls (178.26,93) and (185.08,99.83) .. (185.08,108.25) .. controls (185.08,116.67) and (178.26,123.5) .. (169.83,123.5) .. controls (161.41,123.5) and (154.58,116.67) .. (154.58,108.25) -- cycle ;
+        %Rounded Rect [id:dp3958441794745311] 
+        \draw   (208.67,97.98) .. controls (208.67,94.82) and (211.23,92.26) .. (214.38,92.26) -- (252.95,92.26) .. controls (256.11,92.26) and (258.67,94.82) .. (258.67,97.98) -- (258.67,115.12) .. controls (258.67,118.27) and (256.11,120.83) .. (252.95,120.83) -- (214.38,120.83) .. controls (211.23,120.83) and (208.67,118.27) .. (208.67,115.12) -- cycle ;
+        %Straight Lines [id:da33421369991474537] 
+        \draw    (131.33,108.17) -- (151.67,108.17) ;
+        \draw [shift={(154.67,108.17)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Straight Lines [id:da30712807219538707] 
+        \draw    (184.67,108.25) -- (205,108.25) ;
+        \draw [shift={(208,108.25)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+        %Shape: Circle [id:dp6313033137153481] 
+        \draw  [dash pattern={on 4.5pt off 4.5pt}] (282.58,107.25) .. controls (282.58,98.83) and (289.41,92) .. (297.83,92) .. controls (306.26,92) and (313.08,98.83) .. (313.08,107.25) .. controls (313.08,115.67) and (306.26,122.5) .. (297.83,122.5) .. controls (289.41,122.5) and (282.58,115.67) .. (282.58,107.25) -- cycle ;
+        %Straight Lines [id:da8576886251233382] 
+        \draw    (259.33,107.17) -- (279.67,107.17) ;
+        \draw [shift={(282.67,107.17)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+        \draw (110.67,109.17) node   [align=left] {\begin{minipage}[lt]{22.78pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathcal{G}$
+                \end{center}
+
+            \end{minipage}};
+        \draw (233.67,106.73) node   [align=left] {\begin{minipage}[lt]{26.23pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathcal{C}$
+                \end{center}
+
+            \end{minipage}};
+        \draw (169.83,108.25) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{f}$
+                \end{center}
+
+            \end{minipage}};
+        \draw (297.83,107.25) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{\hat{y}}$
+                \end{center}
+
+            \end{minipage}};
+        \draw (55.58,108.25) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+                \begin{center}
+                    $\mathbf{x}$
+                \end{center}
+
+            \end{minipage}};
+
+    \end{tikzpicture}
+
+    \caption{Arquitectura de una red simple. Las entradas $\mathbf{x}$ son procesadas por una red convolucional $\mathcal{G}$
+        que generan características $\mathbf{f}$ para luego ser clasificadas por una red densa $\mathcal{C}$ en $\mathbf{\hat{y}}$.}
+    \label{fig:cnn}
+\end{figure}
+
+Tal es el caso de la red LeNet, que fue propuesta por \cite{lecun1998gradient}. Esta red consta de dos capas de
+convolución seguidas por dos capas densas y una capa de salida, y fue utilizada con éxito para el reconocimiento de
+números escritos a mano en el conjunto de datos MNIST.
+
+Por otro lado, una arquitectura de red neuronal convolucional más compleja es la red ResNet (abreviación de Residual
+Network), propuesta por \cite{he2016deep}. Estas redes están diseñadas para resolver el problema de la propagación del
+gradiente en las redes neuronales profundas, lo que permite entrenar modelos con una gran cantidad de capas.
 
 \subsubsection{LeNet}
-\lipsum[1]
+LeNet es una de las primeras arquitecturas de redes neuronales de aprendizaje profundo desarrolladas para tareas de
+reconocimiento de caracteres escritos a mano. Aunque la arquitectura original de LeNet es bastante antigua, su diseño
+sigue siendo relevante hoy en día y se utiliza como una arquitectura básica para tareas similares.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{chapter2/lenet5.png}
+
+    \caption{Arquitectura de una LeNet-5. Imagen tomada de \cite{lecun1998gradient}.}
+    \label{fig:lenet}
+\end{figure}
+
+El desarrollo de la LeNet implicó la aparición de las CNNs y sus componentes básicos. No obstante, no fue popular en su
+momento debido a la falta del hardware necesario para entrenarlas y otros algoritmos como las máquinas de vectores de
+soporte (SVM por sus siglas en inglés) que podían obtener resultados similares o superadores \parencite{lecun1998gradient, decoste2002training, lauer2007trainable}.
+
+Desde el éxito de AlexNet \parencite{krizhevsky2017imagenet}, las CNNs se han convertido en la mejor opción para aplicaciones de {\it computer
+        vision} y se han creado muchos tipos diferentes de CNN, como las redes R-CNN utilizada para detección y segmentación de
+objetos \parencite{girshick2014rich}. En la actualidad los modelos CNN son bastante diferentes de LeNet, pero todos se desarrollan
+sobre la base de LeNet.
 
 \subsubsection{ResNet}
-\lipsum[1]
+
+La idea principal detrás de las redes ResNet es la utilización de {\it bloques residuales} en lugar de las capas
+tradicionales de la red neuronal. Un bloque residual se compone de varias capas de una red neuronal tradicional, pero
+con una conexión residual que permite que la información de entrada se sume directamente a la salida de las capas
+internas. Esto permite que la información se propague de manera más eficiente a través de las capas profundas de la
+red, lo que ayuda a reducir el problema de la propagación del gradiente.
+
+Además, las redes ResNet también utilizan una técnica llamada {\it bottleneck} que reduce el número de canales de
+salida en las capas internas del bloque residual, lo que ayuda a reducir el número de parámetros y mejorar la
+eficiencia del modelo.
+
+Las redes neuronales ResNet se han desarrollado en diferentes arquitecturas, cada una de las cuales tiene su propio
+conjunto de características y aplicaciones. Las mismas son:
+
+\begin{itemize}
+    \item ResNet18 y ResNet34 \parencite{he2016deep}: son arquitecturas de ResNet con un número moderado de capas (18 y 34 respectivamente) que se
+          utilizan comúnmente en tareas de clasificación de imágenes y reconocimiento de objetos.
+    \item ResNet50, ResNet101 y ResNet152 \parencite{he2016deep}: son arquitecturas de ResNet con un mayor número de capas (50, 101 y 152 respectivamente) que se
+          utilizan comúnmente en tareas de detección de objetos y segmentación de imágenes. Estas arquitecturas tienen una mayor
+          capacidad representativa y son más precisas en las tareas de aprendizaje profundo complejas, pero requieren más tiempo
+          de entrenamiento y recursos.
+    \item ResNet-S y ResNet-M \parencite{sandler2018mobilenetv2}: son arquitecturas de ResNet que se utilizan en dispositivos móviles y sistemas de baja
+          potencia. Estas arquitecturas son más ligeras en términos de parámetros y requisitos de cálculo que las arquitecturas
+          anteriores, lo que las hace ideales para la implementación en dispositivos móviles y sistemas de baja potencia.
+    \item ResNeXt \parencite{xie2017aggregated}: es una variante de ResNet que utiliza una técnica llamada {\it agrupación cardinal} para
+          mejorar la capacidad representativa de la red. Esta técnica utiliza varios grupos de canales en lugar de uno solo para
+          mejorar la capacidad representativa del modelo y lograr mejores resultados en tareas de clasificación y reconocimiento.
+\end{itemize}
+
+\section{Aprendizaje por transferencia}
+
+El aprendizaje por transferencia es una técnica que consiste en utilizar lo que se ha aprendido en una tarea para
+mejorar el rendimiento en otra tarea relacionada \parencite{thrun1998learning}. Esta técnica se aplica comúnmente en el contexto de redes neuronales y se basa en la idea de
+que algunos conocimientos adquiridos en una tarea pueden ser reutilizados en otra tarea, lo que permite que la red
+aprenda de manera más eficiente y con menos datos. Ha ganado popularidad en los últimos años debido a la creciente
+cantidad de datos disponibles y a la necesidad de entrenar modelos más complejos y de mayor rendimiento.
+
+En el contexto de las redes neuronales, el aprendizaje por transferencia se puede llevar a cabo de varias maneras, como
+el {\it pre-entrenamiento} y el {\it fine-tuning}.
+
+El pre-entrenamiento es una técnica de aprendizaje por transferencia en la que se entrena una red en una tarea y luego
+se utiliza como punto de partida para entrenar otra red en una tarea diferente \parencite{erhan2010does}. Esto permite que la red aprenda de manera más rápida y con menos datos, ya que ya ha adquirido
+algunos conocimientos en la primera tarea. El pre-entrenamiento se puede llevar a cabo de varias maneras, como por
+ejemplo entrenando una red en un conjunto de datos de gran tamaño y luego utilizándola como inicialización para una
+tarea específica de menor tamaño. Esto se ha utilizado con éxito en varias tareas de aprendizaje automático, como la
+clasificación de imágenes y el procesamiento del lenguaje natural \parencite{howard2017mobilenets}. También se ha utilizado con éxito en el contexto de redes neuronales profundas, donde ha
+demostrado ser una técnica efectiva para mejorar el rendimiento y la capacidad de generalización de las redes \parencite{girshick2014rich}.
+
+Por otro lado, el fine-tuning es una técnica den la que se utilizan las capas de una red pre-entrenada en una tarea
+como capas fijas en otra red que se entrena en una tarea diferente \parencite{yosinski2014transferable}. Esto permite que la red aprenda de manera más rápida y con menos datos \parencite{howard2018universal}.
 
 \section{Adaptaci\'on de Dominio}
 El {\it pre-entrenamiento} y el {\it fine-tuning} han mejorado considerablemente el estado del arte para diversos

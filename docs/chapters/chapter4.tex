@@ -14,7 +14,6 @@ adaptaci\'on ($MMD$, Dist. $\mathcal{A}$) son evaluadas sobre los espacios laten
 particiones de test de ambos datasets. El mejor modelo es el que posea mejor capacidad de clasificaci\'on y de
 adaptaci\'on.
 
-% TODO: cambiar f1 por macro para que sea distinto a acc. que onda iou?
 \begin{table}[H]
     \centering
     \begin{tabular}{cc|rrrr}
@@ -57,19 +56,21 @@ transcripto en el centro de c\'omputo suponiendo que existen pocos errores en el
     \centering
     \begin{tabular}{cc|rrr}
         \toprule
-                                 &        & $IoU$ prom.     & \# aciertos prom. & \% aciertos prom. \\
-        AD                       & Modelo &                 &                   &                   \\
+                                     &        & $IoU$ prom.     & \# aciertos prom. & \% aciertos prom. \\
+        AD                           & Modelo &                 &                   &                   \\
         \midrule
-        \multirow[c]{2}{*}{-}    & ResNet & 0.4494          & 4                 & 22\%              \\
-                                 & LeNet  & 0.4715          & 6                 & 33\%              \\\hline
-        \multirow[c]{2}{*}{MDD}  & ResNet & 0.5451          & 8                 & 44\%              \\
-                                 & LeNet  & 0.5801          & 9                 & 50\%              \\\hline
-        \multirow[c]{2}{*}{DANN} & ResNet & 0.6941          & 12                & 67\%              \\
-                                 & LeNet  & 0.7024          & 12                & 67\%              \\\hline
-        \multirow[c]{2}{*}{AFN}  & ResNet & \textbf{0.7486} & \textbf{13}       & \textbf{72\%}     \\
-                                 & LeNet  & 0.6493          & 11                & 61\%              \\\hline
-        \multirow[c]{2}{*}{ADDA} & ResNet & 0.6763          & 11                & 61\%              \\
-                                 & LeNet  & 0.6406          & 10                & 56\%              \\
+        \multirow[c]{2}{*}{-}        & ResNet & 0.4494          & 4                 & 22\%              \\
+                                     & LeNet  & 0.4715          & 6                 & 33\%              \\\hline
+        \multirow[c]{2}{*}{DANN}     & ResNet & 0.6941          & 12                & 67\%              \\
+                                     & LeNet  & 0.7024          & 12                & 67\%              \\\hline
+        \multirow[c]{2}{*}{ADDA}     & ResNet & 0.6763          & 11                & 61\%              \\
+                                     & LeNet  & 0.6406          & 10                & 56\%              \\\hline
+        \multirow[c]{2}{*}{DANN+BSP} & LeNet  & 0.6695          & 11                & 61\%              \\
+                                     & ResNet & 0.6515          & 11                & 61\%              \\\hline
+        \multirow[c]{2}{*}{MDD}      & ResNet & 0.5451          & 8                 & 44\%              \\
+                                     & LeNet  & 0.5801          & 9                 & 50\%              \\\hline
+        \multirow[c]{2}{*}{AFN}      & ResNet & \textbf{0.7486} & \textbf{13}       & \textbf{72\%}     \\
+                                     & LeNet  & 0.6493          & 11                & 61\%              \\
         \bottomrule
     \end{tabular}
     \caption{IoU promedio y cantidad promedio de aciertos al aplicar los modelos a cada telegrama.}
@@ -80,6 +81,8 @@ El cuadro \ref{tab:iou-cant-aciertos-en-telegramas} confirma la elecci\'on del m
 Independientemente de qu\'e t\'ecnica de adaptaci\'on se utilice, todas presentan mejores porcentajes de aciertos
 promedio que los modelos que fueron entrenados \'unicamente con $MNIST$.
 
+TODO: Actualizar para agregar DANN + BSP. TODO: buscar una mejor forma de mostrar los histogramas para que se vea las
+distintas distribuciones de aciertos dependiendo de cada modelo y AD.
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{chapter4/dist-aciertos.png}
@@ -89,7 +92,7 @@ promedio que los modelos que fueron entrenados \'unicamente con $MNIST$.
 
 \section{Comparaci\'on de espacios latentes}
 
-\lipsum[1]
+TODO: Mostrar un bueno, un feo y un malo, sino son muchos. quizas podria dejar el resto en un anexo? \lipsum[1]
 
 \section{\'Analisis de errores}
 
@@ -103,22 +106,26 @@ de ellos.
     \end{subfigure}
     \hfill
     \begin{subfigure}[h]{0.43\textwidth}
-        \includegraphics[height=1\textwidth]{chapter4/hist-iou-mdd.png}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[h]{0.43\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/hist-iou-dann.png}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[h]{0.43\textwidth}
-        \includegraphics[height=1\textwidth]{chapter4/hist-iou-afn.png}
     \end{subfigure}
     \hfill
     \begin{subfigure}[h]{0.43\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/hist-iou-adda.png}
     \end{subfigure}
+    \hfill
+    \begin{subfigure}[h]{0.43\textwidth}
+        \includegraphics[height=1\textwidth]{chapter4/hist-iou-bsp.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[h]{0.43\textwidth}
+        \includegraphics[height=1\textwidth]{chapter4/hist-iou-mdd.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[h]{0.43\textwidth}
+        \includegraphics[height=1\textwidth]{chapter4/hist-iou-afn.png}
+    \end{subfigure}
 
-    \caption{Histogramas de la m\'etrica $IoU$ promedio por telegrama por cada par t\'ecnica AD y modelo.}
+    \caption{Histogramas de la m\'etrica $IoU$ promedio por telegrama por cada t\'ecnica AD y modelo.}
     \label{fig:histogramas-ious}
 \end{figure}
 
@@ -128,7 +135,7 @@ observaciones que contienen valores entre [0, 0.2] en todos los experimentos rea
 estos casos, se detectaron las siguientes situaciones:
 
 \begin{itemize}
-    \item Telegramas cargados de forma err\'ones: ver ejemplo en el anexo \ref{anexo:telegrama-erroneo}.
+    \item Telegramas cargados de forma err\'onea: ver ejemplo en el anexo \ref{anexo:telegrama-erroneo}.
     \item Telegramas correctos pero por alguna cuesti\'on la l\'ogica de extracci\'on de d\'igitos no funciona correctamente: ver
           ejemplo en el anexo \ref{anexo:telegrama-numeros-juntos}.
     \item Telegramas donde existen otros caracteres distintos a n\'umeros: al ser un cuadro de texto libre sin formato, los jefes
