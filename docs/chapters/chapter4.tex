@@ -42,8 +42,8 @@ adaptaci\'on.
 \end{table}
 
 Como era de esperarse, los modelos que fueron entrenados sin adaptaci\'on de dominio son los que mejores m\'etricas de
-clasificaci\'on poseen. No obstante, sus valores de adaptaci\'on son los peores provocando que no puedan ser aplicados
-en $TDS$.
+clasificaci\'on poseen. No obstante, sus valores de adaptaci\'on son los peores provocando que no puedan generalizar a
+$TDS$.
 
 El modelo que mejor combinaci\'on de clasificaci\'on y adaptaci\'on es la ResNet utilizando AFN. Cabe destacar que los
 modelos LeNet entrenados con DANN y AFN obtuvieron buenas m\'etricas en general, lo que deja en evidencia que {\it no
@@ -130,6 +130,9 @@ modelo entrenado.
 
 \subsection{LeNet}
 
+La figura \ref{fig:umaps-lenet} a continuación contiene las representaciones UMAP obtenidas de los espacios latentes
+generados por todos los modelos LeNet.
+
 \begin{figure}[H]
     \centering
     \begin{subfigure}[h]{0.40\textwidth}
@@ -168,9 +171,29 @@ modelo entrenado.
         \label{fig:umap-lenet-afn}
     \end{subfigure}
 
-    \caption{Representaciones UMAP de los espacios latentes de los modelos LeNet. Los puntos azules representan observaciones de TDS y los naranjas de MNIST.}
+    \caption{Representaciones UMAP de los espacios latentes de los modelos LeNet. Los puntos naranjas representan observaciones de MNIST y los azules de TDS.}
     \label{fig:umaps-lenet}
 \end{figure}
+
+Se pueden observar los siguientes resultados:
+
+\begin{itemize}
+    \item Entrenar el modelo solo con MNIST no permite una buena generalización para TDS, como se muestra en la figura
+          \ref{fig:umap-lenet-so}.
+    \item Con el entrenamiento mediante ADDA o MDD se comienzan a generar agrupaciones en MNIST, pero no logran generarse de la
+          misma manera en TDS, como se puede apreciar en las figuras \ref{fig:umap-lenet-adda} y \ref{fig:umap-lenet-mdd}.
+    \item Al entrenar el modelo mediante DANN, se generan agrupaciones similares para ambos conjuntos de datos, como se muestra
+          en la figura \ref{fig:umap-lenet-dann}.
+    \item Finalmente, al utilizar la técnica de entrenamiento DANN con penalización BSP y AFN, se generan agrupaciones similares
+          y más densas para ambos conjuntos de datos, tal como se muestra en las figuras \ref{fig:umap-lenet-bsp} y
+          \ref{fig:umap-lenet-afn}.
+\end{itemize}
+
+En conclusión, se puede afirmar que la técnica de adaptación de dominio utilizada tiene un gran impacto en el
+rendimiento de un modelo LeNet debido a su estructura simple. Entre las diferentes técnicas evaluadas, se puede
+observar que DANN+BSP y AFN son las que proporcionan una mejor capacidad de adaptación al modelo LeNet. En general,
+estos resultados resaltan la importancia de seleccionar cuidadosamente la técnica de adaptación de dominio adecuada
+para un modelo dado a fin de lograr un rendimiento óptimo en diferentes escenarios de aplicación.
 
 \subsection{ResNet}
 
