@@ -11,20 +11,43 @@ experimental de los modelos.
 
 Los telegramas fueron descargados desde la \href{https://op.elecciones.gob.ar/telegramas/generales2021/}{página oficial
     del estado argentino}. Presentan un formato estándar en forma de grilla donde en cada renglón se encuentra el partido
-político y los votos obtenidos para diputados y senadores. En la página también se puede descargar un CSV donde se
-encuentra el {\it id} de cada telegrama y los valores digitalizados oficialmente.
+político y los votos obtenidos para diputados y senadores. En la página también se puede descargar un archivo en
+formato CSV donde se encuentra el {\it id} de cada telegrama y los valores digitalizados oficialmente.
 
 \section{Extracción de dígitos de los telegramas}
 
-Los telegramas de las elecciones de Santa Fe presentan un formato tabular, donde cada fila representa un partido
-político y los votos obtenidos abiertos por senadores y diputados. Se debieron ejecutar múltiples pasos de extracción,
-transformación y carga (ETL por sus siglas) de los mismos antes de poder armar un dataset con el cual entrenar los
-modelos. Se utilizó la librería OpenCV \parencite{opencv_library} para manipular las imágenes y poder llevar a cabo el proceso de ETL.
+Durante las elecciones en Santa Fe, los telegramas de los votos presentaron un formato tabular en el que cada fila
+representaba a un partido político y los votos obtenidos se encontraban divididos por senadores y diputados. Para poder
+utilizar estos datos y entrenar modelos de aprendizaje automático, fue necesario llevar a cabo un proceso de
+extracción, transformación y carga (ETL) de los mismos.
+
+Este proceso de ETL implicó la ejecución de múltiples pasos para extraer la información relevante de los telegramas y
+transformarla en un formato adecuado para su uso en modelos de aprendizaje automático. En primer lugar, se utilizó la
+librería OpenCV \parencite{opencv_library} para manipular las imágenes de los telegramas y poder llevar a cabo el proceso de ETL.
+
+A continuación, se realizó la extracción de la información tabular de los telegramas, identificando las filas
+correspondientes a cada partido político y los votos obtenidos por senadores y diputados. Este proceso también incluyó
+la limpieza y validación de los datos para asegurar su calidad y confiabilidad.
+
+Posteriormente, se transformaron los datos extraídos en un formato adecuado para su uso en modelos de aprendizaje
+automático. Esto implicó la normalización de los datos, la codificación de variables categóricas y la creación de
+variables adicionales para mejorar la calidad de los datos.
+
+Finalmente, se cargó el conjunto de datos procesados en un dataset que fue utilizado para entrenar los modelos.
 
 \subsection{Enderezado}
-Como los telegramas son escaneados a mano, el primer paso consiste en enderezarlos. Este proceso puede realizarse
-buscando el rectángulo de mayor área, calculando el ángulo de rotación y rotando la imagen completa con la función
-\verb|getRotationMatrix2D| de OpenCV.
+Cuando se escanean telegramas a mano, es común que estos no estén perfectamente alineados y presenten una ligera
+inclinación en su posición. Por lo tanto, el primer paso en el procesamiento de los telegramas es enderezarlos para
+facilitar su lectura y análisis.
+
+Para lograr esto, se emplea un algoritmo que busca el rectángulo de mayor área en la imagen del telegrama. Este
+rectángulo representa la región que abarca todo el contenido del telegrama y se utiliza para calcular el ángulo de
+rotación necesario para alinear la imagen.
+
+Una vez que se ha determinado el ángulo de rotación, se aplica una transformación geométrica a la imagen completa para
+enderezarla. Para realizar esta transformación, se utiliza la función \verb|getRotationMatrix2D| de la biblioteca de
+procesamiento de imágenes OpenCV. Esta función recibe como argumentos el ángulo de rotación calculado y las dimensiones
+de la imagen, y devuelve una matriz de transformación que se aplica a la imagen para enderezarla.
 
 \begin{figure}[H]
     \centering
@@ -41,14 +64,21 @@ buscando el rectángulo de mayor área, calculando el ángulo de rotación y rot
 
     \end{tikzpicture}
 
-    \caption{Enderezamiento de un telegrama utilizando OpenCV.}
+    \caption{Proceso de enderezamiento de un telegrama mediante el uso de OpenCV.}
     \label{fig:etl-1-rotacion}
 \end{figure}
 
 \subsection{Extracción de la grilla de votos}
-El siguiente paso consiste en poder seleccionar la grilla de los votos y poder extraerla para seguir trabajando en
-ella. Esto puede realizarse utilizando la funcion \verb|getContours| de OpenCV y quedándose con el contorno de mayor
-área.
+El siguiente paso es extraer la grilla de votos para poder trabajar con ella de forma aislada. Para lograr esto, se
+utiliza la función \verb|getContours| de la biblioteca de procesamiento de imágenes OpenCV.
+
+Esta función permite identificar y seleccionar los contornos presentes en la imagen, que son los bordes que forman los
+objetos presentes en la misma. Seleccionando el contorno de mayor área, se puede obtener la grilla de votos como un
+objeto independiente.
+
+Una vez identificado el contorno de mayor área, se procede a extraer la grilla de votos y a trabajar en ella de forma
+separada del resto de la imagen. De esta manera, se simplifica la tarea de procesamiento de los datos y se puede
+trabajar de forma más efectiva en la extracción y análisis de los votos presentes en la grilla.
 
 \begin{figure}[H]
     \centering
@@ -66,7 +96,7 @@ donde se encuentran las lineas horizontales y verticales. Posteriormente, se sel
 eje, siendo el promedio menos dos desvíos estándar. La figura \ref{fig:etl-3-proyecciones} muestra las proyecciones
 obtenidas con los umbrales por cada eje.
 
-\begin{figure}
+\begin{figure}[H]
     \centering
 
     \tikzset{every picture/.style={line width=0.75pt}}
@@ -81,8 +111,8 @@ obtenidas con los umbrales por cada eje.
     \label{fig:etl-3-proyecciones}
 \end{figure}
 
-Sin embargo, aunque se seleccione aquellos pixeles que se encuentren por debajo del umbral, por cada pico existe mas de
-un pixel. Siguiendo con el ejemplo, en el eje $x$ se obtienen los siguientes pixeles que se encuentran en los
+Sin embargo, aunque se seleccione aquellos píxeles que se encuentren por debajo del umbral, por cada pico existe mas de
+un píxel. Siguiendo con el ejemplo, en el eje $x$ se obtienen los siguientes píxeles que se encuentran en los
 ``picos'':
 
 \begin{verbatim}
@@ -94,7 +124,7 @@ un pixel. Siguiendo con el ejemplo, en el eje $x$ se obtienen los siguientes pix
 Con la estrategia del umbral no se obtienen las 4 líneas que se desean detectar sobre el eje $x$. No obstante, se puede
 aplicar un clustering jerárquico sobre los índices obtenidos y luego calcular el índice promedio de cada cluster para
 tomarlo como único representante. El proceso se repite de la misma manera sobre el eje $y$. Esta última modificación
-sobre el trabajo realizado en \parencite{lamagna2016lectura} asegura tener un único pixel por línea.
+sobre el trabajo realizado en \parencite{lamagna2016lectura} asegura tener un único píxel por línea.
 
 \begin{figure}[H]
     \centering
@@ -117,10 +147,21 @@ primer renglón que contiene los títulos de la grilla.
     \label{fig:etl-4-registro}
 \end{figure}
 
-Para separar cada dígito en una única imagen, se utiliza un análisis de componentes conectados
-(\verb|connectedComponents| de OpenCV) y se recortan aquellos contornos que posean de área entre el $5\%$ y el $70\%$
-de los pixeles totales de la imagen. Los valores fueron obtenidos mediante experimentación y sirven para descartar
-ruido que pueda detectar el análisis de componentes conectados.
+Una vez obtenida la grilla de votos, se busca separar cada dígito de forma individual para poder procesarlos de forma
+independiente. Para lograr esto, se utiliza un análisis de componentes conectados mediante la función
+\verb|connectedComponents| de OpenCV.
+
+Esta función permite identificar los distintos componentes (regiones conectadas) presentes en una imagen binaria. En
+este caso, los componentes corresponden a los dígitos presentes en la grilla de votos. Luego, se establece un rango de
+áreas permitido para seleccionar los componentes que corresponden a los dígitos.
+
+Para determinar el rango de áreas permitido, se realizó una experimentación previa y se establecieron como límites el
+$5\%$ y el $70\%$ del total de píxeles de la imagen. De esta manera, se descartan aquellos contornos que representan
+ruido o elementos no deseados que puedan haber sido detectados por el análisis de componentes conectados.
+
+Una vez que se han identificado los componentes correspondientes a los dígitos, se procede a recortarlos
+individualmente para obtener una imagen de cada dígito por separado. De esta manera, se facilita el procesamiento y
+análisis de los votos de forma individual.
 
 \begin{figure}[H]
     \centering
@@ -131,14 +172,22 @@ ruido que pueda detectar el análisis de componentes conectados.
     \label{fig:etl-4-digitos}
 \end{figure}
 
-Por último, los dígitos son encuadrados y se guardan junto al partido político y al tipo de voto (senadores o
-diputados) en un dataset, cuyo análisis será abordado en la siguiente sección.
+Luego de haber realizado la segmentación de los dígitos, se procede a aplicar un proceso de transformación para que
+todas las imágenes de dígitos tengan una dimensión cuadrada.
+
+Luego, se guardan en un dataset que también incluye la información correspondiente al partido político y al tipo de
+voto (senadores o diputados). De esta manera, se construye un conjunto de datos que servirá para entrenar y validar los
+modelos que permitan analizar los resultados electorales.
 
 \section{Análisis del dataset}
 
-Con la extracción descripta en la sección anterior, se procede a hacer un análisis exploratorio de los datos en
-búsqueda de posibles errores. La tabla \ref{tab:dataset-telegramas-segmentados} muestra algunos registros del dataset
-que vincula los dígitos extraídos de los telegramas con los partidos políticos.
+Una vez que se ha completado el proceso de extracción y segmentación de los dígitos, se procede a realizar un análisis
+exploratorio de los datos. Este análisis tiene como objetivo detectar posibles errores o inconsistencias en los datos
+extraídos, que puedan afectar la calidad de los modelos de aprendizaje automático que se construirán a partir de ellos.
+
+La tabla \ref{tab:dataset-telegramas-segmentados} muestra algunos registros del dataset, que incluye información como
+el número del telegrama, el partido político, el tipo de voto (senadores o diputados) y los dígitos correspondientes a
+cada candidato.
 
 \begin{table}[H]
     \centering
@@ -167,40 +216,47 @@ que vincula los dígitos extraídos de los telegramas con los partidos político
     \label{tab:dataset-telegramas-segmentados}
 \end{table}
 
-El lector podrá darse cuenta que existen errores en el cuadro anterior. En primer lugar, en la columna donde sólamente
-deben haber las imágenes de los dígitos existe una con una línea en el segundo registro. Por otro lado, también existen
-dígitos mal escritos como los que se encuentran en los dos últimos registros. Para limpiar estas extracciones
-incorrectas, se calculan dos columnas las cuales contienen las proporciones mínimas y máximas de pixeles blancos en las
-imágenes por cada voto. La figura \ref{fig:histogramas-min-max-prop-blanco} muestra los histogramas generales de las
-mismas.
+Se pueden detectar errores evidentes en la tabla presentada. En primer lugar, se puede observar que en la columna donde
+solamente deben aparecer las imágenes de los dígitos, en el segundo registro existe una imagen de una línea horizontal,
+lo cual no es correcto. Además, también se detectan dígitos mal escritos, como los que se encuentran en los dos últimos
+registros.
+
+Para corregir estas extracciones incorrectas, se calculan dos columnas adicionales que contienen las proporciones
+mínimas y máximas de píxeles blancos en las imágenes para cada voto. Estas proporciones permiten establecer un umbral
+de confianza para las extracciones, de tal manera que aquellas imágenes con proporciones de píxeles blancos fuera de
+los límites establecidos son descartadas.
+
+Para visualizar de manera más clara la distribución de estas proporciones, se generan histogramas que muestran la
+frecuencia de cada valor dentro del rango establecido. La figura \ref{fig:histogramas-min-max-prop-blanco} presenta
+estos histogramas para las proporciones mínimas y máximas de píxeles blancos en las imágenes del dataset.
 
 \begin{figure}[H]
     \centering
     \begin{subfigure}[h]{0.48\textwidth}
         \includegraphics[width=1\textwidth]{chapter3/eda/hist-min-prop-blanco.png}
-        \caption{Histograma de la proporción mínima de pixeles blancos en un voto.}
+        \caption{Histograma de la proporción mínima de píxeles blancos en un voto.}
         \label{fig:histograma-min-prop-blanco}
     \end{subfigure}
     \hfill
     \begin{subfigure}[h]{0.48\textwidth}
         \includegraphics[width=1\textwidth]{chapter3/eda/hist-max-prop-blanco.png}
-        \caption{Histograma de la proporción máxima de pixeles blancos en un voto.}
+        \caption{Histograma de la proporción máxima de píxeles blancos en un voto.}
         \label{fig:histograma-max-prop-blanco}
     \end{subfigure}
-    \caption{Histogramas de proporciones de pixeles blancos por voto.}
+    \caption{Histogramas de proporciones de píxeles blancos por voto.}
     \label{fig:histogramas-min-max-prop-blanco}
 \end{figure}
 
 La cola derecha de la distribución de \ref{fig:histograma-max-prop-blanco} presenta un pico anormal en el extremo
-cercano a 1. Al eliminar aquellas imágenes de dígitos que posean mas de un $95\%$ de pixeles blancos, se logran
-descartar los casos de líneas como la vista en el cuadro \ref{tab:dataset-telegramas-segmentados}. Por el contrario, al
-eliminar aquellas imágenes que posean menos del $50\%$ de pixeles blancos, se logran descartar los casos de escritura
+cercano a 1. Al eliminar aquellas imágenes de dígitos que posean mas de un $95\%$ de píxeles blancos, se logran
+descartar los casos de líneas como la vista en el cuadro \ref{tab:dataset-telegramas-segmentados}. Por otro lado, al
+eliminar aquellas imágenes que posean menos del $50\%$ de píxeles blancos, se logran descartar los casos de escritura
 incorrecta.
 
-El siguiente punto a analizar es el tamaño de las imágenes. Como fue mostrado en el cuadro
-\ref{tab:dataset-telegramas-segmentados}, las imágenes no fueron estandarizadas en un tamaño estándar. De manera
-análoga a la variable de proporción de pixeles blancos, se calculan las variables mínimo y máximo tamaño por voto. La
-tabla \ref{tab:describe-min-max-size} muestra los estadísticos descriptivos de las mismas.
+El siguiente punto a analizar es el tamaño de las imágenes. Como se mostra en el cuadro
+\ref{tab:dataset-telegramas-segmentados}, las imágenes no fueron estandarizadas en cuanto a tamaño. De manera análoga a
+la variable de proporción de píxeles blancos, se calculan las variables mínimo y máximo tamaño por voto. La tabla
+\ref{tab:describe-min-max-size} muestra los estadísticos descriptivos de las mismas.
 
 \begin{table}[H]
     \centering
@@ -216,16 +272,18 @@ tabla \ref{tab:describe-min-max-size} muestra los estadísticos descriptivos de 
     \label{tab:describe-min-max-size}
 \end{table}
 
-Al analizar los valores extremos, se encuentran telegramas que fueron cargados de forma incorrecta (ver anexo
-\ref{anexo:telegrama-erroneo}) o con caligrafía en la cual los números se encuentran unidos y no pueden ser separados
-por el análisis de componentes conectados de OpenCV (ver anexo \ref{anexo:telegrama-numeros-juntos}). Se eliminan estos
-casos filtrando por aquellos registros que se encuentren por fuera de la media +- 4 desvíos estándar.
+Al analizar aquellos registros que poseen los valores extremos en cuanto a mínimo y máximo de tamaño, se encuentran
+telegramas que fueron cargados de forma incorrecta (ver anexo \ref{anexo:telegrama-erroneo}) o con una caligrafía en la
+cual los dígitos no están separados entre si, provocando que la segmentación por el análisis de componentes conectados
+de OpenCV falle (ver anexo \ref{anexo:telegrama-numeros-juntos}). Se eliminan estos casos filtrando por aquellos
+registros que se encuentren por fuera de la media +- 4 desvíos estándar.
 
-Concluida la etapa de análisis y limpieza, se exportan los dígitos en un formato similar al dataset {\it MNIST} con la
-etiqueta que oficialmente fue registrada en las elecciones del 2021. El mismo será nombrado como {\it TDS} (dataset de
-telegramas) de aquí en adelante. El mismo posee un total de 170.718 imágenes de dígitos cuadradas con sus dimensiones
-orginales, es decir, no se encuentran estandarizados en una dimension específica. Esto último es adrede ya que puede
-servir para mejorar el dataset en futuros trabajos.
+Una vez finalizada la etapa de análisis y limpieza, se exportan los dígitos extraídos en un formato similar al conocido
+dataset {\it MNIST} junto con la etiqueta correspondiente al partido político registrado oficialmente en las elecciones
+de 2021. Este conjunto de datos será denominado {\it TDS} (dataset de telegramas) a partir de este momento. El conjunto
+de datos {\it TDS} consta de un total de 170.718 imágenes de dígitos cuadradas con sus dimensiones originales, es
+decir, no se han estandarizado en una dimensión específica. Esta decisión se tomó intencionalmente, ya que podría
+permitir una mayor flexibilidad en el perfeccionamiento, procesamiento y análisis de los mismos en trabajos futuros.
 
 \begin{figure}[H]
     \centering
@@ -236,17 +294,28 @@ servir para mejorar el dataset en futuros trabajos.
 
 \section{Diseño experimental}
 
-Los experimentos fueron programados en Python mediante la librería PyTorch \parencite{NEURIPS2019_9015} y TLLIB \parencite{tllib} para aplicar las técnicas de adaptación de dominio.
+Se llevaron a cabo experimentos con el fin de evaluar el desempeño de dos redes neuronales convolucionales, la
+ResNet-18 \parencite{he2016deep} y la LeNet-8 \parencite{lecun1998gradient}, para cada una de las técnicas de adaptación de dominio que fueron descritas en el capítulo
+\ref{Chapter2}. Además, como modelo de referencia, se entrenaron ambas redes sin ninguna técnica de adaptación. De esta
+manera, se busca comparar el rendimiento de las redes con y sin técnicas de adaptación de dominio, para determinar cuál
+técnica es la más adecuada para el problema en cuestión.
 
-Se entrenaron redes ResNet-50 \parencite{he2016deep} y LeNet-8 \parencite{lecun1998gradient} por cada una de las técnicas de adaptación de dominio descriptas en el capítulo
-\ref{Chapter2}. Como modelo baseline, se entrenaron ambas redes sin ninguna técnica de adaptación.
+Las tecnologías utilizadas son:
+
+\begin{itemize}
+    \item Python como lenguaje de programación general.
+    \item PyTorch \parencite{paszke2019pytorch} para la implementación de los modelos.
+    \item PyTorch Lightning \parencite{falcon2019pytorch-lightning} para simplificar el entrenamiento de los modelos.
+    \item TLLIB \parencite{tllib} para aplicar las técnicas de adaptación de dominio.
+\end{itemize}
 
 \subsection{Metodología de entrenamiento}
 
-Para entrenar modelos mediante adaptación de dominio, se precisan dos datasets: el de origen que se encuentra
-etiquetado y el de destino sin etiquetar. Los experimentos llevados a cabo utilizan el {\it MNIST} como origen y el
-    {\it TDS} como destino. En cada iteración de entrenamiento, se provee de un batch de 1024 imágenes del dataset origen y
-otro del de destino. Se realizaron 3 particiones de cada uno:
+Para entrenar modelos mediante adaptación de dominio, se necesitan dos conjuntos de datos: uno etiquetado, llamado
+origen, y otro sin etiquetar, llamado destino. En los experimentos llevados a cabo, se utilizó el conjunto de datos
+    {\it MNIST} como origen y el conjunto de datos {\it TDS} como destino. Durante cada iteración de entrenamiento, se
+proporcionó un lote de 1024 imágenes del conjunto de datos de origen y otro del conjunto de datos de destino. Se
+realizaron tres particiones para cada conjunto de datos:
 
 \begin{itemize}
     \item Entrenamiento (70\% de cada dataset): utilizado para entrenar la LeNet-8 y ResNet-18 en cada época.
