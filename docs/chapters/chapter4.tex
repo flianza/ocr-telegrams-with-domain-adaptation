@@ -10,13 +10,13 @@ convolucional de las redes y se analizarán los errores que surgen de aplicar lo
 
 Los experimentos realizados arrojaron los resultados mostrados en el cuadro \ref{tab:metricas-experimentos}. Las
 métricas referidas a la capacidad de clasificación (Accuracy, $F_1$) son evaluadas sobre la partición de test del
-dataset de origen donde se conocen las etiquetas a ciencia cierta ($MNIST$). Por otro lado, las métricas de adaptación
+dataset de origen donde se conocen las etiquetas a ciencia cierta (MNIST). Por otro lado, las métricas de adaptación
 ($MMD$, Dist. $\mathcal{A}$) son evaluadas sobre los espacios latentes que los modelos generaron para las particiones
 de test de ambos datasets.
 
 Es importante destacar que el mejor modelo es aquel que tiene tanto la mejor capacidad de clasificación como la mejor
-adaptación a nuevos conjuntos de datos. Por lo tanto, se deben tener en cuenta ambos tipos métricas al seleccionar el
-modelo adecuado.
+adaptación a nuevos conjuntos de datos. Las métricas de clasificación deben ser maximizadas y las de adaptación deben
+ser minimizadas.
 
 \begin{table}[H]
     \centering
@@ -59,8 +59,7 @@ las etiquetas transcritas en el centro de cómputo, asumiendo que hay pocos erro
     \centering
     \begin{tabular}{cc|rrr}
         \toprule
-                                     &        & $IoU$ prom.     & \# aciertos prom. & \% aciertos prom. \\
-        AD                           & Modelo &                 &                   &                   \\
+        AD                           & Modelo & $IoU$ prom.     & \# aciertos prom. & \% aciertos prom. \\
         \midrule
         \multirow[c]{2}{*}{-}        & ResNet & 0.4494          & 4                 & 22\%              \\
                                      & LeNet  & 0.4715          & 6                 & 33\%              \\\hline
