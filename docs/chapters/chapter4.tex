@@ -171,7 +171,7 @@ generados por todos los modelos LeNet.
         \label{fig:umap-lenet-afn}
     \end{subfigure}
 
-    \caption{Representaciones UMAP de los espacios latentes de los modelos LeNet. Los puntos naranjas representan observaciones de MNIST y los azules de TDS.}
+    \caption{Representaciones UMAP de los espacios latentes de los modelos LeNet. Los puntos azules representan observaciones de MNIST y los naranjas de TDS.}
     \label{fig:umaps-lenet}
 \end{figure}
 
@@ -196,6 +196,9 @@ estos resultados resaltan la importancia de seleccionar cuidadosamente la técni
 para un modelo dado a fin de lograr un rendimiento óptimo en diferentes escenarios de aplicación.
 
 \subsection{ResNet}
+
+La figura \ref{fig:umaps-resnet} a continuación contiene las representaciones UMAP obtenidas de los espacios latentes
+generados por todos los modelos ResNet.
 
 \begin{figure}[H]
     \centering
@@ -238,6 +241,25 @@ para un modelo dado a fin de lograr un rendimiento óptimo en diferentes escenar
     \caption{Representaciones UMAP de los espacios latentes de los modelos ResNet. Los puntos azules representan observaciones de TDS y los naranjas de MNIST.}
     \label{fig:umaps-renet}
 \end{figure}
+
+Al analizar las representaciones UMAP de los espacios latentes obtenidos por los modelos ResNet, se pueden observar los
+siguientes resultados:
+
+\begin{itemize}
+    \item En contraste con los modelos LeNet, la ResNet es más eficaz en la extracción de características {\it out of the box},
+          lo que le permite generalizar mejor sin necesidad de técnicas de adaptación de dominio (figura
+          \ref{fig:umap-resnet-so}).
+    \item La aplicación de técnicas de adaptación de dominio como DANN, DANN con penalización BSP y ADDA mejora la capacidad de
+          generalización, pero no de forma significativa en comparación con las mejoras obtenidas con LeNet (figuras
+          \ref{fig:umap-resnet-dann}, \ref{fig:umap-resnet-bsp} y \ref{fig:umap-resnet-adda}).
+    \item El uso de Margin Disparity Discrepancy parece disminuir la capacidad de generalización (figura
+          \ref{fig:umap-resnet-mdd}).
+    \item La aplicación de Adaptive Feature Norm potencia la generalización de la ResNet, obteniendo representaciones de los
+          espacios latentes prácticamente idénticas para ambos conjuntos de datos (figura \ref{fig:umap-resnet-afn}).
+\end{itemize}
+
+En general, estas representaciones permiten visualizar los resultados obtenidos a partir de las métricas de adaptación
+descritas en el cuadro \ref{tab:metricas-experimentos} de la sección anterior.
 
 \section{\'Analisis de errores}
 
