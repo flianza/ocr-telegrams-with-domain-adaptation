@@ -12,14 +12,17 @@ Los experimentos realizados arrojaron los resultados mostrados en el cuadro \ref
 métricas referidas a la capacidad de clasificación (Accuracy, $F_1$) son evaluadas sobre la partición de test del
 dataset de origen donde se conocen las etiquetas a ciencia cierta ($MNIST$). Por otro lado, las métricas de adaptación
 ($MMD$, Dist. $\mathcal{A}$) son evaluadas sobre los espacios latentes que los modelos generaron para las particiones
-de test de ambos datasets. El mejor modelo es el que posea mejor capacidad de clasificación y de adaptación.
+de test de ambos datasets.
+
+Es importante destacar que el mejor modelo es aquel que tiene tanto la mejor capacidad de clasificación como la mejor
+adaptación a nuevos conjuntos de datos. Por lo tanto, se deben tener en cuenta ambos tipos métricas al seleccionar el
+modelo adecuado.
 
 \begin{table}[H]
     \centering
-    \begin{tabular}{cc|rrrr}
+    \begin{tabular}{cc|rr|rr}
         \toprule
-                                     &        & Acc.                                & $F_1$                               & $MMD$                               & Dist. $\mathcal{A}$                 \\
-        AD                           & Modelo &                                     &                                     &                                     &                                     \\
+        AD                           & Modelo & Acc.                                & $F_1$                               & $MMD$                               & Dist. $\mathcal{A}$                 \\
         \midrule
         \multirow[c]{2}{*}{-}        & ResNet & {\footnotesize (2)} 0.9885          & {\footnotesize (2)} 0.9883          & 0.0632                              & 1.9306                              \\
                                      & LeNet  & 0.9811                              & 0.9810                              & 0.0469                              & 1.9515                              \\\hline
@@ -40,17 +43,17 @@ de test de ambos datasets. El mejor modelo es el que posea mejor capacidad de cl
     \label{tab:metricas-experimentos}
 \end{table}
 
-Como era de esperarse, los modelos que fueron entrenados sin adaptación de dominio son los que mejores métricas de
-clasificación poseen. No obstante, sus valores de adaptación son los peores provocando que no puedan generalizar a
-$TDS$.
+Se observa que los modelos entrenados sin adaptación de dominio presentan las mejores métricas de clasificación, como
+se esperaba. Sin embargo, estos modelos tienen los peores valores de adaptación, lo que hace que no puedan
+generalizarse a nuevos conjuntos de datos, como TDS.
 
-El modelo que mejor combinación de clasificación y adaptación es la ResNet utilizando AFN. Cabe destacar que los
-modelos LeNet entrenados con DANN y AFN obtuvieron buenas métricas en general, lo que deja en evidencia que {\it no
-        siempre un modelo más complejo es mejor}.
+El modelo ResNet, utilizando AFN, demuestra ser el modelo que combina mejor las métricas de clasificación y adaptación.
+A pesar de esto, se destaca que los modelos LeNet entrenados con DANN y AFN obtuvieron buenas métricas en general, lo
+que sugiere que en ocasiones, un modelo más complejo no necesariamente garantiza un mejor rendimiento.
 
-Es posible aplicar los modelos sobre todos los telegramas y calcular el $IoU$ promedio por telegrama con el cálculo
-descripto en el capítulo \ref{Chapter3} y la cantidad de aciertos promedio por telegrama utilizando como etiquetas lo
-transcripto en el centro de cómputo suponiendo que existen pocos errores en ellos.
+Los modelos se aplicaron a todos los telegramas, y se calculó el promedio de $IoU$ por telegrama utilizando el método
+descrito en el capítulo \ref{Chapter3}. Además, se determinó la cantidad promedio de aciertos por telegrama utilizando
+las etiquetas transcritas en el centro de cómputo, asumiendo que hay pocos errores en ellas.
 
 \begin{table}[H]
     \centering
@@ -77,9 +80,14 @@ transcripto en el centro de cómputo suponiendo que existen pocos errores en ell
     \label{tab:iou-cant-aciertos-en-telegramas}
 \end{table}
 
-El cuadro \ref{tab:iou-cant-aciertos-en-telegramas} confirma la elección del mejor modelo realizada anteriormente.
-Independientemente de qué técnica de adaptación se utilice, todas presentan mejores porcentajes de aciertos promedio
-que los modelos que fueron entrenados únicamente con $MNIST$.
+En el cuadro \ref{tab:iou-cant-aciertos-en-telegramas}, se confirma la elección del mejor modelo mencionado
+previamente. Es importante destacar que independientemente de la técnica de adaptación utilizada, todos los modelos
+presentan mejores porcentajes de aciertos promedio que aquellos modelos entrenados únicamente con MNIST.
+
+Esto sugiere que la adaptación de dominio es fundamental para obtener un mejor rendimiento en la tarea de clasificación
+de telegramas. Los modelos entrenados con técnicas de adaptación logran generalizar mejor y son más efectivos en la
+tarea de reconocimiento de los patrones presentes en los telegramas, incluso en presencia de ruido y variaciones en los
+datos de entrada.
 
 TODO: Actualizar para agregar DANN + BSP. TODO: buscar una mejor forma de mostrar los histogramas para que se vea las
 distintas distribuciones de aciertos dependiendo de cada modelo y AD.
