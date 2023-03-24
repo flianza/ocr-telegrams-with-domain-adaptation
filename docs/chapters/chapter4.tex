@@ -88,14 +88,8 @@ de telegramas. Los modelos entrenados con técnicas de adaptación logran genera
 tarea de reconocimiento de los patrones presentes en los telegramas, incluso en presencia de ruido y variaciones en los
 datos de entrada.
 
-TODO: Actualizar para agregar DANN + BSP. TODO: buscar una mejor forma de mostrar los histogramas para que se vea las
-distintas distribuciones de aciertos dependiendo de cada modelo y AD.
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{chapter4/dist-aciertos.png}
-    \caption{Distribución de aciertos de cantidad de votos por cada par técnica AD y modelo.}
-    \label{fig:distribucion-aciertos}
-\end{figure}
+% TODO: aca antes ponia la distribucion de aciertos por modelo y ad. No se que tanto aporta porque tienen la misma
+% distribucion que el grafico IoU de analisis de errores.
 
 \section{Análisis de los espacios latentes}
 
@@ -245,7 +239,7 @@ generados por todos los modelos ResNet.
     \end{subfigure}
 
     \caption{Representaciones UMAP de los espacios latentes de los modelos ResNet. Los puntos azules representan observaciones de TDS y los naranjas de MNIST.}
-    \label{fig:umaps-renet}
+    \label{fig:umaps-resnet}
 \end{figure}
 
 Al analizar las representaciones UMAP de los espacios latentes obtenidos por los modelos ResNet, se pueden observar los
