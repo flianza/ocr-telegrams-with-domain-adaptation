@@ -39,6 +39,12 @@ algunas posibles líneas de investigación futura:
           ya que presenta ciertas limitaciones en términos de segmentación de los dígitos en los telegramas. Por lo tanto, una
           posible línea de investigación futura es la mejora del proceso ETL para mejorar la segmentación de los dígitos y
           mejorar la calidad del conjunto de datos.
+    \item Mejorar el proceso de post-procesamiento de las predicciones: En la implementación actual, no se realizó ningún tipo de
+          post-procesamiento en las predicciones obtenidas por los modelos de aprendizaje automático. Sería útil explorar
+          distintas opciones de post-procesamiento, como la validación de que la cantidad total de votos predichos por telegrama
+          no supere el total que debe haber por mesa, o la validación de que la cantidad de votos por partido no supere el total
+          de la mesa. También se podría considerar la utilización de otras técnicas de post-procesamiento, como la corrección de
+          errores en las predicciones mediante la incorporación de información contextual adicional.
     \item Mejora de la estandarización de los telegramas: Como se mencionó en las conclusiones, la estandarización en la sección
           donde se escriben los dígitos podría mejorar aún más la precisión de los modelos de ya que mejoraría la calidad de TDS.
     \item Evaluación de otras técnicas de adaptación de dominio: En este trabajo se evaluaron algunas técnicas de adaptación de
@@ -51,7 +57,7 @@ algunas posibles líneas de investigación futura:
           imágenes para mejorar la calidad de los datos.
 \end{itemize}
 
-En conclusión, existen varias líneas de investigación que pueden ser exploradas desprendidas del trabajo actual para
+En conclusión, existen varias líneas de investigación desprendidas del trabajo actual que pueden ser exploradaspara
 mejorar la precisión de los modelos que deben aplicarse en un conjunto de datos con características distintas que del
 que se entrenó. Estas mejoras pueden ser importantes para aumentar la confianza en los procesos electorales y mejorar
 la transparencia y la eficiencia en el conteo de votos.
