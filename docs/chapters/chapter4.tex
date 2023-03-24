@@ -1,19 +1,18 @@
-\chapter{An\'alisis de resultados}
+\chapter{Análisis de resultados}
 
 \label{Chapter4}
 
-A lo largo del presente cap\'itulo, se analizar\'an los resultados obtenidos a partir de los experimentos planteados.
-Se detallar\'an las m\'etricas obtenidas, se visualizarán los espacios latentes $\mathbf{z}$ generados por la parte
+A lo largo del presente capítulo, se analizarán los resultados obtenidos a partir de los experimentos planteados. Se
+detallarán las métricas obtenidas, se visualizarán los espacios latentes $\mathbf{z}$ generados por la parte
 convolucional de las redes y se analizarán los errores que surgen de aplicar los modelos a los telegramas.
 
-\section{An\'alisis de m\'etricas}
+\section{Análisis de métricas}
 
 Los experimentos realizados arrojaron los resultados mostrados en el cuadro \ref{tab:metricas-experimentos}. Las
-m\'etricas referidas a la capacidad de clasificaci\'on (Accuracy, $F_1$) son evaluadas sobre la partici\'on de test del
-dataset de origen donde se conocen las etiquetas a ciencia cierta ($MNIST$). Por otro lado, las m\'etricas de
-adaptaci\'on ($MMD$, Dist. $\mathcal{A}$) son evaluadas sobre los espacios latentes que los modelos generaron para las
-particiones de test de ambos datasets. El mejor modelo es el que posea mejor capacidad de clasificaci\'on y de
-adaptaci\'on.
+métricas referidas a la capacidad de clasificación (Accuracy, $F_1$) son evaluadas sobre la partición de test del
+dataset de origen donde se conocen las etiquetas a ciencia cierta ($MNIST$). Por otro lado, las métricas de adaptación
+($MMD$, Dist. $\mathcal{A}$) son evaluadas sobre los espacios latentes que los modelos generaron para las particiones
+de test de ambos datasets. El mejor modelo es el que posea mejor capacidad de clasificación y de adaptación.
 
 \begin{table}[H]
     \centering
@@ -37,21 +36,21 @@ adaptaci\'on.
 
         \bottomrule
     \end{tabular}
-    \caption{M\'etricas de los experimentos realizados. Entre par\'entesis se encuentra la posici\'on que ocupa dentro del top 3 de la columna.}
+    \caption{Métricas de los experimentos realizados. Entre paréntesis se encuentra la posición que ocupa dentro del top 3 de la columna.}
     \label{tab:metricas-experimentos}
 \end{table}
 
-Como era de esperarse, los modelos que fueron entrenados sin adaptaci\'on de dominio son los que mejores m\'etricas de
-clasificaci\'on poseen. No obstante, sus valores de adaptaci\'on son los peores provocando que no puedan generalizar a
+Como era de esperarse, los modelos que fueron entrenados sin adaptación de dominio son los que mejores métricas de
+clasificación poseen. No obstante, sus valores de adaptación son los peores provocando que no puedan generalizar a
 $TDS$.
 
-El modelo que mejor combinaci\'on de clasificaci\'on y adaptaci\'on es la ResNet utilizando AFN. Cabe destacar que los
-modelos LeNet entrenados con DANN y AFN obtuvieron buenas m\'etricas en general, lo que deja en evidencia que {\it no
-        siempre un modelo m\'as complejo es mejor}.
+El modelo que mejor combinación de clasificación y adaptación es la ResNet utilizando AFN. Cabe destacar que los
+modelos LeNet entrenados con DANN y AFN obtuvieron buenas métricas en general, lo que deja en evidencia que {\it no
+        siempre un modelo más complejo es mejor}.
 
-Es posible aplicar los modelos sobre todos los telegramas y calcular el $IoU$ promedio por telegrama con el c\'alculo
-descripto en el cap\'itulo \ref{Chapter3} y la cantidad de aciertos promedio por telegrama utilizando como etiquetas lo
-transcripto en el centro de c\'omputo suponiendo que existen pocos errores en ellos.
+Es posible aplicar los modelos sobre todos los telegramas y calcular el $IoU$ promedio por telegrama con el cálculo
+descripto en el capítulo \ref{Chapter3} y la cantidad de aciertos promedio por telegrama utilizando como etiquetas lo
+transcripto en el centro de cómputo suponiendo que existen pocos errores en ellos.
 
 \begin{table}[H]
     \centering
@@ -78,16 +77,16 @@ transcripto en el centro de c\'omputo suponiendo que existen pocos errores en el
     \label{tab:iou-cant-aciertos-en-telegramas}
 \end{table}
 
-El cuadro \ref{tab:iou-cant-aciertos-en-telegramas} confirma la elecci\'on del mejor modelo realizada anteriormente.
-Independientemente de qu\'e t\'ecnica de adaptaci\'on se utilice, todas presentan mejores porcentajes de aciertos
-promedio que los modelos que fueron entrenados \'unicamente con $MNIST$.
+El cuadro \ref{tab:iou-cant-aciertos-en-telegramas} confirma la elección del mejor modelo realizada anteriormente.
+Independientemente de qué técnica de adaptación se utilice, todas presentan mejores porcentajes de aciertos promedio
+que los modelos que fueron entrenados únicamente con $MNIST$.
 
 TODO: Actualizar para agregar DANN + BSP. TODO: buscar una mejor forma de mostrar los histogramas para que se vea las
 distintas distribuciones de aciertos dependiendo de cada modelo y AD.
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{chapter4/dist-aciertos.png}
-    \caption{Distribuci\'on de aciertos de cantidad de votos por cada par t\'ecnica AD y modelo.}
+    \caption{Distribución de aciertos de cantidad de votos por cada par técnica AD y modelo.}
     \label{fig:distribucion-aciertos}
 \end{figure}
 
@@ -252,79 +251,78 @@ siguientes resultados:
     \item La aplicación de técnicas de adaptación de dominio como DANN, DANN con penalización BSP y ADDA mejora la capacidad de
           generalización, pero no de forma significativa en comparación con las mejoras obtenidas con LeNet (figuras
           \ref{fig:umap-resnet-dann}, \ref{fig:umap-resnet-bsp} y \ref{fig:umap-resnet-adda}).
-    \item El uso de Margin Disparity Discrepancy parece disminuir la capacidad de generalización (figura
-          \ref{fig:umap-resnet-mdd}).
-    \item La aplicación de Adaptive Feature Norm potencia la generalización de la ResNet, obteniendo representaciones de los
-          espacios latentes prácticamente idénticas para ambos conjuntos de datos (figura \ref{fig:umap-resnet-afn}).
+    \item El uso de MDD parece disminuir la capacidad de generalización (figura \ref{fig:umap-resnet-mdd}).
+    \item La aplicación de AFN potencia la generalización de la ResNet, obteniendo representaciones de los espacios latentes
+          prácticamente idénticas para ambos conjuntos de datos (figura \ref{fig:umap-resnet-afn}).
 \end{itemize}
 
 En general, estas representaciones permiten visualizar los resultados obtenidos a partir de las métricas de adaptación
 descritas en el cuadro \ref{tab:metricas-experimentos} de la sección anterior.
 
-\section{\'Analisis de errores}
+\section{Análisis de errores}
 
-Los errores de predicci\'on de los modelos pueden reflejarse en las distribuci\'on de la m\'etrica $IoU$ para cada uno
-de ellos.
+Los errores de predicción de los modelos pueden ser analizados mediante los histogramas de la métrica $IoU$ que se
+obtienen de aplicar los modelos a los telegramas.
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[h]{0.43\textwidth}
+    \begin{subfigure}[h]{0.40\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/hist-iou-sin-da.png}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.43\textwidth}
+    \begin{subfigure}[h]{0.40\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/hist-iou-dann.png}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.43\textwidth}
+    \begin{subfigure}[h]{0.40\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/hist-iou-adda.png}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.43\textwidth}
+    \begin{subfigure}[h]{0.40\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/hist-iou-bsp.png}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.43\textwidth}
+    \begin{subfigure}[h]{0.40\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/hist-iou-mdd.png}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.43\textwidth}
+    \begin{subfigure}[h]{0.40\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/hist-iou-afn.png}
     \end{subfigure}
 
-    \caption{Histogramas de la m\'etrica $IoU$ promedio por telegrama por cada t\'ecnica AD y modelo.}
+    \caption{Histogramas de la métrica $IoU$ promedio por telegrama por cada técnica AD y modelo.}
     \label{fig:histogramas-ious}
 \end{figure}
 
-Resulta interesante mencionar existen telegramas que son m\'as dif\'iciles de analizar que otros. Esto puede
-evidenciarse en los histogramas de la figura \ref{fig:histogramas-ious} donde se pueden observar un conjunto de
-observaciones que contienen valores entre [0, 0.2] en todos los experimentos realizados. Luego de analizar cada uno de
-estos casos, se detectaron las siguientes situaciones:
+Resulta interesante mencionar existen telegramas que son más difíciles de analizar que otros. Esto puede evidenciarse
+en los histogramas de la figura \ref{fig:histogramas-ious} donde se pueden observar un conjunto de observaciones que
+contienen valores entre [0, 0.2] en todos los experimentos realizados. Luego de analizar cada uno de estos casos, se
+detectaron las siguientes situaciones:
 
 \begin{itemize}
-    \item Telegramas cargados de forma err\'onea: ver ejemplo en el anexo \ref{anexo:telegrama-erroneo}.
-    \item Telegramas correctos pero por alguna cuesti\'on la l\'ogica de extracci\'on de d\'igitos no funciona correctamente: ver
-          ejemplo en el anexo \ref{anexo:telegrama-numeros-juntos}.
-    \item Telegramas donde existen otros caracteres distintos a n\'umeros: al ser un cuadro de texto libre sin formato, los jefes
+    \item Telegramas cargados de forma errónea: ver ejemplo en el anexo \ref{anexo:telegrama-erroneo}.
+    \item Telegramas correctos pero por alguna cuestión la lógica de extracción de dígitos no funciona correctamente: ver ejemplo
+          en el anexo \ref{anexo:telegrama-numeros-juntos}.
+    \item Telegramas donde existen otros caracteres distintos a números: al ser un cuadro de texto libre sin formato, los jefes
           de mesa pueden escribir lo que deseen. Ver ejemplo en el anexo \ref{anexo:telegrama-erroneo-caracteres-especiales}
           donde se representa el $0$ a la izquierda con $X$.
-    \item Telegramas de mesas donde la mayor cantidad de votos se las lleva un \'unico partido y completan los votos a la
-          izquierda con $0$: al agregar los ceros a la izquierda, aumenta la probabilidad de que el modelo se equivoque con esos
-          ceros que no aportan al n\'umero final. Ver ejemplo en el anexo \ref{anexo:telegrama-erroneo-muchos-ceros}.
+    \item Telegramas de mesas donde la mayor cantidad de votos se las lleva un único partido y completan los votos a la izquierda
+          con $0$: al agregar los ceros a la izquierda, aumenta la probabilidad de que el modelo se equivoque con esos ceros que
+          no aportan al número final. Ver ejemplo en el anexo \ref{anexo:telegrama-erroneo-muchos-ceros}.
 \end{itemize}
 
-En los primeros dos puntos se describen problemas problemas que fueron detectados en el proceso de ETL del cap\'itulo
-\ref{Chapter3}. Estandarizar los telegramas agregando un casillero por cada d\'igito junto a mejorar el proceso de
-extracci\'on de los mismos, supondr\'a una mejora considerable en las capacidades predictivas de los modelos.
+En los primeros dos puntos se describen problemas problemas que fueron detectados en el proceso de ETL del capítulo
+\ref{Chapter3}. Estandarizar los telegramas agregando un casillero por cada dígito junto a mejorar el proceso de
+extracción de los mismos, supondrá una mejora considerable en las capacidades predictivas de los modelos.
 
-El tercer punto presenta un problema dentro de la adaptaci\'on de dominio. La misma supone que, si bien los datasets de
+El tercer punto presenta un problema dentro de la adaptación de dominio. La misma supone que, si bien los datasets de
 origen y destino son diferentes pero representan lo mismo, debe existir la misma cantidad de clases entre origen y
 destino. Al agregar uno o varios caracteres adicionales en $TDS$ (como es el ejemplo donde representaban el $0$ con una
-$X$), se est\'a incumpliendo este supuesto.
+$X$), se está incumpliendo este supuesto.
 
 El cuarto punto aumenta la probabilidad de error en los modelos debido a que el $0$ a la izquierda no aporta
-significado alguno al n\'umero de la cantidad de votos que se desea predecir.
+significado alguno al número de la cantidad de votos que se desea predecir.
 
-Estandarizar la carga de los telegramas por parte de los jefes de mesa mediante alguna capacitaci\'on permitir\'ia
-reducir los errores de los puntos tres y cuatro en elecciones futuras.
+Estandarizar la carga de los telegramas por parte de los jefes de mesa mediante alguna capacitación permitiría reducir
+los errores de los puntos tres y cuatro en elecciones futuras.
 

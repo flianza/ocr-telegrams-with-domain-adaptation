@@ -1,4 +1,4 @@
-\chapter{Introducci\'on}
+\chapter{Introducción}
 
 \label{Chapter1}
 
@@ -9,8 +9,8 @@ reflejados en los resultados y conclusiones (es decir, prometer algo que despué
 
 \section{Contexto}
 
-En Argentina se celebran elecciones cada 2 a\~{n}os a excepci\'on de las presidenciales que se realizan cada 4
-a\~{n}os. Existen, principalmente, tres tipos de elecciones:
+En Argentina se celebran elecciones cada 2 años a excepción de las presidenciales que se realizan cada 4 años. Existen,
+principalmente, tres tipos de elecciones:
 
 \begin{itemize}
     \item Elecciones nacionales, para elegir a las autoridades federales del país: el Poder Ejecutivo, constituido por el
@@ -23,10 +23,10 @@ a\~{n}os. Existen, principalmente, tres tipos de elecciones:
 Si bien emitir el sufragio es diferente en cada una de ellas, generalmente consta de ingresar a un cuarto oscuro,
 elegir el candidato que se desea y depositar el voto en una urna. Al finalizar la jornada, las autoridades de mesas
 recuentan los votos y llenan una planilla a mano alzada donde se resume la cantidad de votos obtenidos por cada
-candidato o partido pol\'itico. Dicha planilla es escaneada y enviada a traves de un telegrama del correo argentino al
-centro de c\'omputo para su procesamiento. Una vez all\'i, se contabilizan en un sistema inform\'atico a partir de un
-grupo de personas. Este proceso cuenta con una etapa de de digitalizaci\'on y otra de validaci\'on (TODO: esto lo vi en
-el diagrama de las elecciones de cordoba. no encontre nada oficial al respecto.).
+candidato o partido político. Dicha planilla es escaneada y enviada a traves de un telegrama del correo argentino al
+centro de cómputo para su procesamiento. Una vez allí, se contabilizan en un sistema informático a partir de un grupo
+de personas. Este proceso cuenta con una etapa de de digitalización y otra de validación (TODO: esto lo vi en el
+diagrama de las elecciones de cordoba. no encontre nada oficial al respecto.).
 
 \begin{figure}[H]
     \centering
@@ -35,37 +35,37 @@ el diagrama de las elecciones de cordoba. no encontre nada oficial al respecto.)
     \label{fig:proceso-elecciones}
 \end{figure}
 
-Para que el proceso sea lo mas r\'apido y eficaz posible, se requiere a una gran cantidad personas destinadas al centro
-de c\'omputo. Tal soluci\'on hace que el proceso sea altamente ineficiente en cuanto a tiempos y costos se refiere. En
-las elecciones legislativas del 2021 se gastaron unos \$17.000 millones de pesos de los cuales \$4.000 millones de
-pesos fueron destinados a sueldos para el personal\footnote{Fuente:
+Para que el proceso sea lo mas rápido y eficaz posible, se requiere a una gran cantidad personas destinadas al centro
+de cómputo. Tal solución hace que el proceso sea altamente ineficiente en cuanto a tiempos y costos se refiere. En las
+elecciones legislativas del 2021 se gastaron unos \$17.000 millones de pesos de los cuales \$4.000 millones de pesos
+fueron destinados a sueldos para el personal\footnote{Fuente:
     \href{https://www.cronista.com/economia-politica/Elecciones-legislativas-2021-cuanto-mas-se-gastara-por-el-coronavirus-segun-el-Presupuesto-20201004-0006.html}{El
         cronista}}.
 
-\section{Motivaci\'on}
+\section{Motivación}
 
-Digitalizar los telegramas de manera autom\'atica supondr\'a un ahorro considerable en el presupuesto de las
-elecciones, agilizar\'a la obtenci\'on de los resultados y aportar\'a transparencia al proceso en general. Es posible
-entrenar un modelo de clasificaci\'on de d\'igitos a un costo extremadamente menor al actual y utilizarlo al momento de
-la contabilizaci\'on de los votos.
+Digitalizar los telegramas de manera automática supondrá un ahorro considerable en el presupuesto de las elecciones,
+agilizará la obtención de los resultados y aportará transparencia al proceso en general. Es posible entrenar un modelo
+de clasificación de dígitos a un costo extremadamente menor al actual y utilizarlo al momento de la contabilización de
+los votos.
 
-Contar con una digitalizaci\'on autom\'atica permitir\'a bajar los costos debido a que se necesitar\'a un grupo menor
-de personas en el centro de c\'omputo. Adem\'as, el trabajo a realizar ser\'a mas simple ya que s\'olo constar\'a del
-proceso de validaci\'on.
+Contar con una digitalización automática permitirá bajar los costos debido a que se necesitará un grupo menor de
+personas en el centro de cómputo. Además, el trabajo a realizar será mas simple ya que sólo constará del proceso de
+validación.
 
-La clasificaci\'on de n\'umeros es un problema que, si bien parece resuelto con \cite{lecun1998gradient} y la
-creaci\'on del dataset MNIST, no debe ser tomada a la ligera. No existe una \'unica forma de escribir y a\~{n}o a
-a\~{n}o cambian las personas que son los jefes de mesa encargados de completar los telegramas. Las caracter\'isticas de
-los n\'umeros escritos a mano difiere entre cada elecci\'on. Cuando la distribuci\'on de los datos de entrenamiento
-difiere a la de los datos de aplicaci\'on, se est\'a ante un {\it corrimiento de dominio} ({\it domain shift} o {\it
-        data drift} en ingl\'es). Esto implica que un modelo que se entrene en alg\'un dataset est\'atico como el MNIST que fue
-creado en el \citeyear{lecun1998gradient}, har\'a malas clasficaciones los d\'igitos de las elecciones.
+La clasificación de números es un problema que, si bien parece resuelto con \cite{lecun1998gradient} y la creación del
+dataset MNIST, no debe ser tomada a la ligera. No existe una única forma de escribir y año a año cambian las personas
+que son los jefes de mesa encargados de completar los telegramas. Las características de los números escritos a mano
+difiere entre cada elección. Cuando la distribución de los datos de entrenamiento difiere a la de los datos de
+aplicación, se está ante un {\it corrimiento de dominio} ({\it domain shift} o {\it data drift} en inglés). Esto
+implica que un modelo que se entrene en algún dataset estático como el MNIST que fue creado en el
+\citeyear{lecun1998gradient}, hará malas clasficaciones los dígitos de las elecciones.
 
-Cuando los dominios de entrenamiento (origen) y aplicaci\'on (destino) son distintos, se debe a que hay un {\it sesgo}
-en los datos. Las t\'ecnicas de entrenamiento cl\'asicas suponen que, si bien existe el sesgo existe, \'este ser\'a el
-mismo entre origen y destino. Cuando el supuesto no se cumple, las predicciones del modelo se ven afectadas
-negativamente. El cuadro \ref{tab:lenet-distintos-datasets} muestra un ejemplo de la degradación de la precisión cuando
-un modelo se aplica a un conjunto de datos que es diferente al cual se entrenó.
+Cuando los dominios de entrenamiento (origen) y aplicación (destino) son distintos, se debe a que hay un {\it sesgo} en
+los datos. Las técnicas de entrenamiento clásicas suponen que, si bien existe el sesgo existe, éste será el mismo entre
+origen y destino. Cuando el supuesto no se cumple, las predicciones del modelo se ven afectadas negativamente. El
+cuadro \ref{tab:lenet-distintos-datasets} muestra un ejemplo de la degradación de la precisión cuando un modelo se
+aplica a un conjunto de datos que es diferente al cual se entrenó.
 
 \begin{table}[ht]
     \centering
@@ -99,25 +99,25 @@ un modelo se aplica a un conjunto de datos que es diferente al cual se entrenó.
     \label{tab:lenet-distintos-datasets}
 \end{table}
 
-Es por esto que se debe recurrir a t\'ecnicas de entrenamiento m\'as complejas donde se intenta que el modelo aprenda a
-sin el sesgo de los datos. Es decir, que pueda aprender a {\it adaptarse} de un dominio a otro. En la actualidad no
-existen trabajos publicados relacionados a la digitalizaci\'on de telegramas en Argentina que compare c\'ual es la
-mejor t\'ecnica de adaptaci\'on de dominio.
+Es por esto que se debe recurrir a técnicas de entrenamiento más complejas donde se intenta que el modelo aprenda a sin
+el sesgo de los datos. Es decir, que pueda aprender a {\it adaptarse} de un dominio a otro. En la actualidad no existen
+trabajos publicados relacionados a la digitalización de telegramas en Argentina que compare cúal es la mejor técnica de
+adaptación de dominio.
 
 \section{Objetivos}
 
-La presente tesis enfocar\'a en el desarrollo de un modelo que permita digitalizar los telegramas de las elecciones en
-Argentina utilizando las legislativas de la provincia de Santa Fe del a\~{n}o 2021 como comparativa. Los telegramas son
-p\'ublicos y se encuentran subidos en la \href{https://op.elecciones.gob.ar/telegramas/generales2021/}{p\'agina oficial
-    del estado argentino}. En el anexo \ref{anexo:telegrama} se adjunta un ejemplo de uno de ellos.
+La presente tesis enfocará en el desarrollo de un modelo que permita digitalizar los telegramas de las elecciones en
+Argentina utilizando las legislativas de la provincia de Santa Fe del año 2021 como comparativa. Los telegramas son
+públicos y se encuentran subidos en la \href{https://op.elecciones.gob.ar/telegramas/generales2021/}{página oficial del
+    estado argentino}. En el anexo \ref{anexo:telegrama} se adjunta un ejemplo de uno de ellos.
 
 Para poder llevarlo a cabo, se procede a:
 \begin{itemize}
-    \item Armar el proceso de ETL de los telegramas que permita limpiar y extraer los d\'igitos.
+    \item Armar el proceso de ETL de los telegramas que permita limpiar y extraer los dígitos.
     \item Determinar un conjunto de datos etiquetado a ser utilizado como dominio de origen.
-    \item Entrenar distintos arquitecturas de redes convolucionales mediante t\'ecnicas de adaptaci\'on de dominio.
-    \item Analizar y evaluar las m\'etricas que permitan seleccionar el mejor modelo.
-    \item Seleccionar el mejor par modelo - t\'ecnica de adaptación de dominio.
+    \item Entrenar distintos arquitecturas de redes convolucionales mediante técnicas de adaptación de dominio.
+    \item Analizar y evaluar las métricas que permitan seleccionar el mejor modelo.
+    \item Seleccionar el mejor par modelo - técnica de adaptación de dominio.
     \item Detectar oportunidades de mejora en el proceso eleccionario respecto a los telegramas.
 \end{itemize}
 
