@@ -69,30 +69,29 @@ aplica a un conjunto de datos que es diferente al cual se entrenó.
 
 \begin{table}[ht]
     \centering
-    \begin{tabular}{cccc}
+    \begin{tabular}{c|ccc}
         \toprule
-        {}                                                & \multicolumn{3}{c}{Testing}                                                                                               \\
-        {}                                                & MNIST                                             & USPS                              & SVHN                              \\
-        Entrenamiento                                     & \includegraphics[width=16px]{chapter1/mnist3.png}
+        \multirow{2}{*}{\diagbox[height=1.2cm, width=3cm]{Train}{Test}} & MNIST                                             & USPS                              & SVHN                              \\
+                                                                        & \includegraphics[width=16px]{chapter1/mnist3.png}
         \includegraphics[width=16px]{chapter1/mnist6.png}
-        \includegraphics[width=16px]{chapter1/mnist8.png} & \includegraphics[width=16px]{chapter1/usps3.png}
+        \includegraphics[width=16px]{chapter1/mnist8.png}               & \includegraphics[width=16px]{chapter1/usps3.png}
         \includegraphics[width=16px]{chapter1/usps6.png}
-        \includegraphics[width=16px]{chapter1/usps8.png}  & \includegraphics[width=16px]{chapter1/svhn3.png}
+        \includegraphics[width=16px]{chapter1/usps8.png}                & \includegraphics[width=16px]{chapter1/svhn3.png}
         \includegraphics[width=16px]{chapter1/svhn6.png}
-        \includegraphics[width=16px]{chapter1/svhn8.png}                                                                                                                              \\
+        \includegraphics[width=16px]{chapter1/svhn8.png}                                                                                                                                            \\
         \midrule
-        MNIST                                             & \multirow{2}{*}{\textbf{99.17\%}}                 & \multirow{2}{*}{78.08\%}          & \multirow{2}{*}{31.50\%}          \\
+        MNIST                                                           & \multirow{2}{*}{\textbf{99.17\%}}                 & \multirow{2}{*}{78.08\%}          & \multirow{2}{*}{31.50\%}          \\
         \includegraphics[width=16px]{chapter1/mnist3.png}
         \includegraphics[width=16px]{chapter1/mnist6.png}
-        \includegraphics[width=16px]{chapter1/mnist8.png} &                                                   &                                   &                                   \\
-        USPS                                              & \multirow{2}{*}{57.10\%}                          & \multirow{2}{*}{\textbf{95.42\%}} & \multirow{2}{*}{26.94\%}          \\
+        \includegraphics[width=16px]{chapter1/mnist8.png}               &                                                   &                                   &                                   \\
+        USPS                                                            & \multirow{2}{*}{57.10\%}                          & \multirow{2}{*}{\textbf{95.42\%}} & \multirow{2}{*}{26.94\%}          \\
         \includegraphics[width=16px]{chapter1/usps3.png}
         \includegraphics[width=16px]{chapter1/usps6.png}
-        \includegraphics[width=16px]{chapter1/usps8.png}  &                                                   &                                   &                                   \\
-        SVHN                                              & \multirow{2}{*}{61.92\%}                          & \multirow{2}{*}{64.28\%}          & \multirow{2}{*}{\textbf{89.52\%}} \\
+        \includegraphics[width=16px]{chapter1/usps8.png}                &                                                   &                                   &                                   \\
+        SVHN                                                            & \multirow{2}{*}{61.92\%}                          & \multirow{2}{*}{64.28\%}          & \multirow{2}{*}{\textbf{89.52\%}} \\
         \includegraphics[width=16px]{chapter1/svhn3.png}
         \includegraphics[width=16px]{chapter1/svhn6.png}
-        \includegraphics[width=16px]{chapter1/svhn8.png}  &                                                   &                                   &                                   \\
+        \includegraphics[width=16px]{chapter1/svhn8.png}                &                                                   &                                   &                                   \\
         \bottomrule
     \end{tabular}
     \caption{Precisión que se obtiene al aplicar un modelo LeNet-5 entrenado con otros datasets de dígitos.}
