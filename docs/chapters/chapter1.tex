@@ -2,11 +2,6 @@
 
 \label{Chapter1}
 
-La intro la podes pensar en 3 subsecciones: descripción de elecciones y contabilización de las actas hoy, la
-oportunidad que se presenta con la digitalización (y los desafíos que aparecen) y luego los objetivos. Tiene que quedar
-claro que problema ves y qué propones hacer a grandes rasgos. También es importante que estos objetivos se vean
-reflejados en los resultados y conclusiones (es decir, prometer algo que después cumplis al final del doc)
-
 \section{Contexto}
 
 En Argentina se celebran elecciones cada 2 años a excepción de las presidenciales que se realizan cada 4 años. Existen,
@@ -20,25 +15,38 @@ principalmente, tres tipos de elecciones:
     \item Elecciones municipales, regidas por las leyes y procedimientos de cada provincia.
 \end{itemize}
 
-Si bien emitir el sufragio es diferente en cada una de ellas, generalmente consta de ingresar a un cuarto oscuro,
-elegir el candidato que se desea y depositar el voto en una urna. Al finalizar la jornada, las autoridades de mesas
-recuentan los votos y llenan una planilla a mano alzada donde se resume la cantidad de votos obtenidos por cada
-candidato o partido político. Dicha planilla es escaneada y enviada a traves de un telegrama del correo argentino al
-centro de cómputo para su procesamiento. Una vez allí, se contabilizan en un sistema informático a partir de un grupo
-de personas. Este proceso cuenta con una etapa de de digitalización y otra de validación (TODO: esto lo vi en el
-diagrama de las elecciones de cordoba. no encontre nada oficial al respecto.).
+El proceso para emitir el sufragio en Argentina puede variar según la elección, pero en general se sigue un
+procedimiento similar en todas ellas\footnote{Fuente: \href{https://www.cippec.org/como-se-cuentan-los-votos/}{Centro
+        de Implementación de Políticas Públicas para la Equidad y el Crecimiento}}. Primero, los ciudadanos habilitados para
+votar deben presentarse en su lugar de votación el día de las elecciones, que suele ser un domingo, y dirigirse a la
+mesa correspondiente según su número de documento.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{chapter1/proceso-elecciones.png}
-    \caption{Proceso eleccionario. TODO: cambiar para que se pueda leer o eliminar directament?}
-    \label{fig:proceso-elecciones}
-\end{figure}
+Una vez allí, se les solicita que presenten su documento de identidad para que las autoridades de mesa puedan verificar
+su identidad y comprobar que se encuentran en el padrón electoral. Luego, los votantes reciben una boleta con los
+candidatos y partidos políticos que participan en la elección.
 
-Para que el proceso sea lo mas rápido y eficaz posible, se requiere a una gran cantidad personas destinadas al centro
-de cómputo. Tal solución hace que el proceso sea altamente ineficiente en cuanto a tiempos y costos se refiere. En las
-elecciones legislativas del 2021 se gastaron unos \$17.000 millones de pesos de los cuales \$4.000 millones de pesos
-fueron destinados a sueldos para el personal\footnote{Fuente:
+Los ciudadanos deben dirigirse a una cabina de votación para emitir su voto en secreto. Allí, pueden seleccionar la
+boleta completa de un partido o candidato, o elegir diferentes candidatos de diferentes partidos. Una vez que han
+realizado su elección, deben doblar la boleta y dirigirse a la urna donde depositarán su voto.
+
+Al finalizar la jornada de votación, las autoridades de mesa llevan a cabo el recuento de votos. Esto implica el conteo
+manual de los votos emitidos y la elaboración de una planilla en la que se detallan los votos obtenidos por cada
+candidato o partido político. Esta planilla es firmada por todas las autoridades de mesa y se digitalizan para ser
+enviadas al correo argentino. La mayoría se escanea en las escuelas y el restante lo escanea el propio correo.
+
+Una vez en el centro de cómputo, un grupo de personas se encarga de contabilizar los votos utilizando un sistema
+informático. En primer lugar, se digitaliza la información de las planillas recibidas para que pueda ser procesada por
+el sistema. Luego, se lleva a cabo un proceso de validación para verificar que los datos sean correctos y no haya
+errores.
+
+Una vez que se ha completado el proceso de digitalización y validación, se obtiene el resultado final de la elección y
+se anuncia públicamente el candidato o partido político ganador.
+
+El proceso de conteo de votos en un centro de cómputo requiere de una gran cantidad de personas para poder llevarse a
+cabo de manera eficaz y rápida. Sin embargo, esta solución resulta altamente ineficiente en términos de tiempo y
+costos. En las elecciones legislativas del 2021 en Argentina, se destinaron alrededor de \$17.000 millones de pesos
+para el proceso electoral, de los cuales alrededor de \$4.000 millones de pesos fueron utilizados para el pago de
+salarios del personal encargado del centro de cómputo\footnote{Fuente:
     \href{https://www.cronista.com/economia-politica/Elecciones-legislativas-2021-cuanto-mas-se-gastara-por-el-coronavirus-segun-el-Presupuesto-20201004-0006.html}{El
         cronista}}.
 
@@ -53,21 +61,41 @@ Contar con una digitalización automática permitirá bajar los costos debido a 
 personas en el centro de cómputo. Además, el trabajo a realizar será mas simple ya que sólo constará del proceso de
 validación.
 
-La clasificación de números es un problema que, si bien parece resuelto con \cite{lecun1998gradient} y la creación del
-dataset MNIST, no debe ser tomada a la ligera. No existe una única forma de escribir y año a año cambian las personas
-que son los jefes de mesa encargados de completar los telegramas. Las características de los números escritos a mano
-difiere entre cada elección. Cuando la distribución de los datos de entrenamiento difiere a la de los datos de
-aplicación, se está ante un {\it corrimiento de dominio} ({\it domain shift} o {\it data drift} en inglés). Esto
-implica que un modelo que se entrene en algún dataset estático como el MNIST que fue creado en el
-\citeyear{lecun1998gradient}, hará malas clasficaciones los dígitos de las elecciones.
+La digitalización automática de los telegramas de votación es una iniciativa que busca mejorar la eficiencia del
+proceso electoral, reducir los costos y aumentar la transparencia en las elecciones. Actualmente, el proceso de conteo
+de votos se realiza manualmente y puede ser un proceso largo y laborioso.
 
-Cuando los dominios de entrenamiento (origen) y aplicación (destino) son distintos, se debe a que hay un {\it sesgo} en
-los datos. Las técnicas de entrenamiento clásicas suponen que, si bien existe el sesgo existe, éste será el mismo entre
-origen y destino. Cuando el supuesto no se cumple, las predicciones del modelo se ven afectadas negativamente. El
-cuadro \ref{tab:lenet-distintos-datasets} muestra un ejemplo de la degradación de la precisión cuando un modelo se
-aplica a un conjunto de datos que es diferente al cual se entrenó.
+La digitalización automática de los telegramas permitiría la utilización de tecnología de procesamiento de imágenes
+para contar automáticamente los votos de los telegramas, reduciendo así la cantidad de personal requerido en el centro
+de cómputo. Esto podría ahorrar costos en términos de recursos humanos y materiales, ya que el personal necesario para
+el conteo manual de votos sería menor. Además, se reduciría la posibilidad de error humano, lo que mejoraría la
+precisión del proceso de conteo de votos.
 
-\begin{table}[ht]
+Por otro lado, la digitalización automática de los telegramas también aceleraría el proceso de conteo de votos y
+permitiría que los resultados se obtengan más rápidamente. Esto podría ayudar a reducir la ansiedad y la tensión que a
+menudo rodean los resultados electorales, así como mejorar la transparencia del proceso en general. Al contar con
+resultados electorales precisos y rápidos, se puede mejorar la confianza en el sistema electoral y en las instituciones
+democráticas.
+
+Es importante destacar que este proceso no requiere de una gran inversión. De hecho, es posible entrenar modelos de
+clasificación de dígitos a un costo extremadamente menor que el actual, utilizando técnicas de aprendizaje automático
+para identificar y clasificar los números individuales que componen los votos en los telegramas. Esto permitiría la
+implementación de un sistema de conteo de votos automatizado con un menor costo y una mayor precisión.
+
+La clasificación de números manuscritos es un problema que puede parecer resuelto gracias al dataset MNIST y al trabajo
+pionero de LeCun en \citeyear{lecun1998gradient}. Sin embargo, no se puede subestimar la complejidad de este problema.
+Cada año, cambian las personas que llenan los telegramas de las elecciones y, por lo tanto, las características de los
+números escritos a mano pueden variar. Esto puede generar un {\it corrimiento de dominio} o {\it data drift}, lo que
+significa que un modelo entrenado en un conjunto de datos estático como MNIST puede presentar una mala clasificación de
+los dígitos escritos a mano en las elecciones.
+
+Cuando los dominios de entrenamiento y aplicación son diferentes, se debe a que existe un sesgo en los datos. Las
+técnicas de entrenamiento tradicionales asumen que, aunque existe un sesgo, este será el mismo entre el origen y el
+destino. Sin embargo, cuando este supuesto no se cumple, las predicciones del modelo pueden verse afectadas
+negativamente. El cuadro \ref{tab:lenet-distintos-datasets} ilustra un ejemplo de cómo la precisión del modelo puede
+degradarse cuando se aplica a un conjunto de datos diferente al que se entrenó.
+
+\begin{table}[H]
     \centering
     \begin{tabular}{c|ccc}
         \toprule
@@ -98,19 +126,27 @@ aplica a un conjunto de datos que es diferente al cual se entrenó.
     \label{tab:lenet-distintos-datasets}
 \end{table}
 
-Es por esto que se debe recurrir a técnicas de entrenamiento más complejas donde se intenta que el modelo aprenda a sin
-el sesgo de los datos. Es decir, que pueda aprender a {\it adaptarse} de un dominio a otro. En la actualidad no existen
-trabajos publicados relacionados a la digitalización de telegramas en Argentina que compare cúal es la mejor técnica de
-adaptación de dominio.
+En conclusión, debido a que la escritura de los números en los telegramas puede variar de elección en elección y a que
+los datos de entrenamiento no son suficientes para una clasificación precisa en este contexto, se necesita recurrir a
+técnicas más complejas de entrenamiento que permitan al modelo adaptarse a diferentes dominios. La adaptación de
+dominio es una técnica que busca reducir el sesgo de los datos y hacer que el modelo sea más robusto ante las
+variaciones en la escritura de los números. En la actualidad, no existen trabajos publicados que comparen diferentes
+técnicas de adaptación de dominio para la digitalización de telegramas en Argentina, lo que sugiere una oportunidad
+para investigar y desarrollar modelos más efectivos para este propósito.
 
 \section{Objetivos}
 
-La presente tesis enfocará en el desarrollo de un modelo que permita digitalizar los telegramas de las elecciones en
-Argentina utilizando las legislativas de la provincia de Santa Fe del año 2021 como comparativa. Los telegramas son
-públicos y se encuentran subidos en la \href{https://op.elecciones.gob.ar/telegramas/generales2021/}{página oficial del
-    estado argentino}. En el anexo \ref{anexo:telegrama} se adjunta un ejemplo de uno de ellos.
+El objetivo de esta tesis es desarrollar un modelo de aprendizaje automático que permita clasificar correctamente los
+votos en las elecciones legislativas de la provincia de Santa Fe del año 2021. El enfoque se centrará en explorar y
+comparar diferentes técnicas de adaptación de dominio con el fin de lograr un modelo robusto que pueda generalizar en
+diferentes contextos y escenarios electorales. Los datos utilizados serán obtenidos de
+\href{https://op.elecciones.gob.ar/telegramas/generales2021/}{fuentes oficiales del estado argentino}. En el anexo
+\ref{anexo:telegrama} se adjunta un ejemplo de uno de ellos. El objetivo final es contribuir a mejorar la transparencia
+y eficiencia en los procesos electorales en Argentina y sentar las bases para el desarrollo de soluciones similares
+para el resto de las provincias y la nación.
 
-Para poder llevarlo a cabo, se procede a:
+Los subobjetivos para lograr el objetivo planteado son los siguientes:
+
 \begin{itemize}
     \item Armar el proceso de ETL de los telegramas que permita limpiar y extraer los dígitos.
     \item Determinar un conjunto de datos etiquetado a ser utilizado como dominio de origen.
@@ -121,6 +157,7 @@ Para poder llevarlo a cabo, se procede a:
 \end{itemize}
 
 \section{Estructura del trabajo}
+
 Este trabajo se encuentra organizado con la siguiente estructura:
 
 \begin{itemize}
