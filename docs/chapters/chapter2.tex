@@ -305,7 +305,7 @@ promedio de la submatriz.
     \label{fig:maxpool-ejemplo}
 \end{figure}
 
-Las redes neuronales convolutionales tienen una gran variedad de aplicaciones prácticas en diferentes campos, algunas
+Las redes neuronales convolucionales tienen una gran variedad de aplicaciones prácticas en diferentes campos, algunas
 de las cuales incluyen:
 \begin{itemize}
     \item Reconocimiento de imágenes: CNN se utilizan ampliamente en tareas de clasificación de imágenes, como el reconocimiento
@@ -321,7 +321,7 @@ de las cuales incluyen:
 
 \subsection{Arquitecturas}
 
-Hay distintos tipos de arquitecturas de redes neuronales convolucionales debido a que cada una tiene diferentes
+Existen distintos tipos de arquitecturas de redes neuronales convolucionales debido a que cada una tiene diferentes
 fortalezas y debilidades en términos de capacidad de generalización, extracción de características y rendimiento \parencite{lecun2015deep}. Algunos factores que pueden influir en la elección de una arquitectura en particular incluyen \parencite{he2016deep}:
 
 \begin{itemize}
@@ -337,8 +337,8 @@ fortalezas y debilidades en términos de capacidad de generalización, extracci�
 \end{itemize}
 
 Una arquitectura simple de CNN para la clasificación de imágenes presenta: una subred convolucional $\mathcal{G}$ que
-extraen información y generan características $\mathbf{f}$ a partir de la entrada $\mathbf{x}$; y una subred densa
-$\mathcal{C}$ que se encargan de clasificar las características aprendidas $\mathbf{f}$ en las etiquetas del problema
+extrae información y genera características $\mathbf{f}$ a partir de la entrada $\mathbf{x}$; y una subred densa
+$\mathcal{C}$ que se encarga de clasificar las características aprendidas $\mathbf{f}$ en las etiquetas del problema
 $\mathbf{\hat{y}}$.
 
 \begin{figure}[H]
@@ -489,8 +489,8 @@ tarea específica de menor tamaño. Esto se ha utilizado con éxito en varias ta
 clasificación de imágenes y el procesamiento del lenguaje natural \parencite{howard2017mobilenets}. También se ha utilizado con éxito en el contexto de redes neuronales profundas, donde ha
 demostrado ser una técnica efectiva para mejorar el rendimiento y la capacidad de generalización de las redes \parencite{girshick2014rich}.
 
-Por otro lado, el fine-tuning es una técnica den la que se utilizan las capas de una red pre-entrenada en una tarea
-como capas fijas en otra red que se entrena en una tarea diferente \parencite{yosinski2014transferable}. Esto permite que la red aprenda de manera más rápida y con menos datos \parencite{howard2018universal}.
+Por otro lado, el fine-tuning es una técnica en la que se utilizan las capas de una red pre-entrenada en una tarea como
+capas fijas en otra red que se entrena en una tarea diferente \parencite{yosinski2014transferable}. Esto permite que la red aprenda de manera más rápida y con menos datos \parencite{howard2018universal}.
 
 \section{Adaptación de Dominio}
 El {\it pre-entrenamiento} y el {\it fine-tuning} han mejorado considerablemente el estado del arte para diversos
@@ -503,13 +503,15 @@ al cambio de distribución \parencite{quinonero2008dataset}. Por lo tanto, se pr
 distribución entre los dominios de entrenamiento y de prueba \parencite{jiang2022machine}.
 
 Se han propuesto muchos métodos para la adaptación de dominios, ya sea ponderando o seleccionando muestras del dominio
-de origen \parencite{sugiyama2007direct} o buscando una transformación de la distribución de origen a la distribución de destino \parencite{gong2013connecting}. Esta tesis analizará algunos de los métodos más actuales del ultimo caso.
+de origen \parencite{sugiyama2007direct} o buscando una transformación de la distribución de origen a la distribución de destino \parencite{gong2013connecting}. Esta tesis analizará algunos de los métodos más comunes del ultimo caso.
 
 \subsection{Domain Adversarial Neural Network}
 Un gran hito al momento de modelar distribuciones es la Red Generativa Adversaria {\it GAN} \parencite{goodfellow2020generative}. Inspirada en estas arquitecturas GAN, la Red Neural Adversaria de Dominio {\it DANN} \parencite{ganin2016domain} consta de dos redes en la adaptación del dominio (figura \ref{fig:dann-esquema}). La primera es
 la discriminadora de dominios $\mathcal{D}$ entrenada para distinguir las características de origen de las de destino y
 la segunda es una generadora de características $\mathcal{G}$ que se entrena para confundir a $\mathcal{D}$ y
-simultáneamente ayudar a la red clasificadora $\mathcal{C}$.
+simultáneamente ayudar a la red clasificadora $\mathcal{C}$. La idea general es que $\mathcal{G}$ aprenda a generar
+características lo suficientemente similares para ambos dominios de forma que $\mathcal{D}$ se equivoque y
+$\mathcal{C}$ los clasifique correctamente.
 
 \begin{figure}[H]
     \centering
@@ -625,7 +627,7 @@ simultáneamente ayudar a la red clasificadora $\mathcal{C}$.
                 \end{center}
 
             \end{minipage}};
-        \draw (379,118) node   [align=left] {\begin{minipage}[lt]{32.64pt}\setlength\topsep{0pt}
+        \draw (385,124) node   [align=left] {\begin{minipage}[lt]{32.64pt}\setlength\topsep{0pt}
                 \begin{center}
                     $\mathcal{L}_{adv}$
                 \end{center}
@@ -690,10 +692,10 @@ $\mathcal{L}_\mathcal{D}$ dará lugar a representaciones transferibles.
 
 \subsection{Adversarial Discriminative Domain Adaptation}
 Las redes Adversarial Discriminative Domain Adaptation {\it ADDA} \parencite{tzeng2017adversarial} surgen a partir de las {\it DANN} debido a que su estrategia de optimización podría no
-funcionar bien en la práctica debido a la desvanecimiento del gradiente, que también es un problema importante en el
-entrenamiento de GANs. Por ejemplo, cuando el espacio latente de destino generado $\mathbf{z}^t$ es extremadamente
-distinguible del de origen tal que $\mathcal{D}(\mathbf{z}^t)=0$, el gradiente es pequeño y vice versa. Esto provoca
-que la optimización de $\mathcal{G}$ sea extremadamente difícil.
+funcionar bien en la práctica por el problema del desvanecimiento del gradiente, que también es un problema importante
+en el entrenamiento de GANs. Por ejemplo, cuando el espacio latente de destino generado $\mathbf{z}^t$ es
+extremadamente distinguible del de origen tal que $\mathcal{D}(\mathbf{z}^t)=0$, el gradiente es pequeño y vice versa.
+Esto provoca que la optimización de $\mathcal{G}$ sea extremadamente difícil.
 
 Las redes {\it ADDA} separan la optimización de $\mathcal{G}$ y de $\mathcal{D}$ en dos objetivos separados (figura
 \ref{fig:adda-esquema}) siendo el primero el pre-entrenamiento de $\mathcal{G}_s$ y $\mathcal{C}$ en los datos de
@@ -874,12 +876,12 @@ $\mathcal{D}$.
     \label{fig:adda-esquema}
 \end{figure}
 
-No obstante del cambio, los objetivos son similares a {\it ADDA} excepción de $\mathcal{G}_t$. La ecuación
-\ref{eq:adda-loss-clasificadora} contiene $\mathcal{L}_\mathcal{C}$ que es análoga a \ref{eq:dann-loss-clasificadora}.
-La ecuación \ref{eq:adda-loss-discriminadora} contiene $\mathcal{L}_{adv}$ que es análoga a
-\ref{eq:dann-loss-discriminadora}. Finalmente, la ecuación \ref{eq:adda-objetivo} contiene el objetivo a optimizar que
-asigna gradientes pequeños a registros de destino que sean similares a los de origen y gradientes mas grandes para los
-otros registros de destino.
+No obstante del cambio, los objetivos de {\it ADDA} son similares a los de las {\it DANN} a excepción de
+$\mathcal{G}_t$. La ecuación \ref{eq:adda-loss-clasificadora} contiene $\mathcal{L}_\mathcal{C}$ que es análoga a
+\ref{eq:dann-loss-clasificadora}. La ecuación \ref{eq:adda-loss-discriminadora} contiene $\mathcal{L}_{adv}$ que es
+análoga a \ref{eq:dann-loss-discriminadora}. Finalmente, la ecuación \ref{eq:adda-objetivo} contiene el objetivo a
+optimizar que asigna gradientes pequeños a registros de destino que sean similares a los de origen y gradientes mas
+grandes para los otros registros de destino.
 
 \begin{align}
      & \min_{\mathcal{G}_s, \mathcal{C}} \mathcal{L}_\mathcal{C}(\mathbf{x}^s, \mathbf{y}^s)                                                            = \mathcal{L}_{CE}(C_s(\mathcal{G}_s(\mathbf{x}^s)), \mathbf{y}^s)
@@ -896,7 +898,7 @@ hacen a costa de la {\it discriminabilidad}; es decir, la facilidad de separar c
 ambos dominios \parencite{chen2019transferability}. Al aplicar descomposición en valores singulares ({\it SVD} en inglés) para analizar
 las propiedades espectrales de las representaciones aprendidas en batches, se confirma que los eigenvectors con valores
 singulares más altos dominan la {\it transferibilidad} mientras que los eigenvectors con valores singulares más
-pequeños se encuentran penalizados lo que provoca una {\it discriminabilidad} deficiente. {\it Batch Spectral
+pequeños se encuentran penalizados, lo que provoca una {\it discriminabilidad} deficiente. {\it Batch Spectral
         Penalization} {\it BSP} \parencite{chen2019transferability} penaliza el mayor valor singular para que los demás eigenvectors puedan mejorar la {\it
         discriminabilidad}. $\mathcal{L}_{BSP}$ es propuesto como un término de regularización sobre los $k$ mayores valores
 singulares:
@@ -1122,9 +1124,10 @@ Donde $\beta$ es el parámetro que regula el trade-off de $\mathcal{L}_{BSP}$.
 \subsection{Margin Disparity Discrepancy}
 
 Las técnicas detalladas hasta el momento implican algoritmos de optimización minimax, que funcionan correctamente en
-los métodos basados en el aprendizaje adversario. Sin embargo, estos algoritmos utilizan funciones de scoreoque carecen
-de garantías teóricas ya que se estudiaron funciones de pérdida 0-1. Es por esto que se introducen métodos que apuntan
-a reducir la brecha que existe entre la teoría y el algoritmo, como Margin Disparity Discrepancy {\it MDD} \parencite{zhang2019bridging}.
+los métodos basados en el aprendizaje adversario. Sin embargo, estos algoritmos utilizan funciones de scoreo que
+carecen de garantías teóricas ya que se estudiaron funciones de pérdida 0-1. Es por esto que se introducen métodos que
+apuntan a reducir la brecha que existe entre la teoría y el algoritmo, como Margin Disparity Discrepancy {\it MDD} \parencite{zhang2019bridging}. La idea general de {\it MDD} es introducir una segunda red clasificadora $\mathcal{C}^{'}$ y
+relacionar su salida con la de $\mathcal{C}$.
 
 \begin{figure}[H]
     \centering

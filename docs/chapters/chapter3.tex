@@ -90,12 +90,12 @@ trabajar de forma más efectiva en la extracción y análisis de los votos prese
 
 \subsection{Detección de líneas de la grilla de votos}
 Teniendo la grilla de votos separada del telegrama, se procede a detectar las líneas para poder extraer cada registro
-de la misma. Si bien OpenCV posee funciones para la detección de líneas, se optó por utilizar un enfoque simplificado.
-El mismo es similar al utilizado en \parencite{lamagna2016lectura}. Debido a que la grilla se encuentra enderezada, se puede utilizar proyecciones de los
-colores sobre los ejes $x$ e $y$ para detectarlas. Al sumar todos los colores por eje, se pueden encontrar los picos
-donde se encuentran las lineas horizontales y verticales. Posteriormente, se selecciona un umbral de corte por cada
-eje, siendo el promedio menos dos desvíos estándar. La figura \ref{fig:etl-3-proyecciones} muestra las proyecciones
-obtenidas con los umbrales por cada eje.
+de la misma. Si bien OpenCV posee funciones para la detección de líneas, se optó por utilizar un enfoque simplificado
+similar al utilizado en \parencite{lamagna2016lectura}. Debido a que la grilla se encuentra enderezada, se pueden utilizar las proyecciones de los
+colores sobre los ejes $x$ e $y$ para detectarlas. Al sumar todos los colores por eje, se pueden observar picos de
+valores donde se encuentran las lineas horizontales y verticales. Posteriormente, se selecciona un umbral de corte por
+cada eje, siendo el mismo el promedio de cada eje menos dos desvíos estándar. La figura \ref{fig:etl-3-proyecciones}
+muestra las proyecciones obtenidas con los umbrales por cada eje.
 
 \begin{figure}[H]
     \centering
@@ -112,8 +112,8 @@ obtenidas con los umbrales por cada eje.
     \label{fig:etl-3-proyecciones}
 \end{figure}
 
-Sin embargo, aunque se seleccione aquellos píxeles que se encuentren por debajo del umbral, por cada pico existe mas de
-un píxel. Siguiendo con el ejemplo, en el eje $x$ se obtienen los siguientes píxeles que se encuentran en los
+Sin embargo, aunque se seleccionen aquellos píxeles que se encuentren por debajo del umbral, existe mas de un píxel por
+cada pico. Siguiendo con el ejemplo, en el eje $x$ se obtienen los siguientes píxeles que se encuentran en los
 ``picos'':
 
 \begin{verbatim}
@@ -277,7 +277,7 @@ Al analizar aquellos registros que poseen los valores extremos en cuanto a míni
 telegramas que fueron cargados de forma incorrecta (ver anexo \ref{anexo:telegrama-erroneo}) o con una caligrafía en la
 cual los dígitos no están separados entre si, provocando que la segmentación por el análisis de componentes conectados
 de OpenCV falle (ver anexo \ref{anexo:telegrama-numeros-juntos}). Se eliminan estos casos filtrando por aquellos
-registros que se encuentren por fuera de la media +- 4 desvíos estándar.
+registros que se encuentren por fuera de la media mas menos cuatro desvíos estándar.
 
 Una vez finalizada la etapa de análisis y limpieza, se exportan los dígitos extraídos en un formato similar al conocido
 dataset {\it MNIST} junto con la etiqueta correspondiente al partido político registrado oficialmente en las elecciones
