@@ -10,18 +10,39 @@ profundizará en la adaptación de dominio y se explicarán las distintas técni
 
 \section{Reconocimiento de dígitos}
 
-El reconocimiento de dígitos escritos a mano por parte de las computadoras es una tarea que ha fascinado a la comunidad
-de aprendizaje automático durante muchos años. Aunque el reconocimiento de dígitos escritos a mano es una tarea
-relativamente sencilla para los humanos, ha sido un desafío para las computadoras debido a la gran variabilidad en la
-forma en que los dígitos son escritos por diferentes personas.
+El reconocimiento de caracteres por parte de las computadoras ha sido un campo de investigación activo durante varias
+décadas. Una de las primeras investigaciones en este campo se centró en cómo las neuronas del cerebro procesan y
+reconocen información visual.
 
-A mediados de la década de 1980, se presentó un enfoque importante para el reconocimiento de dígitos escritos a mano
+En \citeyear{hubel1959receptive}, \citeauthor{hubel1959receptive} comenzaron a investigar la percepción visual en el
+cerebro de los gatos. Descubrieron que las neuronas en la corteza visual primaria del cerebro de los gatos respondían a
+estímulos visuales específicos, como líneas y bordes. Además, identificaron dos tipos de células en la corteza visual
+primaria: células simples y células complejas. Las células simples respondían a estímulos visuales específicos, como
+barras de luz en una dirección particular, mientras que las células complejas respondían a estímulos visuales más
+complejos, como patrones en movimiento. En 1981, recibieron el Premio Nobel de Fisiología o Medicina por su trabajo en
+el procesamiento visual del cerebro.
+
+Inspirado por el trabajo de \citeauthor{hubel1959receptive}, en 1980 se desarrolló la red Neocognitron \parencite{fukushima1980neocognitron}. La red Neocognitron fue uno de los primeros modelos de aprendizaje profundo
+utilizados para el reconocimiento de caracteres. La red estaba compuesta por múltiples capas, cada una de las cuales
+procesaba información visual en diferentes niveles de abstracción.
+
+A pesar de que la red Neocognitron fue un gran avance en el reconocimiento de caracteres, todavía tenía limitaciones.
+En particular, la red no podía reconocer caracteres escritos a mano que eran muy diferentes de los caracteres que se
+habían utilizado para entrenar la red.
+
+A fines de la década de 1980, se presentó un enfoque importante para el reconocimiento de dígitos escritos a mano
 llamado ``Sistema Neuronal de Reconocimiento de Dígitos'' \parencite{lecun1989backpropagation}. Este sistema utilizó una red neuronal de varias capas y fue entrenado utilizando el
 método de retropropagación del error. El modelo tuvo un rendimiento significativamente mejor que los enfoques
 anteriores y sentó las bases para el desarrollo de sistemas de reconocimiento de dígitos escritos a mano más
 sofisticados.
 
-TODO: agregar mas. en la tesis de lamagna hay mas referencias.
+En la década de 1990, se desarrollaron otros modelos de aprendizaje profundo que superaron las limitaciones de los
+enfoques anteriores. \cite{lecun1995learning} se menciona por primera vez el término de {\it red convolucional}.
+
+Desde entonces, los algoritmos de reconocimiento de caracteres han seguido evolucionando y mejorando. Actualmente, los
+sistemas de reconocimiento de caracteres son capaces de reconocer caracteres escritos a mano con una precisión cercana
+al 100\%. Además del reconocimiento de caracteres, estas técnicas también se han utilizado para la detección de objetos
+en imágenes y videos, así como para la traducción automática.
 
 \section{Redes Neuronales}
 \cite{mcculloch1943logical} estudiaron y propusieron un modelo del comportamiento de la
@@ -156,7 +177,7 @@ término de {\it bias}. Existen múltiples funciones de activación, las más co
     \item Tangente hiperbólica: $f(x) = tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$
     \item Función sigmoidea: $f(x) = \sigma(x) = \frac{1}{1+exp(-x)}$
     \item ReLU: $f(x) = max(0, x)$
-    \item Sofmax: $f(x_i) = \sigma(x_i) = \frac{e^{x_{i}}}{\sum_{j=1}^K e^{x_{j}}} \ \ \ para\ i=1,2,\dots,K$
+    \item Softmax: $f(x_i) = \sigma(x_i) = \frac{e^{x_{i}}}{\sum_{j=1}^K e^{x_{j}}} \ \ \ para\ i=1,2,\dots,K$
 \end{itemize}
 
 \subsection{Redes Convolucionales}
