@@ -71,13 +71,22 @@ artificial'' de los 1980s, donde cesó el interés de la comunidad por los model
 La contribución más importante en la reemergencia del conexionismo en los años ochenta fue la técnica {\it
 backpropagation} desarrollada por \cite{rumelhart1986learning}. En realidad, esta técnica fue desarrollada inicialmente
 por \cite{werbos1974beyond} y después redescubierta por varios grupos de investigadores \parencite{lecun1985learning, rumelhart1986learning}. Este algoritmo abrió las puertas al uso práctico de las redes
-neuronales en un sinfín de campos. Las más ``simples'' en la práctica son las llamadas redes multicapa alimentadas
-hacia delante ({\it feed forward}) entrenadas con {\it backpropagation}, también referidas como perceptrones mutlicapa
-    {\it MLP}.
+neuronales en un sinfín de campos. La idea detrás del {\it backpropagation} es ajustar los pesos de una red neuronal
+para minimizar el error de predicción en un conjunto de datos de entrenamiento. Este error se calcula como la
+diferencia entre la salida real de la red y la salida deseada para una entrada dada. Para ajustar los pesos de la red,
+se utilizan las derivadas parciales del error con respecto a cada uno de los pesos, lo que permite actualizar los pesos
+en la dirección que minimiza el error. El algoritmo de {\it backpropagation} se divide en dos fases: la propagación
+hacia adelante y la propagación hacia atrás. En la fase de propagación hacia adelante, se calcula la salida de la red
+para una entrada dada. La salida de la red se compara con la salida deseada para calcular el error de predicción. En la
+fase de propagación hacia atrás, se utiliza este error para calcular las derivadas parciales del error con respecto a
+cada uno de los pesos de la red. Este algoritmo ajusta los pesos en la dirección que minimiza el error de la red,
+multiplicando la derivada parcial del error por una tasa de aprendizaje y restando el resultado del peso
+correspondiente.
 
-En \citeyear{funahashi1989approximate}, se demuestra teóricamente que una red de este tipo, con una capa oculta, el
-suficiente número de nodos y entrenada con {\it backpropagation}, puede aproximar cualquier función continua con
-cualquier grado de precisión \parencite{funahashi1989approximate}.
+Las redes neuronales más ``simples'' entrenadas con {\it backpropagation}, son las denominadas redes multicapa
+alimentadas hacia delante ({\it feed forward}) o perceptrones mutlicapa {\it MLP}. En
+\citeyear{funahashi1989approximate}, se demuestra teóricamente que una red de este tipo, con una capa oculta y el
+suficiente número de nodos, puede aproximar cualquier función continua con cualquier grado de precisión \parencite{funahashi1989approximate}.
 
 \subsection{Redes Densas}
 Como se detalló anteriormente, los perceptrones son modelos lineales incapaces de resolver problemas que no sean
