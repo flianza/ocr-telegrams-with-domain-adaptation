@@ -75,13 +75,13 @@ neuronales en un sinfín de campos. La idea detrás del {\it backpropagation} es
 para minimizar el error de predicción en un conjunto de datos de entrenamiento. Este error se calcula como la
 diferencia entre la salida real de la red y la salida deseada para una entrada dada. Para ajustar los pesos de la red,
 se utilizan las derivadas parciales del error con respecto a cada uno de los pesos, lo que permite actualizar los pesos
-en la dirección que minimiza el error. El algoritmo de {\it backpropagation} se divide en dos fases: la propagación
-hacia adelante y la propagación hacia atrás. En la fase de propagación hacia adelante, se calcula la salida de la red
-para una entrada dada. La salida de la red se compara con la salida deseada para calcular el error de predicción. En la
-fase de propagación hacia atrás, se utiliza este error para calcular las derivadas parciales del error con respecto a
-cada uno de los pesos de la red. Este algoritmo ajusta los pesos en la dirección que minimiza el error de la red,
-multiplicando la derivada parcial del error por una tasa de aprendizaje y restando el resultado del peso
-correspondiente.
+en la dirección que minimiza el error. El entrenamiento de una red utilizando {\it backpropagation} se divide en dos
+fases: la propagación hacia adelante y la propagación hacia atrás. En la fase de propagación hacia adelante, se calcula
+la salida de la red para una entrada dada. La salida de la red se compara con la salida deseada para calcular el error
+de predicción. En la fase de propagación hacia atrás, se utiliza este error para calcular las derivadas parciales del
+error con respecto a cada uno de los pesos de la red. Este algoritmo ajusta los pesos en la dirección que minimiza el
+error de la red, multiplicando la derivada parcial del error por una tasa de aprendizaje y restando el resultado del
+peso correspondiente.
 
 Las redes neuronales más ``simples'' entrenadas con {\it backpropagation}, son las denominadas redes multicapa
 alimentadas hacia delante ({\it feed forward}) o perceptrones mutlicapa {\it MLP}. En
@@ -190,10 +190,11 @@ término de {\it bias}. Existen múltiples funciones de activación, las más co
 \end{itemize}
 
 \subsection{Redes Convolucionales}
-Una de las principales limitaciones de las redes densas es que no son muy buenas para trabajar con datos que tienen una
-estructura espacial, como imágenes o audio. Esto se debe a que las redes densas tratan a todas las entradas de manera
-aislada, sin tener en cuenta las relaciones entre ellas. Esto puede llevar a que la red no sea capaz de detectar
-patrones o características importantes en los datos, lo que puede limitar su rendimiento.
+Una de las principales limitaciones de las redes densas es su incapacidad para manejar datos que presentan una
+estructura espacial, como imágenes o audio. Esta limitación se debe principalmente al problema de la invarianza
+espacial, donde una misma entidad (por ejemplo, el dígito '6') puede tener diferentes ubicaciones en una imagen. Dado
+que las redes densas tratan cada entrada de manera aislada, ignorando las relaciones espaciales entre ellas, es posible
+que no detecten patrones o características importantes en los datos, lo que puede reducir su rendimiento.
 
 Para solucionar este problema, surgió la idea de utilizar redes neuronales convolucionales (CNN). Estas redes se basan
 en utilizar capas de neuronas que comparten pesos y realizan una operación de convolución en los datos de entrada. Esto
@@ -212,8 +213,10 @@ Donde $f$ y $g$ son dos funciones y $*$ es el operador de convolución. Esta ope
 $g$ a través de la función $f$ y multiplicar cada valor de $f$ por el valor de $g$ en esa posición. El resultado de la
 operación de convolución es una nueva función que refleja la combinación de los valores de $f$ y $g$.
 
-A modo de ejemplo, si se posee una matriz de $6\times6$ $I$ y un filtro $3\times3$ $K$, la operación de convolución $*$
-que produce $I*K$ en una CNN puede visualizarse como:
+En la figura \ref{fig:convolucion-ejemplo} se ilustra el proceso de cálculo de una convolución para escenarios
+discretos. Para una matriz $I$ de tamaño $6\times6$ y un filtro $K$ de tamaño $3\times3$, la operación de convolución
+$*$ en una CNN aplica el filtro $K$ deslizándolo sobre la matriz $I$ para producir $I*K$.
+
 \begin{figure}[H]
     \centering
     \convoutionpicture 42
@@ -221,17 +224,28 @@ que produce $I*K$ en una CNN puede visualizarse como:
     \label{fig:convolucion-ejemplo}
 \end{figure}
 
+En una CNN, la matriz $I$ representa la imagen y el filtro $K$ es el conjunto de parámetros entrenables del modelo,
+análogo a las neuronas en una red densa. Aunque existen filtros estudiados para detectar ciertas características, como
+el filtro Sobel para detectar bordes, se permite que la red aprenda de forma autónoma $K$ con el fin de detectar las
+características relevantes $I*K$ para la tarea a través del entrenamiento. Esto permite que la red encuentre
+características sin el sesgo que se introduciría al utilizar únicamente filtros predefinidos.
+
 Una de las principales ventajas de las CNNs es que son capaces de procesar datos con una gran cantidad de dimensiones,
 como imágenes con altura, anchura y profundidad (canales de color). Esto se debe a que las capas de convolución son
 capaces de realizar operaciones de filtrado sobre los datos de entrada, permitiendo a la red aprender características
 específicas de los datos de manera eficiente. Además, las CNNs tienen la capacidad de generalizar de manera efectiva,
 lo que significa que son capaces de realizar buenas predicciones en conjuntos de datos desconocidos.
 
-Otra ventaja de las CNN es que también cuentan con capas de pooling, que se encargan de seleccionar las características
-más importantes de los datos y reducir su tamaño, lo que permite que la red tenga un mejor rendimiento y sea más
-eficiente. Existen distintos tipos de pooling: {\it max pooling}, el cual calcula el máximo valor de la submatriz; {\it
-min pooling}, el cual calcula el mínimo valor de la submatriz; y {\it average pooling}, el cual calcula el valor
-promedio de la submatriz.
+Otra ventaja de las CNN es que cuentan con capas de {\it pooling} o también llamadas de submuestreo. Su objetivo
+principal es reducir el tamaño espacial de la representación de características para disminuir la cantidad de
+parámetros y de operaciones necesarias en la red, lo que permite reducir el costo computacional y evitar el
+sobreajuste. Además, al reducir el tamaño de la representación, se logra una cierta invarianza en las características
+aprendidas por la red, lo que significa que la posición exacta de las características dentro de la imagen ya no importa
+tanto. La operación de {\it pooling} en una CNN consiste en dividir la imagen de entrada en subregiones no superpuestas
+y aplicar una función a cada subregión. En general, existen tres tipos de funciones que se utilizan en {\it pooling}:
+{\it max pooling}, que toma el valor máximo de cada subregión; {\it average pooling}, que toma el valor promedio de
+cada subregión; y {\it min pooling}, que toma el valor mínimo de cada subregión. La figura \ref{fig:maxpool-ejemplo}
+ilustra el cálculo de {\it max pooling} a la matriz $I*K$ del ejemplo anterior.
 
 \begin{figure}[H]
     \centering
