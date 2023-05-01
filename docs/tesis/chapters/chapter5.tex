@@ -2,62 +2,64 @@
 
 \label{Chapter5}
 
-El presente trabajo se centró en la utilización de técnicas de adaptación de dominio para mejorar la digitalización de
-telegramas de elecciones mediante redes neuronales. Con el fin de lograr este objetivo, se evaluaron diversos modelos
-de redes neuronales entrenados con distintos algoritmos de adaptación de dominio.
+La presente tesis se centró en la utilización de técnicas de adaptación de dominio para mejorar la digitalización de de
+redes neuronales entrenados con distintos algoritmos de adaptación de dominio. En primera instancia, se desarrolló un
+proceso de Extracción, Transformación y Carga (ETL) de los telegramas que permitió segmentar cada uno de los dígitos y
+crear un conjunto de datos adecuado para la tarea de digitalización. Este proceso de ETL estandarizó los datos para que
+pudieran ser procesados y analizados de manera más efectiva.
 
-Tras realizar múltiples experimentos, se pudo determinar que la red ResNet entrenada con un AFN es el modelo que
-obtiene la mejor precisión en la tarea de digitalización de telegramas. Este resultado indica que el uso de modelos más
-complejos y profundos puede ser beneficioso en este tipo de tarea. Sin embargo, también se pudo comprobar que una red
-más simple, como la LeNet con AFN, logra un desempeño satisfactorio, lo que sugiere que no siempre es necesario
-utilizar modelos complejos para resolver tareas como ésta.
+En una siguiente etapa, tras realizar múltiples experimentos, se pudo determinar que la red ResNet18 entrenada mediante
+AFN es el modelo que tiene el mejor rendimiento en la tarea de digitalización de telegramas. Este resultado indica que
+el uso de modelos más complejos y profundos puede ser beneficioso en este tipo de tarea. Sin embargo, también se pudo
+comprobar que una red más simple, como la LeNet5 con AFN, tiene un rendimiento satisfactorio, lo que sugiere que no
+siempre es necesario utilizar modelos complejos para resolver tareas como ésta.
 
-En cuanto a la precisión de las predicciones en los telegramas, se logró alcanzar una precisión promedio del 73\% sin
-estandarizar la casilla donde se escriben los dígitos. Podría disponerse de un casillero por número a escribir y
-capacitar para no agregar ceros a la izquierda y se espera que el resultado sería aún mejor, ya que el ETL de
-segmentación de dígitos sería de mejor calidad.
+En cuanto a la precisión obtenida al aplicar el mejor modelo a los telegramas de prueba, se alcanzó una precisión
+promedio del 73\%, sin haber estandarizado la casilla donde se escriben los dígitos. No obstante, se podría mejorar aún
+más el resultado si se dispusiera de un casillero por número a escribir, lo que permitiría evitar agregar ceros a la
+izquierda y, en consecuencia, aumentar la calidad del proceso de ETL de segmentación de dígitos. En este sentido, se
+espera que la implementación de esta mejora contribuya a mejorar la precisión de las predicciones.
 
 Es importante destacar que la utilización de técnicas de adaptación de dominio en la tarea de digitalización de
 telegramas de elecciones es un campo de investigación en desarrollo, y aún existen diversas limitaciones que deben ser
-abordadas. No obstante, los resultados obtenidos en este trabajo son prometedores y sugieren que la adaptación de
-dominio puede ser una técnica útil para mejorar la digitalización de telegramas de elecciones en contextos de alta
+abordadas. No obstante, los resultados obtenidos en esta tesis son prometedores y sugieren que la adaptación de dominio
+puede ser una técnica útil para mejorar la digitalización de telegramas de elecciones en contextos de alta
 variabilidad.
 
-Cabe señalar que los resultados obtenidos en este trabajo pueden tener implicaciones importantes en la automatización
-de procesos electorales, lo que puede mejorar la eficiencia y la transparencia de las elecciones. Con la digitalización
-de telegramas de manera efectiva, es posible mejorar la velocidad y la precisión del conteo de votos, lo que puede
-reducir la posibilidad de errores humanos y aumentar la confianza en los procesos electorales.
+Cabe señalar que los resultados obtenidos en esta tesis pueden tener implicaciones importantes en la automatización de
+procesos electorales, lo que puede mejorar la eficiencia y la transparencia de las elecciones. Con la digitalización de
+telegramas de manera efectiva, es posible mejorar la velocidad y la precisión del conteo de votos, lo que puede reducir
+la posibilidad de errores humanos y aumentar la confianza en los procesos electorales.
 
 \section{Trabajos Futuros}
 
-A pesar de los resultados alentadores obtenidos en este trabajo, existen diversas posibilidades de mejora y trabajos
-futuros que pueden llevarse a cabo para ampliar el alcance y la calidad de los resultados. A continuación, se detallan
-algunas posibles líneas de investigación futura:
+Existen diversas posibilidades de mejora y trabajos futuros que pueden llevarse a cabo para ampliar el alcance y la
+calidad de los resultados. A continuación, se detallan algunas posibles líneas de investigación futura:
 
 \begin{itemize}
-    \item Mejora del proceso ETL: Una de las limitaciones de la presente investigación es la calidad del conjunto de datos TDS,
-          ya que presenta ciertas limitaciones en términos de segmentación de los dígitos en los telegramas. Por lo tanto, una
-          posible línea de investigación futura es la mejora del proceso ETL para mejorar la segmentación de los dígitos y
-          mejorar la calidad del conjunto de datos.
-    \item Mejorar el proceso de post-procesamiento de las predicciones: En la implementación actual, no se realizó ningún tipo de
-          post-procesamiento en las predicciones obtenidas por los modelos de aprendizaje automático. Sería útil explorar
-          distintas opciones de post-procesamiento, como la validación de que la cantidad total de votos predichos por telegrama
-          no supere el total que debe haber por mesa, o la validación de que la cantidad de votos por partido no supere el total
-          de la mesa. También se podría considerar la utilización de otras técnicas de post-procesamiento, como la corrección de
-          errores en las predicciones mediante la incorporación de información contextual adicional.
-    \item Mejora de la estandarización de los telegramas: Como se mencionó en las conclusiones, la estandarización en la sección
-          donde se escriben los dígitos podría mejorar aún más la precisión de los modelos de ya que mejoraría la calidad de TDS.
-    \item Evaluación de otras técnicas de adaptación de dominio: En este trabajo se evaluaron algunas técnicas de adaptación de
-          dominio, pero existen muchas otras técnicas que podrían ser útiles para mejorar la precisión de la digitalización de
-          telegramas. Por lo tanto, una posible línea de investigación futura es la evaluación de otras técnicas de adaptación de
-          dominio para comparar su efectividad con las técnicas utilizadas en esta investigación.
-    \item Evaluación de modelos híbridos: Otra posible línea de investigación futura es la evaluación de modelos híbridos que
-          combinen técnicas de adaptación de dominio con otros métodos de mejora de la precisión en la tarea de digitalización de
-          telegramas. Por ejemplo, se podría explorar la combinación de redes neuronales con técnicas de procesamiento de
-          imágenes para mejorar la calidad de los datos.
+      \item Mejora del proceso ETL: Una de las limitaciones de la presente investigación es la calidad del conjunto de datos TDS,
+            ya que presenta ciertas limitaciones en términos de segmentación de los dígitos en los telegramas. Por lo tanto, una
+            posible línea de investigación futura es la mejora del proceso ETL para mejorar la segmentación de los dígitos y
+            mejorar la calidad del conjunto de datos.
+      \item Mejorar el proceso de post-procesamiento de las predicciones: En la implementación actual, no se realizó ningún tipo de
+            post-procesamiento en las predicciones obtenidas por los modelos de aprendizaje automático. Sería útil explorar
+            distintas opciones de post-procesamiento, como la validación de que la cantidad total de votos predichos por telegrama
+            no supere el total que debe haber por mesa, o la validación de que la cantidad de votos por partido no supere el total
+            de la mesa. También se podría considerar la utilización de otras técnicas de post-procesamiento, como la corrección de
+            errores en las predicciones mediante la incorporación de información contextual adicional.
+      \item Mejora de la estandarización de los telegramas: Como se mencionó en las conclusiones, la estandarización en la sección
+            donde se escriben los dígitos podría mejorar aún más la precisión de los modelos de ya que mejoraría la calidad de TDS.
+      \item Evaluación de otras técnicas de adaptación de dominio: En esta tesis se evaluaron algunas técnicas de adaptación de
+            dominio, pero existen muchas otras técnicas que podrían ser útiles para mejorar la precisión de la digitalización de
+            telegramas. Por lo tanto, una posible línea de investigación futura es la evaluación de otras técnicas de adaptación de
+            dominio para comparar su efectividad con las técnicas utilizadas en esta investigación.
+      \item Evaluación de modelos híbridos: Otra posible línea de investigación futura es la evaluación de modelos híbridos que
+            combinen técnicas de adaptación de dominio con otros métodos de mejora de la precisión en la tarea de digitalización de
+            telegramas. Por ejemplo, se podría explorar la combinación de redes neuronales con técnicas de procesamiento de
+            imágenes para mejorar la calidad de los datos.
 \end{itemize}
 
-En conclusión, existen varias líneas de investigación desprendidas del trabajo actual que pueden ser exploradaspara
+En conclusión, existen varias líneas de investigación desprendidas de la tesis actual que pueden ser exploradaspara
 mejorar la precisión de los modelos que deben aplicarse en un conjunto de datos con características distintas que del
 que se entrenó. Estas mejoras pueden ser importantes para aumentar la confianza en los procesos electorales y mejorar
 la transparencia y la eficiencia en el conteo de votos.
