@@ -1155,8 +1155,8 @@ Donde $\beta$ es el parámetro que regula el trade-off de $\mathcal{L}_{BSP}$.
 Las técnicas detalladas hasta el momento implican algoritmos de optimización minimax, que funcionan correctamente en
 los métodos basados en el aprendizaje adversario. Sin embargo, estos algoritmos utilizan funciones de scoreo que
 carecen de garantías teóricas ya que se estudiaron funciones de pérdida 0-1. Es por esto que se introducen métodos que
-apuntan a reducir la brecha que existe entre la teoría y el algoritmo, como Margin Disparity Discrepancy {\it MDD} \parencite{zhang2019bridging}. La idea general de {\it MDD} es introducir una segunda red clasificadora $\mathcal{C}^{'}$ y
-relacionar su salida con la de $\mathcal{C}$.
+apuntan a reducir la brecha que existe entre la teoría y el algoritmo, como Margin Disparity Discrepancy {\it MDD} \parencite{zhang2019bridging} esquematizado en la figura \ref{fig:mdd-esquema}. La idea general de {\it MDD} es introducir
+una segunda red clasificadora $\mathcal{C}^{'}$ y relacionar su salida con la de $\mathcal{C}$.
 
 \begin{figure}[H]
   \centering
@@ -1298,7 +1298,7 @@ deterioro en la clasificación. No obstante, pueden plantearse dos hipótesis:
         alejadas de las normas pequeñas supondrá una mejora en la transferencia.
 \end{itemize}
 
-\cite{xu2019larger} propone un método llamado {\it Adaptive Feature Norm AFN} que consiste en normalizar las normas de las características aprendidas por la red $\mathcal{G}$  mediante $n$ bloques $\mathcal{N}$ (compuestos por FC-BN-ReLU-Dropout) y mediante $\mathcal{L}_{AFN}$.
+\cite{xu2019larger} propone un método llamado {\it Adaptive Feature Norm AFN}, ilustrado en la figura \ref{afn-esquema}, que consiste en normalizar las normas de las características aprendidas por la red $\mathcal{G}$ mediante $n$ bloques $\mathcal{N}$ (compuestos por FC-BN-ReLU-Dropout) y mediante $\mathcal{L}_{AFN}$.
 
 \begin{figure}[H]
   \centering

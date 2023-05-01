@@ -39,7 +39,7 @@ ser minimizadas.
 
         \bottomrule
     \end{tabular}
-    \caption{Métricas de los experimentos realizados}{Métricas de los experimentos realizados. Entre paréntesis se encuentra la posición que ocupa dentro del top 3 de la columna.}
+    \caption[Métricas de los experimentos realizados]{Métricas de los experimentos realizados. Entre paréntesis se encuentra la posición que ocupa dentro del top 3 de la columna.}
     \label{tab:metricas-experimentos}
 \end{table}
 
@@ -47,13 +47,15 @@ Se observa que los modelos entrenados sin adaptación de dominio presentan las m
 se esperaba. Sin embargo, estos modelos tienen los peores valores de adaptación, lo que hace que no puedan
 generalizarse a nuevos conjuntos de datos, como TDS.
 
-El modelo ResNet, utilizando AFN, demuestra ser el modelo que combina mejor las métricas de clasificación y adaptación.
-A pesar de esto, se destaca que los modelos LeNet entrenados con DANN y AFN obtuvieron buenas métricas en general, lo
-que sugiere que en ocasiones, un modelo más complejo no necesariamente garantiza un mejor rendimiento.
+El modelo ResNet18, utilizando AFN, demuestra ser el modelo que combina mejor las métricas de clasificación y
+adaptación. A pesar de esto, se destaca que los modelos LeNet entrenados con DANN y AFN obtuvieron buenas métricas en
+general, lo que sugiere que en ocasiones, un modelo más complejo no necesariamente garantiza un mejor rendimiento.
 
 Los modelos se aplicaron a todos los telegramas, y se calculó el promedio de $IoU$ por telegrama utilizando el método
 descrito en el capítulo \ref{Chapter3}. Además, se determinó la cantidad promedio de aciertos por telegrama utilizando
-las etiquetas transcritas en el centro de cómputo, asumiendo que hay pocos errores en ellas.
+las etiquetas transcritas en el centro de cómputo, asumiendo que hay pocos errores en ellas. El cuadro
+\ref{tab:iou-cant-aciertos-en-telegramas} muestra el $IoU$ promedio y la cantidad de aciertos promedios obtenidos para
+los telegramas de prueba.
 
 \begin{table}[H]
     \centering
@@ -75,13 +77,13 @@ las etiquetas transcritas en el centro de cómputo, asumiendo que hay pocos erro
                                      & LeNet  & 0.6493          & 11                & 61\%              \\
         \bottomrule
     \end{tabular}
-    \caption{IoU y aciertos por modelo}{IoU promedio y cantidad promedio de aciertos al aplicar los modelos a cada telegrama.}
+    \caption[IoU y aciertos por modelo]{IoU promedio y cantidad promedio de aciertos al aplicar los modelos a cada telegrama.}
     \label{tab:iou-cant-aciertos-en-telegramas}
 \end{table}
 
-En el cuadro \ref{tab:iou-cant-aciertos-en-telegramas}, se confirma la elección del mejor modelo mencionado
-previamente. Es importante destacar que independientemente de la técnica de adaptación utilizada, todos los modelos
-presentan mejores porcentajes de aciertos promedio que aquellos modelos entrenados únicamente con MNIST.
+Analizando el cuadro anterior, se confirma la elección del mejor modelo ResNet18 con AFN. Es importante destacar que
+independientemente de la técnica de adaptación utilizada, todos los modelos presentan mejores porcentajes de aciertos
+promedio que aquellos modelos entrenados únicamente con MNIST.
 
 Esto sugiere que la adaptación de dominio es fundamental para obtener un mejor rendimiento en la tarea de clasificación
 de telegramas. Los modelos entrenados con técnicas de adaptación logran generalizar mejor y son más efectivos en la
@@ -168,7 +170,7 @@ generados por todos los modelos LeNet.
         \label{fig:umap-lenet-afn}
     \end{subfigure}
 
-    \caption{Representación UMAP de las características aprendidas de los modelos LeNet5}{Representación UMAP de las características aprendidas de los modelos LeNet5. Los puntos azules representan observaciones de MNIST y los naranjas de TDS.}
+    \caption[Representación UMAP de las características aprendidas de los modelos LeNet5]{Representación UMAP de las características aprendidas de los modelos LeNet5. Los puntos azules representan observaciones de MNIST y los naranjas de TDS.}
     \label{fig:umaps-lenet}
 \end{figure}
 
@@ -235,7 +237,7 @@ generados por todos los modelos ResNet.
         \label{fig:umap-resnet-afn}
     \end{subfigure}
 
-    \caption{Representación UMAP de las características aprendidas de los modelos ResNet18}{Representaciones UMAP de los espacios latentes de los modelos ResNet18. Los puntos azules representan observaciones de TDS y los naranjas de MNIST.}
+    \caption[Representación UMAP de las características aprendidas de los modelos ResNet18]{Representaciones UMAP de los espacios latentes de los modelos ResNet18. Los puntos azules representan observaciones de TDS y los naranjas de MNIST.}
     \label{fig:umaps-resnet}
 \end{figure}
 
@@ -288,7 +290,7 @@ obtienen de aplicar los modelos a los telegramas.
         \includegraphics[height=1\textwidth]{chapter4/hist-iou-afn.png}
     \end{subfigure}
 
-    \caption{Histogramas de IoU por modelo}{Histogramas de la métrica $IoU$ promedio por telegrama por cada técnica AD y modelo.}
+    \caption[Histogramas de IoU por modelo]{Histogramas de la métrica $IoU$ promedio por telegrama por cada técnica AD y modelo.}
     \label{fig:histogramas-ious}
 \end{figure}
 

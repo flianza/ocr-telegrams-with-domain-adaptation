@@ -48,7 +48,8 @@ rotación necesario para alinear la imagen.
 Una vez que se ha determinado el ángulo de rotación, se aplica una transformación geométrica a la imagen completa para
 enderezarla. Para realizar esta transformación, se utiliza la función \verb|getRotationMatrix2D| de la biblioteca de
 procesamiento de imágenes OpenCV. Esta función recibe como argumentos el ángulo de rotación calculado y las dimensiones
-de la imagen, y devuelve una matriz de transformación que se aplica a la imagen para enderezarla.
+de la imagen, y devuelve una matriz de transformación que se aplica a la imagen para enderezarla. La figura
+\ref{fig:etl-1-rotacion} muestra un ejemplo del resultado que se obtiene al enderezar los telegramas de esta manera.
 
 \begin{figure}[H]
     \centering
@@ -65,7 +66,7 @@ de la imagen, y devuelve una matriz de transformación que se aplica a la imagen
 
     \end{tikzpicture}
 
-    \caption{Enderezamiento de un telegrama}{Proceso de enderezamiento de un telegrama mediante el uso de OpenCV.}
+    \caption[Enderezamiento de un telegrama]{Proceso de enderezamiento de un telegrama mediante el uso de OpenCV.}
     \label{fig:etl-1-rotacion}
 \end{figure}
 
@@ -79,12 +80,13 @@ objeto independiente.
 
 Una vez identificado el contorno de mayor área, se procede a extraer la grilla de votos y a trabajar en ella de forma
 separada del resto de la imagen. De esta manera, se simplifica la tarea de procesamiento de los datos y se puede
-trabajar de forma más efectiva en la extracción y análisis de los votos presentes en la grilla.
+trabajar de forma más efectiva en la extracción y análisis de los votos presentes en la grilla. La figura
+\ref{fig:etl-2-grilla} muestra la grilla que se logra extraer con este proceso.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.4\textwidth, height=0.3\textwidth]{chapter3/etl-2-grilla.png}
-    \caption{Grilla de votos detectada}{Grilla de votos extraída buscando el contorno de mayor área.}
+    \caption[Grilla de votos detectada]{Grilla de votos extraída buscando el contorno de mayor área.}
     \label{fig:etl-2-grilla}
 \end{figure}
 
@@ -108,7 +110,7 @@ muestra las proyecciones obtenidas con los umbrales por cada eje.
         \draw (142.5,30.77) node  {\includegraphics[width=213.75pt,height=46.15pt]{chapter3/etl-3-grilla-proyeccion-x.png}};
     \end{tikzpicture}
 
-    \caption{Proyecciones de los ejes de la grilla de votos}{Proyecciones de los ejes de la grilla de votos. En rojo se marca el umbral de corte.}
+    \caption[Proyecciones de los ejes de la grilla de votos]{Proyecciones de los ejes de la grilla de votos. En rojo se marca el umbral de corte.}
     \label{fig:etl-3-proyecciones}
 \end{figure}
 
@@ -125,26 +127,28 @@ cada pico. Siguiendo con el ejemplo, en el eje $x$ se obtienen los siguientes p�
 Con la estrategia del umbral no se obtienen las 4 líneas que se desean detectar sobre el eje $x$. No obstante, se puede
 aplicar un clustering jerárquico sobre los índices obtenidos y luego calcular el índice promedio de cada cluster para
 tomarlo como único representante. El proceso se repite de la misma manera sobre el eje $y$. Esta última modificación
-sobre el trabajo realizado en \parencite{lamagna2016lectura} asegura tener un único píxel por línea.
+sobre el trabajo realizado en \parencite{lamagna2016lectura} asegura tener un único píxel por línea. La figura \ref{fig:etl-3-grilla-detectada} muestra
+la segmentación detectada mediante el proceso descripto.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.4\textwidth, height=0.3\textwidth]{chapter3/etl-3-grilla-detectada.png}
-    \caption{Segmentación de la grilla detectada}{Grilla detectada (en verde) utilizando el umbral por sobre las proyecciones y su posterior agrupamiento con clustering jerárquico.}
+    \caption[Segmentación de la grilla detectada]{Grilla detectada (en verde) utilizando el umbral por sobre las proyecciones y su posterior agrupamiento con clustering jerárquico.}
     \label{fig:etl-3-grilla-detectada}
 \end{figure}
 
 \subsection{Segmentación de dígitos}
 
 Una vez obtenida la grilla, se itera por cada registro obteniendo los rectángulos que contienen los votos, ignorando el
-primer renglón que contiene los títulos de la grilla.
+primer renglón que contiene los títulos de la grilla. La figura \ref{fig:etl-4-registro} muestra un registro de la
+grilla obtenida.
 
 \begin{figure}[H]
     \centering
     \frame{\includegraphics[height=15pt]{chapter3/etl-4-registro-1.png}}
     \frame{\includegraphics[height=15pt]{chapter3/etl-4-registro-2.png}}
     \frame{\includegraphics[height=15pt]{chapter3/etl-4-registro-3.png}}
-    \caption{Primer registro extraído de la grilla de votos}{Primer registro extraído de la grilla de votos.}
+    \caption[Primer registro extraído de la grilla de votos]{Primer registro extraído de la grilla de votos}
     \label{fig:etl-4-registro}
 \end{figure}
 
@@ -162,14 +166,15 @@ ruido o elementos no deseados que puedan haber sido detectados por el análisis 
 
 Una vez que se han identificado los componentes correspondientes a los dígitos, se procede a recortarlos
 individualmente para obtener una imagen de cada dígito por separado. De esta manera, se facilita el procesamiento y
-análisis de los votos de forma individual.
+análisis de los votos de forma individual. La figura \ref{fig:etl-4-digitos} muestra los dígitos de un voto determinado
+obtenidos de esta menera.
 
 \begin{figure}[H]
     \centering
     \frame{\includegraphics[scale=0.6]{chapter3/etl-4-digito-1.png}}
     \frame{\includegraphics[scale=0.6]{chapter3/etl-4-digito-2.png}}
     \frame{\includegraphics[scale=0.6]{chapter3/etl-4-digito-3.png}}
-    \caption{Dígitos detectados en el primer bloque de votos}{Dígitos detectados en el primer bloque de votos.}
+    \caption[Dígitos detectados en el primer bloque de votos]{Dígitos detectados en el primer bloque de votos}
     \label{fig:etl-4-digitos}
 \end{figure}
 
@@ -213,7 +218,7 @@ cada candidato.
         \bottomrule
 
     \end{tabular}
-    \caption{Ejemplo del conjunto de datos generado}{Ejemplo de registros del conjutno de datos. Cada fila representa un voto.}
+    \caption[Ejemplo del conjunto de datos generado]{Ejemplo de registros del conjunto de datos. Cada fila representa un voto.}
     \label{tab:dataset-telegramas-segmentados}
 \end{table}
 
@@ -244,7 +249,7 @@ estos histogramas para las proporciones mínimas y máximas de píxeles blancos 
         \caption{Histograma de la proporción máxima de píxeles blancos en un voto.}
         \label{fig:histograma-max-prop-blanco}
     \end{subfigure}
-    \caption{Histogramas de proporciones de píxeles blancos por voto}{Histogramas de proporciones de píxeles blancos por voto.}
+    \caption[Histogramas de proporciones de píxeles blancos por voto]{Histogramas de proporciones de píxeles blancos por voto.}
     \label{fig:histogramas-min-max-prop-blanco}
 \end{figure}
 
@@ -269,7 +274,7 @@ la variable de proporción de píxeles blancos, se calculan las variables mínim
         Tamaño máximo & 44.80    & 10.73  & 18     & 43      & 621    \\
         \bottomrule
     \end{tabular}
-    \caption{Estadísticos descriptivos de los dígitos}{Estadísticos descriptivos del mínimo y máximo tamaño de las imágenes de los votos.}
+    \caption[Estadísticos descriptivos de los dígitos]{Estadísticos descriptivos del mínimo y máximo tamaño de las imágenes de los votos.}
     \label{tab:describe-min-max-size}
 \end{table}
 
@@ -284,12 +289,13 @@ dataset {\it MNIST} junto con la etiqueta correspondiente al partido político r
 de 2021. Este conjunto de datos será denominado {\it TDS} (dataset de telegramas) a partir de este momento. El conjunto
 de datos {\it TDS} consta de un total de 170.718 imágenes de dígitos cuadradas con sus dimensiones originales, es
 decir, no se han estandarizado en una dimensión específica. Esta decisión se tomó intencionalmente, ya que podría
-permitir una mayor flexibilidad en el perfeccionamiento, procesamiento y análisis de los mismos en trabajos futuros.
+permitir una mayor flexibilidad en el perfeccionamiento, procesamiento y análisis de los mismos en trabajos futuros. La
+figura \ref{fig:tds} muestra una previsualizacion del conjunto de datos TDS.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{chapter3/tds.png}
-    \caption{Dataset TDS de dígitos}{Dataset TDS de dígitos.}
+    \caption[Conjunto de datos TDS]{Conjunto de datos TDS.}
     \label{fig:tds}
 \end{figure}
 
@@ -347,7 +353,7 @@ cada uno de los experimentos, se optimizaron los hiperparámetros para minimizar
         Dropout    & -           & -           & -              & -           & [0.3, 0.7]   & -            \\
         \bottomrule
     \end{tabular}
-    \caption{Rango de hiperparámetros optimizados}{Rango de hiperparámetros optimizados. $^{*}$LR refiere a ``learning rate''. $^{**}$T-O refiere a ``trade-off''.}
+    \caption[Rango de hiperparámetros optimizados]{Rango de hiperparámetros optimizados. $^{*}$LR refiere a ``learning rate''. $^{**}$T-O refiere a ``trade-off''.}
     \label{tab:rangos-hiperparametros}
 \end{table}
 
@@ -520,7 +526,7 @@ dominios son similares entre si, por lo que se espera que $dist_\mathcal{A} \app
         \label{fig:dominios-similares}
     \end{subfigure}
 
-    \caption{Ejemplos de distribuciones de dominios}{Ejemplos de distribuciones de dominios.}
+    \caption[Ejemplos de distribuciones de dominios]{Ejemplos de distribuciones de dominios.}
     \label{fig:ejemplos-dist-a}
 \end{figure}
 
