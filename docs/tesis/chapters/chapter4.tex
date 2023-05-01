@@ -39,7 +39,7 @@ ser minimizadas.
 
         \bottomrule
     \end{tabular}
-    \caption{Métricas de los experimentos realizados. Entre paréntesis se encuentra la posición que ocupa dentro del top 3 de la columna.}
+    \caption{Métricas de los experimentos realizados}{Métricas de los experimentos realizados. Entre paréntesis se encuentra la posición que ocupa dentro del top 3 de la columna.}
     \label{tab:metricas-experimentos}
 \end{table}
 
@@ -75,7 +75,7 @@ las etiquetas transcritas en el centro de cómputo, asumiendo que hay pocos erro
                                      & LeNet  & 0.6493          & 11                & 61\%              \\
         \bottomrule
     \end{tabular}
-    \caption{IoU promedio y cantidad promedio de aciertos al aplicar los modelos a cada telegrama.}
+    \caption{IoU y aciertos por modelo}{IoU promedio y cantidad promedio de aciertos al aplicar los modelos a cada telegrama.}
     \label{tab:iou-cant-aciertos-en-telegramas}
 \end{table}
 
@@ -168,7 +168,7 @@ generados por todos los modelos LeNet.
         \label{fig:umap-lenet-afn}
     \end{subfigure}
 
-    \caption{Representaciones UMAP de los espacios latentes de los modelos LeNet. Los puntos azules representan observaciones de MNIST y los naranjas de TDS.}
+    \caption{Representación UMAP de las características aprendidas de los modelos LeNet5}{Representación UMAP de las características aprendidas de los modelos LeNet5. Los puntos azules representan observaciones de MNIST y los naranjas de TDS.}
     \label{fig:umaps-lenet}
 \end{figure}
 
@@ -235,7 +235,7 @@ generados por todos los modelos ResNet.
         \label{fig:umap-resnet-afn}
     \end{subfigure}
 
-    \caption{Representaciones UMAP de los espacios latentes de los modelos ResNet. Los puntos azules representan observaciones de TDS y los naranjas de MNIST.}
+    \caption{Representación UMAP de las características aprendidas de los modelos ResNet18}{Representaciones UMAP de los espacios latentes de los modelos ResNet18. Los puntos azules representan observaciones de TDS y los naranjas de MNIST.}
     \label{fig:umaps-resnet}
 \end{figure}
 
@@ -288,7 +288,7 @@ obtienen de aplicar los modelos a los telegramas.
         \includegraphics[height=1\textwidth]{chapter4/hist-iou-afn.png}
     \end{subfigure}
 
-    \caption{Histogramas de la métrica $IoU$ promedio por telegrama por cada técnica AD y modelo.}
+    \caption{Histogramas de IoU por modelo}{Histogramas de la métrica $IoU$ promedio por telegrama por cada técnica AD y modelo.}
     \label{fig:histogramas-ious}
 \end{figure}
 
