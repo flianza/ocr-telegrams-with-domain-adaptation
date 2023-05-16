@@ -535,12 +535,17 @@ Se han propuesto muchos métodos para la adaptación de dominios, ya sea pondera
 de origen \parencite{sugiyama2007direct} o buscando una transformación de la distribución de origen a la distribución de destino \parencite{gong2013connecting}. Esta tesis analizará algunos de los métodos más comunes del ultimo caso.
 
 \subsection{Domain Adversarial Neural Network}
-Un gran hito al momento de modelar distribuciones es la Red Generativa Adversaria {\it GAN} \parencite{goodfellow2020generative}. Inspirada en estas arquitecturas GAN, la Red Neural Adversaria de Dominio {\it DANN} \parencite{ganin2016domain} consta de dos redes en la adaptación del dominio (figura \ref{fig:dann-esquema}). La primera es
-la discriminadora de dominios $\mathcal{D}$ entrenada para distinguir las características de origen de las de destino y
-la segunda es una generadora de características $\mathcal{G}$ que se entrena para confundir a $\mathcal{D}$ y
-simultáneamente ayudar a la red clasificadora $\mathcal{C}$. La idea general es que $\mathcal{G}$ aprenda a generar
-características lo suficientemente similares para ambos dominios de forma que $\mathcal{D}$ se equivoque y
-$\mathcal{C}$ los clasifique correctamente.
+Un gran hito al momento de modelar distribuciones es la Red Generativa Adversaria {\it GAN} \parencite{goodfellow2020generative}. Inspirada en estas arquitecturas GAN, la Red Neural Adversaria de Dominio {\it DANN} \parencite{ganin2016domain} de tres componentes clave: la generadora de características $\mathcal{G}$, la discriminadora de
+dominios $\mathcal{D}$ y la red clasificadora $\mathcal{C}$ como se ilustra en la figura \ref{fig:dann-esquema}. En
+primer lugar, la generadora de características $\mathcal{G}$ se entrena con el objetivo de confundir a la
+discriminadora $\mathcal{D}$ y al mismo tiempo ayudar a la red clasificadora $\mathcal{C}$. La idea principal es que
+$\mathcal{G}$ aprenda a generar características que sean similares en ambos dominios, de manera que la discriminadora
+$\mathcal{D}$ se equivoque al distinguir entre las características de origen y destino. Esta estrategia de engañar a
+$\mathcal{D}$ ayuda a $\mathcal{C}$ a clasificar correctamente las características entre ambos dominios. Por otro lado,
+la discriminadora de dominios $\mathcal{D}$ es entrenada para diferenciar entre las características de origen y las de
+destino. Su función es detectar las diferencias inherentes a cada uno de ellos. Al entrenar a $\mathcal{D}$ en la
+discriminación de dominios, se impulsa a $\mathcal{G}$ a generar características que sean indistinguibles para
+$\mathcal{D}$, fomentando así la adaptación de dominio.
 
 \begin{figure}[H]
   \centering
@@ -593,8 +598,6 @@ $\mathcal{C}$ los clasifique correctamente.
     \draw [shift={(355,117.33)}, rotate = 210.46] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
     \draw    (328.5,146.75) -- (353.68,133.4) ;
     \draw [shift={(356.33,132)}, rotate = 152.08] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
-    \draw    (271.67,40.48) -- (295.26,29.97) ;
-    \draw [shift={(298,28.75)}, rotate = 156] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
     \draw    (271.67,56.67) -- (295.2,65.68) ;
     \draw [shift={(298,66.75)}, rotate = 200.95] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
     \draw    (327.83,26.42) -- (352.43,41.13) ;
@@ -712,7 +715,7 @@ proporción esperada de datos de origen $\mathcal{\hat{S}}$ y destino $\mathcal{
 Por lo tanto, el objetivo de un modelo {\it DANN} viene dado por la ecuación \ref{eq:dann-objetivo}. Donde $\lambda$ es
 un hiper-parámetro a optimizar que regula el trade-off entre la clasificación y la discriminación adversaria. La
 minimización de $\mathcal{L}_\mathcal{C}$ dará lugar a representaciones discriminables, mientras que la disminución de
-$\mathcal{L}_\mathcal{D}$ dará lugar a representaciones transferibles.
+$\mathcal{L}_\mathcal{adv}$ dará lugar a representaciones transferibles.
 
 \begin{align}
   \min_{\mathcal{G},\mathcal{C}} \mathcal{L}_\mathcal{C}(\mathbf{x}^s, \mathbf{y}^s) + \lambda \mathcal{L}_{adv}(\mathbf{x}^s, \mathbf{x}^t)
@@ -720,16 +723,15 @@ $\mathcal{L}_\mathcal{D}$ dará lugar a representaciones transferibles.
 \end{align}
 
 \subsection{Adversarial Discriminative Domain Adaptation}
-Las redes Adversarial Discriminative Domain Adaptation {\it ADDA} \parencite{tzeng2017adversarial} surgen a partir de las {\it DANN} debido a que su estrategia de optimización podría no
-funcionar bien en la práctica por el problema del desvanecimiento del gradiente, que también es un problema importante
-en el entrenamiento de GANs. Por ejemplo, cuando el espacio latente de destino generado $\mathbf{z}^t$ es
-extremadamente distinguible del de origen tal que $\mathcal{D}(\mathbf{z}^t)=0$, el gradiente es pequeño y vice versa.
-Esto provoca que la optimización de $\mathcal{G}$ sea extremadamente difícil.
+Las redes Adversarial Discriminative Domain Adaptation {\it ADDA} \parencite{tzeng2017adversarial} surgen a partir de las {\it DANN} como propuesta para mitigar el desvanecimiento de
+gradiente, un problema importante en el entrenamiento de GANs. Por ejemplo, cuando el espacio latente de destino
+generado $\mathbf{z}^t$ es extremadamente distinguible del de origen tal que $\mathcal{D}(\mathbf{z}^t)=0$, el
+gradiente es pequeño y vice versa. Esto provoca que la optimización de $\mathcal{G}$ sea extremadamente difícil.
 
-Las redes {\it ADDA} separan la optimización de $\mathcal{G}$ y de $\mathcal{D}$ en dos objetivos separados (figura
-\ref{fig:adda-esquema}) siendo el primero el pre-entrenamiento de $\mathcal{G}_s$ y $\mathcal{C}$ en los datos de
-origen y el otro siendo la adaptación adversaria de una $\mathcal{G}_t$ utilizando a $\mathcal{G}_s$ pre-entrenada y
-$\mathcal{D}$.
+Las redes {\it ADDA} separan la optimización de $\mathcal{G}$ y de $\mathcal{D}$ en dos objetivos independientes como
+se muestra en la figura \ref{fig:adda-esquema}. El primero es el pre-entrenamiento de $\mathcal{G}_s$ y $\mathcal{C}$
+en los datos de origen y el otro la adaptación adversaria de una $\mathcal{G}_t$ utilizando a $\mathcal{G}_s$
+pre-entrenada y $\mathcal{D}$.
 
 \begin{figure}[H]
   \centering
@@ -754,8 +756,6 @@ $\mathcal{D}$.
     \draw [shift={(134.67,88.17)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
     \draw    (164.67,88.25) -- (185,88.25) ;
     \draw [shift={(188,88.25)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
-    \draw    (239.33,78.64) -- (262.93,68.14) ;
-    \draw [shift={(265.67,66.92)}, rotate = 156] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
     \draw    (239.33,94.83) -- (262.87,103.84) ;
     \draw [shift={(265.67,104.92)}, rotate = 200.95] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
     \draw    (295.5,64.58) -- (320.09,79.29) ;
@@ -909,7 +909,7 @@ No obstante del cambio, los objetivos de {\it ADDA} son similares a los de las {
 $\mathcal{G}_t$. La ecuación \ref{eq:adda-loss-clasificadora} contiene $\mathcal{L}_\mathcal{C}$ que es análoga a
 \ref{eq:dann-loss-clasificadora}. La ecuación \ref{eq:adda-loss-discriminadora} contiene $\mathcal{L}_{adv}$ que es
 análoga a \ref{eq:dann-loss-discriminadora}. Finalmente, la ecuación \ref{eq:adda-objetivo} contiene el objetivo a
-optimizar que asigna gradientes pequeños a registros de destino que sean similares a los de origen y gradientes mas
+optimizar, que asigna gradientes pequeños a registros de destino que sean similares a los de origen y gradientes mas
 grandes para los otros registros de destino.
 
 \begin{align}
@@ -925,22 +925,23 @@ Aunque los metodos de adaptación de dominio adversarios mejoran la {\it transfe
 aprendidas; es decir, la capacidad de que las representaciones puedan superar las discrepancias entre los dominios, lo
 hacen a costa de la {\it discriminabilidad}; es decir, la facilidad de separar categorias sobre las representaciones de
 ambos dominios \parencite{chen2019transferability}. Al aplicar descomposición en valores singulares ({\it SVD} en inglés) para analizar
-las propiedades espectrales de las representaciones aprendidas en batches, se confirma que los eigenvectors con valores
-singulares más altos dominan la {\it transferibilidad} mientras que los eigenvectors con valores singulares más
+las propiedades espectrales de las representaciones aprendidas en batches, se confirma que los autovectores con valores
+singulares más altos dominan la {\it transferibilidad} mientras que los autovectores con valores singulares más
 pequeños se encuentran penalizados, lo que provoca una {\it discriminabilidad} deficiente. {\it Batch Spectral
-    Penalization} {\it BSP} \parencite{chen2019transferability} penaliza el mayor valor singular para que los demás eigenvectors puedan mejorar la {\it
+    Penalization} {\it BSP} \parencite{chen2019transferability} penaliza el mayor valor singular para que los demás autovectores puedan mejorar la {\it
     discriminabilidad}. $\mathcal{L}_{BSP}$ es propuesto como un término de regularización sobre los $k$ mayores valores
 singulares:
 
-\begin{align}
-  \mathcal{L}_{BSP}(\mathbf{z}) = \sum_{i=0}^{k} (\sigma_{s, i}^2 + \sigma_{t, i}^2)
+\begin{equation}
+  \mathcal{L}_{BSP}(\mathbf{z}) = \sum_{i=0}^{k} (\sigma_{s, i}^2 + \sigma_{t, i}^2),
   \label{eq:bsp}
-\end{align}
+\end{equation}
 
-Donde $\sigma_{s, i}$ y $\sigma_{t, i}$ corresponden al $i$-ésimo mayor valor singular de $\Sigma_s$ y $\Sigma_t$
-respectivamente. En la presente tesis se utilizará $k=1$.
+\noindent
+donde $\sigma_{s, i}$ y $\sigma_{t, i}$ corresponden al $i$-ésimo mayor valor singular de $\Sigma_s$ y $\Sigma_t$
+respectivamente. En la presente tesis se utilizará el valor por defecto propuesto por \citeauthor{chen2019transferability} de $k=1$.
 
-  {\it BSP} puede integrarse a cualquiera de los esquemas mencionados anteriormente, por ejemplo a una {\it DANN} (figura \ref{fig:bsp-esquema-dann}).
+  {\it BSP} puede integrarse a cualquiera de los esquemas mencionados anteriormente, por ejemplo a una {\it DANN} como se muestra en la figura \ref{fig:bsp-esquema-dann}.
 
 \begin{figure}[H]
   \centering
@@ -1019,9 +1020,6 @@ respectivamente. En la presente tesis se utilizará $k=1$.
     %Straight Lines [id:da3066500527802958] 
     \draw    (346.5,245.75) -- (371.68,232.4) ;
     \draw [shift={(374.33,231)}, rotate = 152.08] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
-    %Straight Lines [id:da9357957653419868] 
-    \draw    (289.67,63.48) -- (313.26,52.97) ;
-    \draw [shift={(316,51.75)}, rotate = 156] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
     %Straight Lines [id:da5822336916421971] 
     \draw    (289.67,79.67) -- (313.2,88.68) ;
     \draw [shift={(316,89.75)}, rotate = 200.95] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
@@ -1144,11 +1142,12 @@ Por lo tanto, un modelo {\it DANN+BSP} presenta como objetivos:
 
 \begin{align}
    & \min_{\mathcal{G},\mathcal{C}} \mathcal{L}_\mathcal{C}(\mathbf{x}^s, \mathbf{y}^s) + \lambda \mathcal{L}_{adv}(\mathbf{x}^s, \mathbf{x}^t) + \beta \mathcal{L}_{BSP}(\mathcal{G}(\mathbf{x})) \\
-   & \max_{\mathcal{D}} \mathcal{L}_{adv}(\mathbf{x}^s, \mathbf{x}^t)
+   & \max_{\mathcal{D}} \mathcal{L}_{adv}(\mathbf{x}^s, \mathbf{x}^t),
   \label{eq:bsp-dann-obejtivo}
 \end{align}
 
-Donde $\beta$ es el parámetro que regula el trade-off de $\mathcal{L}_{BSP}$.
+\noindent
+donde $\beta$ es el parámetro que regula el trade-off de $\mathcal{L}_{BSP}$.
 
 \subsection{Margin Disparity Discrepancy}
 
@@ -1186,9 +1185,6 @@ una segunda red clasificadora $\mathcal{C}^{'}$ y relacionar su salida con la de
     %Straight Lines [id:da9980456278456524] 
     \draw    (198.75,94.75) -- (222.9,75.61) ;
     \draw [shift={(225.25,73.75)}, rotate = 141.6] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
-    %Straight Lines [id:da3629940013678272] 
-    \draw    (275.67,66.98) -- (299.26,56.47) ;
-    \draw [shift={(302,55.25)}, rotate = 156] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
     %Straight Lines [id:da8352907095901936] 
     \draw    (275.67,83.17) -- (299.2,92.18) ;
     \draw [shift={(302,93.25)}, rotate = 200.95] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
@@ -1248,7 +1244,7 @@ una segunda red clasificadora $\mathcal{C}^{'}$ y relacionar su salida con la de
   \label{fig:mdd-esquema}
 \end{figure}
 
-$\mathcal{L}_{\mathcal{C}}$ continúa siendo la función {\it cross-entropy} $\mathcal{L}_{CE}$ aplicado a la salida de la red $\mathcal{C}$.
+$\mathcal{L}_{\mathcal{C}}$ continúa siendo la función {\it cross-entropy} $\mathcal{L}_{CE}$ aplicado a la salida de la red $\mathcal{C}$:
 
 \begin{align}
   \min_{\mathcal{C}} \mathcal{L}_\mathcal{C}(\mathbf{x}^s, \mathbf{y}^s) = \mathcal{L}_{CE}(C(\mathcal{G}(\mathbf{x}^s)), \mathbf{y}^s)
@@ -1260,11 +1256,12 @@ $\gamma \triangleq \exp \rho$ en la ecuación \ref{eq:mdd-loss}.
 
 \begin{align}
   \max_{\mathcal{C}^{'}} \mathcal{L}_{\mathcal{MDD}}(\mathbf{x}^s, \mathbf{x}^t) = & \gamma \mathbb{E}_{\mathbf{x}^s \sim \mathcal{\hat{S}}} \log[\sigma(\mathcal{C}^{'}(\mathcal{G}(\mathbf{x}^s)))] + \nonumber \\
-                                                                                   & \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}} \log[1-\sigma(\mathcal{C}^{'}(\mathcal{G}(\mathbf{x}^t)))]
+                                                                                   & \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}} \log[1-\sigma(\mathcal{C}^{'}(\mathcal{G}(\mathbf{x}^t)))],
   \label{eq:mdd-loss}
 \end{align}
 
-Donde $\sigma$ es la función {\it softmax}. Por lo tanto, el objetivo de optimización viene dado por la ecuación
+\noindent
+donde $\sigma$ es la función {\it softmax}. Por lo tanto, el objetivo de optimización viene dado por la ecuación
 \ref{eq:mdd-objetivo}, donde $\lambda$ es el trade-off entre la clasificación y la discriminación adversaria.
 
 \begin{align}
@@ -1274,20 +1271,21 @@ Donde $\sigma$ es la función {\it softmax}. Por lo tanto, el objetivo de optimi
 
 \subsection{Adaptive Feature Norm}
 
-El mayor problema que surge de la adaptación de dominio es la degradación del modelo en cuanto a la clasificación \parencite{yosinski2014transferable}. Las divergencias estadísticas existentes pueden no representar con precisión el
+El mayor problema que surge de la adaptación de dominio es la degradación del modelo en cuanto a la tasa de acierto en
+la clasificación \parencite{yosinski2014transferable}. Las divergencias estadísticas existentes pueden no representar con precisión el
 cambio de dominio y subsanar tales discrepancias puede no garantizar la transferencia entre dominios. Tales
 discrepancias se ejemplifican en la figura \ref{fig:afn-source-only}.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.7\textwidth]{chapter2/afn-visda-source-only.png}
+  \includegraphics[width=0.8\textwidth]{chapter2/afn-visda-source-only.png}
 
   \caption[Representación de características aprendidas de una CNN]{Visualización de las características aprendidas para el origen y destino utilizando un modelo entrenado utilizando muestras del origen. Imagen tomada de \cite{xu2019larger}.}
   \label{fig:afn-source-only}
 \end{figure}
 
-Esto sugiere que las normas excesivamente pequeñas de las muestras de destino con respecto a las de origen explican el
-deterioro en la clasificación. No obstante, pueden plantearse dos hipótesis:
+Esto sugiere que las normas excesivamente pequeñas de las características de destino con respecto a las de origen
+explican el deterioro en la clasificación. No obstante, pueden plantearse dos hipótesis:
 
 \begin{itemize}
   \item Normas de las características desalineadas: el desplazamiento entre los dominios de origen y destino se explica en la
@@ -1298,7 +1296,7 @@ deterioro en la clasificación. No obstante, pueden plantearse dos hipótesis:
         alejadas de las normas pequeñas supondrá una mejora en la transferencia.
 \end{itemize}
 
-\cite{xu2019larger} propone un método llamado {\it Adaptive Feature Norm AFN}, ilustrado en la figura \ref{afn-esquema}, que consiste en normalizar las normas de las características aprendidas por la red $\mathcal{G}$ mediante $n$ bloques $\mathcal{N}$ (compuestos por FC-BN-ReLU-Dropout) y mediante $\mathcal{L}_{AFN}$.
+\cite{xu2019larger} propone un método llamado {\it Adaptive Feature Norm AFN}, ilustrado en la figura \ref{fig:afn-esquema}, que consiste en normalizar las normas de las características aprendidas por la red $\mathcal{G}$ mediante $n$ bloques $\mathcal{N}$ (compuestos por FC-BN-ReLU-Dropout) y mediante $\mathcal{L}_{AFN}$.
 
 \begin{figure}[H]
   \centering
@@ -1367,9 +1365,6 @@ deterioro en la clasificación. No obstante, pueden plantearse dos hipótesis:
     \draw  [dash pattern={on 4.5pt off 4.5pt}] (411,89.75) .. controls (411,81.33) and (417.83,74.5) .. (426.25,74.5) .. controls (434.67,74.5) and (441.5,81.33) .. (441.5,89.75) .. controls (441.5,98.17) and (434.67,105) .. (426.25,105) .. controls (417.83,105) and (411,98.17) .. (411,89.75) -- cycle ;
     %Shape: Ellipse [id:dp4863694749188221] 
     \draw   (466,73.08) .. controls (466,63.28) and (479.91,55.33) .. (497.06,55.33) .. controls (514.22,55.33) and (528.13,63.28) .. (528.13,73.08) .. controls (528.13,82.89) and (514.22,90.83) .. (497.06,90.83) .. controls (479.91,90.83) and (466,82.89) .. (466,73.08) -- cycle ;
-    %Straight Lines [id:da7034112467211542] 
-    \draw    (384.67,63.48) -- (408.26,52.97) ;
-    \draw [shift={(411,51.75)}, rotate = 156] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
     %Straight Lines [id:da28235679904283506] 
     \draw    (384.67,79.67) -- (408.2,88.68) ;
     \draw [shift={(411,89.75)}, rotate = 200.95] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
@@ -1416,14 +1411,14 @@ deterioro en la clasificación. No obstante, pueden plantearse dos hipótesis:
     % Text Node
     \draw (185.65,84.95) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
         \begin{center}
-          $\mathbf{g}^s$
+          $\mathbf{z}^s$
         \end{center}
 
       \end{minipage}};
     % Text Node
     \draw (185.65,126.95) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
         \begin{center}
-          $\mathbf{g}^t$
+          $\mathbf{z}^t$
         \end{center}
 
       \end{minipage}};
@@ -1465,40 +1460,41 @@ deterioro en la clasificación. No obstante, pueden plantearse dos hipótesis:
     % Text Node
     \draw (280.23,144.08) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
         \begin{center}
-          $\mathbf{z}^t$
+          $\mathbf{z}_n^t$
         \end{center}
 
       \end{minipage}};
     % Text Node
     \draw (280.23,68.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
         \begin{center}
-          $\mathbf{z}^s$
+          $\mathbf{z}_n^s$
         \end{center}
 
       \end{minipage}};
 
   \end{tikzpicture}
   \caption[Esquema de {\it AFN}]{Esquema de {\it AFN}. Los supra indices $s$ y $t$ indican si los datos son del origen o destino respectivamente.
-  Los círculos con líneas rayadas son salidas de los modelos mientras que los círculos de líneas sólidas son datos conocidos. El modelo {\it backbone} $\mathcal{G}$ produce características $\mathbf{x}$ que luego son aplicadas por bloques $\mathcal{N}$ (FC-BN-ReLU-Dropout) produciendo características normalizadas $\mathbf{d}$. La red clasificadora $\mathcal{C}$ toma las características $\mathbf{d}^s$ y se computa $\mathcal{L}_{\mathcal{C}}$. $\mathcal{L}_{AFN}$ se calcula utilizando $\mathbf{d}$.}
+  Los círculos con líneas rayadas son salidas de los modelos mientras que los círculos de líneas sólidas son datos conocidos. El modelo {\it backbone} $\mathcal{G}$ produce características $\mathbf{z}$ que luego son aplicadas por bloques $\mathcal{N}$ (FC-BN-ReLU-Dropout) produciendo características normalizadas $\mathbf{z}_n$. La red clasificadora $\mathcal{C}$ toma las características $\mathbf{z}_n^s$, predice $\hat{\mathbf{y}}^s$ y se calcula $\mathcal{L}_{\mathcal{C}}$. Finalmente, $\mathcal{L}_{AFN}$ se calcula utilizando $\mathbf{z}_n$.}
   \label{fig:afn-esquema}
 \end{figure}
 
 En su variante iterativa, $\mathcal{L}_{AFN}$ se define como:
 
 \begin{align}
-  \min_{\mathcal{G}} \mathcal{L}_{AFN}(\mathbf{x}^s, \mathbf{x}^t) = & \mathbb{E}_{\mathbf{x}^s \sim \mathcal{\hat{S}}} \mathbb{E}[(\| \mathcal{G}(\mathcal{N}(\mathbf{x}^s)) \| - \Delta_r)^2] \nonumber \\
-                                                                     & + \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}} \mathbb{E}[(\| \mathcal{G}(\mathcal{N}(\mathbf{x}^t)) \| - \Delta_r)^2]
+  \min_{\mathcal{G}} \mathcal{L}_{AFN}(\mathbf{x}^s, \mathbf{x}^t) = & \mathbb{E}_{\mathbf{x}^s \sim \mathcal{\hat{S}}} \mathbb{E}[(\| \mathcal{N}(\mathcal{G}(\mathbf{x}^s)) \| - \Delta_r)^2] \nonumber \\
+                                                                     & + \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}} \mathbb{E}[(\| \mathcal{N}(\mathcal{G}(\mathbf{x}^t)) \| - \Delta_r)^2],
   \label{eq:afn-loss}
 \end{align}
 
-Donde $\Delta_r$ corresponde al escalar que controla la amplitud de la norma. Los autores afirman que puede agregarse
+\noindent
+donde $\Delta_r$ corresponde al escalar que controla la amplitud de la norma. Los autores afirman que puede agregarse
 un término a la ecuación \ref{eq:afn-loss} respecto a la entropía $\mathcal{H}$ de la función {\it softmax} $\sigma$
 para facilitar la discriminabilidad mediante un factor $\beta$:
 
 \begin{align}
-  \min_{\mathcal{G}} \mathcal{L}_{AFN}(\mathbf{x}^s, \mathbf{x}^t) = & \mathbb{E}_{\mathbf{x}^s \sim \mathcal{\hat{S}}} \mathbb{E}[(\| \mathcal{G}(\mathcal{N}(\mathbf{x}^s)) \| - \Delta_r)^2] \nonumber   \\
-                                                                     & + \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}} \mathbb{E}[(\| \mathcal{G}(\mathcal{N}(\mathbf{x}^t)) \| - \Delta_r)^2] \nonumber \\
-                                                                     & + \beta \mathcal{H}(\sigma(\mathcal{G}(\mathcal{N}(\mathbf{x}^s)) ))
+  \min_{\mathcal{G}} \mathcal{L}_{AFN}(\mathbf{x}^s, \mathbf{x}^t) = & \mathbb{E}_{\mathbf{x}^s \sim \mathcal{\hat{S}}} \mathbb{E}[(\| \mathcal{N}(\mathcal{G}(\mathbf{x}^s)) \| - \Delta_r)^2] \nonumber   \\
+                                                                     & + \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}} \mathbb{E}[(\| \mathcal{N}(\mathcal{G}(\mathbf{x}^t)) \| - \Delta_r)^2] \nonumber \\
+                                                                     & + \beta \mathcal{H}(\sigma(\mathcal{N}(\mathcal{G}(\mathbf{x}^s)) ))
   \label{eq:afn-loss-entropy}
 \end{align}
 
