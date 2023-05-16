@@ -444,6 +444,7 @@ dado por:
                                   & = 0.5
 \end{align}
 
+\noindent
 De forma general: sea $y_{i}$ el dígito $i$-ésimo del voto real $y$ de longitud $n$, $\hat{y_{j}}$ el dígito $j$-ésimo
 del voto predicho por el modelo $\hat{y}$ de longitud $m$, entonces la métrica viene dada por:
 
@@ -458,10 +459,11 @@ La distancia $\mathcal{A}$ mide la similaridad entre dos distribuciones. Puede s
 latentes de clasificadores en problemas de adaptación de dominio \parencite{ben2006analysis}. La métrica viene dada por:
 
 \begin{equation}
-    dist_\mathcal{A} = 2 (1-2\epsilon)
+    dist_\mathcal{A} = 2 (1-2\epsilon),
 \end{equation}
 
-Donde $\epsilon$ es el error en test de un clasificador entrenado para discriminar el dominio de origen del de destino.
+\noindent
+donde $\epsilon$ es el error en test de un clasificador entrenado para discriminar el dominio de origen del de destino.
 Cuando el error de clasificación es bajo, significa que hay diferencias significativas entre las dos distrubiones,
 haciendo que $dist_\mathcal{A}$ sea grande y vice versa.
 
@@ -543,16 +545,18 @@ define como:
     \label{eq:mmd}
 \end{align}
 
+\noindent
 Por ejemplo, si el mapa de características es $\phi(x)=x$ y $\mathcal{X}=\mathcal{H}=\mathbb{R}^d$, MMD se calcula
 como:
 
 \begin{align}
     MMD^2(P, Q) & = \left\lVert \mathbb{E}_{\mathbf{x} \sim P}[\phi(\mathbf{x})] - \mathbb{E}_{\mathbf{y} \sim Q}[\phi(\mathbf{y})] \right\rVert_{\mathcal{H}}^2 \nonumber \\
                 & = \left\lVert \mathbb{E}_{\mathbf{x} \sim P}[\mathbf{x}] - \mathbb{E}_{\mathbf{y} \sim Q}[\mathbf{y}] \right\rVert_{\mathbb{R}^d}^2            \nonumber \\
-                & = \left\lVert \mu_{P} - \mu_{Q} \right\rVert_{\mathbb{R}^d}^2
+                & = \left\lVert \mu_{P} - \mu_{Q} \right\rVert_{\mathbb{R}^d}^2,
     \label{eq:mmd-identidad}
 \end{align}
 
+\noindent
 de forma que MMD es la distancia entre las medias de las distribuciones. No obstante, evaluarlas de esta manera puede
 generar que distribuciones con distinta varianza, kurtosis, etc sean consideradas como iguales. Se puede aplicar el
     {\it kernel trick} para calcular MMD con distancias más complejas. Dado $k(x, y) = \left\langle \phi(x), \phi(y)
@@ -564,4 +568,5 @@ generar que distribuciones con distinta varianza, kurtosis, etc sean considerada
     \label{eq:mmd-kernel}
 \end{align}
 
+\noindent
 Se utilizó la librería TorchDrift \parencite{torchdrift} para implementarla en la evaluación de los modelos utilizando como {\it kernel} RBF.
