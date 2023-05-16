@@ -32,9 +32,8 @@ la limpieza y validación de los datos para asegurar su calidad y confiabilidad.
 
 Posteriormente, se transformaron los datos extraídos en un formato adecuado para su uso en modelos de aprendizaje
 automático. Esto implicó la normalización de los datos, la codificación de variables categóricas y la creación de
-variables adicionales para mejorar la calidad de los datos.
-
-Finalmente, se cargó el conjunto de datos procesados en un dataset que fue utilizado para entrenar los modelos.
+variables adicionales para mejorar la calidad de los datos. Finalmente, se cargó el conjunto de datos procesados en un
+dataset que fue utilizado para entrenar los modelos.
 
 \subsection{Enderezado}
 Cuando se escanean telegramas a mano, es común que estos no estén perfectamente alineados y presenten una ligera
@@ -224,8 +223,8 @@ cada candidato.
 
 Se pueden detectar errores evidentes en la tabla presentada. En primer lugar, se puede observar que en la columna donde
 solamente deben aparecer las imágenes de los dígitos, en el segundo registro existe una imagen de una línea horizontal,
-lo cual no es correcto. Además, también se detectan dígitos mal escritos, como los que se encuentran en los dos últimos
-registros.
+lo cual no es correcto. Además, también se detectan dígitos mal escritos o enmendados, como los que se encuentran en
+los dos últimos registros.
 
 Para corregir estas extracciones incorrectas, se calculan dos columnas adicionales que contienen las proporciones
 mínimas y máximas de píxeles blancos en las imágenes para cada voto. Estas proporciones permiten establecer un umbral
@@ -249,7 +248,7 @@ estos histogramas para las proporciones mínimas y máximas de píxeles blancos 
         \caption{Histograma de la proporción máxima de píxeles blancos en un voto.}
         \label{fig:histograma-max-prop-blanco}
     \end{subfigure}
-    \caption[Histogramas de proporciones de píxeles blancos por voto]{Histogramas de proporciones de píxeles blancos por voto.}
+    \caption[Histogramas de proporciones mínimas y máximas de píxeles blancos por voto]{Histogramas de proporciones de píxeles blancos por voto.}
     \label{fig:histogramas-min-max-prop-blanco}
 \end{figure}
 
@@ -259,7 +258,7 @@ descartar los casos de líneas como la vista en el cuadro \ref{tab:dataset-teleg
 eliminar aquellas imágenes que posean menos del $50\%$ de píxeles blancos, se logran descartar los casos de escritura
 incorrecta.
 
-El siguiente punto a analizar es el tamaño de las imágenes. Como se mostra en el cuadro
+El siguiente punto a analizar es el tamaño de las imágenes. Como se muestra en el cuadro
 \ref{tab:dataset-telegramas-segmentados}, las imágenes no fueron estandarizadas en cuanto a tamaño. De manera análoga a
 la variable de proporción de píxeles blancos, se calculan las variables mínimo y máximo tamaño por voto. La tabla
 \ref{tab:describe-min-max-size} muestra los estadísticos descriptivos de las mismas.
@@ -281,21 +280,21 @@ la variable de proporción de píxeles blancos, se calculan las variables mínim
 Al analizar aquellos registros que poseen los valores extremos en cuanto a mínimo y máximo de tamaño, se encuentran
 telegramas que fueron cargados de forma incorrecta (ver anexo \ref{anexo:telegrama-erroneo}) o con una caligrafía en la
 cual los dígitos no están separados entre si, provocando que la segmentación por el análisis de componentes conectados
-de OpenCV falle (ver anexo \ref{anexo:telegrama-numeros-juntos}). Se eliminan estos casos filtrando por aquellos
-registros que se encuentren por fuera de la media mas menos cuatro desvíos estándar.
+falle (ver anexo \ref{anexo:telegrama-numeros-juntos}). Se eliminan estos casos filtrando por aquellos registros que se
+encuentren por fuera de la media mas/menos cuatro desvíos estándar.
 
 Una vez finalizada la etapa de análisis y limpieza, se exportan los dígitos extraídos en un formato similar al conocido
-dataset {\it MNIST} junto con la etiqueta correspondiente al partido político registrado oficialmente en las elecciones
-de 2021. Este conjunto de datos será denominado {\it TDS} (dataset de telegramas) a partir de este momento. El conjunto
-de datos {\it TDS} consta de un total de 170.718 imágenes de dígitos cuadradas con sus dimensiones originales, es
-decir, no se han estandarizado en una dimensión específica. Esta decisión se tomó intencionalmente, ya que podría
-permitir una mayor flexibilidad en el perfeccionamiento, procesamiento y análisis de los mismos en trabajos futuros. La
-figura \ref{fig:tds} muestra una previsualizacion del conjunto de datos TDS.
+dataset {\it MNIST} junto con la etiqueta correspondiente. Este conjunto de datos será denominado {\it TDS} (dataset de
+telegramas) a partir de este momento. El conjunto de datos {\it TDS} consta de un total de 170.718 imágenes de dígitos
+cuadradas con sus dimensiones originales, es decir, no se han estandarizado en una dimensión específica. Esta decisión
+se tomó intencionalmente, ya que podría permitir una mayor flexibilidad en el perfeccionamiento, procesamiento y
+análisis de los mismos en trabajos futuros. La figura \ref{fig:tds} muestra una previsualizacion del conjunto de datos
+TDS.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{chapter3/tds.png}
-    \caption[Conjunto de datos TDS]{Conjunto de datos TDS.}
+    \caption[Conjunto de datos TDS]{Muestra de 100 dígitos del conjunto de datos TDS}
     \label{fig:tds}
 \end{figure}
 
