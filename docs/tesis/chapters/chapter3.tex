@@ -380,7 +380,8 @@ respecto a los valores reales. Es el ratio de predicciones correctas sobre las t
     Accuracy(y, \hat{y}) = \frac{1}{n} \sum_{i=0}^{n-1} 1(\hat{y_{i}}=y_{i})
 \end{equation}
 
-Donde:
+\noindent
+donde:
 \begin{itemize}
     \item $n$: es la cantidad de observaciones totales.
     \item $y_{i}$: es el valor de la ${i}$-ésima observación correspondiente al real.
@@ -401,7 +402,8 @@ predicciones positivas de la clase.
     Precision(y, \hat{y}) = \frac{TP}{TP + FP}
 \end{equation}
 
-Donde:
+\noindent
+donde:
 \begin{itemize}
     \item $TP$: es la cantidad de verdaderos positivos.
     \item $FP$: es la cantidad de falsos positivos.
@@ -414,7 +416,8 @@ al total de predicciones correctas de la clase.
     Recall(y, \hat{y}) = \frac{TP}{TP + FN}
 \end{equation}
 
-Donde:
+\noindent
+donde:
 \begin{itemize}
     \item $TP$: es la cantidad de verdaderos positivos.
     \item $FN$: es la cantidad de falsos negativos.
@@ -428,6 +431,7 @@ poseen el mismo peso.
     F_{\beta}(y, \hat{y}) = (1 + \beta^2) \times \frac{precision(y, \hat{y}) \times recall(y, \hat{y})}{\beta^2 \times precision(y, \hat{y}) + recall(y, \hat{y})}
 \end{equation}
 
+\noindent
 El rango de valores es de $[0, 1]$, donde 1 corresponde a un clasificador que funciona sin errores.
 
 \subsubsection{Intersección sobre unión}
