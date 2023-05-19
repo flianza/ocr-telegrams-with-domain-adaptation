@@ -532,10 +532,200 @@ al cambio de distribución \parencite{quinonero2008dataset}. Por lo tanto, se pr
 distribución entre los dominios de entrenamiento y de prueba \parencite{jiang2022machine}.
 
 Se han propuesto muchos métodos para la adaptación de dominios, ya sea ponderando o seleccionando muestras del dominio
-de origen \parencite{sugiyama2007direct} o buscando una transformación de la distribución de origen a la distribución de destino \parencite{gong2013connecting}. Esta tesis analizará algunos de los métodos más comunes del ultimo caso.
+de origen \parencite{sugiyama2007direct} o buscando una transformación de la distribución de origen a la distribución de destino \parencite{gong2013connecting}. Esta tesis analizará algunos de los métodos más comunes del ultimo caso debido a que es
+donde existe mayor investigación y algoritmos.
 
 \subsection{Domain Adversarial Neural Network}
-Un gran hito al momento de modelar distribuciones es la Red Generativa Adversaria {\it GAN} \parencite{goodfellow2020generative}. Inspirada en estas arquitecturas GAN, la Red Neural Adversaria de Dominio {\it DANN} \parencite{ganin2016domain} de tres componentes clave: la generadora de características $\mathcal{G}$, la discriminadora de
+Un gran hito al momento de modelar distribuciones es la Red Generativa Adversaria {\it GAN} \parencite{goodfellow2020generative}. <TODO: explicacion gan>
+
+TODO:
+
+Las GAN (Generative Adversarial Networks) son un tipo de arquitectura de redes neuronales compuesta por dos componentes
+principales: el generador y el discriminador. Estas redes se entrenan de forma adversarial, lo que significa que se
+enfrentan y aprenden de manera competitiva.
+
+El generador tiene la tarea de crear muestras de datos sintéticos, como imágenes o texto, que se asemejen a los datos
+reales del conjunto de entrenamiento. Por otro lado, el discriminador actúa como un clasificador que intenta distinguir
+entre las muestras generadas por el generador y las muestras reales del conjunto de entrenamiento.
+
+El objetivo principal de las GAN es entrenar al generador para que sea capaz de engañar al discriminador, generando
+muestras que sean indistinguibles de las reales. Para lograr esto, el generador y el discriminador se entrenan de
+manera alternada. Durante el entrenamiento, el generador intenta mejorar su capacidad para generar muestras más
+realistas, mientras que el discriminador trata de mejorar su capacidad para distinguir entre las muestras generadas y
+las reales.
+
+Este proceso de entrenamiento adversarial continúa hasta que se alcanza un punto de equilibrio en el que el generador
+es capaz de generar muestras que el discriminador no puede distinguir de las reales. Una vez que se ha alcanzado este
+punto, el generador puede utilizarse para generar nuevas muestras sintéticas que sean similares a los datos reales.
+
+TODO:
+
+\begin{figure}[H]
+  \centering
+
+  \tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+  \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+    %uncomment if require: \path (0,425); %set diagram left start at 0, and has height of 425
+
+    %Shape: Circle [id:dp8911007167211544] 
+    \draw   (37.8,84.75) .. controls (37.8,76.33) and (44.63,69.5) .. (53.05,69.5) .. controls (61.47,69.5) and (68.3,76.33) .. (68.3,84.75) .. controls (68.3,93.17) and (61.47,100) .. (53.05,100) .. controls (44.63,100) and (37.8,93.17) .. (37.8,84.75) -- cycle ;
+    %Shape: Trapezoid [id:dp033671238257944935] 
+    \draw   (90,48) -- (130,60) -- (130,110) -- (90,122) -- cycle ;
+
+    %Straight Lines [id:da17016942407473712] 
+    \draw    (69.5,85.15) -- (86,85.15) ;
+    \draw [shift={(89,85.15)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+    %Shape: Circle [id:dp0351848498318883] 
+    \draw  [dash pattern={on 4.5pt off 4.5pt}] (155.38,86.08) .. controls (155.38,77.66) and (162.21,70.83) .. (170.63,70.83) .. controls (179.06,70.83) and (185.88,77.66) .. (185.88,86.08) .. controls (185.88,94.51) and (179.06,101.33) .. (170.63,101.33) .. controls (162.21,101.33) and (155.38,94.51) .. (155.38,86.08) -- cycle ;
+    %Rounded Rect [id:dp5451784827501565] 
+    \draw   (221,39.81) .. controls (221,36.65) and (223.56,34.1) .. (226.71,34.1) -- (265.29,34.1) .. controls (268.44,34.1) and (271,36.65) .. (271,39.81) -- (271,56.95) .. controls (271,60.11) and (268.44,62.67) .. (265.29,62.67) -- (226.71,62.67) .. controls (223.56,62.67) and (221,60.11) .. (221,56.95) -- cycle ;
+
+    %Rounded Rect [id:dp2387840011551663] 
+    \draw   (220.33,114.81) .. controls (220.33,111.65) and (222.89,109.1) .. (226.05,109.1) -- (264.62,109.1) .. controls (267.77,109.1) and (270.33,111.65) .. (270.33,114.81) -- (270.33,131.95) .. controls (270.33,135.11) and (267.77,137.67) .. (264.62,137.67) -- (226.05,137.67) .. controls (222.89,137.67) and (220.33,135.11) .. (220.33,131.95) -- cycle ;
+
+    %Shape: Circle [id:dp5434429051639935] 
+    \draw  [dash pattern={on 4.5pt off 4.5pt}] (298,105.75) .. controls (298,97.33) and (304.83,90.5) .. (313.25,90.5) .. controls (321.67,90.5) and (328.5,97.33) .. (328.5,105.75) .. controls (328.5,114.17) and (321.67,121) .. (313.25,121) .. controls (304.83,121) and (298,114.17) .. (298,105.75) -- cycle ;
+
+    %Shape: Circle [id:dp07620412226976292] 
+    \draw  [dash pattern={on 4.5pt off 4.5pt}] (297.2,145.55) .. controls (297.2,137.13) and (304.03,130.3) .. (312.45,130.3) .. controls (320.87,130.3) and (327.7,137.13) .. (327.7,145.55) .. controls (327.7,153.97) and (320.87,160.8) .. (312.45,160.8) .. controls (304.03,160.8) and (297.2,153.97) .. (297.2,145.55) -- cycle ;
+
+    %Shape: Ellipse [id:dp45432698557456797] 
+    \draw   (353,124.28) .. controls (353,114.48) and (366.91,106.53) .. (384.06,106.53) .. controls (401.22,106.53) and (415.13,114.48) .. (415.13,124.28) .. controls (415.13,134.09) and (401.22,142.03) .. (384.06,142.03) .. controls (366.91,142.03) and (353,134.09) .. (353,124.28) -- cycle ;
+    %Shape: Circle [id:dp32408939453044705] 
+    \draw   (298,28.75) .. controls (298,20.33) and (304.83,13.5) .. (313.25,13.5) .. controls (321.67,13.5) and (328.5,20.33) .. (328.5,28.75) .. controls (328.5,37.17) and (321.67,44) .. (313.25,44) .. controls (304.83,44) and (298,37.17) .. (298,28.75) -- cycle ;
+    %Shape: Circle [id:dp4289741736286996] 
+    \draw  [dash pattern={on 4.5pt off 4.5pt}] (298,66.75) .. controls (298,58.33) and (304.83,51.5) .. (313.25,51.5) .. controls (321.67,51.5) and (328.5,58.33) .. (328.5,66.75) .. controls (328.5,75.17) and (321.67,82) .. (313.25,82) .. controls (304.83,82) and (298,75.17) .. (298,66.75) -- cycle ;
+    %Shape: Ellipse [id:dp9642501981304152] 
+    \draw   (353,50.08) .. controls (353,40.28) and (366.91,32.33) .. (384.06,32.33) .. controls (401.22,32.33) and (415.13,40.28) .. (415.13,50.08) .. controls (415.13,59.89) and (401.22,67.83) .. (384.06,67.83) .. controls (366.91,67.83) and (353,59.89) .. (353,50.08) -- cycle ;
+    %Straight Lines [id:da08691567239156806] 
+    \draw    (130.33,84.13) -- (151.98,84.13) ;
+    \draw [shift={(154.98,84.13)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+    %Straight Lines [id:da7251468171000668] 
+    \draw    (270.33,114.81) -- (295.29,103.03) ;
+    \draw [shift={(298,101.75)}, rotate = 154.73] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+    %Straight Lines [id:da4737451817168479] 
+    \draw    (270.33,131.95) -- (295.35,145.34) ;
+    \draw [shift={(298,146.75)}, rotate = 208.14] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+    %Straight Lines [id:da7936227455814397] 
+    \draw    (328.5,101.75) -- (352.41,115.81) ;
+    \draw [shift={(355,117.33)}, rotate = 210.46] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+    %Straight Lines [id:da4136337294740495] 
+    \draw    (328.5,146.75) -- (353.68,133.4) ;
+    \draw [shift={(356.33,132)}, rotate = 152.08] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+    %Straight Lines [id:da47096857078265786] 
+    \draw    (271.6,51.2) -- (295.42,65.23) ;
+    \draw [shift={(298,66.75)}, rotate = 210.5] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+    %Straight Lines [id:da25177767921579974] 
+    \draw    (327.83,26.42) -- (352.43,41.13) ;
+    \draw [shift={(355,42.67)}, rotate = 210.89] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+    %Straight Lines [id:da30663608487448224] 
+    \draw    (327.83,71.42) -- (353.02,58.07) ;
+    \draw [shift={(355.67,56.67)}, rotate = 152.08] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+    %Straight Lines [id:da48589972370276335] 
+    \draw    (182,75.6) -- (218.3,51.65) ;
+    \draw [shift={(220.8,50)}, rotate = 146.58] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+    %Straight Lines [id:da7455647779284351] 
+    \draw    (184,95.2) -- (217.69,113.38) ;
+    \draw [shift={(220.33,114.81)}, rotate = 208.36] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+    %Shape: Circle [id:dp3903278330340414] 
+    \draw   (155.8,141.95) .. controls (155.8,133.53) and (162.63,126.7) .. (171.05,126.7) .. controls (179.47,126.7) and (186.3,133.53) .. (186.3,141.95) .. controls (186.3,150.37) and (179.47,157.2) .. (171.05,157.2) .. controls (162.63,157.2) and (155.8,150.37) .. (155.8,141.95) -- cycle ;
+    %Straight Lines [id:da6502607141934658] 
+    \draw    (186.3,141.95) -- (217.45,132.8) ;
+    \draw [shift={(220.33,131.95)}, rotate = 163.63] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+    % Text Node
+    \draw (245.33,123.56) node   [align=left] {\begin{minipage}[lt]{26.23pt}\setlength\topsep{0pt}
+        \begin{center}
+          $\mathcal{D}$
+        \end{center}
+
+      \end{minipage}};
+    % Text Node
+    \draw (246,48.56) node   [align=left] {\begin{minipage}[lt]{26.23pt}\setlength\topsep{0pt}
+        \begin{center}
+          $\mathcal{C}$
+        \end{center}
+
+      \end{minipage}};
+    % Text Node
+    \draw (110,85) node   [align=left] {\begin{minipage}[lt]{22.78pt}\setlength\topsep{0pt}
+        \begin{center}
+          $\mathcal{G}$
+        \end{center}
+
+      \end{minipage}};
+    % Text Node
+    \draw (312.45,145.55) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+        \begin{center}
+          $\mathbf{d}^{\mathbf{n}}$
+        \end{center}
+
+      \end{minipage}};
+    % Text Node
+    \draw (313.25,105.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+        \begin{center}
+          $\mathbf{d}^{\mathbf{z}}$
+        \end{center}
+
+      \end{minipage}};
+    % Text Node
+    \draw (313.25,28.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+        \begin{center}
+          $\mathbf{y}$
+        \end{center}
+
+      \end{minipage}};
+    % Text Node
+    \draw (313.25,66.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+        \begin{center}
+          $\hat{\mathbf{y}}$
+        \end{center}
+
+      \end{minipage}};
+    % Text Node
+    \draw (383.66,52) node   [align=left] {\begin{minipage}[lt]{32.64pt}\setlength\topsep{0pt}
+        \begin{center}
+          $\mathcal{L}_{\mathcal{C}}$
+        \end{center}
+
+      \end{minipage}};
+    % Text Node
+    \draw (170.23,85) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+        \begin{center}
+          $\mathbf{z}$
+        \end{center}
+
+      \end{minipage}};
+    % Text Node
+    \draw (52.65,85) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+        \begin{center}
+          $\mathbf{x}$
+        \end{center}
+
+      \end{minipage}};
+    % Text Node
+    \draw (171.05,142) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+        \begin{center}
+          $\mathbf{n}$
+        \end{center}
+
+      \end{minipage}};
+    % Text Node
+    \draw (384.86,125) node   [align=left] {\begin{minipage}[lt]{32.64pt}\setlength\topsep{0pt}
+        \begin{center}
+          $\mathcal{L}_{\mathcal{D}}$
+        \end{center}
+
+      \end{minipage}};
+
+  \end{tikzpicture}
+
+  \label{fig:gan-esquema}
+  \caption[Esquema de una GAN]{Esquema basico una GAN.}
+\end{figure}
+
+Inspirada en estas arquitecturas GAN, la Red Neural Adversaria de Dominio {\it DANN} \parencite{ganin2016domain} de tres componentes clave: la generadora de características $\mathcal{G}$, la discriminadora de
 dominios $\mathcal{D}$ y la red clasificadora $\mathcal{C}$ como se ilustra en la figura \ref{fig:dann-esquema}. En
 primer lugar, la generadora de características $\mathcal{G}$ se entrena con el objetivo de confundir a la
 discriminadora $\mathcal{D}$ y al mismo tiempo ayudar a la red clasificadora $\mathcal{C}$. La idea principal es que
@@ -1274,11 +1464,12 @@ donde $\sigma$ es la función {\it softmax}. Por lo tanto, el objetivo de optimi
 El mayor problema que surge de la adaptación de dominio es la degradación del modelo en cuanto a la tasa de acierto en
 la clasificación \parencite{yosinski2014transferable}. Las divergencias estadísticas existentes pueden no representar con precisión el
 cambio de dominio y subsanar tales discrepancias puede no garantizar la transferencia entre dominios. Tales
-discrepancias se ejemplifican en la figura \ref{fig:afn-source-only}.
+discrepancias se ejemplifican en la figura \ref{fig:afn-source-only} donde las características de origen son aquellas
+alineadas en distintas rectas, mientras que las de destino son aquellas que forman la nube de puntos del centro.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.8\textwidth]{chapter2/afn-visda-source-only.png}
+  \includegraphics[width=0.95\textwidth]{chapter2/afn-visda-source-only.png}
 
   \caption[Representación de características aprendidas de una CNN]{Visualización de las características aprendidas para el origen y destino utilizando un modelo entrenado utilizando muestras del origen. Imagen tomada de \cite{xu2019larger}.}
   \label{fig:afn-source-only}

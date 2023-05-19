@@ -181,9 +181,11 @@ obtenidos de esta menera.
 Luego de haber realizado la segmentación de los dígitos, se procede a aplicar un proceso de transformación para que
 todas las imágenes de dígitos tengan una dimensión cuadrada.
 
-Luego, se guardan en un dataset que también incluye la información correspondiente al partido político y al tipo de
-voto (senadores o diputados). De esta manera, se construye un conjunto de datos que servirá para entrenar y validar los
-modelos que permitan analizar los resultados electorales.
+Finalmente, se lleva a cabo la construcción de un conjunto de datos que engloba información de los resultados
+electorales. Este conjunto de datos se compone del partido político al que corresponde cada registro, lo cual se
+determina a partir del orden de las filas en la tabla de votos. Además, se incluyen los dígitos correspondientes a los
+votos emitidos y se registra el tipo de voto, ya sea senadores o diputados. Dicho proceso es realizado con el propósito
+de poseer un conjunto de datos que posteriormente será utilizado para entrenar y validar los modelos.
 
 \section{Análisis del dataset}
 
