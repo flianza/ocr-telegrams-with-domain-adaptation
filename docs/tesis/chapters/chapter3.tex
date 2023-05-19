@@ -320,7 +320,7 @@ Las tecnologías utilizadas son:
 Para entrenar modelos mediante adaptación de dominio, se necesitan dos conjuntos de datos: uno etiquetado, llamado
 origen, y otro sin etiquetar, llamado destino. En los experimentos llevados a cabo, se utilizó el conjunto de datos
     {\it MNIST} como origen y el conjunto de datos {\it TDS} como destino. Durante cada iteración de entrenamiento, se
-proporcionó un lote de 1024 imágenes del conjunto de datos de origen y otro del conjunto de datos de destino. Se
+proporcionó un lote de 1024 imágenes del conjunto de datos de origen y otro igual del conjunto de datos de destino. Se
 realizaron tres particiones para cada conjunto de datos:
 
 \begin{itemize}
@@ -329,13 +329,15 @@ realizaron tres particiones para cada conjunto de datos:
     \item Test (15\% de cada dataset): utilizado para calcular las métricas y gráficos finales del modelo entrenado.
 \end{itemize}
 
-Los modelos se entrenaron utilizando Stochastic Gradient Descent (SGD) \parencite{sutskever2013importance} utilizando nesterov, 0.9 como momento y 0.001 de weight decay.
+Los modelos se entrenaron utilizando Stochastic Gradient Descent (SGD) \parencite{sutskever2013importance} utilizando nesterov, 0.9 como momento y 0.001 de weight decay, parámetros recomendados
+para este tipo de aplicaciones.
 
 \subsection{Selección y optimización del modelo}
 
 La optimización de hiperparámetros se realizó utilizando la librería Optuna \parencite{optuna_2019}. Se ejecutaron 30 rondas de optimización con 10 épocas de entrenamiento por cada experimento. En
-cada uno de los experimentos, se optimizaron los hiperparámetros para minimizar el loss de cada modelo. El cuadro
-\ref{tab:rangos-hiperparametros} muestra los rangos búsqueda.
+cada uno de los experimentos, se optimizaron los hiperparámetros para minimizar la función de pérdida de cada modelo.
+El cuadro \ref{tab:rangos-hiperparametros} muestra los rangos búsqueda para cada modelo, incluyendo el modelo de
+referencia (sin adaptación de dominio).
 
 \begin{table}[H]
     \centering
@@ -352,15 +354,15 @@ cada uno de los experimentos, se optimizaron los hiperparámetros para minimizar
         Dropout    & -           & -           & -              & -           & [0.3, 0.7]   & -            \\
         \bottomrule
     \end{tabular}
-    \caption[Rango de hiperparámetros optimizados]{Rango de hiperparámetros optimizados. $^{*}$LR refiere a ``learning rate''. $^{**}$T-O refiere a ``trade-off''.}
+    \caption[Rango de hiperparámetros optimizados]{Rango de hiperparámetros optimizados para cada modelo.}
     \label{tab:rangos-hiperparametros}
 \end{table}
 
 Se implementó una disminución del learning rate en cada iteración de cada época, mediante la fórmula
-\ref{eq:learning-rate}. Se mantuvieron constantes los valores de $\gamma=0.001$ y $\theta = 0.25$.
+\ref{eq:learning-rate}. Se mantuvieron constantes los valores de $\gamma_{\eta}=0.001$ y $\theta = 0.25$.
 
 \begin{equation}
-    \eta(t) = \eta_0 * (1 + \gamma * t)^{-\theta}
+    \eta(t) = \eta_0 * (1 + \gamma_{\eta} * t)^{-\theta}
     \label{eq:learning-rate}
 \end{equation}
 
@@ -371,31 +373,31 @@ sub-secciones del capítulo. Las mismas pretenden evaluar qué tan buenos son lo
 clasificación y qué capacidad de adaptación de dominio poseen.
 
 \subsection{Métricas de clasificación}
-\subsubsection{Accuracy}
+\subsubsection{Tasa de acierto}
 
-La métrica de {\it accuracy} permite identificar qué tan cerca o lejos un conjunto de observaciones se encuentra
-respecto a los valores reales. Es el ratio de predicciones correctas sobre las totales.
+La métrica de tasa de acierto (o {\it accuracy}) permite identificar qué tan cerca o lejos están los dígitos predichos
+respecto a los de referencia. Es el ratio de predicciones correctas sobre las totales.
 
 \begin{equation}
-    Accuracy(y, \hat{y}) = \frac{1}{n} \sum_{i=0}^{n-1} 1(\hat{y_{i}}=y_{i})
+    Tasa \, de \, Acierto(y, \hat{y}) = \frac{1}{n} \sum_{i=0}^{n-1} 1(\hat{y_{i}}=y_{i})
 \end{equation}
 
 \noindent
 donde:
 \begin{itemize}
     \item $n$: es la cantidad de observaciones totales.
-    \item $y_{i}$: es el valor de la ${i}$-ésima observación correspondiente al real.
-    \item $\hat{y_{i}}$: es el valor predicho para la ${i}$-ésima observación.
+    \item $y_{i}$: es la clase de digito de la ${i}$-ésima observación correspondiente al real.
+    \item $\hat{y_{i}}$: es la clase de digito predicho para la ${i}$-ésima observación.
     \item $1(x)$: es la función indicador.
 \end{itemize}
 
 \subsubsection{$F_{1}$}
 
-La métrica $F_{1}$ es una media armónica de otras dos: {\it precisión} y {\it recall}. De manera simplificada, la
+La métrica $F_{1}$ es una media armónica de otras dos: {\it precisión} y {\it sensibilidad}. De manera simplificada, la
 primera muestra la capacidad del modelo de no etiquetar como positivo una obsevación que es negativa y la segunda
 muestra la capacidad del modelo de encontrar todas las observaciones positivas.
 
-La {\it precisión} consiste en calcular el ratio de predicciones positivas correctas de la clase respecto al total de
+La {\it sensibilidad} consiste en calcular la tasa de predicciones positivas correctas de la clase respecto al total de
 predicciones positivas de la clase.
 
 \begin{equation}
@@ -409,11 +411,11 @@ donde:
     \item $FP$: es la cantidad de falsos positivos.
 \end{itemize}
 
-Por otro lado, el {\it recall} consiste en calcular el ratio de predicciones positivas correctas de la clase respecto
-al total de predicciones correctas de la clase.
+Por otro lado, la {\it sensibilidad} consiste en calcular la tasa de predicciones positivas correctas de la clase
+respecto al total de predicciones correctas de la clase.
 
 \begin{equation}
-    Recall(y, \hat{y}) = \frac{TP}{TP + FN}
+    Sensibilidad(y, \hat{y}) = \frac{TP}{TP + FN}
 \end{equation}
 
 \noindent
@@ -424,11 +426,11 @@ donde:
 \end{itemize}
 
 Las dos métricas mencionada anteriormente pueden ser combinadas en una sola denominada $F_{\beta}$. El valor de $\beta$
-permite asignar un peso distinto a la precisión o al recall dentro del promedio armónico. Cuando $\beta=1$, ambas
+permite asignar un peso distinto a la precisión o al sensibilidad dentro del promedio armónico. Cuando $\beta=1$, ambas
 poseen el mismo peso.
 
 \begin{equation}
-    F_{\beta}(y, \hat{y}) = (1 + \beta^2) \times \frac{precision(y, \hat{y}) \times recall(y, \hat{y})}{\beta^2 \times precision(y, \hat{y}) + recall(y, \hat{y})}
+    F_{\beta}(y, \hat{y}) = (1 + \beta^2) \times \frac{precision(y, \hat{y}) \times sensibilidad(y, \hat{y})}{\beta^2 \times precision(y, \hat{y}) + sensibilidad(y, \hat{y})}
 \end{equation}
 
 \noindent
@@ -459,7 +461,7 @@ del voto predicho por el modelo $\hat{y}$ de longitud $m$, entonces la métrica 
 \subsection{Métricas de adaptación}
 \subsubsection{Distancia $\mathcal{A}$}
 
-La distancia $\mathcal{A}$ mide la similaridad entre dos distribuciones. Puede ser utilizada para analizar los espacios
+La distancia $\mathcal{A}$ mide la similaridad entre dos distribuciones. Es muy utilizada para analizar los espacios
 latentes de clasificadores en problemas de adaptación de dominio \parencite{ben2006analysis}. La métrica viene dada por:
 
 \begin{equation}
@@ -467,8 +469,8 @@ latentes de clasificadores en problemas de adaptación de dominio \parencite{ben
 \end{equation}
 
 \noindent
-donde $\epsilon$ es el error en test de un clasificador entrenado para discriminar el dominio de origen del de destino.
-Cuando el error de clasificación es bajo, significa que hay diferencias significativas entre las dos distrubiones,
+donde $\epsilon$ es el error en test de un clasificador entrenado para identificar el dominio de los ejemplos (origen o destino), por lo que su rango de valores es de cero al uno.
+Cuando el error de clasificación es bajo, significa que hay diferencias significativas entre las dos distribuciones,
 haciendo que $dist_\mathcal{A}$ sea grande y vice versa.
 
 En la figura \ref{fig:ejemplos-dist-a} se muestran posibles casos de distribuciones de dominios. En la sub-figura
@@ -573,4 +575,5 @@ generar que distribuciones con distinta varianza, kurtosis, etc sean considerada
 \end{align}
 
 \noindent
-Se utilizó la librería TorchDrift \parencite{torchdrift} para implementarla en la evaluación de los modelos utilizando como {\it kernel} RBF.
+Se utilizó la librería TorchDrift \parencite{torchdrift} para implementarla en la evaluación de los modelos utilizando como {\it kernel} funciones de base
+radial.

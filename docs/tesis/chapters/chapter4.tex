@@ -2,17 +2,17 @@
 
 \label{Chapter4}
 
-A lo largo del presente capítulo, se analizarán los resultados obtenidos a partir de los experimentos planteados. Se
-detallarán las métricas obtenidas, se visualizarán los espacios latentes $\mathbf{z}$ generados por la parte
-convolucional de las redes y se analizarán los errores que surgen de aplicar los modelos a los telegramas.
+A lo largo del presente capítulo, se analizarán los resultados obtenidos a partir de los experimentos planteados en el
+capítulo anterior. Se detallarán las métricas obtenidas, se visualizarán los espacios latentes $\mathbf{z}$ generados
+por la parte convolucional de las redes y se analizarán los errores que surgen de aplicar los modelos a los telegramas.
 
 \section{Análisis de métricas}
 
 Los experimentos realizados arrojaron los resultados mostrados en el cuadro \ref{tab:metricas-experimentos}. Las
-métricas referidas a la capacidad de clasificación (Accuracy, $F_1$) son evaluadas sobre la partición de test del
-dataset de origen donde se conocen las etiquetas a ciencia cierta (MNIST). Por otro lado, las métricas de adaptación
-($MMD$, Dist. $\mathcal{A}$) son evaluadas sobre los espacios latentes que los modelos generaron para las particiones
-de test de ambos datasets.
+métricas referidas a la capacidad de clasificación (tasa de acierto, $F_1$) son evaluadas sobre la partición de test
+del dataset de origen donde se conocen las etiquetas a ciencia cierta (MNIST). Por otro lado, las métricas de
+adaptación ($MMD$, Dist. $\mathcal{A}$) son evaluadas sobre los espacios latentes que los modelos generaron para las
+particiones de test de ambos datasets.
 
 Es importante destacar que el mejor modelo es aquel que tiene tanto la mejor capacidad de clasificación como la mejor
 adaptación a nuevos conjuntos de datos. Las métricas de clasificación deben ser maximizadas y las de adaptación deben
@@ -22,7 +22,7 @@ ser minimizadas.
     \centering
     \begin{tabular}{cc|rr|rr}
         \toprule
-        AD                           & Modelo & Acc.                                & $F_1$                               & $MMD$                               & Dist. $\mathcal{A}$                 \\
+        AD                           & Modelo & Tasa de acierto                     & $F_1$                               & $MMD$                               & Dist. $\mathcal{A}$                 \\
         \midrule
         \multirow[c]{2}{*}{-}        & ResNet & {\footnotesize (2)} 0.9885          & {\footnotesize (2)} 0.9883          & 0.0632                              & 1.9306                              \\
                                      & LeNet  & 0.9811                              & 0.9810                              & 0.0469                              & 1.9515                              \\\hline
@@ -82,8 +82,8 @@ los telegramas de prueba.
 \end{table}
 
 Analizando el cuadro anterior, se confirma la elección del mejor modelo ResNet18 con AFN. Es importante destacar que
-independientemente de la técnica de adaptación utilizada, todos los modelos presentan mejores porcentajes de aciertos
-promedio que aquellos modelos entrenados únicamente con MNIST.
+independientemente de la técnica de adaptación utilizada, todos los modelos presentan tasas de acierto marcadamente
+superiores que aquellos modelos entrenados únicamente con MNIST.
 
 Esto sugiere que la adaptación de dominio es fundamental para obtener un mejor rendimiento en la tarea de clasificación
 de telegramas. Los modelos entrenados con técnicas de adaptación logran generalizar mejor y son más efectivos en la
@@ -99,12 +99,11 @@ la etapa de entrenamiento.
 
 El espacio latente en el contexto de las redes convolucionales se refiere a una representación de los datos de entrada
 que se ha aprendido durante el entrenamiento del modelo. Durante dicho proceso, la red aprende a extraer
-características relevantes de las imágenes de entrada a través de la etapa convolucional.
-
-El espacio latente $\mathbf{z}$ se genera después de la etapa convolucional y antes de la etapa densa de la red. En
-este espacio latente, cada dimensión representa una característica específica de la imagen de entrada. Por ejemplo, en
-el caso de una red convolucional entrenada para clasificar imágenes de gatos y perros, una dimensión podría representar
-la forma de las orejas y otra dimensión podría representar el color de la nariz.
+características relevantes de las imágenes de entrada a través de la etapa convolucional. El espacio latente
+$\mathbf{z}$ se genera después de la etapa convolucional y antes de la etapa densa de la red. En este espacio latente,
+cada dimensión representa una característica específica de la imagen de entrada. Por ejemplo, en el caso de una red
+convolucional entrenada para clasificar imágenes de gatos y perros, una dimensión podría representar la forma de las
+orejas y otra dimensión podría representar el color de la nariz.
 
 Para evaluar la capacidad de adaptación de dominio de un modelo, se pueden comparar las distribuciones de los espacios
 latentes generados para diferentes conjuntos de datos. En general, se espera que los espacios latentes generados para
@@ -117,15 +116,12 @@ de adaptarse a nuevos conjuntos de datos y, por lo tanto, su capacidad de genera
 
 Una forma común de visualizarlos es mediante una técnica de reducción de dimensionalidad, como Uniform Manifold
 Approximation and Projection \parencite{mcinnes2018umap}. UMAP es una técnica no lineal que se utiliza para visualizar estructuras de datos complejas en
-un espacio de menor dimensión.
-
-Al visualizar los espacios latentes utilizando UMAP, se pueden observar patrones y relaciones en los datos que de otra
-manera serían difíciles de detectar. Al comparar las distribuciones de los espacios latentes generados por un modelo
-para diferentes conjuntos de datos, se pueden identificar las similitudes y diferencias entre los dominios, lo que
-puede ser útil para evaluar la capacidad de adaptación de dominio del modelo.
-
-En las siguientes subsecciones se analizarán las representaciones UMAP de los espacios latentes obtenidos por cada
-modelo entrenado.
+un espacio de menor dimensión. Al visualizar los espacios latentes utilizando UMAP, se pueden observar patrones y
+relaciones en los datos que de otra manera serían difíciles de detectar. Al comparar las distribuciones de los espacios
+latentes generados por un modelo para diferentes conjuntos de datos, se pueden identificar las similitudes y
+diferencias entre los dominios, lo que puede ser útil para evaluar la capacidad de adaptación de dominio del modelo. En
+las siguientes subsecciones se analizarán las representaciones UMAP de los espacios latentes obtenidos por cada modelo
+entrenado.
 
 \subsection{LeNet}
 
@@ -134,37 +130,37 @@ generados por todos los modelos LeNet.
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[h]{0.40\textwidth}
+    \begin{subfigure}[h]{0.43\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/umap-lenet-so.png}
         \caption{LeNet entrenada con MNIST.}
         \label{fig:umap-lenet-so}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.40\textwidth}
+    \begin{subfigure}[h]{0.43\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/umap-lenet-dann.png}
         \caption{LeNet entrenada mediante DANN.}
         \label{fig:umap-lenet-dann}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.40\textwidth}
+    \begin{subfigure}[h]{0.43\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/umap-lenet-adda.png}
         \caption{LeNet entrenada mediante ADDA.}
         \label{fig:umap-lenet-adda}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.40\textwidth}
+    \begin{subfigure}[h]{0.43\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/umap-lenet-bsp.png}
         \caption{LeNet entrenada mediante DANN+BSP.}
         \label{fig:umap-lenet-bsp}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.40\textwidth}
+    \begin{subfigure}[h]{0.43\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/umap-lenet-mdd.png}
         \caption{LeNet entrenada mediante MDD.}
         \label{fig:umap-lenet-mdd}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.40\textwidth}
+    \begin{subfigure}[h]{0.43\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/umap-lenet-afn.png}
         \caption{LeNet entrenada mediante AFN.}
         \label{fig:umap-lenet-afn}
@@ -201,37 +197,37 @@ generados por todos los modelos ResNet.
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[h]{0.40\textwidth}
+    \begin{subfigure}[h]{0.43\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/umap-resnet-so.png}
         \caption{ResNet entrenada con MNIST.}
         \label{fig:umap-resnet-so}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.40\textwidth}
+    \begin{subfigure}[h]{0.43\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/umap-resnet-dann.png}
         \caption{ResNet entrenada mediante DANN.}
         \label{fig:umap-resnet-dann}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.40\textwidth}
+    \begin{subfigure}[h]{0.43\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/umap-resnet-adda.png}
         \caption{ResNet entrenada mediante ADDA.}
         \label{fig:umap-resnet-adda}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.40\textwidth}
+    \begin{subfigure}[h]{0.43\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/umap-resnet-bsp.png}
         \caption{ResNet entrenada mediante DANN+BSP.}
         \label{fig:umap-resnet-bsp}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.40\textwidth}
+    \begin{subfigure}[h]{0.43\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/umap-resnet-mdd.png}
         \caption{ResNet entrenada mediante MDD.}
         \label{fig:umap-resnet-mdd}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.40\textwidth}
+    \begin{subfigure}[h]{0.43\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/umap-resnet-afn.png}
         \caption{ResNet entrenada mediante AFN.}
         \label{fig:umap-resnet-afn}
@@ -266,27 +262,27 @@ obtienen de aplicar los modelos a los telegramas.
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[h]{0.40\textwidth}
+    \begin{subfigure}[h]{0.43\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/hist-iou-sin-da.png}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.40\textwidth}
+    \begin{subfigure}[h]{0.43\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/hist-iou-dann.png}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.40\textwidth}
+    \begin{subfigure}[h]{0.43\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/hist-iou-adda.png}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.40\textwidth}
+    \begin{subfigure}[h]{0.43\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/hist-iou-bsp.png}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.40\textwidth}
+    \begin{subfigure}[h]{0.43\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/hist-iou-mdd.png}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.40\textwidth}
+    \begin{subfigure}[h]{0.43\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/hist-iou-afn.png}
     \end{subfigure}
 
