@@ -35,9 +35,9 @@ automático. Esto implicó la normalización de los datos, la codificación de v
 variables adicionales para mejorar la calidad de los datos. Finalmente, se cargó el conjunto de datos procesados en un
 dataset que fue utilizado para entrenar los modelos.
 
-\subsection{Enderezado}
+\subsection{Alineación de los telegramas}
 Cuando se escanean telegramas a mano, es común que estos no estén perfectamente alineados y presenten una ligera
-inclinación en su posición. Por lo tanto, el primer paso en el procesamiento de los telegramas es enderezarlos para
+inclinación en su posición. Por lo tanto, el primer paso en el procesamiento de los telegramas es alinearlos para
 facilitar su lectura y análisis.
 
 Para lograr esto, se emplea un algoritmo que busca el rectángulo de mayor área en la imagen del telegrama. Este
@@ -45,10 +45,11 @@ rectángulo representa la región que abarca todo el contenido del telegrama y s
 rotación necesario para alinear la imagen.
 
 Una vez que se ha determinado el ángulo de rotación, se aplica una transformación geométrica a la imagen completa para
-enderezarla. Para realizar esta transformación, se utiliza la función \verb|getRotationMatrix2D| de la biblioteca de
-procesamiento de imágenes OpenCV. Esta función recibe como argumentos el ángulo de rotación calculado y las dimensiones
-de la imagen, y devuelve una matriz de transformación que se aplica a la imagen para enderezarla. La figura
-\ref{fig:etl-1-rotacion} muestra un ejemplo del resultado que se obtiene al enderezar los telegramas de esta manera.
+alinearla verticalmente. Para realizar esta transformación, se utiliza la función \verb|getRotationMatrix2D| de la
+biblioteca de procesamiento de imágenes OpenCV. Esta función recibe como argumentos el ángulo de rotación calculado y
+las dimensiones de la imagen, y devuelve una matriz de transformación que se aplica a la imagen para alinearla. La
+figura \ref{fig:etl-1-rotacion} muestra un ejemplo del resultado que se obtiene al alinear los telegramas de esta
+manera.
 
 \begin{figure}[H]
     \centering
@@ -57,15 +58,15 @@ de la imagen, y devuelve una matriz de transformación que se aplica a la imagen
 
     \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
 
-        \draw (370,140) node  {\includegraphics[width=135pt,height=210pt]{chapter3/etl-1-rotacion.png}};
-        \draw (90,140) node  {\includegraphics[width=135pt,height=210pt]{chapter3/etl-1-telegrama.png}};
+        \draw (370,140) node  {\frame{\includegraphics[width=135pt,height=210pt]{chapter3/etl-1-rotacion.png}}};
+        \draw (90,140) node  {\frame{\includegraphics[width=135pt,height=210pt]{chapter3/etl-1-telegrama.png}}};
         \draw    (190.8,110.6) -- (267.4,110.6) ;
         \draw [shift={(269.4,110.6)}, rotate = 180] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
-        \draw (190,87.18) node [anchor=north west][inner sep=0.75pt]   [align=left] {Enderezar};
+        \draw (200,87.18) node [anchor=north west][inner sep=0.75pt]   [align=left] {Alinear};
 
     \end{tikzpicture}
 
-    \caption[Enderezamiento de un telegrama]{Proceso de enderezamiento de un telegrama mediante el uso de OpenCV.}
+    \caption[Alineación de un telegrama]{Proceso de alineación de un telegrama mediante el uso de OpenCV.}
     \label{fig:etl-1-rotacion}
 \end{figure}
 
@@ -92,11 +93,11 @@ trabajar de forma más efectiva en la extracción y análisis de los votos prese
 \subsection{Detección de líneas de la grilla de votos}
 Teniendo la grilla de votos separada del telegrama, se procede a detectar las líneas para poder extraer cada registro
 de la misma. Si bien OpenCV posee funciones para la detección de líneas, se optó por utilizar un enfoque simplificado
-similar al utilizado en \parencite{lamagna2016lectura}. Debido a que la grilla se encuentra enderezada, se pueden utilizar las proyecciones de los
-colores sobre los ejes $x$ e $y$ para detectarlas. Al sumar todos los colores por eje, se pueden observar picos de
-valores donde se encuentran las lineas horizontales y verticales. Posteriormente, se selecciona un umbral de corte por
-cada eje, siendo el mismo el promedio de cada eje menos dos desvíos estándar. La figura \ref{fig:etl-3-proyecciones}
-muestra las proyecciones obtenidas con los umbrales por cada eje.
+similar al utilizado en \parencite{lamagna2016lectura}. Debido a que la grilla se encuentra alineada verticalmente, se pueden utilizar las
+proyecciones de los colores sobre los ejes $x$ e $y$ para detectarlas. Al sumar todos los colores por eje, se pueden
+observar picos de valores donde se encuentran las lineas horizontales y verticales. Posteriormente, se selecciona un
+umbral de corte por cada eje, siendo el mismo el promedio de cada eje menos dos desvíos estándar. La figura
+\ref{fig:etl-3-proyecciones} muestra las proyecciones obtenidas con los umbrales por cada eje.
 
 \begin{figure}[H]
     \centering
@@ -359,12 +360,15 @@ referencia (sin adaptación de dominio).
 \end{table}
 
 Se implementó una disminución del learning rate en cada iteración de cada época, mediante la fórmula
-\ref{eq:learning-rate}. Se mantuvieron constantes los valores de $\gamma_{\eta}=0.001$ y $\theta = 0.25$.
+\ref{eq:learning-rate}.
 
 \begin{equation}
     \eta(t) = \eta_0 * (1 + \gamma_{\eta} * t)^{-\theta}
     \label{eq:learning-rate}
 \end{equation}
+
+\noindent
+donde se optaron los valores de $\gamma_{\eta}=0.001$ y $\theta = 0.25$.
 
 \section{Métricas de evaluación}
 
