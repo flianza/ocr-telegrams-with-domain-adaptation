@@ -354,8 +354,6 @@
 			{\normalsize \facname \par}% Faculty name
 			{\normalsize \deptname \par}% Department name
 			\bigskip
-			{\normalsize \degreename\par}% Degree name
-			\bigskip
 			{\normalsize\bfseries \@title \par}% Thesis title
 			\bigskip
 		\end{center}

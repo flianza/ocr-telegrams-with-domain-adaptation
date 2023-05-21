@@ -232,18 +232,27 @@ headsepline, % Uncomment to get a line under the header
 %----------------------------------------------------------------------------------------
 
 \begin{abstract}
-    \addchaptertocentry{\abstractname} % Add the abstract to the table of contents
-    TODO: Abstract?
+    \addchaptertocentry{\abstractname}
+
+    En Argentina, las elecciones se realizan cada 2 años, excepto las presidenciales que ocurren cada 4 años. El proceso de
+    conteo de votos en los centros de cómputo requiere una cantidad considerable de personal para ser eficiente y rápido.
+    Para abordar este desafío, se propone la digitalización automática de los telegramas de votación. Sin embargo, la
+    clasificación de dígitos manuscritos presenta dificultades debido a la variabilidad en la escritura de los mismos y el
+    sesgo existente en los conjuntos de datos disponibles.
+
+    A lo largo de la tesis, se entrenarán modelos de reconocimiento de dígitos que sean robustos frente a los cambios en
+    los datos mediante la adaptación de dominio. Se utilizarán los telegramas oficiales de las elecciones legislativas de
+    Santa Fe en 2021 para construir un conjunto de datos y se realizarán experimentos junto a otro conjunto de datos
+    público de dígitos. El objetivo es encontrar el modelo más resistente al sesgo y que mejor generalice en diversos
+    contextos. Esto contribuirá a mejorar la transparencia y eficiencia en los procesos electorales en Argentina, sentando
+    las bases para soluciones similares en todo el país.
+
+    El modelo desarrollado en esta tesis logra clasificar de manera robusta los dígitos en las elecciones estudiadas
+    mediante la adaptación de dominio. Los resultados obtenidos tienen implicaciones importantes en la automatización de
+    los procesos electorales, mejorando la eficiencia y transparencia de las elecciones. La digitalización efectiva de los
+    telegramas permite acelerar y precisar el conteo de votos, reduciendo la posibilidad de errores humanos y aumentando la
+    confianza en los procesos electorales.
 \end{abstract}
-
-%----------------------------------------------------------------------------------------
-%	ACKNOWLEDGEMENTS
-%----------------------------------------------------------------------------------------
-
-\begin{acknowledgements}
-    \addchaptertocentry{\acknowledgementname}
-    TODO: reconocimientos...
-\end{acknowledgements}
 
 %----------------------------------------------------------------------------------------
 %	LIST OF CONTENTS/FIGURES/TABLES PAGES
@@ -276,8 +285,6 @@ headsepline, % Uncomment to get a line under the header
 \appendix % Cue to tell LaTeX that the following "chapters" are Appendices
 
 \include{appendices/appendixA}
-%\include{appendices/appendixB}
-%\include{appendices/appendixC}
 
 %----------------------------------------------------------------------------------------
 %	BIBLIOGRAPHY
