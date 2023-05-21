@@ -36,3 +36,4 @@ minimax
 scoreo
 clustering
 hiperparámetros
+hiperparámetro

@@ -44,7 +44,7 @@ sistemas de reconocimiento de caracteres son capaces de reconocer caracteres esc
 al 100\%. Además del reconocimiento de caracteres, estas técnicas también se han utilizado para la detección de objetos
 en imágenes y videos, así como para la traducción automática.
 
-\section{Redes Neuronales}
+\section{Redes neuronales}
 \cite{mcculloch1943logical} estudiaron y propusieron un modelo del comportamiento de la
 neurona biológica. La neurona artificial que propusieron fue un sistema binario que consiste en que si la suma de entradas excitatorias supera un umbral de activación, y además no
 hay una entrada inhibitoria, la neurona se activa y emite una respuesta; en caso contrario, la neurona no se activa.
@@ -88,7 +88,7 @@ alimentadas hacia delante ({\it feed forward}) o perceptrones multicapa {\it MLP
 \citeyear{funahashi1989approximate}, se demuestra teóricamente que una red de este tipo, con una capa oculta y el
 suficiente número de nodos, puede aproximar cualquier función continua con cualquier grado de precisión \parencite{funahashi1989approximate}.
 
-\subsection{Redes Densas}
+\subsection{Redes densas}
 Como se detalló anteriormente, los perceptrones son modelos lineales incapaces de resolver problemas que no sean
 linealmente separables por un hiperplano. Una forma de solventar esta situación es encadenar un conjunto de
 perceptrones para crear redes neuronales densas (ver figura \ref{fig:nn}). La predicción $\hat{y}$ de una red es una
@@ -189,7 +189,7 @@ término de {\it bias}. Existen múltiples funciones de activación, las más co
   \item Softmax: $f(x_i) = \sigma(x_i) = \frac{e^{x_{i}}}{\sum_{j=1}^K e^{x_{j}}} \ \ \ para\ i=1,2,\dots,K$
 \end{itemize}
 
-\subsection{Redes Convolucionales}
+\subsection{Redes convolucionales}
 Una de las principales limitaciones de las redes densas es su incapacidad para manejar datos que presentan una
 estructura espacial, como imágenes o audio. Esta limitación se debe principalmente al problema de la invarianza
 espacial, donde una misma entidad (por ejemplo, el dígito '6') puede tener diferentes ubicaciones en una imagen. Dado
@@ -521,7 +521,7 @@ demostrado ser una técnica efectiva para mejorar el rendimiento y la capacidad 
 Por otro lado, el fine-tuning es una técnica en la que se utilizan las capas de una red pre-entrenada en una tarea como
 capas fijas en otra red que se entrena en una tarea diferente \parencite{yosinski2014transferable}. Esto permite que la red aprenda de manera más rápida y con menos datos \parencite{howard2018universal}.
 
-\section{Adaptación de Dominio}
+\section{Adaptación de dominio}
 El {\it pre-entrenamiento} y el {\it fine-tuning} han mejorado considerablemente el estado del arte para diversos
 problemas y aplicaciones del machine learning, incluso las redes profundas pre-entrenadas pueden adaptarse fácilmente a
 tareas donde se cuenta con una pequeña cantidad de datos etiquetados. Sin embargo, en muchos escenarios prácticos, no
@@ -532,33 +532,24 @@ al cambio de distribución \parencite{quinonero2008dataset}. Por lo tanto, se pr
 distribución entre los dominios de entrenamiento y de prueba \parencite{jiang2022machine}.
 
 Se han propuesto muchos métodos para la adaptación de dominios, ya sea ponderando o seleccionando muestras del dominio
-de origen \parencite{sugiyama2007direct} o buscando una transformación de la distribución de origen a la distribución de destino \parencite{gong2013connecting}. Esta tesis analizará algunos de los métodos más comunes del ultimo caso debido a que es
+de origen \parencite{sugiyama2007direct} o buscando una transformación de la distribución de origen a la distribución de destino \parencite{gong2013connecting}. Esta tesis analizará algunos de los métodos más comunes del último caso debido a que es
 donde existe mayor investigación y algoritmos.
 
-\subsection{Domain Adversarial Neural Network}
-Un gran hito al momento de modelar distribuciones es la Red Generativa Adversaria {\it GAN} \parencite{goodfellow2020generative}. <TODO: explicacion gan>
-
-TODO:
-
-Las GAN (Generative Adversarial Networks) son un tipo de arquitectura de redes neuronales compuesta por dos componentes
-principales: el generador y el discriminador. Estas redes se entrenan de forma adversarial, lo que significa que se
-enfrentan y aprenden de manera competitiva.
-
-El generador tiene la tarea de crear muestras de datos sintéticos, como imágenes o texto, que se asemejen a los datos
-reales del conjunto de entrenamiento. Por otro lado, el discriminador actúa como un clasificador que intenta distinguir
-entre las muestras generadas por el generador y las muestras reales del conjunto de entrenamiento.
-
-El objetivo principal de las GAN es entrenar al generador para que sea capaz de engañar al discriminador, generando
-muestras que sean indistinguibles de las reales. Para lograr esto, el generador y el discriminador se entrenan de
-manera alternada. Durante el entrenamiento, el generador intenta mejorar su capacidad para generar muestras más
-realistas, mientras que el discriminador trata de mejorar su capacidad para distinguir entre las muestras generadas y
-las reales.
-
-Este proceso de entrenamiento adversarial continúa hasta que se alcanza un punto de equilibrio en el que el generador
-es capaz de generar muestras que el discriminador no puede distinguir de las reales. Una vez que se ha alcanzado este
-punto, el generador puede utilizarse para generar nuevas muestras sintéticas que sean similares a los datos reales.
-
-TODO:
+\subsection{Red neuronal adversaria de dominio}
+Un gran hito al momento de modelar distribuciones es la Red Adversaria Generativa {\it GAN} \parencite{goodfellow2020generative}. Estas son un tipo de arquitectura de redes neuronales compuesta por dos componentes
+principales: el generador $\mathcal{G}$ y el discriminador $\mathcal{D}$. Estas redes se entrenan de forma adversaria,
+lo que significa que se enfrentan y aprenden de manera competitiva. El generador tiene la tarea de crear datos
+sintéticos $\hat{\mathbf{x}}$, como imágenes o texto, que se asemejen a los datos reales del conjunto de entrenamiento
+$\mathbf{x}$ a partir de un espacio latente $\mathbf{z}$ que suele ser aleatorio. Por otro lado, el discriminador actúa
+como un clasificador que intenta distinguir entre las muestras generadas por el generador y las muestras reales del
+conjunto de entrenamiento. El objetivo principal es entrenar al generador para que sea capaz de engañar al
+discriminador, generando muestras que sean indistinguibles de las reales. Para lograr esto, el generador y el
+discriminador se entrenan de manera alternada. Durante el entrenamiento, el generador intenta mejorar su capacidad para
+generar muestras más realistas, mientras que el discriminador trata de mejorar su capacidad para distinguir entre las
+muestras generadas y las reales. Este proceso de entrenamiento adversaria continúa hasta que se alcanza un punto de
+equilibrio en el que el generador es capaz de generar muestras que el discriminador no puede distinguir de las reales.
+Una vez que se ha alcanzado este punto, el generador puede utilizarse para generar nuevas muestras sintéticas que sean
+similares a los datos reales. La figura \ref{fig:gan-esquema} muestra el esquema de las GAN descrito anteriormente.
 
 \begin{figure}[H]
   \centering
@@ -570,81 +561,45 @@ TODO:
 
     %Shape: Circle [id:dp8911007167211544] 
     \draw   (37.8,84.75) .. controls (37.8,76.33) and (44.63,69.5) .. (53.05,69.5) .. controls (61.47,69.5) and (68.3,76.33) .. (68.3,84.75) .. controls (68.3,93.17) and (61.47,100) .. (53.05,100) .. controls (44.63,100) and (37.8,93.17) .. (37.8,84.75) -- cycle ;
-    %Shape: Trapezoid [id:dp033671238257944935] 
-    \draw   (90,48) -- (130,60) -- (130,110) -- (90,122) -- cycle ;
-
+    %Shape: Trapezoid [id:dp17673865425968227] 
+    \draw   (130,122) -- (90,110) -- (90,60) -- (130,48) -- cycle ;
     %Straight Lines [id:da17016942407473712] 
     \draw    (69.5,85.15) -- (86,85.15) ;
     \draw [shift={(89,85.15)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
     %Shape: Circle [id:dp0351848498318883] 
     \draw  [dash pattern={on 4.5pt off 4.5pt}] (155.38,86.08) .. controls (155.38,77.66) and (162.21,70.83) .. (170.63,70.83) .. controls (179.06,70.83) and (185.88,77.66) .. (185.88,86.08) .. controls (185.88,94.51) and (179.06,101.33) .. (170.63,101.33) .. controls (162.21,101.33) and (155.38,94.51) .. (155.38,86.08) -- cycle ;
-    %Rounded Rect [id:dp5451784827501565] 
-    \draw   (221,39.81) .. controls (221,36.65) and (223.56,34.1) .. (226.71,34.1) -- (265.29,34.1) .. controls (268.44,34.1) and (271,36.65) .. (271,39.81) -- (271,56.95) .. controls (271,60.11) and (268.44,62.67) .. (265.29,62.67) -- (226.71,62.67) .. controls (223.56,62.67) and (221,60.11) .. (221,56.95) -- cycle ;
-
-    %Rounded Rect [id:dp2387840011551663] 
-    \draw   (220.33,114.81) .. controls (220.33,111.65) and (222.89,109.1) .. (226.05,109.1) -- (264.62,109.1) .. controls (267.77,109.1) and (270.33,111.65) .. (270.33,114.81) -- (270.33,131.95) .. controls (270.33,135.11) and (267.77,137.67) .. (264.62,137.67) -- (226.05,137.67) .. controls (222.89,137.67) and (220.33,135.11) .. (220.33,131.95) -- cycle ;
-
-    %Shape: Circle [id:dp5434429051639935] 
-    \draw  [dash pattern={on 4.5pt off 4.5pt}] (298,105.75) .. controls (298,97.33) and (304.83,90.5) .. (313.25,90.5) .. controls (321.67,90.5) and (328.5,97.33) .. (328.5,105.75) .. controls (328.5,114.17) and (321.67,121) .. (313.25,121) .. controls (304.83,121) and (298,114.17) .. (298,105.75) -- cycle ;
-
-    %Shape: Circle [id:dp07620412226976292] 
-    \draw  [dash pattern={on 4.5pt off 4.5pt}] (297.2,145.55) .. controls (297.2,137.13) and (304.03,130.3) .. (312.45,130.3) .. controls (320.87,130.3) and (327.7,137.13) .. (327.7,145.55) .. controls (327.7,153.97) and (320.87,160.8) .. (312.45,160.8) .. controls (304.03,160.8) and (297.2,153.97) .. (297.2,145.55) -- cycle ;
-
-    %Shape: Ellipse [id:dp45432698557456797] 
-    \draw   (353,124.28) .. controls (353,114.48) and (366.91,106.53) .. (384.06,106.53) .. controls (401.22,106.53) and (415.13,114.48) .. (415.13,124.28) .. controls (415.13,134.09) and (401.22,142.03) .. (384.06,142.03) .. controls (366.91,142.03) and (353,134.09) .. (353,124.28) -- cycle ;
-    %Shape: Circle [id:dp32408939453044705] 
-    \draw   (298,28.75) .. controls (298,20.33) and (304.83,13.5) .. (313.25,13.5) .. controls (321.67,13.5) and (328.5,20.33) .. (328.5,28.75) .. controls (328.5,37.17) and (321.67,44) .. (313.25,44) .. controls (304.83,44) and (298,37.17) .. (298,28.75) -- cycle ;
-    %Shape: Circle [id:dp4289741736286996] 
-    \draw  [dash pattern={on 4.5pt off 4.5pt}] (298,66.75) .. controls (298,58.33) and (304.83,51.5) .. (313.25,51.5) .. controls (321.67,51.5) and (328.5,58.33) .. (328.5,66.75) .. controls (328.5,75.17) and (321.67,82) .. (313.25,82) .. controls (304.83,82) and (298,75.17) .. (298,66.75) -- cycle ;
-    %Shape: Ellipse [id:dp9642501981304152] 
-    \draw   (353,50.08) .. controls (353,40.28) and (366.91,32.33) .. (384.06,32.33) .. controls (401.22,32.33) and (415.13,40.28) .. (415.13,50.08) .. controls (415.13,59.89) and (401.22,67.83) .. (384.06,67.83) .. controls (366.91,67.83) and (353,59.89) .. (353,50.08) -- cycle ;
     %Straight Lines [id:da08691567239156806] 
     \draw    (130.33,84.13) -- (151.98,84.13) ;
     \draw [shift={(154.98,84.13)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
-    %Straight Lines [id:da7251468171000668] 
-    \draw    (270.33,114.81) -- (295.29,103.03) ;
-    \draw [shift={(298,101.75)}, rotate = 154.73] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
-    %Straight Lines [id:da4737451817168479] 
-    \draw    (270.33,131.95) -- (295.35,145.34) ;
-    \draw [shift={(298,146.75)}, rotate = 208.14] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
-    %Straight Lines [id:da7936227455814397] 
-    \draw    (328.5,101.75) -- (352.41,115.81) ;
-    \draw [shift={(355,117.33)}, rotate = 210.46] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
-    %Straight Lines [id:da4136337294740495] 
-    \draw    (328.5,146.75) -- (353.68,133.4) ;
-    \draw [shift={(356.33,132)}, rotate = 152.08] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
-    %Straight Lines [id:da47096857078265786] 
-    \draw    (271.6,51.2) -- (295.42,65.23) ;
-    \draw [shift={(298,66.75)}, rotate = 210.5] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
-    %Straight Lines [id:da25177767921579974] 
-    \draw    (327.83,26.42) -- (352.43,41.13) ;
-    \draw [shift={(355,42.67)}, rotate = 210.89] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
-    %Straight Lines [id:da30663608487448224] 
-    \draw    (327.83,71.42) -- (353.02,58.07) ;
-    \draw [shift={(355.67,56.67)}, rotate = 152.08] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
     %Straight Lines [id:da48589972370276335] 
-    \draw    (182,75.6) -- (218.3,51.65) ;
-    \draw [shift={(220.8,50)}, rotate = 146.58] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+    \draw    (185.9,150.95) -- (216.51,139.97) ;
+    \draw [shift={(219.33,138.95)}, rotate = 160.26] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
     %Straight Lines [id:da7455647779284351] 
-    \draw    (184,95.2) -- (217.69,113.38) ;
-    \draw [shift={(220.33,114.81)}, rotate = 208.36] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
-    %Shape: Circle [id:dp3903278330340414] 
-    \draw   (155.8,141.95) .. controls (155.8,133.53) and (162.63,126.7) .. (171.05,126.7) .. controls (179.47,126.7) and (186.3,133.53) .. (186.3,141.95) .. controls (186.3,150.37) and (179.47,157.2) .. (171.05,157.2) .. controls (162.63,157.2) and (155.8,150.37) .. (155.8,141.95) -- cycle ;
-    %Straight Lines [id:da6502607141934658] 
-    \draw    (186.3,141.95) -- (217.45,132.8) ;
-    \draw [shift={(220.33,131.95)}, rotate = 163.63] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+    \draw    (185.88,86.08) -- (216.56,98.67) ;
+    \draw [shift={(219.33,99.81)}, rotate = 202.31] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+    %Shape: Circle [id:dp6519338947936726] 
+    \draw   (155.4,150.95) .. controls (155.4,142.53) and (162.23,135.7) .. (170.65,135.7) .. controls (179.07,135.7) and (185.9,142.53) .. (185.9,150.95) .. controls (185.9,159.37) and (179.07,166.2) .. (170.65,166.2) .. controls (162.23,166.2) and (155.4,159.37) .. (155.4,150.95) -- cycle ;
+
+    %Shape: Trapezoid [id:dp7187159288939746] 
+    \draw   (220.4,82) -- (260.4,94) -- (260.4,144) -- (220.4,156) -- cycle ;
+
+    %Shape: Ellipse [id:dp7149271359322635] 
+    \draw   (294.67,119) .. controls (294.67,107.95) and (310.34,99) .. (329.67,99) .. controls (349,99) and (364.67,107.95) .. (364.67,119) .. controls (364.67,130.05) and (349,139) .. (329.67,139) .. controls (310.34,139) and (294.67,130.05) .. (294.67,119) -- cycle ;
+    %Straight Lines [id:da8042763294948492] 
+    \draw    (260.67,119.33) -- (291.67,119.33) ;
+    \draw [shift={(294.67,119.33)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
 
     % Text Node
-    \draw (245.33,123.56) node   [align=left] {\begin{minipage}[lt]{26.23pt}\setlength\topsep{0pt}
+    \draw (170,86) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
         \begin{center}
-          $\mathcal{D}$
+          $\hat{\mathbf{x}}$
         \end{center}
 
       \end{minipage}};
     % Text Node
-    \draw (246,48.56) node   [align=left] {\begin{minipage}[lt]{26.23pt}\setlength\topsep{0pt}
+    \draw (52,85) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
         \begin{center}
-          $\mathcal{C}$
+          $\mathbf{z}$
         \end{center}
 
       \end{minipage}};
@@ -656,86 +611,39 @@ TODO:
 
       \end{minipage}};
     % Text Node
-    \draw (312.45,145.55) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
-        \begin{center}
-          $\mathbf{d}^{\mathbf{n}}$
-        \end{center}
-
-      \end{minipage}};
-    % Text Node
-    \draw (313.25,105.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
-        \begin{center}
-          $\mathbf{d}^{\mathbf{z}}$
-        \end{center}
-
-      \end{minipage}};
-    % Text Node
-    \draw (313.25,28.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
-        \begin{center}
-          $\mathbf{y}$
-        \end{center}
-
-      \end{minipage}};
-    % Text Node
-    \draw (313.25,66.75) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
-        \begin{center}
-          $\hat{\mathbf{y}}$
-        \end{center}
-
-      \end{minipage}};
-    % Text Node
-    \draw (383.66,52) node   [align=left] {\begin{minipage}[lt]{32.64pt}\setlength\topsep{0pt}
-        \begin{center}
-          $\mathcal{L}_{\mathcal{C}}$
-        \end{center}
-
-      \end{minipage}};
-    % Text Node
-    \draw (170.23,85) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
-        \begin{center}
-          $\mathbf{z}$
-        \end{center}
-
-      \end{minipage}};
-    % Text Node
-    \draw (52.65,85) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+    \draw (170,151) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
         \begin{center}
           $\mathbf{x}$
         \end{center}
 
       \end{minipage}};
     % Text Node
-    \draw (171.05,142) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
+    \draw (240.4,119) node   [align=left] {\begin{minipage}[lt]{22.78pt}\setlength\topsep{0pt}
         \begin{center}
-          $\mathbf{n}$
+          $\mathcal{D}$
         \end{center}
 
       \end{minipage}};
     % Text Node
-    \draw (384.86,125) node   [align=left] {\begin{minipage}[lt]{32.64pt}\setlength\topsep{0pt}
-        \begin{center}
-          $\mathcal{L}_{\mathcal{D}}$
-        \end{center}
-
-      \end{minipage}};
+    \draw (300,110.33) node [anchor=north west][inner sep=0.75pt]   [align=left] {{\footnotesize real/falso}};
 
   \end{tikzpicture}
 
+  \caption[Esquema de una GAN]{Esquema de una GAN. $\mathbf{z}$ es el espacio latente con el cual la red generadora $\mathcal{G}$ produce datos sintéticos $\hat{\mathbf{x}}$. Luego, la red discriminadora $D$ intenta distinguir entre los datos sintéticos $\hat{\mathbf{x}}$ y los datos reales $\mathbf{x}$. Con el tiempo, $\mathcal{G}$ irá generando datos similares a los reales y $\mathcal{D}$ no podrá distinguir los unos de los otros.}
   \label{fig:gan-esquema}
-  \caption[Esquema de una GAN]{Esquema basico una GAN.}
 \end{figure}
 
-Inspirada en estas arquitecturas GAN, la Red Neural Adversaria de Dominio {\it DANN} \parencite{ganin2016domain} de tres componentes clave: la generadora de características $\mathcal{G}$, la discriminadora de
-dominios $\mathcal{D}$ y la red clasificadora $\mathcal{C}$ como se ilustra en la figura \ref{fig:dann-esquema}. En
-primer lugar, la generadora de características $\mathcal{G}$ se entrena con el objetivo de confundir a la
-discriminadora $\mathcal{D}$ y al mismo tiempo ayudar a la red clasificadora $\mathcal{C}$. La idea principal es que
-$\mathcal{G}$ aprenda a generar características que sean similares en ambos dominios, de manera que la discriminadora
-$\mathcal{D}$ se equivoque al distinguir entre las características de origen y destino. Esta estrategia de engañar a
-$\mathcal{D}$ ayuda a $\mathcal{C}$ a clasificar correctamente las características entre ambos dominios. Por otro lado,
-la discriminadora de dominios $\mathcal{D}$ es entrenada para diferenciar entre las características de origen y las de
-destino. Su función es detectar las diferencias inherentes a cada uno de ellos. Al entrenar a $\mathcal{D}$ en la
-discriminación de dominios, se impulsa a $\mathcal{G}$ a generar características que sean indistinguibles para
-$\mathcal{D}$, fomentando así la adaptación de dominio.
+Inspirada en estas arquitecturas GAN, la Red Neuronal Adversaria de Dominio {\it DANN} \parencite{ganin2016domain} contiene de tres componentes clave: la generadora de características $\mathcal{G}$, la
+discriminadora de dominios $\mathcal{D}$ y la red clasificadora $\mathcal{C}$ como se ilustra en la figura
+\ref{fig:dann-esquema}. En primer lugar, la generadora de características $\mathcal{G}$ se entrena con el objetivo de
+confundir a la discriminadora $\mathcal{D}$ y al mismo tiempo ayudar a la red clasificadora $\mathcal{C}$. La idea
+principal es que $\mathcal{G}$ aprenda a generar características que sean similares en ambos dominios, de manera que la
+discriminadora $\mathcal{D}$ se equivoque al distinguir entre las características de origen y destino. Esta estrategia
+de engañar a $\mathcal{D}$ ayuda a $\mathcal{C}$ a clasificar correctamente las características entre ambos dominios.
+Por otro lado, la discriminadora de dominios $\mathcal{D}$ es entrenada para diferenciar entre las características de
+origen y las de destino. Su función es detectar las diferencias inherentes a cada uno de ellos. Al entrenar a
+$\mathcal{D}$ en la discriminación de dominios, se impulsa a $\mathcal{G}$ a generar características que sean
+indistinguibles para $\mathcal{D}$, fomentando así la adaptación de dominio.
 
 \begin{figure}[H]
   \centering
@@ -912,8 +820,8 @@ $\mathcal{L}_\mathcal{adv}$ dará lugar a representaciones transferibles.
   \label{eq:dann-objetivo}
 \end{align}
 
-\subsection{Adversarial Discriminative Domain Adaptation}
-Las redes Adversarial Discriminative Domain Adaptation {\it ADDA} \parencite{tzeng2017adversarial} surgen a partir de las {\it DANN} como propuesta para mitigar el desvanecimiento de
+\subsection{Adaptación de dominio adversaria discriminativa}
+Las redes Adaptación de Dominio Adversaria Discriminativa {\it ADDA} \parencite{tzeng2017adversarial} surgen a partir de las {\it DANN} como propuesta para mitigar el desvanecimiento de
 gradiente, un problema importante en el entrenamiento de GAN. Por ejemplo, cuando el espacio latente de destino
 generado $\mathbf{z}^t$ es extremadamente distinguible del de origen tal que $\mathcal{D}(\mathbf{z}^t)=0$, el
 gradiente es pequeño y viceversa. Esto provoca que la optimización de $\mathcal{G}$ sea extremadamente difícil.
@@ -1109,7 +1017,7 @@ grandes para los otros registros de destino.
    & \min_{\mathcal{G}_t} - \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}} \log[\mathcal{D}(\mathcal{G}_t(\mathbf{x}^t))]  \label{eq:adda-objetivo}
 \end{align}
 
-\subsection{Batch Spectral Penalization}
+\subsection{Penalización espectral en lotes}
 
 Aunque los métodos de adaptación de dominio adversarios mejoran la {\it transferibilidad} de las características
 aprendidas; es decir, la capacidad de que las representaciones puedan superar las discrepancias entre los dominios, lo
@@ -1117,8 +1025,8 @@ hacen a costa de la {\it discriminabilidad}; es decir, la facilidad de separar c
 ambos dominios \parencite{chen2019transferability}. Al aplicar descomposición en valores singulares ({\it SVD} en inglés) para analizar
 las propiedades espectrales de las representaciones aprendidas en batches, se confirma que los autovectores con valores
 singulares más altos dominan la {\it transferibilidad} mientras que los autovectores con valores singulares más
-pequeños se encuentran penalizados, lo que provoca una {\it discriminabilidad} deficiente. {\it Batch Spectral
-    Penalization} {\it BSP} \parencite{chen2019transferability} penaliza el mayor valor singular para que los demás autovectores puedan mejorar la {\it
+pequeños se encuentran penalizados, lo que provoca una {\it discriminabilidad} deficiente. La Penalización Espectral en
+Lotes {\it BSP} \parencite{chen2019transferability} penaliza el mayor valor singular para que los demás autovectores puedan mejorar la {\it
     discriminabilidad}. $\mathcal{L}_{BSP}$ es propuesto como un término de regularización sobre los $k$ mayores valores
 singulares:
 
@@ -1339,12 +1247,13 @@ Por lo tanto, un modelo {\it DANN+BSP} presenta como objetivos:
 \noindent
 donde $\beta$ es el parámetro que regula el trade-off de $\mathcal{L}_{BSP}$.
 
-\subsection{Margin Disparity Discrepancy}
+\subsection{Discrepancia de disparidad de margen}
 
 Las técnicas detalladas hasta el momento implican algoritmos de optimización minimax, que funcionan correctamente en
 los métodos basados en el aprendizaje adversario. Sin embargo, estos algoritmos utilizan funciones de scoreo que
 carecen de garantías teóricas, ya que se estudiaron funciones de pérdida 0-1. Es por esto que se introducen métodos que
-apuntan a reducir la brecha que existe entre la teoría y el algoritmo, como Margin Disparity Discrepancy {\it MDD} \parencite{zhang2019bridging} esquematizado en la figura \ref{fig:mdd-esquema}. La idea general de {\it MDD} es introducir
+apuntan a reducir la brecha que existe entre la teoría y el algoritmo, como Discrepancia de Disparidad de Margen {\it
+    MDD} \parencite{zhang2019bridging} esquematizado en la figura \ref{fig:mdd-esquema}. La idea general de {\it MDD} es introducir
 una segunda red clasificadora $\mathcal{C}^{'}$ y relacionar su salida con la de $\mathcal{C}$.
 
 \begin{figure}[H]
@@ -1430,7 +1339,7 @@ una segunda red clasificadora $\mathcal{C}^{'}$ y relacionar su salida con la de
   \end{tikzpicture}
   \caption[Esquema de {\it MDD}]{Esquema de {\it MDD}. Los círculos con líneas rayadas son salidas de los modelos mientras que los círculos de líneas sólidas son datos conocidos.
       {\it MDD} introduce un clasificador clasificador adversario $\mathcal{C}^{'}$ para maximizar la discrepancia y entrena el generador de características $\mathcal{G}$ para
-    minimizar el error de origen como tambien la discrepancia.}
+    minimizar el error de origen como también la discrepancia.}
   \label{fig:mdd-esquema}
 \end{figure}
 
@@ -1459,7 +1368,7 @@ donde $\sigma$ es la función {\it softmax}. Por lo tanto, el objetivo de optimi
   \label{eq:mdd-objetivo}
 \end{align}
 
-\subsection{Adaptive Feature Norm}
+\subsection{Normalización de características adaptativa}
 
 El mayor problema que surge de la adaptación de dominio es la degradación del modelo en cuanto a la tasa de acierto en
 la clasificación \parencite{yosinski2014transferable}. Las divergencias estadísticas existentes pueden no representar con precisión el
@@ -1487,7 +1396,7 @@ explican el deterioro en la clasificación. No obstante, pueden plantearse dos h
         alejadas de las normas pequeñas supondrá una mejora en la transferencia.
 \end{itemize}
 
-\cite{xu2019larger} propone un método llamado {\it Adaptive Feature Norm AFN}, ilustrado en la figura \ref{fig:afn-esquema}, que consiste en normalizar las normas de las características aprendidas por la red $\mathcal{G}$ mediante $n$ bloques $\mathcal{N}$ (compuestos por FC-BN-ReLU-Dropout) y mediante $\mathcal{L}_{AFN}$.
+\cite{xu2019larger} propone un método llamado Normalización de Características Adaptativa {\it AFN}, ilustrado en la figura \ref{fig:afn-esquema}, que consiste en normalizar las normas de las características aprendidas por la red $\mathcal{G}$ mediante $n$ bloques $\mathcal{N}$ (compuestos por FC-BN-ReLU-Dropout) y mediante $\mathcal{L}_{AFN}$.
 
 \begin{figure}[H]
   \centering
