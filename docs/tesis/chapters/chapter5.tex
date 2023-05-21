@@ -2,17 +2,17 @@
 
 \label{Chapter5}
 
-La presente tesis se centró en la utilización de técnicas de adaptación de dominio para mejorar la digitalización de de
-redes neuronales entrenados con distintos algoritmos de adaptación de dominio. En primera instancia, se desarrolló un
-proceso de Extracción, Transformación y Carga (ETL) de los telegramas que permitió segmentar cada uno de los dígitos y
-crear un conjunto de datos adecuado para la tarea de digitalización. Este proceso de ETL estandarizó los datos para que
-pudieran ser procesados y analizados de manera más efectiva.
+Esta tesis se enfocó en utilizar técnicas de adaptación de dominio para mejorar la digitalización de los votos en
+elecciones mediante redes neuronales entrenadas con diversos algoritmos de adaptación de dominio. En primera instancia,
+se desarrolló un proceso de Extracción, Transformación y Carga (ETL) de los telegramas que permitió segmentar cada uno
+de los dígitos y crear un conjunto de datos adecuado para la tarea de digitalización. Este proceso de ETL estandarizó
+los datos para que pudieran ser procesados y analizados de manera más efectiva.
 
 En una siguiente etapa, tras realizar múltiples experimentos, se pudo determinar que la red ResNet18 entrenada mediante
 AFN es el modelo que tiene el mejor rendimiento en la tarea de digitalización de telegramas. Este resultado indica que
 el uso de modelos más complejos y profundos puede ser beneficioso en este tipo de tarea. Sin embargo, también se pudo
 comprobar que una red más simple, como la LeNet5 con AFN, tiene un rendimiento satisfactorio, lo que sugiere que no
-siempre es necesario utilizar modelos complejos para resolver tareas como ésta.
+siempre es necesario utilizar modelos complejos para resolver tareas como esta.
 
 En cuanto a la precisión obtenida al aplicar el mejor modelo a los telegramas de prueba, se alcanzó una precisión
 promedio del 73\%, sin haber estandarizado la casilla donde se escriben los dígitos. No obstante, se podría mejorar aún
@@ -48,7 +48,8 @@ calidad de los resultados. A continuación, se detallan algunas posibles líneas
             de la mesa. También se podría considerar la utilización de otras técnicas de post-procesamiento, como la corrección de
             errores en las predicciones mediante la incorporación de información contextual adicional.
       \item Mejora de la estandarización de los telegramas: Como se mencionó en las conclusiones, la estandarización en la sección
-            donde se escriben los dígitos podría mejorar aún más la precisión de los modelos de ya que mejoraría la calidad de TDS.
+            donde se escriben los dígitos podría mejorar aún más la precisión de los modelos, ya que mejoraría la calidad de los
+            dígitos del TDS.
       \item Evaluación de otras técnicas de adaptación de dominio: En esta tesis se evaluaron algunas técnicas de adaptación de
             dominio, pero existen muchas otras técnicas que podrían ser útiles para mejorar la precisión de la digitalización de
             telegramas. Por lo tanto, una posible línea de investigación futura es la evaluación de otras técnicas de adaptación de
@@ -59,7 +60,7 @@ calidad de los resultados. A continuación, se detallan algunas posibles líneas
             imágenes para mejorar la calidad de los datos.
 \end{itemize}
 
-En conclusión, existen varias líneas de investigación desprendidas de la tesis actual que pueden ser exploradaspara
+En conclusión, existen varias líneas de investigación desprendidas de la tesis actual que pueden ser exploradas para
 mejorar la precisión de los modelos que deben aplicarse en un conjunto de datos con características distintas que del
 que se entrenó. Estas mejoras pueden ser importantes para aumentar la confianza en los procesos electorales y mejorar
 la transparencia y la eficiencia en el conteo de votos.

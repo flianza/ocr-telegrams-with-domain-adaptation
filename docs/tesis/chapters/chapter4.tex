@@ -10,9 +10,9 @@ por la parte convolucional de las redes y se analizarán los errores que surgen 
 
 Los experimentos realizados arrojaron los resultados mostrados en el cuadro \ref{tab:metricas-experimentos}. Las
 métricas referidas a la capacidad de clasificación (tasa de acierto, $F_1$) son evaluadas sobre la partición de test
-del dataset de origen donde se conocen las etiquetas a ciencia cierta (MNIST). Por otro lado, las métricas de
+del conjunto de datos de origen donde se conocen las etiquetas a ciencia cierta (MNIST). Por otro lado, las métricas de
 adaptación ($MMD$, Dist. $\mathcal{A}$) son evaluadas sobre los espacios latentes que los modelos generaron para las
-particiones de test de ambos datasets.
+particiones de test de ambos conjuntos de datos.
 
 Es importante destacar que el mejor modelo es aquel que tiene tanto la mejor capacidad de clasificación como la mejor
 adaptación a nuevos conjuntos de datos. Las métricas de clasificación deben ser maximizadas y las de adaptación deben
@@ -297,8 +297,8 @@ detectaron las siguientes situaciones:
 
 \begin{itemize}
     \item Telegramas cargados de forma errónea: ver ejemplo en el anexo \ref{anexo:telegrama-erroneo}.
-    \item Telegramas correctos pero por alguna cuestión la lógica de extracción de dígitos no funciona correctamente: ver ejemplo
-          en el anexo \ref{anexo:telegrama-numeros-juntos}.
+    \item Telegramas correctos, pero por alguna cuestión la lógica de extracción de dígitos no funciona correctamente: ver
+          ejemplo en el anexo \ref{anexo:telegrama-numeros-juntos}.
     \item Telegramas donde existen otros caracteres distintos a números: al ser un cuadro de texto libre sin formato, los jefes
           de mesa pueden escribir lo que deseen. Ver ejemplo en el anexo \ref{anexo:telegrama-erroneo-caracteres-especiales}
           donde se representa el $0$ a la izquierda con $X$.
@@ -307,14 +307,14 @@ detectaron las siguientes situaciones:
           no aportan al número final. Ver ejemplo en el anexo \ref{anexo:telegrama-erroneo-muchos-ceros}.
 \end{itemize}
 
-En los primeros dos puntos se describen problemas problemas que fueron detectados en el proceso de ETL del capítulo
+En los primeros dos puntos se describen problemas que fueron detectados en el proceso de ETL del capítulo
 \ref{Chapter3}. Estandarizar los telegramas agregando un casillero por cada dígito junto a mejorar el proceso de
 extracción de los mismos, supondrá una mejora considerable en las capacidades predictivas de los modelos.
 
-El tercer punto presenta un problema dentro de la adaptación de dominio. La misma supone que, si bien los datasets de
-origen y destino son diferentes pero representan lo mismo, debe existir la misma cantidad de clases entre origen y
-destino. Al agregar uno o varios caracteres adicionales en $TDS$ (como es el ejemplo donde representaban el $0$ con una
-$X$), se está incumpliendo este supuesto.
+El tercer punto presenta un problema dentro de la adaptación de dominio. La misma supone que, si bien los conjuntos de
+datos de origen y destino son diferentes, pero representan lo mismo, debe existir la misma cantidad de clases entre
+origen y destino. Al agregar uno o varios caracteres adicionales en $TDS$ (como es el ejemplo donde representaban el
+$0$ con una $X$), se está incumpliendo este supuesto.
 
 El cuarto punto aumenta la probabilidad de error en los modelos debido a que el $0$ a la izquierda no aporta
 significado alguno al número de la cantidad de votos que se desea predecir.

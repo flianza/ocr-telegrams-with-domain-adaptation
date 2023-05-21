@@ -54,9 +54,9 @@ conductividad de la sinapsis. Así, la repetida activación de una neurona por o
 determinada, aumenta su conductividad y la hace más propensa a ser activada sucesivamente, induciendo a la formación de
 un circuito de neuronas estrechamente conectadas entre sí \parencite{hebb1949organization}.
 
-Años más tarde, \cite{rosenblatt1958perceptron} propone un modelo de neurona llamadas perceptrones basadas en el modelo
+Años más tarde, \cite{rosenblatt1958perceptron} propone un modelo de neurona llamada perceptrones basadas en el modelo
 de McCulloch-Pitts. El mayor logro de Rosenblatt fue que pudo demostrar que, flexibilizando algunas de las reglas de la
-McCulloch-Pitts (la inhibición absoluta, la contribución igual de todas las entradas, etc), las neuronas artificiales
+McCulloch-Pitts (la inhibición absoluta, la contribución igual de todas las entradas, etc.), las neuronas artificiales
 podían aprender de los datos. Y lo que es más importante, ideó un algoritmo de aprendizaje supervisado para este modelo
 de neurona que permitía averiguar los pesos correctos directamente a partir de los datos de entrenamiento. La sencillez
 y eficacia de este algoritmo de aprendizaje para problemas linealmente separables son algunas de las razones clave por
@@ -66,7 +66,7 @@ en la comunidad científica y/o también difundidas por los medios de comunicaci
 
 En \citeyear{minsky1969perceptrons}, se publica un libro en el cual se expone la naturaleza lineal de los perceptrones
 y de sus limitadas capacidades \parencite{minsky1969perceptrons}. A raíz de este evento es que se inicia el denominado ``invierno de la inteligencia
-artificial'' de los 1980s, donde cesó el interés de la comunidad por los modelos conexionistas.
+artificial'' de los 1980, donde cesó el interés de la comunidad por los modelos conexionistas.
 
 La contribución más importante en la reemergencia del conexionismo en los años ochenta fue la técnica {\it
 backpropagation} desarrollada por \cite{rumelhart1986learning}. En realidad, esta técnica fue desarrollada inicialmente
@@ -84,7 +84,7 @@ error de la red, multiplicando la derivada parcial del error por una tasa de apr
 peso correspondiente.
 
 Las redes neuronales más ``simples'' entrenadas con {\it backpropagation}, son las denominadas redes multicapa
-alimentadas hacia delante ({\it feed forward}) o perceptrones mutlicapa {\it MLP}. En
+alimentadas hacia delante ({\it feed forward}) o perceptrones multicapa {\it MLP}. En
 \citeyear{funahashi1989approximate}, se demuestra teóricamente que una red de este tipo, con una capa oculta y el
 suficiente número de nodos, puede aproximar cualquier función continua con cualquier grado de precisión \parencite{funahashi1989approximate}.
 
@@ -230,16 +230,16 @@ el filtro Sobel para detectar bordes, se permite que la red aprenda de forma aut
 características relevantes $I*K$ para la tarea a través del entrenamiento. Esto permite que la red encuentre
 características sin el sesgo que se introduciría al utilizar únicamente filtros predefinidos.
 
-Una de las principales ventajas de las CNNs es que son capaces de procesar datos con una gran cantidad de dimensiones,
+Una de las principales ventajas de las CNN es que son capaces de procesar datos con una gran cantidad de dimensiones,
 como imágenes con altura, anchura y profundidad (canales de color). Esto se debe a que las capas de convolución son
 capaces de realizar operaciones de filtrado sobre los datos de entrada, permitiendo a la red aprender características
-específicas de los datos de manera eficiente. Además, las CNNs tienen la capacidad de generalizar de manera efectiva,
-lo que significa que son capaces de realizar buenas predicciones en conjuntos de datos desconocidos.
+específicas de los datos de manera eficiente. Además, las CNN tienen la capacidad de generalizar de manera efectiva, lo
+que significa que son capaces de realizar buenas predicciones en conjuntos de datos desconocidos.
 
-Otra ventaja de las CNN es que cuentan con capas de {\it pooling} o también llamadas de submuestreo. Su objetivo
+Otra ventaja de las CNN es que cuentan con capas de {\it pooling} o también llamadas de sub muestreo. Su objetivo
 principal es reducir el tamaño espacial de la representación de características para disminuir la cantidad de
-parámetros y de operaciones necesarias en la red, lo que permite reducir el costo computacional y evitar el
-sobreajuste. Además, al reducir el tamaño de la representación, se logra una cierta invarianza en las características
+parámetros y de operaciones necesarias en la red, lo que permite reducir el costo computacional y evitar el sobre
+ajuste. Además, al reducir el tamaño de la representación, se logra una cierta invarianza en las características
 aprendidas por la red, lo que significa que la posición exacta de las características dentro de la imagen ya no importa
 tanto. La operación de {\it pooling} en una CNN consiste en dividir la imagen de entrada en subregiones no superpuestas
 y aplicar una función a cada subregión. En general, existen tres tipos de funciones que se utilizan en {\it pooling}:
@@ -354,7 +354,7 @@ fortalezas y debilidades en términos de capacidad de generalización, extracci�
         a diferentes escalas y en diferentes posiciones, mientras que otras pueden tener una mayor capacidad para detectar
         patrones complejos.
   \item Nivel de generalización: algunas arquitecturas pueden ser más capaces de generalizar a datos nuevos y menos vistos
-        durante el entrenamiento, mientras que otras pueden ser más propensas a sobreajuste.
+        durante el entrenamiento, mientras que otras pueden ser más propensas a sobre ajuste.
   \item Requerimientos de tiempo y recursos: algunas arquitecturas pueden requerir más tiempo y recursos para entrenar y
         evaluar, lo que puede ser un factor importante a considerar dependiendo de los objetivos del proyecto.
 \end{itemize}
@@ -454,7 +454,7 @@ sigue siendo relevante hoy en día y se utiliza como una arquitectura básica pa
   \label{fig:lenet}
 \end{figure}
 
-El desarrollo de la LeNet implicó la aparición de las CNNs y sus componentes básicos. No obstante, no fue popular en su
+El desarrollo de la LeNet implicó la aparición de las CNN y sus componentes básicos. No obstante, no fue popular en su
 momento debido a la falta del hardware necesario para entrenarlas y otros algoritmos como las máquinas de vectores de
 soporte (SVM por sus siglas en inglés) que podían obtener resultados similares o superadores \parencite{lecun1998gradient, decoste2002training, lauer2007trainable}.
 
@@ -462,10 +462,10 @@ En 2012, Alex Krizhevsky ganó la competencia de ImageNet con su arquitectura Al
 complejidad y profundidad de la arquitectura, con AlexNet teniendo ocho capas y más de 60 millones de parámetros
 entrenables, mientras que LeNet tiene cinco capas y menos de un millón de parámetros. Además, AlexNet utiliza filtros
 convolucionales más grandes (11x11 y 5x5) que permiten capturar características de imagen más grandes y complejas, y
-técnicas de regularización más avanzadas, como el dropout, para prevenir el sobreajuste. En contraste, LeNet utiliza
-filtros más pequeños (5x5 y 3x3) y técnicas de regularización más simples como la regularización L2.
+técnicas de regularización más avanzadas, como el {\it dropout}, para prevenir el sobre ajuste. En contraste, LeNet
+utiliza filtros más pequeños (5x5 y 3x3) y técnicas de regularización más simples como la regularización L2.
 
-Desde el éxito de AlexNet, las CNNs se han convertido en la mejor opción para aplicaciones de visión computacional y se
+Desde el éxito de AlexNet, las CNN se han convertido en la mejor opción para aplicaciones de visión computacional y se
 han creado muchos tipos diferentes de CNN, como las redes R-CNN utilizada para detección y segmentación de objetos \parencite{girshick2014rich}. En la actualidad los modelos CNN son bastante diferentes de LeNet, pero todos se desarrollan
 sobre la base de LeNet.
 
@@ -882,7 +882,7 @@ $\mathcal{D}$, fomentando así la adaptación de dominio.
 El objetivo de {\it DANN} consiste en minimizar función de pérdida que depende de $\mathcal{L}_\mathcal{C}$ y
 $\mathcal{L}_{adv}$. $\mathcal{L}_\mathcal{C}$ mide el error que posee la red en la clasificación de los datos de
 origen y viene dada por el {\it cross-entropy} $\mathcal{L}_{CE}$ aplicado a la salida de la red $\mathcal{C}$. El
-objetivo de $\mathcal{D}$ será la descripta en la ecuación \ref{eq:dann-loss-clasificadora}:
+objetivo de $\mathcal{D}$ será la descrita en la ecuación \ref{eq:dann-loss-clasificadora}:
 
 \begin{align}
   \min_{\mathcal{C}} \mathcal{L}_\mathcal{C}(\mathbf{x}^s, \mathbf{y}^s) & = \mathcal{L}_{CE}(C(\mathcal{G}(\mathbf{x}^s)), \mathbf{y}^s) \nonumber \\
@@ -903,7 +903,7 @@ proporción esperada de datos de origen $\mathcal{\hat{S}}$ y destino $\mathcal{
 \end{align}
 
 Por lo tanto, el objetivo de un modelo {\it DANN} viene dado por la ecuación \ref{eq:dann-objetivo}. Donde $\lambda$ es
-un hiper-parámetro a optimizar que regula el trade-off entre la clasificación y la discriminación adversaria. La
+un hiperparámetro a optimizar que regula el trade-off entre la clasificación y la discriminación adversaria. La
 minimización de $\mathcal{L}_\mathcal{C}$ dará lugar a representaciones discriminables, mientras que la disminución de
 $\mathcal{L}_\mathcal{adv}$ dará lugar a representaciones transferibles.
 
@@ -914,9 +914,9 @@ $\mathcal{L}_\mathcal{adv}$ dará lugar a representaciones transferibles.
 
 \subsection{Adversarial Discriminative Domain Adaptation}
 Las redes Adversarial Discriminative Domain Adaptation {\it ADDA} \parencite{tzeng2017adversarial} surgen a partir de las {\it DANN} como propuesta para mitigar el desvanecimiento de
-gradiente, un problema importante en el entrenamiento de GANs. Por ejemplo, cuando el espacio latente de destino
+gradiente, un problema importante en el entrenamiento de GAN. Por ejemplo, cuando el espacio latente de destino
 generado $\mathbf{z}^t$ es extremadamente distinguible del de origen tal que $\mathcal{D}(\mathbf{z}^t)=0$, el
-gradiente es pequeño y vice versa. Esto provoca que la optimización de $\mathcal{G}$ sea extremadamente difícil.
+gradiente es pequeño y viceversa. Esto provoca que la optimización de $\mathcal{G}$ sea extremadamente difícil.
 
 Las redes {\it ADDA} separan la optimización de $\mathcal{G}$ y de $\mathcal{D}$ en dos objetivos independientes como
 se muestra en la figura \ref{fig:adda-esquema}. El primero es el pre-entrenamiento de $\mathcal{G}_s$ y $\mathcal{C}$
@@ -1099,7 +1099,7 @@ No obstante del cambio, los objetivos de {\it ADDA} son similares a los de las {
 $\mathcal{G}_t$. La ecuación \ref{eq:adda-loss-clasificadora} contiene $\mathcal{L}_\mathcal{C}$ que es análoga a
 \ref{eq:dann-loss-clasificadora}. La ecuación \ref{eq:adda-loss-discriminadora} contiene $\mathcal{L}_{adv}$ que es
 análoga a \ref{eq:dann-loss-discriminadora}. Finalmente, la ecuación \ref{eq:adda-objetivo} contiene el objetivo a
-optimizar, que asigna gradientes pequeños a registros de destino que sean similares a los de origen y gradientes mas
+optimizar, que asigna gradientes pequeños a registros de destino que sean similares a los de origen y gradientes más
 grandes para los otros registros de destino.
 
 \begin{align}
@@ -1111,9 +1111,9 @@ grandes para los otros registros de destino.
 
 \subsection{Batch Spectral Penalization}
 
-Aunque los metodos de adaptación de dominio adversarios mejoran la {\it transferibilidad} de las características
+Aunque los métodos de adaptación de dominio adversarios mejoran la {\it transferibilidad} de las características
 aprendidas; es decir, la capacidad de que las representaciones puedan superar las discrepancias entre los dominios, lo
-hacen a costa de la {\it discriminabilidad}; es decir, la facilidad de separar categorias sobre las representaciones de
+hacen a costa de la {\it discriminabilidad}; es decir, la facilidad de separar categorías sobre las representaciones de
 ambos dominios \parencite{chen2019transferability}. Al aplicar descomposición en valores singulares ({\it SVD} en inglés) para analizar
 las propiedades espectrales de las representaciones aprendidas en batches, se confirma que los autovectores con valores
 singulares más altos dominan la {\it transferibilidad} mientras que los autovectores con valores singulares más
@@ -1343,7 +1343,7 @@ donde $\beta$ es el parámetro que regula el trade-off de $\mathcal{L}_{BSP}$.
 
 Las técnicas detalladas hasta el momento implican algoritmos de optimización minimax, que funcionan correctamente en
 los métodos basados en el aprendizaje adversario. Sin embargo, estos algoritmos utilizan funciones de scoreo que
-carecen de garantías teóricas ya que se estudiaron funciones de pérdida 0-1. Es por esto que se introducen métodos que
+carecen de garantías teóricas, ya que se estudiaron funciones de pérdida 0-1. Es por esto que se introducen métodos que
 apuntan a reducir la brecha que existe entre la teoría y el algoritmo, como Margin Disparity Discrepancy {\it MDD} \parencite{zhang2019bridging} esquematizado en la figura \ref{fig:mdd-esquema}. La idea general de {\it MDD} es introducir
 una segunda red clasificadora $\mathcal{C}^{'}$ y relacionar su salida con la de $\mathcal{C}$.
 
@@ -1481,8 +1481,8 @@ explican el deterioro en la clasificación. No obstante, pueden plantearse dos h
 \begin{itemize}
   \item Normas de las características desalineadas: el desplazamiento entre los dominios de origen y destino se explica en la
         desalineación de los valores esperados de las normas de sus características. La coincidencia de las normas de ambos
-        dominios a un escalar arbitrariamente elegido supondrá una mejora en la transferencias.
-  \item Norma de las caracteristicas más pequeña: el desplazamiento entre los dominios se explica debido a las características
+        dominios a un escalar arbitrariamente elegido supondrá una mejora en la transferencia.
+  \item Norma de las características más pequeña: el desplazamiento entre los dominios se explica debido a las características
         menos informativas con normas más pequeñas del dominio de destino. Adaptar las características de destino a regiones
         alejadas de las normas pequeñas supondrá una mejora en la transferencia.
 \end{itemize}
@@ -1690,7 +1690,7 @@ para facilitar la discriminabilidad mediante un factor $\beta$:
 \end{align}
 
 Por lo tanto, el objetivo de optimización viene dado por la ecuación \ref{eq:afn-objetivo}, donde $\lambda$ es el
-trade-off entre la clasificación y normalizacion de normas.
+trade-off entre la clasificación y normalización de normas.
 
 \begin{align}
   \min_{\mathcal{G}, \mathcal{C}} \mathcal{L}_{\mathcal{C}}(\mathbf{x}^s, \mathbf{x}^t) + \lambda \mathcal{L}_{\mathcal{AFN}}(\mathbf{x}^s, \mathbf{x}^t)

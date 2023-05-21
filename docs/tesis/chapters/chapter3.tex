@@ -4,8 +4,8 @@
 
 En este capítulo se detallarán los procesos abordados para la extracción y clasificación de los dígitos escritos en los
 telegramas de las elecciones. Primero se describirá el proceso de obtención, limpieza y transformación de los datos a
-fin de obtener un dataset con el cual entrenar. Luego, se describirán los procesos a ser llevados a cabo para el diseño
-experimental de los modelos.
+fin de obtener un conjunto de datos con el cual entrenar. Luego, se describirán los procesos a ser llevados a cabo para
+el diseño experimental de los modelos.
 
 \section{Descripción de los datos}
 
@@ -33,7 +33,7 @@ la limpieza y validación de los datos para asegurar su calidad y confiabilidad.
 Posteriormente, se transformaron los datos extraídos en un formato adecuado para su uso en modelos de aprendizaje
 automático. Esto implicó la normalización de los datos, la codificación de variables categóricas y la creación de
 variables adicionales para mejorar la calidad de los datos. Finalmente, se cargó el conjunto de datos procesados en un
-dataset que fue utilizado para entrenar los modelos.
+conjunto de datos que fue utilizado para entrenar los modelos.
 
 \subsection{Alineación de los telegramas}
 Cuando se escanean telegramas a mano, es común que estos no estén perfectamente alineados y presenten una ligera
@@ -95,7 +95,7 @@ Teniendo la grilla de votos separada del telegrama, se procede a detectar las l�
 de la misma. Si bien OpenCV posee funciones para la detección de líneas, se optó por utilizar un enfoque simplificado
 similar al utilizado en \parencite{lamagna2016lectura}. Debido a que la grilla se encuentra alineada verticalmente, se pueden utilizar las
 proyecciones de los colores sobre los ejes $x$ e $y$ para detectarlas. Al sumar todos los colores por eje, se pueden
-observar picos de valores donde se encuentran las lineas horizontales y verticales. Posteriormente, se selecciona un
+observar picos de valores donde se encuentran las líneas horizontales y verticales. Posteriormente, se selecciona un
 umbral de corte por cada eje, siendo el mismo el promedio de cada eje menos dos desvíos estándar. La figura
 \ref{fig:etl-3-proyecciones} muestra las proyecciones obtenidas con los umbrales por cada eje.
 
@@ -114,7 +114,7 @@ umbral de corte por cada eje, siendo el mismo el promedio de cada eje menos dos 
     \label{fig:etl-3-proyecciones}
 \end{figure}
 
-Sin embargo, aunque se seleccionen aquellos píxeles que se encuentren por debajo del umbral, existe mas de un píxel por
+Sin embargo, aunque se seleccionen aquellos píxeles que se encuentren por debajo del umbral, existe más de un píxel por
 cada pico. Siguiendo con el ejemplo, en el eje $x$ se obtienen los siguientes píxeles que se encuentran en los
 ``picos'':
 
@@ -125,10 +125,10 @@ cada pico. Siguiendo con el ejemplo, en el eje $x$ se obtienen los siguientes p�
 \end{verbatim}
 
 Con la estrategia del umbral no se obtienen las 4 líneas que se desean detectar sobre el eje $x$. No obstante, se puede
-aplicar un clustering jerárquico sobre los índices obtenidos y luego calcular el índice promedio de cada cluster para
+aplicar un clustering jerárquico sobre los índices obtenidos y luego calcular el índice promedio de cada clúster para
 tomarlo como único representante. El proceso se repite de la misma manera sobre el eje $y$. Esta última modificación
 sobre el trabajo realizado en \parencite{lamagna2016lectura} asegura tener un único píxel por línea. La figura \ref{fig:etl-3-grilla-detectada} muestra
-la segmentación detectada mediante el proceso descripto.
+la segmentación detectada mediante el proceso descrito.
 
 \begin{figure}[H]
     \centering
@@ -167,7 +167,7 @@ ruido o elementos no deseados que puedan haber sido detectados por el análisis 
 Una vez que se han identificado los componentes correspondientes a los dígitos, se procede a recortarlos
 individualmente para obtener una imagen de cada dígito por separado. De esta manera, se facilita el procesamiento y
 análisis de los votos de forma individual. La figura \ref{fig:etl-4-digitos} muestra los dígitos de un voto determinado
-obtenidos de esta menera.
+obtenidos de esta manera.
 
 \begin{figure}[H]
     \centering
@@ -187,15 +187,15 @@ determina a partir del orden de las filas en la tabla de votos. Además, se incl
 votos emitidos y se registra el tipo de voto, ya sea senadores o diputados. Dicho proceso es realizado con el propósito
 de poseer un conjunto de datos que posteriormente será utilizado para entrenar y validar los modelos.
 
-\section{Análisis del dataset}
+\section{Análisis del conjunto de datos}
 
 Una vez que se ha completado el proceso de extracción y segmentación de los dígitos, se procede a realizar un análisis
 exploratorio de los datos. Este análisis tiene como objetivo detectar posibles errores o inconsistencias en los datos
 extraídos, que puedan afectar la calidad de los modelos de aprendizaje automático que se construirán a partir de ellos.
 
-La tabla \ref{tab:dataset-telegramas-segmentados} muestra algunos registros del dataset, que incluye información como
-el número del telegrama, el partido político, el tipo de voto (senadores o diputados) y los dígitos correspondientes a
-cada candidato.
+La tabla \ref{tab:dataset-telegramas-segmentados} muestra algunos registros del conjunto de datos, que incluye
+información como el número del telegrama, el partido político, el tipo de voto (senadores o diputados) y los dígitos
+correspondientes a cada candidato.
 
 \begin{table}[H]
     \centering
@@ -236,7 +236,7 @@ los límites establecidos son descartadas.
 
 Para visualizar de manera más clara la distribución de estas proporciones, se generan histogramas que muestran la
 frecuencia de cada valor dentro del rango establecido. La figura \ref{fig:histogramas-min-max-prop-blanco} presenta
-estos histogramas para las proporciones mínimas y máximas de píxeles blancos en las imágenes del dataset.
+estos histogramas para las proporciones mínimas y máximas de píxeles blancos en las imágenes del conjunto de datos.
 
 \begin{figure}[H]
     \centering
@@ -256,14 +256,14 @@ estos histogramas para las proporciones mínimas y máximas de píxeles blancos 
 \end{figure}
 
 La cola derecha de la distribución de \ref{fig:histograma-max-prop-blanco} presenta un pico anormal en el extremo
-cercano a 1. Al eliminar aquellas imágenes de dígitos que posean mas de un $95\%$ de píxeles blancos, se logran
+cercano a 1. Al eliminar aquellas imágenes de dígitos que posean más de un $95\%$ de píxeles blancos, se logran
 descartar los casos de líneas como la vista en el cuadro \ref{tab:dataset-telegramas-segmentados}. Por otro lado, al
 eliminar aquellas imágenes que posean menos del $50\%$ de píxeles blancos, se logran descartar los casos de escritura
 incorrecta.
 
 El siguiente punto a analizar es el tamaño de las imágenes. Como se muestra en el cuadro
 \ref{tab:dataset-telegramas-segmentados}, las imágenes no fueron estandarizadas en cuanto a tamaño. De manera análoga a
-la variable de proporción de píxeles blancos, se calculan las variables mínimo y máximo tamaño por voto. La tabla
+la variable de proporción de píxeles blancos, se calculan las variables de mínimo y máximo tamaño por voto. La tabla
 \ref{tab:describe-min-max-size} muestra los estadísticos descriptivos de las mismas.
 
 \begin{table}[H]
@@ -282,17 +282,17 @@ la variable de proporción de píxeles blancos, se calculan las variables mínim
 
 Al analizar aquellos registros que poseen los valores extremos en cuanto a mínimo y máximo de tamaño, se encuentran
 telegramas que fueron cargados de forma incorrecta (ver anexo \ref{anexo:telegrama-erroneo}) o con una caligrafía en la
-cual los dígitos no están separados entre si, provocando que la segmentación por el análisis de componentes conectados
+cual los dígitos no están separados entre sí, provocando que la segmentación por el análisis de componentes conectados
 falle (ver anexo \ref{anexo:telegrama-numeros-juntos}). Se eliminan estos casos filtrando por aquellos registros que se
-encuentren por fuera de la media mas/menos cuatro desvíos estándar.
+encuentren por fuera de la media más/menos cuatro desvíos estándar.
 
 Una vez finalizada la etapa de análisis y limpieza, se exportan los dígitos extraídos en un formato similar al conocido
-dataset {\it MNIST} junto con la etiqueta correspondiente. Este conjunto de datos será denominado {\it TDS} (dataset de
-telegramas) a partir de este momento. El conjunto de datos {\it TDS} consta de un total de 170.718 imágenes de dígitos
-cuadradas con sus dimensiones originales, es decir, no se han estandarizado en una dimensión específica. Esta decisión
-se tomó intencionalmente, ya que podría permitir una mayor flexibilidad en el perfeccionamiento, procesamiento y
-análisis de los mismos en trabajos futuros. La figura \ref{fig:tds} muestra una previsualizacion del conjunto de datos
-TDS.
+conjunto de datos {\it MNIST} junto con la etiqueta correspondiente. Este conjunto de datos será denominado {\it TDS}
+(conjunto de datos de telegramas) a partir de este momento. El conjunto de datos {\it TDS} consta de un total de
+170.718 imágenes de dígitos cuadradas con sus dimensiones originales, es decir, no se han estandarizado en una
+dimensión específica. Esta decisión se tomó intencionalmente, ya que podría permitir una mayor flexibilidad en el
+perfeccionamiento, procesamiento y análisis de los mismos en trabajos futuros. La figura \ref{fig:tds} muestra una
+previsualización del conjunto de datos TDS.
 
 \begin{figure}[H]
     \centering
@@ -327,9 +327,9 @@ proporcionó un lote de 1024 imágenes del conjunto de datos de origen y otro ig
 realizaron tres particiones para cada conjunto de datos:
 
 \begin{itemize}
-    \item Entrenamiento (70\% de cada dataset): utilizado para entrenar la LeNet-8 y ResNet-18 en cada época.
-    \item Validación (15\% de cada dataset): utilizado para calcular los mejores hiperparámetros del modelo.
-    \item Test (15\% de cada dataset): utilizado para calcular las métricas y gráficos finales del modelo entrenado.
+    \item Entrenamiento (70\% de cada conjunto de datos): utilizado para entrenar la LeNet-8 y ResNet-18 en cada época.
+    \item Validación (15\% de cada conjunto de datos): utilizado para calcular los mejores hiperparámetros del modelo.
+    \item Test (15\% de cada conjunto de datos): utilizado para calcular las métricas y gráficos finales del modelo entrenado.
 \end{itemize}
 
 Los modelos se entrenaron utilizando Stochastic Gradient Descent (SGD) \parencite{sutskever2013importance} utilizando nesterov, 0.9 como momento y 0.001 de weight decay, parámetros recomendados
@@ -374,7 +374,7 @@ donde se optaron los valores de $\gamma_{\eta}=0.001$ y $\theta = 0.25$.
 
 \section{Métricas de evaluación}
 
-Los modelos optimizados serán evaluados con distintas métricas en tiempo de test, descriptas en las siguientes
+Los modelos optimizados serán evaluados con distintas métricas en tiempo de test, descritas en las siguientes
 sub-secciones del capítulo. Las mismas pretenden evaluar qué tan buenos son los modelos respecto a la tarea de
 clasificación y qué capacidad de adaptación de dominio poseen.
 
@@ -392,15 +392,15 @@ respecto a los de referencia. Es el ratio de predicciones correctas sobre las to
 donde:
 \begin{itemize}
     \item $n$: es la cantidad de observaciones totales.
-    \item $y_{i}$: es la clase de digito de la ${i}$-ésima observación correspondiente al real.
-    \item $\hat{y_{i}}$: es la clase de digito predicho para la ${i}$-ésima observación.
-    \item $1(x)$: es la función indicador.
+    \item $y_{i}$: es la clase de dígito de la ${i}$-ésima observación correspondiente al real.
+    \item $\hat{y_{i}}$: es la clase de dígito predicho para la ${i}$-ésima observación.
+    \item $1(x)$: es la función indicadora.
 \end{itemize}
 
 \subsubsection{$F_{1}$}
 
 La métrica $F_{1}$ es una media armónica de otras dos: {\it precisión} y {\it sensibilidad}. De manera simplificada, la
-primera muestra la capacidad del modelo de no etiquetar como positivo una obsevación que es negativa y la segunda
+primera muestra la capacidad del modelo de no etiquetar como positivo una observación que es negativa y la segunda
 muestra la capacidad del modelo de encontrar todas las observaciones positivas.
 
 La {\it sensibilidad} consiste en calcular la tasa de predicciones positivas correctas de la clase respecto al total de
@@ -431,9 +431,9 @@ donde:
     \item $FN$: es la cantidad de falsos negativos.
 \end{itemize}
 
-Las dos métricas mencionada anteriormente pueden ser combinadas en una sola denominada $F_{\beta}$. El valor de $\beta$
-permite asignar un peso distinto a la precisión o al sensibilidad dentro del promedio armónico. Cuando $\beta=1$, ambas
-poseen el mismo peso.
+Las dos métricas mencionadas anteriormente pueden ser combinadas en una sola denominada $F_{\beta}$. El valor de
+$\beta$ permite asignar un peso distinto a la precisión o a la sensibilidad dentro del promedio armónico. Cuando
+$\beta=1$, ambas poseen el mismo peso.
 
 \begin{equation}
     F_{\beta}(y, \hat{y}) = (1 + \beta^2) \times \frac{precision(y, \hat{y}) \times sensibilidad(y, \hat{y})}{\beta^2 \times precision(y, \hat{y}) + sensibilidad(y, \hat{y})}
@@ -477,12 +477,12 @@ latentes de clasificadores en problemas de adaptación de dominio \parencite{ben
 \noindent
 donde $\epsilon$ es el error en test de un clasificador entrenado para identificar el dominio de los ejemplos (origen o destino), por lo que su rango de valores es de cero al uno.
 Cuando el error de clasificación es bajo, significa que hay diferencias significativas entre las dos distribuciones,
-haciendo que $dist_\mathcal{A}$ sea grande y vice versa.
+haciendo que $dist_\mathcal{A}$ sea grande y viceversa.
 
 En la figura \ref{fig:ejemplos-dist-a} se muestran posibles casos de distribuciones de dominios. En la sub-figura
-\ref{fig:dominios-distintos} las distribuciones de dominios son significativamente diferentes entre si, por lo tanto
+\ref{fig:dominios-distintos} las distribuciones de dominios son significativamente diferentes entre sí, por lo tanto
 $dist_\mathcal{A} \approx 2$. Por el contrario, en la sub-figura \ref{fig:dominios-similares} las distribuciones de
-dominios son similares entre si, por lo que se espera que $dist_\mathcal{A} \approx 0$.
+dominios son similares entre sí, por lo que se espera que $dist_\mathcal{A} \approx 0$.
 
 \begin{figure}[H]
     \centering
@@ -570,7 +570,7 @@ como:
 
 \noindent
 de forma que MMD es la distancia entre las medias de las distribuciones. No obstante, evaluarlas de esta manera puede
-generar que distribuciones con distinta varianza, kurtosis, etc sean consideradas como iguales. Se puede aplicar el
+generar que distribuciones con distinta varianza, kurtosis, etc. sean consideradas como iguales. Se puede aplicar el
     {\it kernel trick} para calcular MMD con distancias más complejas. Dado $k(x, y) = \left\langle \phi(x), \phi(y)
     \right\rangle_{\mathcal{H}} $, MMD se calcula como:
 

@@ -1,0 +1,17 @@
+{"rule":"AGREEMENT_PARTICIPLE_NOUN","sentence":"^\\QLa clasificación de números manuscritos es un problema que puede parecer ya resuelto gracias al conjunto de datos MNIST y al trabajo pionero de LeCun en \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q.\\E$"}
+{"rule":"EL_TILDE","sentence":"^\\QEn el contexto de las redes neuronales, el aprendizaje por transferencia se puede llevar a cabo de varias maneras, como el pre-entrenamiento y el fine-tuning.\\E$"}
+{"rule":"EL_TILDE","sentence":"^\\QPor otro lado, el fine-tuning es una técnica en la que se utilizan las capas de una red pre-entrenada en una tarea como capas fijas en otra red que se entrena en una tarea diferente \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q.\\E$"}
+{"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qdonde \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q y \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q corresponden al \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q-ésimo mayor valor singular de \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q y \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q respectivamente.\\E$"}
+{"rule":"PREP_VERB","sentence":"^\\QLos mismos presentan un formato estándar en forma de grilla, en la que se encuentran los partidos políticos y los votos obtenidos para diputados y senadores en cada renglón.\\E$"}
+{"rule":"PREP_VERB","sentence":"^\\QExtracción de la grilla de votos.\\E$"}
+{"rule":"PREP_VERB","sentence":"^\\QDe esta manera, se simplifica la tarea de procesamiento de los datos y se puede trabajar de forma más efectiva en la extracción y análisis de los votos presentes en la grilla.\\E$"}
+{"rule":"AGREEMENT_POSTPONED_ADJ","sentence":"^\\Q[Grilla de votos detectada]Grilla de votos extraída buscando el contorno de mayor área.\\E$"}
+{"rule":"PREP_VERB","sentence":"^\\QDetección de líneas de la grilla de votos.\\E$"}
+{"rule":"AGREEMENT_POSTPONED_ADJ","sentence":"^\\QTeniendo la grilla de votos separada del telegrama, se procede a detectar las líneas para poder extraer cada registro de la misma.\\E$"}
+{"rule":"PREP_VERB","sentence":"^\\Q[Proyecciones de los ejes de la grilla de votos]Proyecciones de los ejes de la grilla de votos.\\E$"}
+{"rule":"PREP_VERB","sentence":"^\\Q[Segmentación de la grilla detectada]Grilla detectada (en verde) utilizando el umbral por sobre las proyecciones y su posterior agrupamiento con clustering jerárquico.\\E$"}
+{"rule":"PREP_VERB","sentence":"^\\QUna vez obtenida la grilla, se itera por cada registro obteniendo los rectángulos que contienen los votos, ignorando el primer renglón que contiene los títulos de la grilla.\\E$"}
+{"rule":"PREP_VERB","sentence":"^\\QLa figura \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q muestra un registro de la grilla obtenida.\\E$"}
+{"rule":"PREP_VERB","sentence":"^\\Q[Primer registro extraído de la grilla de votos]Primer registro extraído de la grilla de votos\\E$"}
+{"rule":"PREP_VERB","sentence":"^\\QEn este caso, los componentes corresponden a los dígitos presentes en la grilla de votos.\\E$"}
+{"rule":"ES_SIMPLE_REPLACE","sentence":"^\\QLa distancia \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q mide la similaridad entre dos distribuciones.\\E$"}

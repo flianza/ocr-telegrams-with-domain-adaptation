@@ -56,7 +56,7 @@ de clasificación de dígitos a un costo extremadamente menor al actual y utiliz
 los votos.
 
 Contar con una digitalización automática permitirá bajar los costos debido a que se necesitará un grupo menor de
-personas en el centro de cómputo. Además, el trabajo a realizar será mas simple ya que sólo constará del proceso de
+personas en el centro de cómputo. Además, el trabajo a realizar será más simple, ya que solo constará del proceso de
 validación.
 
 La digitalización automática de los telegramas de votación es una iniciativa que busca mejorar la eficiencia del
@@ -79,9 +79,9 @@ clasificación de dígitos a un costo extremadamente menor que el actual, utiliz
 para identificar y clasificar los números individuales que componen los votos en los telegramas. Esto permitiría la
 implementación de un sistema de conteo de votos automatizado con un menor costo y una mayor precisión.
 
-La clasificación de números manuscritos es un problema que puede parecer ya resuelto gracias al dataset MNIST y al
-trabajo pionero de LeCun en \citeyear{lecun1998gradient}. Sin embargo, no se puede subestimar la complejidad de este
-problema. Cada año, cambian las personas que llenan los telegramas de las elecciones y, por lo tanto, las
+La clasificación de números manuscritos es un problema que puede parecer ya resuelto gracias al conjunto de datos MNIST
+y al trabajo pionero de LeCun en \citeyear{lecun1998gradient}. Sin embargo, no se puede subestimar la complejidad de
+este problema. Cada año, cambian las personas que llenan los telegramas de las elecciones y, por lo tanto, las
 características de los números escritos a mano pueden variar. Esto puede generar un {\it corrimiento de dominio} o {\it
         data drift}, lo que significa que un modelo entrenado en un conjunto de datos estático como MNIST puede presentar una
 mala clasificación de los dígitos escritos a mano en las elecciones.
@@ -91,7 +91,7 @@ técnicas de entrenamiento tradicionales asumen que, aunque existe un sesgo, est
 destino. Sin embargo, cuando este supuesto no se cumple, las predicciones del modelo pueden verse afectadas
 negativamente. El cuadro \ref{tab:lenet-distintos-datasets} ilustra un ejemplo de cómo la precisión del modelo puede
 degradarse cuando se aplica a un conjunto de datos diferente al que se entrenó. Incluso en conjuntos de datos
-similares, como MNIST y USPS, la disminución en la precision de los modelos es notable.
+similares, como MNIST y USPS, la disminución en la precisión de los modelos es notable.
 
 \begin{table}[H]
     \centering
@@ -120,7 +120,7 @@ similares, como MNIST y USPS, la disminución en la precision de los modelos es 
         \includegraphics[width=16px]{chapter1/svhn8.png}                              &                                                   &                                   &                                   \\
         \bottomrule
     \end{tabular}
-    \caption{Precisión que se obtiene al aplicar un modelo LeNet-5 entrenado con otros datasets de dígitos.}
+    \caption{Precisión que se obtiene al aplicar un modelo LeNet-5 entrenado con otros conjuntos de datos de dígitos.}
     \label{tab:lenet-distintos-datasets}
 \end{table}
 
@@ -144,11 +144,11 @@ desarrollo de soluciones similares para el resto de las provincias y la nación.
 Los objetivos específicos para lograr el objetivo planteado son los siguientes:
 
 \begin{itemize}
-    \item Armar el proceso de extraccion, transformación y carga (ETL) de los telegrama, con el propósito de segmentar y limpiar
+    \item Armar el proceso de extracción, transformación y carga (ETL) de los telegramas, con el propósito de segmentar y limpiar
           de manera efectiva los dígitos. Los datos utilizados serán obtenidos de fuentes oficiales del estado
           argentino\footnote{\href{https://op.elecciones.gob.ar/telegramas/generales2021/}{https://op.elecciones.gob.ar/telegramas/generales2021/}.}.
           En el anexo \ref{anexo:telegrama} se adjunta un ejemplo de uno de ellos.
-    \item Entrenar distintos arquitecturas de redes convolucionales mediante técnicas de adaptación de dominio.
+    \item Entrenar distintas arquitecturas de redes convolucionales mediante técnicas de adaptación de dominio.
     \item Analizar y evaluar las métricas relevantes para seleccionar el mejor modelo.
     \item Detectar oportunidades de mejora en el proceso eleccionario respecto a los telegramas.
 \end{itemize}
