@@ -1249,12 +1249,12 @@ donde $\beta$ es el parámetro que regula el trade-off de $\mathcal{L}_{BSP}$.
 
 \subsection{Discrepancia de disparidad de margen}
 
-Las técnicas detalladas hasta el momento implican algoritmos de optimización minimax, que funcionan correctamente en
-los métodos basados en el aprendizaje adversario. Sin embargo, estos algoritmos utilizan funciones de scoreo que
-carecen de garantías teóricas, ya que se estudiaron funciones de pérdida 0-1. Es por esto que se introducen métodos que
-apuntan a reducir la brecha que existe entre la teoría y el algoritmo, como Discrepancia de Disparidad de Margen {\it
-    MDD} \parencite{zhang2019bridging} esquematizado en la figura \ref{fig:mdd-esquema}. La idea general de {\it MDD} es introducir
-una segunda red clasificadora $\mathcal{C}^{'}$ y relacionar su salida con la de $\mathcal{C}$.
+Otra manera de pensar en la adaptación de dominio es a través de la Discrepancia de Disparidad de Margen {\it MDD} \parencite{zhang2019bridging}, esquematizado en la Figura \ref{fig:mdd-esquema}. La idea general es que MDD incorpora un
+clasificador adversario $\mathcal{C'}$ a $\mathcal{C}$, de manera que logre predecir correctamente los datos del
+dominio de origen, mientras que hace predicciones distintas a $\mathcal{C}$ en los datos del dominio destino. Mediante
+la maximización de la discrepancia entre $\mathcal{C'}$ y $\mathcal{C}$ en el dominio destino, {\it MDD} impulsa al
+generador $\mathcal{G}$ a generar características $\mathbf{z}$ cerca de la frontera de decisión con el fin de evitar
+estas situaciones.
 
 \begin{figure}[H]
   \centering
