@@ -77,18 +77,20 @@ los telegramas de prueba.
                                      & LeNet  & 0.6493          & 11                & 61\%              \\
         \bottomrule
     \end{tabular}
-    \caption[IoU y aciertos por modelo]{IoU promedio y cantidad promedio de aciertos al aplicar los modelos a cada telegrama.}
+    \caption[IoU y aciertos por modelo]{IoU promedio y cantidad promedio de aciertos por telegrama obtenidos al aplicar los modelos a los telegramas.}
     \label{tab:iou-cant-aciertos-en-telegramas}
 \end{table}
 
 Analizando el cuadro anterior, se confirma la elección del mejor modelo ResNet18 con AFN. Es importante destacar que
 independientemente de la técnica de adaptación utilizada, todos los modelos presentan tasas de acierto marcadamente
-superiores que aquellos modelos entrenados únicamente con MNIST.
+superiores que aquellos modelos entrenados únicamente con MNIST. Esto sugiere que la adaptación de dominio es
+fundamental para obtener un mejor rendimiento en la tarea de clasificación de telegramas. Los modelos entrenados con
+técnicas de adaptación logran generalizar mejor y son más efectivos en la tarea de reconocimiento de los patrones
+presentes en los telegramas, incluso en presencia de ruido y variaciones en los datos de entrada.
 
-Esto sugiere que la adaptación de dominio es fundamental para obtener un mejor rendimiento en la tarea de clasificación
-de telegramas. Los modelos entrenados con técnicas de adaptación logran generalizar mejor y son más efectivos en la
-tarea de reconocimiento de los patrones presentes en los telegramas, incluso en presencia de ruido y variaciones en los
-datos de entrada.
+Otro punto a resaltar es que cuando no se utiliza adaptación de dominio en la ResNet18, la cantidad de aciertos
+promedio por telegrama es incluso peor que la de LeNet5. Esto puede deberse a que, al ser una red mucho más grande y
+con más capacidad de aprendizaje, sobreajusta al MNIST.
 
 \section{Análisis de los espacios latentes}
 
@@ -114,15 +116,16 @@ encarga de la clasificación puede realizar predicciones precisas para el domini
 espacios latentes son muy diferentes para diferentes conjuntos de datos, esto puede indicar que el modelo no es capaz
 de adaptarse a nuevos conjuntos de datos y, por lo tanto, su capacidad de generalización es limitada.
 
-Una forma común de visualizarlos es mediante una técnica de reducción de dimensionalidad, como Uniform Manifold
-Approximation and Projection \parencite{mcinnes2018umap}. UMAP es una técnica no lineal que se utiliza para visualizar estructuras de datos complejas en
-un espacio de menor dimensión. Al visualizar los espacios latentes utilizando UMAP, se pueden observar patrones y
+Una forma común de visualizarlos es mediante una técnica de reducción de dimensionalidad, como Aproximación y
+Proyección Uniforme de Variedad {\it UMAP} \parencite{mcinnes2018umap}. Es una técnica no lineal que se utiliza para visualizar estructuras de datos complejas en un
+espacio de menor dimensión. Al visualizar los espacios latentes utilizando UMAP, se pueden observar patrones y
 relaciones en los datos que de otra manera serían difíciles de detectar. Al comparar las distribuciones de los espacios
 latentes generados por un modelo para diferentes conjuntos de datos, se pueden identificar las similitudes y
 diferencias entre los dominios, lo que puede ser útil para evaluar la capacidad de adaptación de dominio del modelo. En
 las siguientes subsecciones se analizarán las representaciones UMAP de los espacios latentes obtenidos por cada modelo
 entrenado.
 
+\newpage
 \subsection{LeNet}
 
 La figura \ref{fig:umaps-lenet} a continuación contiene las representaciones UMAP obtenidas de los espacios latentes
@@ -130,37 +133,37 @@ generados por todos los modelos LeNet.
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[h]{0.43\textwidth}
+    \begin{subfigure}[h]{0.40\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/umap-lenet-so.png}
         \caption{LeNet entrenada con MNIST.}
         \label{fig:umap-lenet-so}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.43\textwidth}
+    \begin{subfigure}[h]{0.40\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/umap-lenet-dann.png}
         \caption{LeNet entrenada mediante DANN.}
         \label{fig:umap-lenet-dann}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.43\textwidth}
+    \begin{subfigure}[h]{0.40\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/umap-lenet-adda.png}
         \caption{LeNet entrenada mediante ADDA.}
         \label{fig:umap-lenet-adda}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.43\textwidth}
+    \begin{subfigure}[h]{0.40\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/umap-lenet-bsp.png}
         \caption{LeNet entrenada mediante DANN+BSP.}
         \label{fig:umap-lenet-bsp}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.43\textwidth}
+    \begin{subfigure}[h]{0.40\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/umap-lenet-mdd.png}
         \caption{LeNet entrenada mediante MDD.}
         \label{fig:umap-lenet-mdd}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.43\textwidth}
+    \begin{subfigure}[h]{0.40\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/umap-lenet-afn.png}
         \caption{LeNet entrenada mediante AFN.}
         \label{fig:umap-lenet-afn}
@@ -190,6 +193,7 @@ observar que DANN+BSP y AFN son las que proporcionan una mejor capacidad de adap
 estos resultados resaltan la importancia de seleccionar cuidadosamente la técnica de adaptación de dominio adecuada
 para un modelo dado a fin de lograr un rendimiento óptimo en diferentes escenarios de aplicación.
 
+\newpage
 \subsection{ResNet}
 
 La figura \ref{fig:umaps-resnet} a continuación contiene las representaciones UMAP obtenidas de los espacios latentes
@@ -197,37 +201,37 @@ generados por todos los modelos ResNet.
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[h]{0.43\textwidth}
+    \begin{subfigure}[h]{0.39\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/umap-resnet-so.png}
         \caption{ResNet entrenada con MNIST.}
         \label{fig:umap-resnet-so}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.43\textwidth}
+    \begin{subfigure}[h]{0.39\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/umap-resnet-dann.png}
         \caption{ResNet entrenada mediante DANN.}
         \label{fig:umap-resnet-dann}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.43\textwidth}
+    \begin{subfigure}[h]{0.39\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/umap-resnet-adda.png}
         \caption{ResNet entrenada mediante ADDA.}
         \label{fig:umap-resnet-adda}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.43\textwidth}
+    \begin{subfigure}[h]{0.39\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/umap-resnet-bsp.png}
         \caption{ResNet entrenada mediante DANN+BSP.}
         \label{fig:umap-resnet-bsp}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.43\textwidth}
+    \begin{subfigure}[h]{0.39\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/umap-resnet-mdd.png}
         \caption{ResNet entrenada mediante MDD.}
         \label{fig:umap-resnet-mdd}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.43\textwidth}
+    \begin{subfigure}[h]{0.39\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/umap-resnet-afn.png}
         \caption{ResNet entrenada mediante AFN.}
         \label{fig:umap-resnet-afn}
@@ -262,27 +266,27 @@ obtienen de aplicar los modelos a los telegramas.
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[h]{0.43\textwidth}
+    \begin{subfigure}[h]{0.40\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/hist-iou-sin-da.png}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.43\textwidth}
+    \begin{subfigure}[h]{0.40\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/hist-iou-dann.png}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.43\textwidth}
+    \begin{subfigure}[h]{0.40\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/hist-iou-adda.png}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.43\textwidth}
+    \begin{subfigure}[h]{0.40\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/hist-iou-bsp.png}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.43\textwidth}
+    \begin{subfigure}[h]{0.40\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/hist-iou-mdd.png}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[h]{0.43\textwidth}
+    \begin{subfigure}[h]{0.40\textwidth}
         \includegraphics[height=1\textwidth]{chapter4/hist-iou-afn.png}
     \end{subfigure}
 

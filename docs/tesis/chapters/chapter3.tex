@@ -303,8 +303,7 @@ previsualización del conjunto de datos TDS.
 
 \section{Diseño experimental}
 
-Se llevaron a cabo experimentos con el fin de evaluar el desempeño de dos redes neuronales convolucionales, la
-ResNet-18 \parencite{he2016deep} y la LeNet-8 \parencite{lecun1998gradient}, para cada una de las técnicas de adaptación de dominio que fueron descritas en el capítulo
+Se llevaron a cabo experimentos con el fin de evaluar el desempeño de dos redes neuronales convolucionales, la ResNet18 \parencite{he2016deep} y la LeNet-8 \parencite{lecun1998gradient}, para cada una de las técnicas de adaptación de dominio que fueron descritas en el capítulo
 \ref{Chapter2}. Además, como modelo de referencia, se entrenaron ambas redes sin ninguna técnica de adaptación. De esta
 manera, se busca comparar el rendimiento de las redes con y sin técnicas de adaptación de dominio, para determinar cuál
 técnica es la más adecuada para el problema en cuestión.
@@ -327,7 +326,7 @@ proporcionó un lote de 1024 imágenes del conjunto de datos de origen y otro ig
 realizaron tres particiones para cada conjunto de datos:
 
 \begin{itemize}
-    \item Entrenamiento (70\% de cada conjunto de datos): utilizado para entrenar la LeNet-8 y ResNet-18 en cada época.
+    \item Entrenamiento (70\% de cada conjunto de datos): utilizado para entrenar la LeNet-8 y ResNet18 en cada época.
     \item Validación (15\% de cada conjunto de datos): utilizado para calcular los mejores hiperparámetros del modelo.
     \item Test (15\% de cada conjunto de datos): utilizado para calcular las métricas y gráficos finales del modelo entrenado.
 \end{itemize}
