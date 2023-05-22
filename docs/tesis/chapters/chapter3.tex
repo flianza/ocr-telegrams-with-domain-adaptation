@@ -38,18 +38,25 @@ conjunto de datos que fue utilizado para entrenar los modelos.
 \subsection{Alineación de los telegramas}
 Cuando se escanean telegramas a mano, es común que estos no estén perfectamente alineados y presenten una ligera
 inclinación en su posición. Por lo tanto, el primer paso en el procesamiento de los telegramas es alinearlos para
-facilitar su lectura y análisis.
-
-Para lograr esto, se emplea un algoritmo que busca el rectángulo de mayor área en la imagen del telegrama. Este
-rectángulo representa la región que abarca todo el contenido del telegrama y se utiliza para calcular el ángulo de
-rotación necesario para alinear la imagen.
+facilitar su lectura y análisis. Para lograr esto, se emplea un algoritmo que busca el rectángulo de mayor área en la
+imagen del telegrama. Este rectángulo representa la región que abarca todo el contenido del telegrama y se utiliza para
+calcular el ángulo de rotación necesario para alinear la imagen.
 
 Una vez que se ha determinado el ángulo de rotación, se aplica una transformación geométrica a la imagen completa para
-alinearla verticalmente. Para realizar esta transformación, se utiliza la función \verb|getRotationMatrix2D| de la
-biblioteca de procesamiento de imágenes OpenCV. Esta función recibe como argumentos el ángulo de rotación calculado y
-las dimensiones de la imagen, y devuelve una matriz de transformación que se aplica a la imagen para alinearla. La
-figura \ref{fig:etl-1-rotacion} muestra un ejemplo del resultado que se obtiene al alinear los telegramas de esta
-manera.
+alinearla verticalmente. La misma se realiza calculando la siguiente matriz:
+
+\begin{equation}
+    \begin{bmatrix}
+        \gamma & \beta  & (1-\gamma) \cdot  x - \beta \cdot y \\
+        -\beta & \gamma & \beta \cdot  x - (1-\gamma) \cdot y \\
+    \end{bmatrix}
+    \label{eq:matriz-alineacion}
+\end{equation}
+
+\noindent
+donde $\alpha$ es el ángulo de rotación de la imagen, $(x, y)$ es el centro de la imagen, $\gamma = \cos \alpha$ y $\beta = \sin \alpha$.
+La figura \ref{fig:etl-1-rotacion} muestra un ejemplo del resultado que se obtiene al alinear los telegramas
+de esta manera.
 
 \begin{figure}[H]
     \centering
@@ -71,17 +78,14 @@ manera.
 \end{figure}
 
 \subsection{Extracción de la grilla de votos}
-El siguiente paso es extraer la grilla de votos para poder trabajar con ella de forma aislada. Para lograr esto, se
-utiliza la función \verb|getContours| de la biblioteca de procesamiento de imágenes OpenCV.
 
-Esta función permite identificar y seleccionar los contornos presentes en la imagen, que son los bordes que forman los
-objetos presentes en la misma. Seleccionando el contorno de mayor área, se puede obtener la grilla de votos como un
-objeto independiente.
-
-Una vez identificado el contorno de mayor área, se procede a extraer la grilla de votos y a trabajar en ella de forma
-separada del resto de la imagen. De esta manera, se simplifica la tarea de procesamiento de los datos y se puede
-trabajar de forma más efectiva en la extracción y análisis de los votos presentes en la grilla. La figura
-\ref{fig:etl-2-grilla} muestra la grilla que se logra extraer con este proceso.
+El siguiente paso consiste en extraer la grilla de votos para trabajar con ella de manera aislada. Para lograrlo, se
+aplicó el algoritmo de detección de contornos propuesto por \cite{suzuki1985topological}, el cual permite identificar y
+seleccionar los contornos presentes en la imagen, correspondientes a los bordes que delimitan los objetos en ella.
+Mediante la selección del contorno de mayor área, se obtiene la grilla de votos como un objeto independiente.
+Posteriormente, se procede a extraer la grilla de votos y trabajar con ella de manera separada del resto de la imagen.
+Esto simplifica el procesamiento de los datos y facilita la extracción y análisis de los votos presentes en la grilla.
+La figura \ref{fig:etl-2-grilla} muestra la grilla extraída mediante este proceso.
 
 \begin{figure}[H]
     \centering
@@ -92,8 +96,7 @@ trabajar de forma más efectiva en la extracción y análisis de los votos prese
 
 \subsection{Detección de líneas de la grilla de votos}
 Teniendo la grilla de votos separada del telegrama, se procede a detectar las líneas para poder extraer cada registro
-de la misma. Si bien OpenCV posee funciones para la detección de líneas, se optó por utilizar un enfoque simplificado
-similar al utilizado en \parencite{lamagna2016lectura}. Debido a que la grilla se encuentra alineada verticalmente, se pueden utilizar las
+de la misma. Se optó por utilizar un enfoque simplificado para la detección de líneas similar al utilizado en \parencite{lamagna2016lectura}. Debido a que la grilla se encuentra alineada verticalmente, se pueden utilizar las
 proyecciones de los colores sobre los ejes $x$ e $y$ para detectarlas. Al sumar todos los colores por eje, se pueden
 observar picos de valores donde se encuentran las líneas horizontales y verticales. Posteriormente, se selecciona un
 umbral de corte por cada eje, siendo el mismo el promedio de cada eje menos dos desvíos estándar. La figura
@@ -152,13 +155,10 @@ grilla obtenida.
     \label{fig:etl-4-registro}
 \end{figure}
 
-Una vez obtenida la grilla de votos, se busca separar cada dígito de forma individual para poder procesarlos de forma
-independiente. Para lograr esto, se utiliza un análisis de componentes conectados mediante la función
-\verb|connectedComponents| de OpenCV.
-
-Esta función permite identificar los distintos componentes (regiones conectadas) presentes en una imagen binaria. En
-este caso, los componentes corresponden a los dígitos presentes en la grilla de votos. Luego, se establece un rango de
-áreas permitido para seleccionar los componentes que corresponden a los dígitos.
+Una vez obtenida la grilla de votos, se procede separar cada dígito de forma individual para poder procesarlos de forma
+independiente. Para lograr esto, se utiliza un análisis de componentes conectados \parencite{bolelli2019spaghetti}, lo que permite identificar los distintos componentes (regiones conectadas) presentes en
+una imagen binaria. En este caso, los componentes corresponden a los dígitos presentes en la grilla. Luego, se
+establece un rango de áreas permitido para seleccionar los componentes que corresponden a los dígitos.
 
 Para determinar el rango de áreas permitido, se realizó una experimentación previa y se establecieron como límites el
 $5\%$ y el $70\%$ del total de píxeles de la imagen. De esta manera, se descartan aquellos contornos que representan
