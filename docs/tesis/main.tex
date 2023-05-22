@@ -109,22 +109,22 @@ headsepline, % Uncomment to get a line under the header
     \def\colResult{#2}
 
     \begin{scope}[on background layer]
-        \newcommand{\padding}{2pt}
+        \newcommand{\padding}{3pt}
         \coordinate (Is-nw) at ([xshift=-\padding, yshift=+\padding] I-\rowResult-\colResult.north west);
         \coordinate (Is-se) at ([xshift=+\padding, yshift=-\padding] I-\the\numexpr\rowResult+\numRowsK-1\relax-\the\numexpr\colResult+\numColsK-1\relax.south east);
         \coordinate (Is-sw) at (Is-nw |- Is-se);
         \coordinate (Is-ne) at (Is-se |- Is-nw);
 
         \filldraw[red,   fill opacity=.1] (Is-nw) rectangle (Is-se);
-        \filldraw[green, fill opacity=.1] (I*K-\rowResult-\colResult.north west) rectangle (I*K-\rowResult-\colResult.south east);
+        \filldraw[brown, fill opacity=.1] (I*K-\rowResult-\colResult.north west) rectangle (I*K-\rowResult-\colResult.south east);
 
-        \draw[blue, dotted] 
+        \draw[blue, loosely dashed] 
             (Is-nw) -- (K.north west)
             (Is-se) -- (K.south east)
             (Is-sw) -- (K.south west)
             (Is-ne) -- (K.north east)
         ;
-        \draw[green, dotted] 
+        \draw[brown, loosely dashed] 
             (I*K-\rowResult-\colResult.north west) -- (K.north west)
             (I*K-\rowResult-\colResult.south east) -- (K.south east)
             (I*K-\rowResult-\colResult.south west) -- (K.south west)
