@@ -166,7 +166,7 @@ activaciones $a_i^2$ de la unidad de salida $h_1^2$ dadas las activaciones de la
         \draw (190,63.4) node [anchor=north west][inner sep=0.75pt]    {$\hat{y}$};
 
     \end{tikzpicture}
-    \caption[Red neuronal densa]{Red neuronal con una capa de entrada de 4 características, una capa oculta de 2 neuronas y una capa de salida con 1 neurona.}
+    \caption[Red neuronal densa]{Red neuronal con una capa de entrada de cuatro características, una capa oculta de dos neuronas y una capa de salida con una neurona.}
     \label{fig:nn}
 \end{figure}
 
@@ -227,8 +227,8 @@ $*$ en una CNN aplica el filtro $K$ deslizándolo sobre la matriz $I$ para produ
 En una CNN, la matriz $I$ representa la imagen y el filtro $K$ es el conjunto de parámetros entrenables del modelo,
 análogo a las neuronas en una red densa. Aunque existen filtros estudiados para detectar ciertas características, como
 el filtro Sobel para detectar bordes, se permite que la red aprenda de forma autónoma $K$ con el fin de detectar las
-características relevantes $I*K$ para la tarea a través del entrenamiento. Esto permite que la red encuentre
-características sin el sesgo que se introduciría al utilizar únicamente filtros predefinidos.
+características relevantes $I*K$ para la tarea en cuestión a través del entrenamiento. Esto permite que la red
+encuentre características sin el sesgo que se introduciría al utilizar únicamente filtros predefinidos.
 
 Una de las principales ventajas de las CNN es que son capaces de procesar datos con una gran cantidad de dimensiones,
 como imágenes con altura, anchura y profundidad (canales de color). Esto se debe a que las capas de convolución son
@@ -461,13 +461,14 @@ soporte (SVM por sus siglas en inglés) que podían obtener resultados similares
 En 2012, Alex Krizhevsky ganó la competencia de ImageNet con su arquitectura AlexNet \parencite{krizhevsky2017imagenet}, basada en la LeNet pero con modificaciones. La principal diferencia entre ambas es la
 complejidad y profundidad de la arquitectura, con AlexNet teniendo ocho capas y más de 60 millones de parámetros
 entrenables, mientras que LeNet tiene cinco capas y menos de un millón de parámetros. Además, AlexNet utiliza filtros
-convolucionales más grandes (11x11 y 5x5) que permiten capturar características de imagen más grandes y complejas, y
-técnicas de regularización más avanzadas, como el {\it dropout}, para prevenir el sobre ajuste. En contraste, LeNet
-utiliza filtros más pequeños (5x5 y 3x3) y técnicas de regularización más simples como la regularización L2.
+convolucionales más grandes ($11 \times 11$ y $5 \times 5$) que permiten capturar características de imagen más grandes
+y complejas, y técnicas de regularización más avanzadas, como el {\it dropout}, para prevenir el sobre ajuste. En
+contraste, LeNet utiliza filtros más pequeños ($5 \times 5$ y $3 \times 3$) y técnicas de regularización más simples
+como la regularización L2.
 
 Desde el éxito de AlexNet, las CNN se han convertido en la mejor opción para aplicaciones de visión computacional y se
-han creado muchos tipos diferentes de CNN, como las redes R-CNN utilizada para detección y segmentación de objetos \parencite{girshick2014rich}. En la actualidad los modelos CNN son bastante diferentes de LeNet, pero todos se desarrollan
-sobre la base de LeNet.
+han creado muchos tipos diferentes de CNN, como las redes R-CNN utilizada para detección y segmentación de objetos \parencite{girshick2014rich}. En la actualidad los modelos CNN son bastante diferentes de LeNet original, pero todos se
+desarrollan sobre la base generada por esta.
 
 \subsubsection{ResNet}
 
@@ -519,7 +520,8 @@ clasificación de imágenes \parencite{chen2021pretrained} y el procesamiento de
 demostrado ser una técnica efectiva para mejorar el rendimiento y la capacidad de generalización de las redes \parencite{girshick2014rich}.
 
 Por otro lado, el fine-tuning es una técnica en la que se utilizan las capas de una red pre-entrenada en una tarea como
-capas fijas en otra red que se entrena en una tarea diferente \parencite{yosinski2014transferable}. Esto permite que la red aprenda de manera más rápida y con menos datos \parencite{howard2018universal}.
+capas fijas en otra red que se entrena en una tarea diferente \parencite{yosinski2014transferable}, sin modificar los pesos de la red pre-entrenada. Esto permite que la red aprenda las
+características específicas de la nueva tarea y con menos datos \parencite{howard2018universal}.
 
 \section{Adaptación de dominio}
 El {\it pre-entrenamiento} y el {\it fine-tuning} han mejorado considerablemente el estado del arte para diversos
@@ -813,7 +815,7 @@ proporción esperada de datos de origen $\mathcal{\hat{S}}$ y destino $\mathcal{
 Por lo tanto, el objetivo de un modelo {\it DANN} viene dado por la ecuación \ref{eq:dann-objetivo}. Donde $\lambda$ es
 un hiperparámetro a optimizar que regula el trade-off entre la clasificación y la discriminación adversaria. La
 minimización de $\mathcal{L}_\mathcal{C}$ dará lugar a representaciones discriminables, mientras que la disminución de
-$\mathcal{L}_\mathcal{adv}$ dará lugar a representaciones transferibles.
+$\mathcal{L}_{adv}$ dará lugar a representaciones transferibles.
 
 \begin{align}
     \min_{\mathcal{G},\mathcal{C}} \mathcal{L}_\mathcal{C}(\mathbf{x}^s, \mathbf{y}^s) + \lambda \mathcal{L}_{adv}(\mathbf{x}^s, \mathbf{x}^t)
@@ -1005,17 +1007,31 @@ pre-entrenada y $\mathcal{D}$.
 
 No obstante del cambio, los objetivos de {\it ADDA} son similares a los de las {\it DANN} a excepción de
 $\mathcal{G}_t$. La ecuación \ref{eq:adda-loss-clasificadora} contiene $\mathcal{L}_\mathcal{C}$ que es análoga a
-\ref{eq:dann-loss-clasificadora}. La ecuación \ref{eq:adda-loss-discriminadora} contiene $\mathcal{L}_{adv}$ que es
-análoga a \ref{eq:dann-loss-discriminadora}. Finalmente, la ecuación \ref{eq:adda-objetivo} contiene el objetivo a
-optimizar, que asigna gradientes pequeños a registros de destino que sean similares a los de origen y gradientes más
-grandes para los otros registros de destino.
+\ref{eq:dann-loss-clasificadora}.
 
-\begin{align}
-     & \min_{\mathcal{G}_s, \mathcal{C}} \mathcal{L}_\mathcal{C}(\mathbf{x}^s, \mathbf{y}^s)                                                            = \mathcal{L}_{CE}(C_s(\mathcal{G}_s(\mathbf{x}^s)), \mathbf{y}^s)
-    \label{eq:adda-loss-clasificadora}                                                                                                                                                                                                                                                                                                                                                          \\
-     & \max_{\mathcal{D}} \mathcal{L}_{adv}(\mathbf{x}^s, \mathbf{x}^t)                                                                                 = \mathbb{E}_{\mathbf{x}^s \sim \mathcal{\hat{S}}}\log[\mathcal{D}(\mathcal{G}_s(\mathbf{x}^s))] + \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}}\log[1-\mathcal{D}(\mathcal{G}_t(\mathbf{x}^t))] \label{eq:adda-loss-discriminadora} \\
-     & \min_{\mathcal{G}_t} - \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}} \log[\mathcal{D}(\mathcal{G}_t(\mathbf{x}^t))]  \label{eq:adda-objetivo}
-\end{align}
+\begin{equation}
+    \min_{\mathcal{G}_s, \mathcal{C}} \mathcal{L}_\mathcal{C}(\mathbf{x}^s, \mathbf{y}^s) = \mathcal{L}_{CE}(C_s(\mathcal{G}_s(\mathbf{x}^s)), \mathbf{y}^s)
+    \label{eq:adda-loss-clasificadora}
+\end{equation}
+
+\noindent
+La función de costo de la discriminación adversaria $\mathcal{L}_{adv}$ detallada a continuación es análoga a la
+ecuación \ref{eq:dann-loss-discriminadora} de {\it DANN}.
+
+\begin{equation}
+    \max_{\mathcal{D}} \mathcal{L}_{adv}(\mathbf{x}^s, \mathbf{x}^t)                      = \mathbb{E}_{\mathbf{x}^s \sim \mathcal{\hat{S}}}\log[\mathcal{D}(\mathcal{G}_s(\mathbf{x}^s))] + \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}}\log[1-\mathcal{D}(\mathcal{G}_t(\mathbf{x}^t))]
+    \label{eq:adda-loss-discriminadora}
+\end{equation}
+
+\noindent
+Finalmente, la ecuación \ref{eq:adda-objetivo} contiene el objetivo a optimizar de un modelo {\it ADDA}, que asigna
+gradientes pequeños a registros de destino que sean similares a los de origen y gradientes más grandes para los otros
+registros de destino.
+
+\begin{equation}
+    \min_{\mathcal{G}_t} - \mathbb{E}_{\mathbf{x}^t \sim \mathcal{\hat{T}}} \log[\mathcal{D}(\mathcal{G}_t(\mathbf{x}^t))]
+    \label{eq:adda-objetivo}
+\end{equation}
 
 \subsection{Penalización espectral en lotes}
 
@@ -1251,7 +1267,7 @@ donde $\beta$ es el parámetro que regula el trade-off de $\mathcal{L}_{BSP}$.
 
 Otra manera de pensar en la adaptación de dominio es a través de la Discrepancia de Disparidad de Margen {\it MDD} \parencite{zhang2019bridging}, esquematizado en la Figura \ref{fig:mdd-esquema}. La idea general es que MDD incorpora un
 clasificador adversario $\mathcal{C'}$ a $\mathcal{C}$, de manera que logre predecir correctamente los datos del
-dominio de origen, mientras que hace predicciones distintas a $\mathcal{C}$ en los datos del dominio destino. Mediante
+dominio de origen, mientras que haga predicciones distintas a $\mathcal{C}$ en los datos del dominio destino. Mediante
 la maximización de la discrepancia entre $\mathcal{C'}$ y $\mathcal{C}$ en el dominio destino, {\it MDD} impulsa al
 generador $\mathcal{G}$ a generar características $\mathbf{z}$ cerca de la frontera de decisión con el fin de evitar
 estas situaciones.
