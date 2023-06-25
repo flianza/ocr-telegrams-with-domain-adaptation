@@ -338,7 +338,7 @@ para este tipo de aplicaciones.
 
 La optimización de hiperparámetros se realizó utilizando la librería Optuna \parencite{optuna_2019}. Se ejecutaron 30 rondas de optimización con 10 épocas de entrenamiento por cada experimento. En
 cada uno de los experimentos, se optimizaron los hiperparámetros para minimizar la función de pérdida de cada modelo.
-El cuadro \ref{tab:rangos-hiperparametros} muestra los rangos búsqueda para cada modelo, incluyendo el modelo de
+El cuadro \ref{tab:rangos-hiperparametros} muestra los rangos de búsqueda para cada modelo, incluyendo el modelo de
 referencia (sin adaptación de dominio).
 
 \begin{table}[H]
@@ -443,7 +443,7 @@ El rango de valores es de $[0, 1]$, donde 1 corresponde a un clasificador que fu
 
 \subsubsection{Intersección sobre unión}
 
-Otra forma de medir el clasificador es mediante la {\it intersección sobre unión} (IoU por sus siglas en inglés).
+Otra forma de evaluar al clasificador es mediante la {\it intersección sobre unión} (IoU por sus siglas en inglés).
 Consta de calcular la cantidad de dígitos únicos predichos por sobre la cantidad de dígitos únicos reales. Por ejemplo,
 para un telegrama y un partido el clasificador predice 189 votos cuando lo real es 180. Entonces, el {\it IoU} viene
 dado por:
