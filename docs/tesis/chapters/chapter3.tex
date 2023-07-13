@@ -97,9 +97,9 @@ La figura \ref{fig:etl-2-grilla} muestra la grilla extraída mediante este proce
 \subsection{Detección de líneas de la grilla de votos}
 Teniendo la grilla de votos separada del telegrama, se procede a detectar las líneas para poder extraer cada registro
 de la misma. Se optó por utilizar un enfoque simplificado para la detección de líneas similar al utilizado en \parencite{lamagna2016lectura}. Debido a que la grilla se encuentra alineada verticalmente, se pueden utilizar las
-proyecciones de los colores sobre los ejes $x$ e $y$ para detectarlas. Al sumar todos los colores por eje, se pueden
-observar picos de valores donde se encuentran las líneas horizontales y verticales. Posteriormente, se selecciona un
-umbral de corte por cada eje, siendo el mismo el promedio de cada eje menos dos desvíos estándar. La figura
+proyecciones de la escala de grises sobre los ejes $x$ e $y$ para detectarlas. Al sumarlos por eje, se pueden observar
+picos de valores donde se encuentran las líneas horizontales y verticales. Posteriormente, se selecciona un umbral de
+corte por cada eje, siendo el mismo el promedio de cada eje menos dos desvíos estándar. La figura
 \ref{fig:etl-3-proyecciones} muestra las proyecciones obtenidas con los umbrales por cada eje.
 
 \begin{figure}[H]

@@ -187,7 +187,8 @@ término de {\it bias}. Existen múltiples funciones de activación, las más co
     \item Tangente hiperbólica: $f(x) = tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$
     \item Función sigmoidea: $f(x) = \sigma(x) = \frac{1}{1+exp(-x)}$
     \item ReLU: $f(x) = max(0, x)$
-    \item Softmax: $f(x_i) = \sigma(x_i) = \frac{e^{x_{i}}}{\sum_{j=1}^K e^{x_{j}}} \ \ \ para\ i=1,2,\dots,K$
+    \item Softmax: $f(x_i) = \sigma(x_i) = \frac{e^{x_{i}}}{\sum_{j=1}^K e^{x_{j}}}$ para $i=1,2,\dots,K$ donde $K$ son la
+          cantidad de neuronas de salida.
 \end{itemize}
 
 \subsection{Redes convolucionales}
@@ -1055,7 +1056,7 @@ singulares:
 
 \noindent
 donde $\sigma_{s, i}$ y $\sigma_{t, i}$ corresponden al $i$-ésimo mayor valor singular de $\Sigma_s$ y $\Sigma_t$
-respectivamente. En la presente tesis se utilizará el valor por defecto propuesto por \citeauthor{chen2019transferability} de $k=1$.
+respectivamente del análisis espectral $\mathbf{z} = \mathsf{U} \Sigma \mathsf{V}^\intercal $. En la presente tesis se utilizará el valor por defecto propuesto por \citeauthor{chen2019transferability} de $k=1$.
 
     {\it BSP} puede integrarse a cualquiera de los esquemas mencionados anteriormente, por ejemplo a una {\it DANN} como se muestra en la figura \ref{fig:bsp-esquema-dann}.
 
