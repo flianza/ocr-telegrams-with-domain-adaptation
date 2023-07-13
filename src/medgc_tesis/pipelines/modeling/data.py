@@ -31,7 +31,8 @@ class MNISTCustom(ImageList):
 
     def __init__(self, root, mode="L", split="train", **kwargs):
         assert split in ["train", "test", "val"]
-        data_list_file = os.path.join(root, self.image_list[split])
+        root = root.replace("\\", "/")
+        data_list_file = f"{root}/{self.image_list[split]}"
 
         assert mode in ["L", "RGB"]
         self.mode = mode
@@ -66,7 +67,8 @@ class TDSCustom(ImageList):
     ]
 
     def __init__(self, root, mode="L", split="", **kwargs):
-        data_list_file = os.path.join(root, f"image_list/tds_{split}.txt")
+        root = root.replace("\\", "/")
+        data_list_file = f"{root}/image_list/tds_{split}.txt"
 
         assert mode in ["L", "RGB"]
         self.mode = mode
@@ -74,11 +76,6 @@ class TDSCustom(ImageList):
         super().__init__(root, TDSCustom.CLASSES, data_list_file=data_list_file, **kwargs)
 
     def __getitem__(self, index: int) -> Tuple[Any, int]:
-        """
-        Args:
-            index (int): Index
-        return (tuple): (image, target) where target is index of the target class.
-        """
         path, target = self.samples[index]
         img = self.loader(path).convert(self.mode)
 

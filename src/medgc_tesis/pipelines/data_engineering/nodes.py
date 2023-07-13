@@ -1,5 +1,4 @@
 import logging
-import traceback
 from pathlib import Path
 from typing import Any, Callable, Dict, Iterable
 
@@ -54,7 +53,7 @@ def extraer_digitos(telegramas: Dict[str, Callable]) -> Iterable[Dict[str, Any]]
             telegramas_segmentados.append({"nombre": nombre, "votos": votos})
 
         except Exception:
-            logger.error(f"Telegrama {nombre}\n{traceback.format_exc()}")
+            logger.error("Telegrama {nombre}", nombre, stack_info=True)
 
     return telegramas_segmentados
 
@@ -99,6 +98,7 @@ def armar_dataset(telegramas_segmentados: Iterable[Dict[str, Any]], mesas_escrut
             tipo.append("DIPUTADOS NACIONALES")
             partido.append(partidos.get(idx, None))
             digitos.append(votos["diputados"])
+
     df = pd.DataFrame(
         {
             "id_telegrama": id_telegrama,
@@ -108,20 +108,27 @@ def armar_dataset(telegramas_segmentados: Iterable[Dict[str, Any]], mesas_escrut
         }
     )
 
-    df["mesa"] = df.id_telegrama.str[-6:]
     df_mesas_santafe = (
-        mesas_escrutadas.query("(Distrito == 'Santa Fe') & (tipoVoto == 'positivo')")
-        .rename(columns={"Mesa": "mesa", "Agrupacion": "partido", "Cargo": "tipo"})[
-            ["mesa", "tipo", "partido", "votos"]
-        ]
+        mesas_escrutadas.assign(mesa=lambda df_: df_.id_telegrama.str[-6:])
+        .query("Distrito == 'Santa Fe'")
+        .query("tipoVoto == 'positivo'")
+        .rename(
+            columns={
+                "Mesa": "mesa",
+                "Agrupacion": "partido",
+                "Cargo": "tipo",
+            }
+        )
+        .filter([["mesa", "tipo", "partido", "votos"]])
         .copy()
     )
+
     df = pd.merge(df, df_mesas_santafe, on=["mesa", "tipo", "partido"])
 
-    def proporcion_pixeles_blancos(digito: np.ndarray) -> float:
+    def _proporcion_pixeles_blancos(digito: np.ndarray) -> float:
         return np.sum(digito) / (digito.shape[0] ** 2 * 255)
 
-    def calcular_indicadores_digitos(df: pd.DataFrame) -> pd.DataFrame:
+    def _calcular_indicadores_digitos(df: pd.DataFrame) -> pd.DataFrame:
         df["cant_digitos"] = df.digitos.apply(lambda digitos: len(digitos))
         df["min_size_digitos"] = df.digitos.apply(
             lambda digitos: np.min([digito.shape[0] for digito in digitos] + [np.inf])
@@ -130,23 +137,25 @@ def armar_dataset(telegramas_segmentados: Iterable[Dict[str, Any]], mesas_escrut
             lambda digitos: np.max([digito.shape[0] for digito in digitos] + [-np.inf])
         )
         df["min_prop_blanco_digitos"] = df.digitos.apply(
-            lambda digitos: np.min([proporcion_pixeles_blancos(digito) for digito in digitos] + [np.inf])
+            lambda digitos: np.min([_proporcion_pixeles_blancos(digito) for digito in digitos] + [np.inf])
         )
         df["max_prop_blanco_digitos"] = df.digitos.apply(
-            lambda digitos: np.max([proporcion_pixeles_blancos(digito) for digito in digitos] + [-np.inf])
+            lambda digitos: np.max([_proporcion_pixeles_blancos(digito) for digito in digitos] + [-np.inf])
         )
 
         return df.replace([np.inf, -np.inf], np.nan)
 
-    df = calcular_indicadores_digitos(df)
+    df = _calcular_indicadores_digitos(df)
 
     # Segun el EDA, tenemos que filtrar por proporcion de pixeles blancos
     # y por el size de los digitos
     UMBRAL_PROP_BLANCO_MAXIMO = 0.95
     df["digitos"] = df.digitos.apply(
-        lambda digitos: [digito for digito in digitos if proporcion_pixeles_blancos(digito) < UMBRAL_PROP_BLANCO_MAXIMO]
+        lambda digitos: [
+            digito for digito in digitos if _proporcion_pixeles_blancos(digito) < UMBRAL_PROP_BLANCO_MAXIMO
+        ]
     )
-    df = calcular_indicadores_digitos(df)
+    df = _calcular_indicadores_digitos(df)
 
     UMBRAL_PROP_BLANCO_MINIMO = 0.5
     df = df.query(f"min_prop_blanco_digitos >= {UMBRAL_PROP_BLANCO_MINIMO}").copy()
@@ -165,7 +174,7 @@ def armar_dataset(telegramas_segmentados: Iterable[Dict[str, Any]], mesas_escrut
     df = df[df.id_telegrama.isin(id_telegramas_completos.values)]
 
     # Finalmente los escalamos a (28, 28) segun MNIST
-    def escalar_digitos(digitos):
+    def _escalar_digitos(digitos):
         digitos_ = []
         for digito in digitos:
             digito_escalado = cv2.resize(digito, (28, 28), interpolation=cv2.INTER_AREA)
@@ -173,7 +182,7 @@ def armar_dataset(telegramas_segmentados: Iterable[Dict[str, Any]], mesas_escrut
             digitos_.append(digito_escalado.tolist())
         return digitos_
 
-    df["digitos_escalados"] = df.digitos.apply(escalar_digitos)
+    df["digitos_escalados"] = df.digitos.apply(_escalar_digitos)
     df = df.drop(["digitos"], axis=1)
     df = df.rename(columns={"digitos_escalados": "digitos"})
 

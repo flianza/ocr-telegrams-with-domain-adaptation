@@ -105,6 +105,11 @@ def extraer_votos(
                 if idx == 2:
                     votos_diputados.append(digito)
 
-        votos.append({"diputados": votos_diputados, "senadores": votos_senadores})
+        votos.append(
+            {
+                "diputados": votos_diputados,
+                "senadores": votos_senadores,
+            }
+        )
 
     return votos

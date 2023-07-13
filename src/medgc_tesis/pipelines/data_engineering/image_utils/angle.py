@@ -45,7 +45,7 @@ def rotate_image(image: np.ndarray, angle: float) -> np.ndarray:
 def deskew(image: np.ndarray) -> np.ndarray:
     angle = get_skew_angle(image)
 
-    # si da un valor verdura, mejor no hacemos nada
+    # If detected angle is "strange", keep it as it is.
     if abs(angle) > 30:
         return image
 
