@@ -19,7 +19,7 @@ cerebro de los gatos. Descubrieron que las neuronas en la corteza visual primari
 estímulos visuales específicos, como líneas y bordes. Además, identificaron dos tipos de células en la corteza visual
 primaria: células simples y células complejas. Las células simples respondían a estímulos visuales específicos, como
 barras de luz en una dirección particular, mientras que las células complejas respondían a estímulos visuales más
-complejos, como patrones en movimiento. En 1981, recibieron el Premio Nobel de Fisiología o Medicina por su trabajo en
+complejos, como patrones en movimiento. En 1981 recibieron el Premio Nobel de Fisiología o Medicina por su trabajo en
 el procesamiento visual del cerebro.
 
 Inspirado por el trabajo de \citeauthor{hubel1959receptive}, en 1980 se desarrolló la red Neocognitron \parencite{fukushima1980neocognitron}. La red Neocognitron fue uno de los primeros modelos de aprendizaje profundo
@@ -36,8 +36,8 @@ método de retropropagación del error. El modelo tuvo un rendimiento significat
 anteriores y sentó las bases para el desarrollo de sistemas de reconocimiento de dígitos escritos a mano más
 sofisticados.
 
-En la década de 1990, se desarrollaron otros modelos de aprendizaje profundo que superaron las limitaciones de los
-enfoques anteriores. \cite{lecun1995learning} se menciona por primera vez el término de {\it red convolucional}.
+En la década de 1990 se desarrollaron otros modelos de aprendizaje profundo que superaron las limitaciones de los
+enfoques anteriores. \citet{lecun1995learning} se menciona por primera vez el término de {\it red convolucional}.
 
 Desde entonces, los algoritmos de reconocimiento de caracteres han seguido evolucionando y mejorando. Actualmente, los
 sistemas de reconocimiento de caracteres son capaces de reconocer caracteres escritos a mano con una precisión cercana
@@ -45,7 +45,7 @@ al 100\%. Además del reconocimiento de caracteres, estas técnicas también se 
 en imágenes y videos, así como para la traducción automática.
 
 \section{Redes neuronales}
-\cite{mcculloch1943logical} estudiaron y propusieron un modelo del comportamiento de la
+\citet{mcculloch1943logical} estudiaron y propusieron un modelo del comportamiento de la
 neurona biológica. La neurona artificial que propusieron fue un sistema binario que consiste en que si la suma de entradas excitatorias supera un umbral de activación, y además no
 hay una entrada inhibitoria, la neurona se activa y emite una respuesta; en caso contrario, la neurona no se activa.
 
@@ -54,23 +54,24 @@ conductividad de la sinapsis. Así, la repetida activación de una neurona por o
 determinada, aumenta su conductividad y la hace más propensa a ser activada sucesivamente, induciendo a la formación de
 un circuito de neuronas estrechamente conectadas entre sí \parencite{hebb1949organization}.
 
-Años más tarde, \cite{rosenblatt1958perceptron} propone un modelo de neurona llamada perceptrones basadas en el modelo
-de McCulloch-Pitts. El mayor logro de Rosenblatt fue que pudo demostrar que, flexibilizando algunas de las reglas de la
-McCulloch-Pitts (la inhibición absoluta, la contribución igual de todas las entradas, etc.), las neuronas artificiales
-podían aprender de los datos. Y lo que es más importante, ideó un algoritmo de aprendizaje supervisado para este modelo
-de neurona que permitía averiguar los pesos correctos directamente a partir de los datos de entrenamiento. La sencillez
-y eficacia de este algoritmo de aprendizaje para problemas linealmente separables son algunas de las razones clave por
-las que se hizo tan popular a finales de los años cincuenta y principios de los sesenta. Sin embargo, esta popularidad
-hizo que Rosenblatt exagerara la capacidad de aprendizaje de su perceptrón, dando lugar a expectativas poco realistas
-en la comunidad científica y/o también difundidas por los medios de comunicación.
+Años más tarde, \citet{rosenblatt1958perceptron} propone un modelo de neurona llamado perceptrón basado en el modelo de
+\citeauthor{mcculloch1943logical}. El mayor logro de \citeauthor{rosenblatt1958perceptron} fue que pudo demostrar que,
+flexibilizando algunas de las reglas de \citeauthor{mcculloch1943logical} (la inhibición absoluta, la contribución
+igual de todas las entradas, etc.), las neuronas artificiales podían aprender de los datos. Y lo que es más importante,
+ideó un algoritmo de aprendizaje supervisado para este modelo de neurona que permitía averiguar los pesos correctos
+directamente a partir de los datos de entrenamiento. La sencillez y eficacia de este algoritmo de aprendizaje para
+problemas linealmente separables son algunas de las razones clave por las que se hizo tan popular a finales de los años
+cincuenta y principios de los sesenta. Sin embargo, esta popularidad hizo que Rosenblatt exagerara la capacidad de
+aprendizaje de su perceptrón, dando lugar a expectativas poco realistas en la comunidad científica y/o también
+difundidas por los medios de comunicación.
 
 En \citeyear{minsky1969perceptrons}, se publica un libro en el cual se expone la naturaleza lineal de los perceptrones
 y de sus limitadas capacidades \parencite{minsky1969perceptrons}. A raíz de este evento es que se inicia el denominado ``invierno de la inteligencia
 artificial'' de los 1980, donde cesó el interés de la comunidad por los modelos conexionistas.
 
 La contribución más importante en la reemergencia del conexionismo en los años ochenta fue la técnica {\it
-backpropagation} desarrollada por \cite{rumelhart1986learning}. En realidad, esta técnica fue desarrollada inicialmente
-por \cite{werbos1974beyond} y después redescubierta por varios grupos de investigadores \parencite{lecun1985learning, rumelhart1986learning}. Este algoritmo abrió las puertas al uso práctico de las redes
+backpropagation} desarrollada por \citet{rumelhart1986learning}. En realidad, esta técnica fue desarrollada
+inicialmente por \citet{werbos1974beyond} y después redescubierta por varios grupos de investigadores \parencite{lecun1985learning, rumelhart1986learning}. Este algoritmo abrió las puertas al uso práctico de las redes
 neuronales en un sinfín de campos. La idea detrás del {\it backpropagation} es ajustar los pesos de una red neuronal
 para minimizar el error de predicción en un conjunto de datos de entrenamiento. Este error se calcula como la
 diferencia entre la salida real de la red y la salida deseada para una entrada dada. Para ajustar los pesos de la red,
@@ -363,8 +364,8 @@ fortalezas y debilidades en términos de capacidad de generalización, extracci�
 \end{itemize}
 
 Una arquitectura simple de CNN para la clasificación de imágenes es la ilustrada en la figura \ref{fig:cnn}: una subred
-convolucional $\mathcal{G}$ que extrae información y genera características $\mathbf{f}$ a partir de la entrada
-$\mathbf{x}$; y una subred densa $\mathcal{C}$ que se encarga de clasificar las características aprendidas $\mathbf{f}$
+convolucional $\mathcal{G}$ que extrae información y genera características $\mathbf{z}$ a partir de la entrada
+$\mathbf{x}$; y una subred densa $\mathcal{C}$ que se encarga de clasificar las características aprendidas $\mathbf{z}$
 en las etiquetas del problema $\mathbf{\hat{y}}$.
 
 \begin{figure}[H]
@@ -412,7 +413,7 @@ en las etiquetas del problema $\mathbf{\hat{y}}$.
             \end{minipage}};
         \draw (169.83,108.25) node   [align=left] {\begin{minipage}[lt]{21.08pt}\setlength\topsep{0pt}
                 \begin{center}
-                    $\mathbf{f}$
+                    $\mathbf{z}$
                 \end{center}
 
             \end{minipage}};
@@ -432,16 +433,16 @@ en las etiquetas del problema $\mathbf{\hat{y}}$.
     \end{tikzpicture}
 
     \caption[Red neuronal convolucional]{Arquitectura de una red convolucional simple. Las entradas $\mathbf{x}$ son procesadas por una red convolucional $\mathcal{G}$
-        que generan características $\mathbf{f}$ para luego ser clasificadas por una red densa $\mathcal{C}$ en $\mathbf{\hat{y}}$.}
+        que generan características $\mathbf{z}$ para luego ser clasificadas por una red densa $\mathcal{C}$ en $\mathbf{\hat{y}}$.}
     \label{fig:cnn}
 \end{figure}
 
-Tal es el caso de la red LeNet, que fue propuesta por \cite{lecun1998gradient}. Esta red consta de dos capas de
+Tal es el caso de la red LeNet, que fue propuesta por \citet{lecun1998gradient}. Esta red consta de dos capas de
 convolución seguidas por dos capas densas y una capa de salida, y fue utilizada con éxito para el reconocimiento de
 números escritos a mano en el conjunto de datos MNIST.
 
 Por otro lado, una arquitectura de red neuronal convolucional más compleja es la red ResNet (abreviación de Residual
-Network), propuesta por \cite{he2016deep}. Estas redes están diseñadas para resolver el problema de la propagación del
+Network), propuesta por \citet{he2016deep}. Estas redes están diseñadas para resolver el problema de la propagación del
 gradiente en las redes neuronales profundas, lo que permite entrenar modelos con una gran cantidad de capas.
 
 \subsubsection{LeNet}
@@ -453,7 +454,7 @@ sigue siendo relevante hoy en día y se utiliza como una arquitectura básica pa
     \centering
     \includegraphics[width=0.9\textwidth]{chapter2/lenet5.png}
 
-    \caption[Arquitectura de una LeNet5]{Arquitectura de una LeNet5. Imagen tomada de \cite{lecun1998gradient}.}
+    \caption[Arquitectura de una LeNet5]{Arquitectura de una LeNet5. Imagen tomada de \citet{lecun1998gradient}.}
     \label{fig:lenet}
 \end{figure}
 
@@ -462,8 +463,8 @@ momento debido a la falta del hardware necesario para entrenarlas y otros algori
 soporte (SVM por sus siglas en inglés) que podían obtener resultados similares o superadores \parencite{lecun1998gradient, decoste2002training, lauer2007trainable}.
 
 En 2012, Alex Krizhevsky ganó la competencia de ImageNet con su arquitectura AlexNet \parencite{krizhevsky2017imagenet}, basada en la LeNet pero con modificaciones. La principal diferencia entre ambas es la
-complejidad y profundidad de la arquitectura, con AlexNet teniendo ocho capas y más de 60 millones de parámetros
-entrenables, mientras que LeNet tiene cinco capas y menos de un millón de parámetros. Además, AlexNet utiliza filtros
+complejidad y profundidad de la arquitectura: AlexNet con ocho capas y más de 60 millones de parámetros entrenables,
+mientras que LeNet tiene cinco capas y menos de un millón de parámetros. Además, AlexNet utiliza filtros
 convolucionales más grandes ($11 \times 11$ y $5 \times 5$) que permiten capturar características de imagen más grandes
 y complejas, y técnicas de regularización más avanzadas, como el {\it dropout}, para prevenir el sobre ajuste. En
 contraste, LeNet utiliza filtros más pequeños ($5 \times 5$ y $3 \times 3$) y técnicas de regularización más simples
@@ -536,6 +537,28 @@ en el que solo existen datos sin etiquetar \parencite{glorot2011domain}. En esta
 al cambio de distribución \parencite{quinonero2008dataset}. Por lo tanto, se propone la {\it adaptación de dominio} para reducir el cambio de
 distribución entre los dominios de entrenamiento y de prueba \parencite{jiang2022machine}.
 
+La capacidad de adaptación de dominio es una medida que se utiliza para evaluar el rendimiento de un modelo de
+aprendizaje automático en un dominio de prueba diferente al dominio en el que se entrenó. Uno de los factores clave que
+influyen en la capacidad de adaptación de dominio es la calidad de los espacios latentes que genera el modelo durante
+la etapa de entrenamiento.
+
+El espacio latente en el contexto de las redes convolucionales se refiere a una representación de los datos de entrada
+que se ha aprendido durante el entrenamiento del modelo. Durante dicho proceso, la red aprende a extraer
+características relevantes de las imágenes de entrada a través de la etapa convolucional. El espacio latente
+$\mathbf{z}$ se genera después de la etapa convolucional y antes de la etapa densa de la red. En este espacio latente,
+cada dimensión representa una característica específica de la imagen de entrada. Por ejemplo, en el caso de una red
+convolucional entrenada para clasificar imágenes de gatos y perros, una dimensión podría representar la forma de las
+orejas y otra dimensión podría representar el color de la nariz.
+
+Para evaluar la capacidad de adaptación de dominio de un modelo, se pueden comparar las distribuciones de los espacios
+latentes generados para diferentes conjuntos de datos. En general, se espera que los espacios latentes generados para
+diferentes conjuntos de datos sean similares, ya que esto indica que el modelo es capaz de generalizar.
+
+Si los espacios latentes son iguales o similares para diferentes conjuntos de datos, la etapa densa de la red que se
+encarga de la clasificación puede realizar predicciones precisas para el dominio de destino. Por otro lado, si los
+espacios latentes son muy diferentes para diferentes conjuntos de datos, esto puede indicar que el modelo no es capaz
+de adaptarse a nuevos conjuntos de datos y, por lo tanto, su capacidad de generalización es limitada.
+
 Se han propuesto muchos métodos para la adaptación de dominios, ya sea ponderando o seleccionando muestras del dominio
 de origen \parencite{sugiyama2007direct} o buscando una transformación de la distribución de origen a la distribución de destino \parencite{gong2013connecting}. Esta tesis analizará algunos de los métodos más comunes del último caso debido a que es
 donde existe mayor investigación y algoritmos.
@@ -551,7 +574,7 @@ conjunto de entrenamiento. El objetivo principal es entrenar al generador para q
 discriminador, generando muestras que sean indistinguibles de las reales. Para lograr esto, el generador y el
 discriminador se entrenan de manera alternada. Durante el entrenamiento, el generador intenta mejorar su capacidad para
 generar muestras más realistas, mientras que el discriminador trata de mejorar su capacidad para distinguir entre las
-muestras generadas y las reales. Este proceso de entrenamiento adversaria continúa hasta que se alcanza un punto de
+muestras generadas y las reales. Este proceso de entrenamiento adversario continúa hasta que se alcanza un punto de
 equilibrio en el que el generador es capaz de generar muestras que el discriminador no puede distinguir de las reales.
 Una vez que se ha alcanzado este punto, el generador puede utilizarse para generar nuevas muestras sintéticas que sean
 similares a los datos reales. La figura \ref{fig:gan-esquema} muestra el esquema de las GAN descrito anteriormente.
@@ -634,7 +657,7 @@ similares a los datos reales. La figura \ref{fig:gan-esquema} muestra el esquema
 
     \end{tikzpicture}
 
-    \caption[Esquema de una GAN]{Esquema de una GAN. $\mathbf{z}$ es el espacio latente con el cual la red generadora $\mathcal{G}$ produce datos sintéticos $\hat{\mathbf{x}}$. Luego, la red discriminadora $D$ intenta distinguir entre los datos sintéticos $\hat{\mathbf{x}}$ y los datos reales $\mathbf{x}$. Con el tiempo, $\mathcal{G}$ irá generando datos similares a los reales y $\mathcal{D}$ no podrá distinguir los unos de los otros.}
+    \caption[Esquema de una GAN]{Esquema de una GAN. $\mathbf{z}$ es el espacio latente con el cual la red generadora $\mathcal{G}$ produce datos sintéticos $\hat{\mathbf{x}}$. Luego, la red discriminadora $\mathcal{D}$ intenta distinguir entre los datos sintéticos $\hat{\mathbf{x}}$ y los datos reales $\mathbf{x}$. Con el tiempo, $\mathcal{G}$ irá generando datos similares a los reales y $\mathcal{D}$ no podrá distinguir los unos de los otros.}
     \label{fig:gan-esquema}
 \end{figure}
 
@@ -1399,8 +1422,7 @@ alineadas en distintas rectas, mientras que las de destino son aquellas que form
     \centering
     \includegraphics[width=0.95\textwidth]{chapter2/afn-visda-source-only.png}
 
-    \caption[Representación de características aprendidas de una CNN]{Visualización de las características aprendidas para el origen y destino utilizando un modelo entrenado utilizando muestras del origen. Imagen tomada de \cite{xu2019larger}.}
-    \label{fig:afn-source-only}
+    \caption[Representación de características aprendidas de una CNN]{Representación t-SNE de dos dimensiones de las características aprendidas para el origen y destino utilizando un modelo entrenado en muestras del origen para el conjunto de datos VisDA \parencite{visda2017}. Imagen tomada de \citet{xu2019larger}.} \label{fig:afn-source-only}
 \end{figure}
 
 Esto sugiere que las normas excesivamente pequeñas de las características de destino con respecto a las de origen
@@ -1415,7 +1437,7 @@ explican el deterioro en la clasificación. No obstante, pueden plantearse dos h
           alejadas de las normas pequeñas supondrá una mejora en la transferencia.
 \end{itemize}
 
-\cite{xu2019larger} propone un método llamado Normalización de Características Adaptativa {\it AFN}, ilustrado en la figura \ref{fig:afn-esquema}, que consiste en normalizar las normas de las características aprendidas por la red $\mathcal{G}$ mediante $n$ bloques $\mathcal{N}$ (compuestos por FC-BN-ReLU-Dropout) y mediante $\mathcal{L}_{AFN}$.
+\citet{xu2019larger} propone un método llamado Normalización de Características Adaptativa {\it AFN}, ilustrado en la figura \ref{fig:afn-esquema}, que consiste en normalizar las normas de las características aprendidas por la red $\mathcal{G}$ mediante $n$ bloques $\mathcal{N}$ (compuestos por FC-BN-ReLU-Dropout) y mediante $\mathcal{L}_{AFN}$.
 
 \begin{figure}[H]
     \centering

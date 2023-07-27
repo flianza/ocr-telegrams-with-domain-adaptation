@@ -80,8 +80,8 @@ de esta manera.
 \subsection{Extracción de la grilla de votos}
 
 El siguiente paso consiste en extraer la grilla de votos para trabajar con ella de manera aislada. Para lograrlo, se
-aplicó el algoritmo de detección de contornos propuesto por \cite{suzuki1985topological}, el cual permite identificar y
-seleccionar los contornos presentes en la imagen, correspondientes a los bordes que delimitan los objetos en ella.
+aplicó el algoritmo de detección de contornos propuesto por \citet{suzuki1985topological}, el cual permite identificar
+y seleccionar los contornos presentes en la imagen, correspondientes a los bordes que delimitan los objetos en ella.
 Mediante la selección del contorno de mayor área, se obtiene la grilla de votos como un objeto independiente.
 Posteriormente, se procede a extraer la grilla de votos y trabajar con ella de manera separada del resto de la imagen.
 Esto simplifica el procesamiento de los datos y facilita la extracción y análisis de los votos presentes en la grilla.
@@ -166,8 +166,8 @@ ruido o elementos no deseados que puedan haber sido detectados por el análisis 
 
 Una vez que se han identificado los componentes correspondientes a los dígitos, se procede a recortarlos
 individualmente para obtener una imagen de cada dígito por separado. De esta manera, se facilita el procesamiento y
-análisis de los votos de forma individual. La figura \ref{fig:etl-4-digitos} muestra los dígitos de un voto determinado
-obtenidos de esta manera.
+análisis de los votos de forma individual. La figura \ref{fig:etl-4-digitos} muestra un ejemplo los dígitos obtenidos
+de esta manera.
 
 \begin{figure}[H]
     \centering
@@ -220,7 +220,7 @@ correspondientes a cada candidato.
         \bottomrule
 
     \end{tabular}
-    \caption[Ejemplo del conjunto de datos generado]{Ejemplo de registros del conjunto de datos. Cada fila representa un voto.}
+    \caption[Ejemplo del conjunto de datos generado]{Ejemplo de registros del conjunto de datos. Cada fila representa la cantidad de votos obtenidos por un partido político y tipo.}
     \label{tab:dataset-telegramas-segmentados}
 \end{table}
 
@@ -251,7 +251,7 @@ estos histogramas para las proporciones mínimas y máximas de píxeles blancos 
         \caption{Histograma de la proporción máxima de píxeles blancos en un voto.}
         \label{fig:histograma-max-prop-blanco}
     \end{subfigure}
-    \caption[Histogramas de proporciones mínimas y máximas de píxeles blancos por voto]{Histogramas de proporciones de píxeles blancos por voto.}
+    \caption[Histogramas de proporciones mínimas y máximas de píxeles blancos por dígito]{Histogramas de proporciones de píxeles blancos por dígito.}
     \label{fig:histogramas-min-max-prop-blanco}
 \end{figure}
 
@@ -462,6 +462,8 @@ del voto predicho por el modelo $\hat{y}$ de longitud $m$, entonces la métrica 
 \begin{equation}
     IoU(y, \hat{y}) = \frac{\lvert \{y_{i}\} \bigcap \{\hat{y_{j}}\}\rvert}{\lvert \{y_{i}\} \bigcup \{\hat{y_{j}}\}\rvert} \forall i \in \{1, \cdots, n\}, \forall j \in \{1, \cdots, m\}
 \end{equation}
+
+El rango de valores es de $[0, 1]$, donde 1 corresponde a un clasificador que funciona sin errores.
 
 \subsection{Métricas de adaptación}
 \subsubsection{Distancia $\mathcal{A}$}

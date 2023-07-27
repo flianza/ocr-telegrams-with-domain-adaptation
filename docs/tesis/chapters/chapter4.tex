@@ -94,30 +94,8 @@ con más capacidad de aprendizaje, sobreajusta al MNIST.
 
 \section{Análisis de los espacios latentes}
 
-La capacidad de adaptación de dominio es una medida que se utiliza para evaluar el rendimiento de un modelo de
-aprendizaje automático en un dominio de prueba diferente al dominio en el que se entrenó. Uno de los factores clave que
-influyen en la capacidad de adaptación de dominio es la calidad de los espacios latentes que genera el modelo durante
-la etapa de entrenamiento.
-
-El espacio latente en el contexto de las redes convolucionales se refiere a una representación de los datos de entrada
-que se ha aprendido durante el entrenamiento del modelo. Durante dicho proceso, la red aprende a extraer
-características relevantes de las imágenes de entrada a través de la etapa convolucional. El espacio latente
-$\mathbf{z}$ se genera después de la etapa convolucional y antes de la etapa densa de la red. En este espacio latente,
-cada dimensión representa una característica específica de la imagen de entrada. Por ejemplo, en el caso de una red
-convolucional entrenada para clasificar imágenes de gatos y perros, una dimensión podría representar la forma de las
-orejas y otra dimensión podría representar el color de la nariz.
-
-Para evaluar la capacidad de adaptación de dominio de un modelo, se pueden comparar las distribuciones de los espacios
-latentes generados para diferentes conjuntos de datos. En general, se espera que los espacios latentes generados para
-diferentes conjuntos de datos sean similares, ya que esto indica que el modelo es capaz de generalizar.
-
-Si los espacios latentes son iguales o similares para diferentes conjuntos de datos, la etapa densa de la red que se
-encarga de la clasificación puede realizar predicciones precisas para el dominio de destino. Por otro lado, si los
-espacios latentes son muy diferentes para diferentes conjuntos de datos, esto puede indicar que el modelo no es capaz
-de adaptarse a nuevos conjuntos de datos y, por lo tanto, su capacidad de generalización es limitada.
-
-Una forma común de visualizarlos es mediante una técnica de reducción de dimensionalidad, como Aproximación y
-Proyección Uniforme de Variedad {\it UMAP} \parencite{mcinnes2018umap}. Es una técnica no lineal que se utiliza para visualizar estructuras de datos complejas en un
+Una forma común de visualizar los espacios latentes generados es mediante una técnica de reducción de dimensionalidad,
+como Aproximación y Proyección Uniforme de Variedad {\it UMAP} \parencite{mcinnes2018umap}. Es una técnica no lineal que se utiliza para visualizar estructuras de datos complejas en un
 espacio de menor dimensión. Al visualizar los espacios latentes utilizando UMAP, se pueden observar patrones y
 relaciones en los datos que de otra manera serían difíciles de detectar. Al comparar las distribuciones de los espacios
 latentes generados por un modelo para diferentes conjuntos de datos, se pueden identificar las similitudes y
@@ -169,7 +147,7 @@ generados por todos los modelos LeNet.
         \label{fig:umap-lenet-afn}
     \end{subfigure}
 
-    \caption[Representación UMAP de las características aprendidas de los modelos LeNet5]{Representación UMAP de las características aprendidas de los modelos LeNet5. Los puntos azules representan observaciones de MNIST y los naranjas de TDS.}
+    \caption[Representación UMAP de las características aprendidas de los modelos LeNet5]{Representación UMAP de las características aprendidas de los modelos LeNet5. Los puntos azules representan observaciones de MNIST y los naranjas de TDS. Los carteles con dígitos son visualizaciones de muestras aleatorias extraídas del conjunto de datos MNIST, lo que permite comprender su ubicación en la representación UMAP.}
     \label{fig:umaps-lenet}
 \end{figure}
 
@@ -237,7 +215,7 @@ generados por todos los modelos ResNet.
         \label{fig:umap-resnet-afn}
     \end{subfigure}
 
-    \caption[Representación UMAP de las características aprendidas de los modelos ResNet18]{Representaciones UMAP de los espacios latentes de los modelos ResNet18. Los puntos azules representan observaciones de TDS y los naranjas de MNIST.}
+    \caption[Representación UMAP de las características aprendidas de los modelos ResNet18]{Representaciones UMAP de los espacios latentes de los modelos ResNet18. Los puntos azules representan observaciones de TDS y los naranjas de MNIST. Los carteles con dígitos son visualizaciones de muestras aleatorias extraídas del conjunto de datos MNIST, lo que permite comprender su ubicación en la representación UMAP.}
     \label{fig:umaps-resnet}
 \end{figure}
 
@@ -300,9 +278,11 @@ contienen valores entre [0, 0.2] en todos los experimentos realizados. Luego de 
 detectaron las siguientes situaciones:
 
 \begin{itemize}
-    \item Telegramas cargados de forma errónea: ver ejemplo en el anexo \ref{anexo:telegrama-erroneo}.
+    \item Telegramas cargados de forma errónea: ver ejemplo en el anexo \ref{anexo:telegrama-erroneo}. Hay telegramas que
+          corresponden a concejales locales en vez de legisladores nacionales.
     \item Telegramas correctos, pero por alguna cuestión la lógica de extracción de dígitos no funciona correctamente: ver
-          ejemplo en el anexo \ref{anexo:telegrama-numeros-juntos}.
+          ejemplo en el anexo \ref{anexo:telegrama-numeros-juntos}. Los dígitos están unidos sin dejar espacio entre ellos, lo
+          que dificulta segmentarlos.
     \item Telegramas donde existen otros caracteres distintos a números: al ser un cuadro de texto libre sin formato, los jefes
           de mesa pueden escribir lo que deseen. Ver ejemplo en el anexo \ref{anexo:telegrama-erroneo-caracteres-especiales}
           donde se representa el $0$ a la izquierda con $X$.

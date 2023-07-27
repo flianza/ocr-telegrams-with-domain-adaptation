@@ -1762,6 +1762,60 @@
     \field{year}{2019}
   \endentry
 
+  \entry{visda2017}{misc}{}
+    \name{author}{6}{}{%
+      {{hash=PX}{%
+         family={Peng},
+         familyi={P\bibinitperiod},
+         given={Xingchao},
+         giveni={X\bibinitperiod},
+      }}%
+      {{hash=UB}{%
+         family={Usman},
+         familyi={U\bibinitperiod},
+         given={Ben},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=KN}{%
+         family={Kaushik},
+         familyi={K\bibinitperiod},
+         given={Neela},
+         giveni={N\bibinitperiod},
+      }}%
+      {{hash=HJ}{%
+         family={Hoffman},
+         familyi={H\bibinitperiod},
+         given={Judy},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=WD}{%
+         family={Wang},
+         familyi={W\bibinitperiod},
+         given={Dequan},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=SK}{%
+         family={Saenko},
+         familyi={S\bibinitperiod},
+         given={Kate},
+         giveni={K\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{PX+1}
+    \strng{fullhash}{PXUBKNHJWDSK1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2017}
+    \field{labeldatesource}{}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \verb{eprint}
+    \verb arXiv:1710.06924
+    \endverb
+    \field{title}{VisDA: The Visual Domain Adaptation Challenge}
+    \field{year}{2017}
+  \endentry
+
   \entry{quinonero2008dataset}{book}{}
     \name{author}{4}{}{%
       {{hash=QCJ}{%
