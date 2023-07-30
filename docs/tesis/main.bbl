@@ -996,7 +996,7 @@
     \field{year}{1959}
   \endentry
 
-  \entry{tllib}{misc}{}
+  \entry{tllib}{software}{}
     \name{author}{3}{}{%
       {{hash=JJ}{%
          family={Jiang},
@@ -1442,6 +1442,32 @@
     \field{volume}{86}
     \field{journaltitle}{Proceedings of the IEEE}
     \field{year}{1998}
+  \endentry
+
+  \entry{ocr-using-domain-adaptation}{software}{}
+    \name{author}{1}{}{%
+      {{hash=LF}{%
+         family={Lianza},
+         familyi={L\bibinitperiod},
+         given={Franco},
+         giveni={F\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {GitHub}%
+    }
+    \strng{namehash}{LF1}
+    \strng{fullhash}{LF1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2023}
+    \field{labeldatesource}{}
+    \field{sortinit}{L}
+    \field{sortinithash}{L}
+  \field{howpublished}{\url{https://github.com/flianza/ocr-using-domain-adaptation}}
+    \field{title}{OCR using Domain Adaptation}
+    \field{journaltitle}{GitHub repository}
+    \field{year}{2023}
   \endentry
 
   \entry{liu2019text}{article}{}
@@ -2244,7 +2270,7 @@
     \warn{\item Invalid format of field 'month'}
   \endentry
 
-  \entry{torchdrift}{misc}{}
+  \entry{torchdrift}{software}{}
     \name{author}{3}{}{%
       {{hash=VT}{%
          family={Viehmann},
