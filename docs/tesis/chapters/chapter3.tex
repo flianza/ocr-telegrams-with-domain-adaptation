@@ -9,9 +9,9 @@ el diseño experimental de los modelos.
 
 \section{Descripción de los datos}
 
-Los telegramas fueron descargados desde la \href{https://op.elecciones.gob.ar/telegramas/generales2021/}{página oficial
-    del estado argentino} en formato TIFF. Los mismos presentan un formato estándar en forma de grilla, en la que se
-encuentran los partidos políticos y los votos obtenidos para diputados y senadores en cada renglón. En la página
+Se descargaron los 8188 telegramas desde la \href{https://op.elecciones.gob.ar/telegramas/generales2021/}{página
+    oficial del estado argentino} en formato TIFF. Los mismos presentan un formato estándar en forma de grilla, en la que
+se encuentran los partidos políticos y los votos obtenidos para diputados y senadores en cada renglón. En la página
 también se puede descargar un archivo en formato CSV donde se encuentra el identificador de cada telegrama y los
 valores digitalizados oficialmente.
 
@@ -80,8 +80,8 @@ de esta manera.
 \subsection{Extracción de la grilla de votos}
 
 El siguiente paso consiste en extraer la grilla de votos para trabajar con ella de manera aislada. Para lograrlo, se
-aplicó el algoritmo de detección de contornos propuesto por \cite{suzuki1985topological}, el cual permite identificar y
-seleccionar los contornos presentes en la imagen, correspondientes a los bordes que delimitan los objetos en ella.
+aplicó el algoritmo de detección de contornos propuesto por \citet{suzuki1985topological}, el cual permite identificar
+y seleccionar los contornos presentes en la imagen, correspondientes a los bordes que delimitan los objetos en ella.
 Mediante la selección del contorno de mayor área, se obtiene la grilla de votos como un objeto independiente.
 Posteriormente, se procede a extraer la grilla de votos y trabajar con ella de manera separada del resto de la imagen.
 Esto simplifica el procesamiento de los datos y facilita la extracción y análisis de los votos presentes en la grilla.
@@ -95,12 +95,15 @@ La figura \ref{fig:etl-2-grilla} muestra la grilla extraída mediante este proce
 \end{figure}
 
 \subsection{Detección de líneas de la grilla de votos}
-Teniendo la grilla de votos separada del telegrama, se procede a detectar las líneas para poder extraer cada registro
-de la misma. Se optó por utilizar un enfoque simplificado para la detección de líneas similar al utilizado en \parencite{lamagna2016lectura}. Debido a que la grilla se encuentra alineada verticalmente, se pueden utilizar las
-proyecciones de los colores sobre los ejes $x$ e $y$ para detectarlas. Al sumar todos los colores por eje, se pueden
-observar picos de valores donde se encuentran las líneas horizontales y verticales. Posteriormente, se selecciona un
-umbral de corte por cada eje, siendo el mismo el promedio de cada eje menos dos desvíos estándar. La figura
-\ref{fig:etl-3-proyecciones} muestra las proyecciones obtenidas con los umbrales por cada eje.
+
+El objetivo de este proceso es identificar las cuatro líneas verticales y las quince líneas horizontales que delimitan
+la grilla con los votos, con el propósito de posteriormente trabajar con cada renglón de la misma. Para llevar a cabo
+esta tarea, se emplea un enfoque simplificado para la detección de líneas, similar al utilizado en
+\citet{lamagna2016lectura}. Dado que la grilla se encuentra alineada verticalmente, se pueden utilizar las proyecciones
+de la escala de grises sobre los ejes $x$ e $y$ para detectarlas. Al sumarlos por eje, se pueden observar picos de
+valores donde se encuentran las líneas horizontales y verticales. Posteriormente, se selecciona un umbral de corte por
+cada eje, siendo el mismo el promedio de cada eje menos dos desvíos estándar. La figura \ref{fig:etl-3-proyecciones}
+muestra las proyecciones obtenidas con los umbrales por cada eje.
 
 \begin{figure}[H]
     \centering
@@ -142,50 +145,115 @@ la segmentación detectada mediante el proceso descrito.
 
 \subsection{Segmentación de dígitos}
 
-Una vez obtenida la grilla, se itera por cada registro obteniendo los rectángulos que contienen los votos, ignorando el
-primer renglón que contiene los títulos de la grilla. La figura \ref{fig:etl-4-registro} muestra un registro de la
-grilla obtenida.
+Una vez obtenida la grilla, se itera por cada renglón obteniendo los rectángulos que contienen los votos, ignorando el
+Primero que contiene los títulos de la grilla. La figura \ref{fig:etl-4-registro} muestra un renglón de la grilla
+obtenida.
 
 \begin{figure}[H]
     \centering
     \frame{\includegraphics[height=15pt]{chapter3/etl-4-registro-1.png}}
     \frame{\includegraphics[height=15pt]{chapter3/etl-4-registro-2.png}}
     \frame{\includegraphics[height=15pt]{chapter3/etl-4-registro-3.png}}
-    \caption[Primer registro extraído de la grilla de votos]{Primer registro extraído de la grilla de votos}
+    \caption[Primer renglón extraído de la grilla de votos]{Primer renglón extraído de la grilla de votos}
     \label{fig:etl-4-registro}
 \end{figure}
 
-Una vez obtenida la grilla de votos, se procede separar cada dígito de forma individual para poder procesarlos de forma
-independiente. Para lograr esto, se utiliza un análisis de componentes conectados \parencite{bolelli2019spaghetti}, lo que permite identificar los distintos componentes (regiones conectadas) presentes en
-una imagen binaria. En este caso, los componentes corresponden a los dígitos presentes en la grilla. Luego, se
-establece un rango de áreas permitido para seleccionar los componentes que corresponden a los dígitos.
-
-Para determinar el rango de áreas permitido, se realizó una experimentación previa y se establecieron como límites el
-$5\%$ y el $70\%$ del total de píxeles de la imagen. De esta manera, se descartan aquellos contornos que representan
-ruido o elementos no deseados que puedan haber sido detectados por el análisis de componentes conectados.
-
-Una vez que se han identificado los componentes correspondientes a los dígitos, se procede a recortarlos
-individualmente para obtener una imagen de cada dígito por separado. De esta manera, se facilita el procesamiento y
-análisis de los votos de forma individual. La figura \ref{fig:etl-4-digitos} muestra los dígitos de un voto determinado
-obtenidos de esta manera.
+Por cada uno de los renglones compuestos por las tres imágenes, se procede a extraer los dígitos de la cantidad de
+votos obtenidos por senadores y diputados, siendo la segunda y tercer imagen respectivamente. El proceso inicia
+aplicando un desenfoque gaussiano para suavizar la imagen y eliminar posibles secciones consideradas como ruido. El
+resultado de este paso se muestra en la figura \ref{fig:etl-4-votos-desenfocado}.
 
 \begin{figure}[H]
     \centering
-    \frame{\includegraphics[scale=0.6]{chapter3/etl-4-digito-1.png}}
-    \frame{\includegraphics[scale=0.6]{chapter3/etl-4-digito-2.png}}
-    \frame{\includegraphics[scale=0.6]{chapter3/etl-4-digito-3.png}}
+    \frame{\includegraphics[scale=0.6]{chapter3/etl-4-votos-desenfocados.png}}
+    \caption[Dígitos después del desenfoque gaussiano]{Dígitos después del desenfoque gaussiano}
+    \label{fig:etl-4-votos-desenfocado}
+\end{figure}
+
+A continuación, se aplica un umbral adaptativo para obtener una máscara binaria que resalta los píxeles que contienen
+la información escrita en la imagen. La figura \ref{fig:etl-4-votos-mascara} muestra la máscara obtenida.
+
+\begin{figure}[H]
+    \centering
+    \frame{\includegraphics[scale=0.6]{chapter3/etl-4-votos-mascara.png}}
+    \caption[Máscara obtenida al aplicar umbral adaptativo]{Máscara obtenida al aplicar umbral adaptativo}
+    \label{fig:etl-4-votos-mascara}
+\end{figure}
+
+Posteriormente, se emplea el análisis de componentes conectados \parencite{bolelli2019spaghetti} sobre la máscara generada en el paso anterior. Esto permite identificar las diferentes
+regiones conectadas presentes en la imagen binaria. Se filtran aquellos componentes detectados cuya cantidad total de
+píxeles sea inferior al 1.5\% de los píxeles totales de la máscara, así como aquellos que contengan más del 20\% de los
+píxeles totales de la máscara. Es importante destacar que los umbrales utilizados para esta depuración fueron
+determinados mediante experimentación. Este proceso tiene como objetivo eliminar componentes que sean ruido. Los
+componentes conectados identificados mediante este método se muestran en la figura \ref{fig:etl-4-votos-cc}.
+
+\begin{figure}[H]
+    \centering
+    \frame{\includegraphics[scale=0.6]{chapter3/etl-4-votos-cc.png}}
+    \caption[Máscara con componentes conectados detectados]{Máscara con componentes conectados detectados}
+    \label{fig:etl-4-votos-cc}
+\end{figure}
+
+El siguiente paso consiste en generar un rectángulo contenedor para cada uno de los componentes identificados, tal como
+se ilustra en la figura \ref{fig:etl-4-votos-bounding-boxes}.
+
+\begin{figure}[H]
+    \centering
+    \frame{\includegraphics[scale=0.6]{chapter3/etl-4-votos-bounding-boxes.png}}
+    \caption[Dígitos delimitados]{Dígitos delimitados mediante rectángulos contenedores de los componentes conectados.}
+    \label{fig:etl-4-votos-bounding-boxes}
+\end{figure}
+
+A través de la delimitación lograda se extraen los dígitos de la imagen original, obteniendo imágenes individuales de
+cada uno de ellos. Un ejemplo concreto de los dígitos adquiridos mediante este proceso se exhibe en la figura
+\ref{fig:etl-4-digitos}.
+
+\begin{figure}[H]
+    \centering
+    \frame{\includegraphics[scale=0.6]{chapter3/etl-4-votos-digito-1.png}}
+    \frame{\includegraphics[scale=0.6]{chapter3/etl-4-votos-digito-2.png}}
+    \frame{\includegraphics[scale=0.6]{chapter3/etl-4-votos-digito-3.png}}
     \caption[Dígitos detectados en el primer bloque de votos]{Dígitos detectados en el primer bloque de votos}
     \label{fig:etl-4-digitos}
 \end{figure}
 
-Luego de haber realizado la segmentación de los dígitos, se procede a aplicar un proceso de transformación para que
-todas las imágenes de dígitos tengan una dimensión cuadrada.
+El siguiente paso consiste en encuadrar las imágenes de los dígitos obtenidos para garantizar que los dígitos se
+presenten de manera estandarizada, lo que facilita su posterior procesamiento y análisis. El algoritmo utilizado consta
+de los siguientes pasos:
 
-Finalmente, se lleva a cabo la construcción de un conjunto de datos que engloba información de los resultados
-electorales. Este conjunto de datos se compone del partido político al que corresponde cada registro, lo cual se
-determina a partir del orden de las filas en la tabla de votos. Además, se incluyen los dígitos correspondientes a los
-votos emitidos y se registra el tipo de voto, ya sea senadores o diputados. Dicho proceso es realizado con el propósito
-de poseer un conjunto de datos que posteriormente será utilizado para entrenar y validar los modelos.
+\begin{itemize}
+    \item Se determina si la imagen es más alta que ancha o más ancha que alta. Esto se hace comparando el número de filas y
+          columnas de la matriz.
+    \item Si la imagen es más alta que ancha, se agregan píxeles de relleno en los lados izquierdo y derecho de la imagen para
+          hacerla cuadrada. Si la imagen es más ancha que alta, se agrega relleno en la parte superior e inferior.
+    \item La cantidad de píxeles de relleno agregados a cada lado depende de la diferencia entre las dimensiones de la imagen
+          original y el lado más corto del cuadrado. Si la diferencia es par, se agrega la misma cantidad de píxeles en cada
+          lado. Si la diferencia es impar, se agrega un píxel extra en un lado para mantener la imagen centrada.
+    \item Se aplica el relleno a la matriz original, lo que la convierte en una matriz cuadrada. El relleno se realiza asignando
+          un valor constante a los píxeles adicionales, y en este caso, se utiliza el valor 255, que representa el color blanco.
+\end{itemize}
+
+\noindent
+La figura \ref{fig:etl-4-digitos-cuadrados} muestra un ejemplo del resultado que se obtiene al aplicar el proceso de encuadre
+sobre los dígitos detectados.
+
+\begin{figure}[H]
+    \centering
+    \frame{\includegraphics[scale=0.6]{chapter3/etl-4-votos-digito-1-sq.png}}
+    \frame{\includegraphics[scale=0.6]{chapter3/etl-4-votos-digito-2-sq.png}}
+    \frame{\includegraphics[scale=0.6]{chapter3/etl-4-votos-digito-3-sq.png}}
+    \caption[Dígitos en formato cuadrado]{Dígitos en formato cuadrado utilizando el proceso de encuadre.}
+    \label{fig:etl-4-digitos-cuadrados}
+\end{figure}
+
+El proceso culmina con la creación de un conjunto de datos que recopila información sobre los resultados electorales.
+Este conjunto de datos está compuesto por registros que representan a los diferentes partidos políticos, y su
+asignación a cada partido se determina en función del orden de las filas en la tabla de votos. Cada registro incluye
+detalles importantes, como los dígitos que representan los votos emitidos y el tipo de voto registrado, que puede ser
+para senadores o diputados. El objetivo principal de llevar a cabo este proceso es contar con un conjunto de datos
+completo y bien estructurado, el cual será empleado para entrenar y validar los modelos que se utilizarán más adelante.
+Al reunir esta información electoral en un solo lugar, se crea una base de datos coherente y lista para ser utilizada
+en tareas de análisis, predicción y toma de decisiones relacionadas con el proceso electoral.
 
 \section{Análisis del conjunto de datos}
 
@@ -193,7 +261,7 @@ Una vez que se ha completado el proceso de extracción y segmentación de los d�
 exploratorio de los datos. Este análisis tiene como objetivo detectar posibles errores o inconsistencias en los datos
 extraídos, que puedan afectar la calidad de los modelos de aprendizaje automático que se construirán a partir de ellos.
 
-La tabla \ref{tab:dataset-telegramas-segmentados} muestra algunos registros del conjunto de datos, que incluye
+El cuadro \ref{tab:dataset-telegramas-segmentados} muestra algunos registros del conjunto de datos, que incluye
 información como el número del telegrama, el partido político, el tipo de voto (senadores o diputados) y los dígitos
 correspondientes a cada candidato.
 
@@ -220,7 +288,7 @@ correspondientes a cada candidato.
         \bottomrule
 
     \end{tabular}
-    \caption[Ejemplo del conjunto de datos generado]{Ejemplo de registros del conjunto de datos. Cada fila representa un voto.}
+    \caption[Ejemplo del conjunto de datos generado]{Ejemplo de registros del conjunto de datos. Cada fila representa la cantidad de votos obtenidos por un partido político y tipo.}
     \label{tab:dataset-telegramas-segmentados}
 \end{table}
 
@@ -251,7 +319,7 @@ estos histogramas para las proporciones mínimas y máximas de píxeles blancos 
         \caption{Histograma de la proporción máxima de píxeles blancos en un voto.}
         \label{fig:histograma-max-prop-blanco}
     \end{subfigure}
-    \caption[Histogramas de proporciones mínimas y máximas de píxeles blancos por voto]{Histogramas de proporciones de píxeles blancos por voto.}
+    \caption[Histogramas de proporciones mínimas y máximas de píxeles blancos por dígito]{Histogramas de proporciones de píxeles blancos por dígito.}
     \label{fig:histogramas-min-max-prop-blanco}
 \end{figure}
 
@@ -263,7 +331,7 @@ incorrecta.
 
 El siguiente punto a analizar es el tamaño de las imágenes. Como se muestra en el cuadro
 \ref{tab:dataset-telegramas-segmentados}, las imágenes no fueron estandarizadas en cuanto a tamaño. De manera análoga a
-la variable de proporción de píxeles blancos, se calculan las variables de mínimo y máximo tamaño por voto. La tabla
+la variable de proporción de píxeles blancos, se calculan las variables de mínimo y máximo tamaño por voto. El cuadro
 \ref{tab:describe-min-max-size} muestra los estadísticos descriptivos de las mismas.
 
 \begin{table}[H]
@@ -338,8 +406,8 @@ para este tipo de aplicaciones.
 
 La optimización de hiperparámetros se realizó utilizando la librería Optuna \parencite{optuna_2019}. Se ejecutaron 30 rondas de optimización con 10 épocas de entrenamiento por cada experimento. En
 cada uno de los experimentos, se optimizaron los hiperparámetros para minimizar la función de pérdida de cada modelo.
-El cuadro \ref{tab:rangos-hiperparametros} muestra los rangos búsqueda para cada modelo, incluyendo el modelo de
-referencia (sin adaptación de dominio).
+El cuadro \ref{tab:rangos-hiperparametros} muestra los rangos de búsqueda para cada modelo, incluyendo el modelo de
+referencia (baseline, sin adaptación de dominio).
 
 \begin{table}[H]
     \centering
@@ -443,10 +511,9 @@ El rango de valores es de $[0, 1]$, donde 1 corresponde a un clasificador que fu
 
 \subsubsection{Intersección sobre unión}
 
-Otra forma de medir el clasificador es mediante la {\it intersección sobre unión} (IoU por sus siglas en inglés).
+Otra forma de evaluar al clasificador es mediante la {\it intersección sobre unión} (IoU por sus siglas en inglés).
 Consta de calcular la cantidad de dígitos únicos predichos por sobre la cantidad de dígitos únicos reales. Por ejemplo,
-para un telegrama y un partido el clasificador predice 189 votos cuando lo real es 180. Entonces, el {\it IoU} viene
-dado por:
+para un telegrama y un partido el clasificador predice 189 votos cuando lo real es 180, el {\it IoU} viene dado por:
 
 \begin{align}
     IoU(\{1, 8, 0\}, \{1, 8, 9\}) & = \frac{\lvert\{1, 8, 0\} \bigcap \{1, 8, 9\}\rvert}{\lvert\{1, 8, 0\} \bigcup \{1, 8, 9\}\rvert} \nonumber \\
@@ -462,6 +529,9 @@ del voto predicho por el modelo $\hat{y}$ de longitud $m$, entonces la métrica 
 \begin{equation}
     IoU(y, \hat{y}) = \frac{\lvert \{y_{i}\} \bigcap \{\hat{y_{j}}\}\rvert}{\lvert \{y_{i}\} \bigcup \{\hat{y_{j}}\}\rvert} \forall i \in \{1, \cdots, n\}, \forall j \in \{1, \cdots, m\}
 \end{equation}
+
+\noindent
+El rango de valores es de $[0, 1]$, donde 1 corresponde a un clasificador que funciona sin errores.
 
 \subsection{Métricas de adaptación}
 \subsubsection{Distancia $\mathcal{A}$}

@@ -27,11 +27,6 @@ class TDS(ImageList):
         super(TDS, self).__init__(root, TDS.CLASSES, data_list_file=data_list_file, **kwargs)
 
     def __getitem__(self, index: int) -> Tuple[Any, int]:
-        """
-        Args:
-            index (int): Index
-        return (tuple): (image, target) where target is index of the target class.
-        """
         path, target = self.samples[index]
         img = self.loader(path).convert(self.mode)
 

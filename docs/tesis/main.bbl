@@ -60,12 +60,13 @@
     \field{sortinithash}{A}
     \field{booktitle}{Proceedings of the 25rd {ACM} {SIGKDD} International
   Conference on Knowledge Discovery and Data Mining}
+    \field{pages}{2623\bibrangedash 2631}
     \field{title}{Optuna: A Next-generation Hyperparameter Optimization
   Framework}
     \field{year}{2019}
   \endentry
 
-  \entry{ben2006analysis}{inproceedings}{}
+  \entry{ben2006analysis}{article}{}
     \name{author}{4}{}{%
       {{hash=BDS}{%
          family={Ben-David},
@@ -92,26 +93,6 @@
          giveni={F\bibinitperiod},
       }}%
     }
-    \name{editor}{3}{}{%
-      {{hash=SB}{%
-         family={Sch\"{o}lkopf},
-         familyi={S\bibinitperiod},
-         given={B.},
-         giveni={B\bibinitperiod},
-      }}%
-      {{hash=PJ}{%
-         family={Platt},
-         familyi={P\bibinitperiod},
-         given={J.},
-         giveni={J\bibinitperiod},
-      }}%
-      {{hash=HT}{%
-         family={Hoffman},
-         familyi={H\bibinitperiod},
-         given={T.},
-         giveni={T\bibinitperiod},
-      }}%
-    }
     \list{publisher}{1}{%
       {MIT Press}%
     }
@@ -123,13 +104,9 @@
     \field{labeldatesource}{}
     \field{sortinit}{B}
     \field{sortinithash}{B}
-    \field{booktitle}{Advances in Neural Information Processing Systems}
     \field{title}{Analysis of Representations for Domain Adaptation}
-    \verb{url}
-    \verb https://proceedings.neurips.cc/paper/2006/file/b1b0432ceafb0ce714426e
-    \verb 9114852ac7-Paper.pdf
-    \endverb
     \field{volume}{19}
+    \field{journaltitle}{Advances in Neural Information Processing Systems}
     \field{year}{2006}
   \endentry
 
@@ -723,6 +700,7 @@
     \field{sortinit}{G}
     \field{sortinithash}{G}
     \field{booktitle}{ICML}
+    \field{pages}{513\bibrangedash 520}
     \field{title}{Domain adaptation for large-scale sentiment classification: A
   deep learning approach}
     \field{year}{2011}
@@ -931,20 +909,20 @@
     \field{year}{2016}
   \endentry
 
-  \entry{hebb1949organization}{article}{}
+  \entry{hebb1949organization}{book}{}
     \name{author}{1}{}{%
-      {{hash=HD}{%
+      {{hash=HDO}{%
          family={Hebb},
          familyi={H\bibinitperiod},
-         given={DO},
-         giveni={D\bibinitperiod},
+         given={Donald\bibnamedelima Olding},
+         giveni={D\bibinitperiod\bibinitdelim O\bibinitperiod},
       }}%
     }
     \list{publisher}{1}{%
-      {John Wiley}%
+      {Psychology press}%
     }
-    \strng{namehash}{HD1}
-    \strng{fullhash}{HD1}
+    \strng{namehash}{HDO1}
+    \strng{fullhash}{HDO1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
     \field{labelyear}{1949}
@@ -1018,7 +996,45 @@
     \field{year}{1959}
   \endentry
 
-  \entry{jiang2022machine}{misc}{}
+  \entry{tllib}{misc}{}
+    \name{author}{3}{}{%
+      {{hash=JJ}{%
+         family={Jiang},
+         familyi={J\bibinitperiod},
+         given={Junguang},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=SY}{%
+         family={Shu},
+         familyi={S\bibinitperiod},
+         given={Yang},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=LM}{%
+         family={Long},
+         familyi={L\bibinitperiod},
+         given={Mingsheng},
+         giveni={M\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {GitHub}%
+    }
+    \strng{namehash}{JJSYLM1}
+    \strng{fullhash}{JJSYLM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2020}
+    \field{labeldatesource}{}
+    \field{sortinit}{J}
+    \field{sortinithash}{J}
+  \field{howpublished}{\url{https://github.com/thuml/Transfer-Learning-Library}}
+    \field{title}{Transfer Learning Library}
+    \field{journaltitle}{GitHub repository}
+    \field{year}{2020}
+  \endentry
+
+  \entry{jiang2022machine}{article}{}
     \name{author}{4}{}{%
       {{hash=JJ}{%
          family={Jiang},
@@ -1045,11 +1061,6 @@
          giveni={M\bibinitperiod},
       }}%
     }
-    \list{publisher}{1}{%
-      {arXiv}%
-    }
-    \keyw{Machine Learning (cs.LG), FOS: Computer and information sciences,
-  FOS: Computer and information sciences}
     \strng{namehash}{JJ+1}
     \strng{fullhash}{JJSYWJLM1}
     \field{labelnamesource}{author}
@@ -1058,52 +1069,9 @@
     \field{labeldatesource}{}
     \field{sortinit}{J}
     \field{sortinithash}{J}
-    \verb{doi}
-    \verb 10.48550/ARXIV.2201.05867
-    \endverb
     \field{title}{Transferability in Deep Learning: A Survey}
-    \verb{url}
-    \verb https://arxiv.org/abs/2201.05867
-    \endverb
+    \field{journaltitle}{arXiv preprint arXiv:2201.05867}
     \field{year}{2022}
-  \endentry
-
-  \entry{tllib}{misc}{}
-    \name{author}{3}{}{%
-      {{hash=JJB}{%
-         family={Junguang\bibnamedelima Jiang},
-         familyi={J\bibinitperiod\bibinitdelim J\bibinitperiod},
-         given={Baixu},
-         giveni={B\bibinitperiod},
-      }}%
-      {{hash=CB}{%
-         family={Chen},
-         familyi={C\bibinitperiod},
-         given={Bo},
-         giveni={B\bibinitperiod},
-      }}%
-      {{hash=FML}{%
-         family={Fu},
-         familyi={F\bibinitperiod},
-         given={Mingsheng\bibnamedelima Long},
-         giveni={M\bibinitperiod\bibinitdelim L\bibinitperiod},
-      }}%
-    }
-    \list{publisher}{1}{%
-      {GitHub}%
-    }
-    \strng{namehash}{JJBCBFML1}
-    \strng{fullhash}{JJBCBFML1}
-    \field{labelnamesource}{author}
-    \field{labeltitlesource}{title}
-    \field{labelyear}{2020}
-    \field{labeldatesource}{}
-    \field{sortinit}{J}
-    \field{sortinithash}{J}
-  \field{howpublished}{\url{https://github.com/thuml/Transfer-Learning-Library}}
-    \field{title}{Transfer Learning Library}
-    \field{journaltitle}{GitHub repository}
-    \field{year}{2020}
   \endentry
 
   \entry{krizhevsky2017imagenet}{article}{}
@@ -1279,7 +1247,7 @@
     \field{pages}{436\bibrangedash 444}
     \field{title}{Deep learning}
     \field{volume}{521}
-    \field{journaltitle}{nature}
+    \field{journaltitle}{Nature}
     \field{year}{2015}
   \endentry
 
@@ -1794,6 +1762,60 @@
     \field{year}{2019}
   \endentry
 
+  \entry{visda2017}{misc}{}
+    \name{author}{6}{}{%
+      {{hash=PX}{%
+         family={Peng},
+         familyi={P\bibinitperiod},
+         given={Xingchao},
+         giveni={X\bibinitperiod},
+      }}%
+      {{hash=UB}{%
+         family={Usman},
+         familyi={U\bibinitperiod},
+         given={Ben},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=KN}{%
+         family={Kaushik},
+         familyi={K\bibinitperiod},
+         given={Neela},
+         giveni={N\bibinitperiod},
+      }}%
+      {{hash=HJ}{%
+         family={Hoffman},
+         familyi={H\bibinitperiod},
+         given={Judy},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=WD}{%
+         family={Wang},
+         familyi={W\bibinitperiod},
+         given={Dequan},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=SK}{%
+         family={Saenko},
+         familyi={S\bibinitperiod},
+         given={Kate},
+         giveni={K\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{PX+1}
+    \strng{fullhash}{PXUBKNHJWDSK1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2017}
+    \field{labeldatesource}{}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \verb{eprint}
+    \verb arXiv:1710.06924
+    \endverb
+    \field{title}{VisDA: The Visual Domain Adaptation Challenge}
+    \field{year}{2017}
+  \endentry
+
   \entry{quinonero2008dataset}{book}{}
     \name{author}{4}{}{%
       {{hash=QCJ}{%
@@ -1901,7 +1923,7 @@
     \field{pages}{533\bibrangedash 536}
     \field{title}{Learning representations by back-propagating errors}
     \field{volume}{323}
-    \field{journaltitle}{nature}
+    \field{journaltitle}{Nature}
     \field{year}{1986}
   \endentry
 
@@ -1948,6 +1970,7 @@
     \field{sortinithash}{S}
     \field{booktitle}{Proceedings of the IEEE Conference on Computer Vision and
   Pattern Recognition (CVPR)}
+    \field{pages}{4510\bibrangedash 4520}
     \field{title}{MobileNetV2: Inverted Residuals and Linear Bottlenecks}
     \field{year}{2018}
     \warn{\item Invalid format of field 'month'}
@@ -2012,6 +2035,7 @@
     \field{sortinit}{S}
     \field{sortinithash}{S}
     \field{booktitle}{Advances in Neural Information Processing Systems}
+    \field{pages}{568\bibrangedash 576}
     \field{title}{Two-Stream Convolutional Networks for Action Recognition in
   Videos}
     \verb{url}
@@ -2063,6 +2087,7 @@
     \field{labeldatesource}{}
     \field{sortinit}{S}
     \field{sortinithash}{S}
+    \field{pages}{699\bibrangedash 746}
     \field{title}{Direct importance estimation with model selection and its
   application to covariate shift adaptation}
     \field{volume}{20}
@@ -2097,21 +2122,7 @@
          giveni={G\bibinitperiod},
       }}%
     }
-    \name{editor}{2}{}{%
-      {{hash=DS}{%
-         family={Dasgupta},
-         familyi={D\bibinitperiod},
-         given={Sanjoy},
-         giveni={S\bibinitperiod},
-      }}%
-      {{hash=MD}{%
-         family={McAllester},
-         familyi={M\bibinitperiod},
-         given={David},
-         giveni={D\bibinitperiod},
-      }}%
-    }
-    \list{publisher}{1}{%
+    \list{organization}{1}{%
       {PMLR}%
     }
     \strng{namehash}{SI+1}
@@ -2122,43 +2133,11 @@
     \field{labeldatesource}{}
     \field{sortinit}{S}
     \field{sortinithash}{S}
-    \field{abstract}{%
-    Deep and recurrent neural networks (DNNs and RNNs respectively) are
-  powerful models that were considered to be almost impossible to train using
-  stochastic gradient descent with momentum. In this paper, we show that when
-  stochastic gradient descent with momentum uses a well-designed random
-  initialization and a particular type of slowly increasing schedule for the
-  momentum parameter, it can train both DNNs and RNNs (on datasets with
-  long-term dependencies) to levels of performance that were previously
-  achievable only with Hessian-Free optimization. We find that both the
-  initialization and the momentum are crucial since poorly initialized networks
-  cannot be trained with momentum and well-initialized networks perform
-  markedly worse when the momentum is absent or poorly tuned. Our success
-  training these models suggests that previous attempts to train deep and
-  recurrent neural networks from random initializations have likely failed due
-  to poor initialization schemes. Furthermore, carefully tuned momentum methods
-  suffice for dealing with the curvature issues in deep and recurrent network
-  training objectives without the need for sophisticated second-order methods.%
-    }
-    \field{booktitle}{Proceedings of the 30th International Conference on
-  Machine Learning}
-    \field{number}{3}
+    \field{booktitle}{International conference on machine learning}
     \field{pages}{1139\bibrangedash 1147}
-    \field{series}{Proceedings of Machine Learning Research}
     \field{title}{On the importance of initialization and momentum in deep
   learning}
-    \verb{url}
-    \verb https://proceedings.mlr.press/v28/sutskever13.html
-    \endverb
-    \field{volume}{28}
-    \list{location}{1}{%
-      {Atlanta, Georgia, USA}%
-    }
-    \verb{file}
-    \verb http://proceedings.mlr.press/v28/sutskever13.pdf
-    \endverb
     \field{year}{2013}
-    \warn{\item Invalid format of field 'month'}
   \endentry
 
   \entry{suzuki1985topological}{article}{}
@@ -2192,7 +2171,7 @@
     \field{year}{1985}
   \endentry
 
-  \entry{thrun1998learning}{misc}{}
+  \entry{thrun1998learning}{book}{}
     \name{author}{2}{}{%
       {{hash=TS}{%
          family={Thrun},
@@ -2208,7 +2187,7 @@
       }}%
     }
     \list{publisher}{1}{%
-      {Kluwer Academic Publishers}%
+      {Springer}%
     }
     \strng{namehash}{TSPL1}
     \strng{fullhash}{TSPL1}
@@ -2259,6 +2238,7 @@
     \field{sortinithash}{T}
     \field{booktitle}{Proceedings of the IEEE Conference on Computer Vision and
   Pattern Recognition (CVPR)}
+    \field{pages}{7167\bibrangedash 7176}
     \field{title}{Adversarial Discriminative Domain Adaptation}
     \field{year}{2017}
     \warn{\item Invalid format of field 'month'}
@@ -2414,6 +2394,7 @@
     \field{sortinithash}{X}
     \field{booktitle}{Proceedings of the IEEE Conference on Computer Vision and
   Pattern Recognition (CVPR)}
+    \field{pages}{1492\bibrangedash 1500}
     \field{title}{Aggregated Residual Transformations for Deep Neural Networks}
     \field{year}{2017}
     \warn{\item Invalid format of field 'month'}
@@ -2497,6 +2478,7 @@
     \field{labeldatesource}{}
     \field{sortinit}{Y}
     \field{sortinithash}{Y}
+    \field{pages}{3320\bibrangedash 3328}
     \field{title}{How transferable are features in deep neural networks?}
     \field{volume}{27}
     \field{journaltitle}{Advances in neural information processing systems}

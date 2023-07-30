@@ -32,7 +32,7 @@ def segmentar_digitos(bloque_digitos: np.ndarray) -> Iterable[np.ndarray]:
     gray = cv2.cvtColor(bloque_digitos, cv2.COLOR_BGR2GRAY)
 
     # Apply Gaussian blurring and thresholding
-    # to reveal the characters on the license plate
+    # to reveal the characters
     blurred = cv2.GaussianBlur(gray, (5, 5), 0)
     thresh = cv2.adaptiveThreshold(blurred, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 45, 15)
 
@@ -105,6 +105,11 @@ def extraer_votos(
                 if idx == 2:
                     votos_diputados.append(digito)
 
-        votos.append({"diputados": votos_diputados, "senadores": votos_senadores})
+        votos.append(
+            {
+                "diputados": votos_diputados,
+                "senadores": votos_senadores,
+            }
+        )
 
     return votos
