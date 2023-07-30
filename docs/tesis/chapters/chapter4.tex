@@ -43,9 +43,10 @@ ser minimizadas.
     \label{tab:metricas-experimentos}
 \end{table}
 
-Se observa que los modelos entrenados sin adaptación de dominio presentan las mejores métricas de clasificación, como
-se esperaba. Sin embargo, estos modelos tienen los peores valores de adaptación, lo que hace que no puedan
-generalizarse a nuevos conjuntos de datos, como TDS.
+Según los resultados presentados en la tabla anterior, se puede concluir que los modelos entrenados con DANN muestran
+un desempeño ligeramente superior en términos de tasa de acierto y $F_1$ en comparación con los modelos baseline
+($0.5\%$ de mejora). Sin embargo, es importante destacar que esta diferencia en el rendimiento puede no ser
+significativa, por lo que puede considerarse prácticamente nula.
 
 El modelo ResNet18, utilizando AFN, demuestra ser el modelo que combina mejor las métricas de clasificación y
 adaptación. A pesar de esto, se destaca que los modelos LeNet entrenados con DANN y AFN obtuvieron buenas métricas en
@@ -86,11 +87,27 @@ independientemente de la técnica de adaptación utilizada, todos los modelos pr
 superiores que aquellos modelos entrenados únicamente con MNIST. Esto sugiere que la adaptación de dominio es
 fundamental para obtener un mejor rendimiento en la tarea de clasificación de telegramas. Los modelos entrenados con
 técnicas de adaptación logran generalizar mejor y son más efectivos en la tarea de reconocimiento de los patrones
-presentes en los telegramas, incluso en presencia de ruido y variaciones en los datos de entrada.
+presentes en los telegramas, incluso en presencia de ruido y variaciones en los datos de entrada. Las figuras
+\ref{fig:aciertos-lenet} y \ref{fig:aciertos-resnet} muestran la distribución de aciertos por telegrama obtenida
+utilizando el modelo baseline y el mejor resultante para LeNet5 y ResNet18 respectivamente.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{chapter4/aciertos-lenet.png}
+    \caption[Distribución de cantidad de aciertos por telegrama por LeNet5]{Distribución de cantidad de aciertos por telegrama utilizando el modelo baseline (sin adaptación de dominio) y la mejor técnica de adaptación de dominio obtenida para LeNet5.}
+    \label{fig:aciertos-lenet}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{chapter4/aciertos-resnet.png}
+    \caption[Distribución de cantidad de aciertos por telegrama por ResNet18]{Distribución de cantidad de aciertos por telegrama utilizando el modelo baseline (sin adaptación de dominio) y la mejor técnica de adaptación de dominio obtenida para ResNet18.}
+    \label{fig:aciertos-resnet}
+\end{figure}
 
 Otro punto a resaltar es que cuando no se utiliza adaptación de dominio en la ResNet18, la cantidad de aciertos
 promedio por telegrama es incluso peor que la de LeNet5. Esto puede deberse a que, al ser una red mucho más grande y
-con más capacidad de aprendizaje, sobreajusta al MNIST.
+con más capacidad de aprendizaje, sobreajusta al MNIST no pudiendo generalizar al TDS.
 
 \section{Análisis de los espacios latentes}
 
