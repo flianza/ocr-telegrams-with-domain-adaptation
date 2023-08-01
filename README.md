@@ -1,5 +1,7 @@
 # MEDGC Tesis
 
+[![DOI](https://zenodo.org/badge/465483386.svg)](https://zenodo.org/badge/latestdoi/465483386)
+
 Repositorio para la tesis de maestría "Clasificación de los dígitos escritos en los telegramas de 
 las elecciones legislativas en Santa Fe mediante técnicas de adaptación de dominio".
 
