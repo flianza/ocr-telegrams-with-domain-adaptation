@@ -1461,12 +1461,45 @@
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
     \field{labelyear}{2023}
+    \field{extradate}{1}
     \field{labeldatesource}{}
     \field{sortinit}{L}
     \field{sortinithash}{L}
   \field{howpublished}{\url{https://github.com/flianza/ocr-using-domain-adaptation}}
     \field{title}{OCR using Domain Adaptation}
     \field{journaltitle}{GitHub repository}
+    \field{year}{2023}
+  \endentry
+
+  \entry{tds}{misc}{}
+    \name{author}{1}{}{%
+      {{hash=LF}{%
+         family={Lianza},
+         familyi={L\bibinitperiod},
+         given={Franco},
+         giveni={F\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Zenodo}%
+    }
+    \strng{namehash}{LF1}
+    \strng{fullhash}{LF1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2023}
+    \field{extradate}{2}
+    \field{labeldatesource}{}
+    \field{sortinit}{L}
+    \field{sortinithash}{L}
+    \verb{doi}
+    \verb 10.5281/zenodo.8204338
+    \endverb
+    \field{title}{Telegram digits dataset}
+    \verb{url}
+    \verb https://doi.org/10.5281/zenodo.8204338
+    \endverb
+    \field{month}{05}
     \field{year}{2023}
   \endentry
 
